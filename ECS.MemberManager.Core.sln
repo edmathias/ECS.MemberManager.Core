@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30611.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECS.MemberManager.Core.EF.Data", "ECS.MemberManager.Core.EF.Data\ECS.MemberManager.Core.EF.Data.csproj", "{3C2BAFE7-C4C4-47DA-AE33-5A3C6654CA7E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECS.MemberManager.Core.EF.Domain", "ECS.MemberManager.Core.EF.Domain\ECS.MemberManager.Core.EF.Domain.csproj", "{3CB4A2F3-A2D7-48C2-A672-931B43EDA99D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3C2BAFE7-C4C4-47DA-AE33-5A3C6654CA7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C2BAFE7-C4C4-47DA-AE33-5A3C6654CA7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C2BAFE7-C4C4-47DA-AE33-5A3C6654CA7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C2BAFE7-C4C4-47DA-AE33-5A3C6654CA7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CB4A2F3-A2D7-48C2-A672-931B43EDA99D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CB4A2F3-A2D7-48C2-A672-931B43EDA99D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CB4A2F3-A2D7-48C2-A672-931B43EDA99D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CB4A2F3-A2D7-48C2-A672-931B43EDA99D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2C50EAA8-5F3D-411E-B690-493032123367}
+	EndGlobalSection
+EndGlobal
