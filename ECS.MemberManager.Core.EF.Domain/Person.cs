@@ -9,7 +9,8 @@ namespace ECS.BizBricks.CRM.Core.EF.Domain
     {
         public Person()
         {
-            Addresses = new List<Address>();
+            AddressPersons = new List<AddressPerson>();
+            CategoryPersons = new List<CategoryPerson>();
         }
 
         public int Id { get; private set; }
@@ -31,7 +32,9 @@ namespace ECS.BizBricks.CRM.Core.EF.Domain
         public DateTime LastUpdatedDate { get; set; }
         public string Notes { get; set; }
         [Timestamp] public byte[] RowVersion { get; set; }
-        public IList<Address> Addresses { get; set; }
+
+        public IList<AddressPerson> AddressPersons { get; set; }
+        public IList<CategoryPerson> CategoryPersons { get; set; }
 
     }
 }

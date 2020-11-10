@@ -6,12 +6,6 @@ namespace ECS.MemberManager.Core.EF.Domain
 {
     public class Address
     {
-        public Address()
-        {
-            AddressOrganizations = new List<AddressOrganization>();
-            AddressPersons = new List<AddressPerson>();
-        }
-        
         public int Id { get; private set; }
         [Required, MaxLength(35)]
         public string Address1 { get; set; }
@@ -26,8 +20,8 @@ namespace ECS.MemberManager.Core.EF.Domain
         public DateTime LastUpdatedDate { get; set; }
         [Timestamp] public byte[] RowVersion { get; set; }
 
-        public IList<AddressOrganization> AddressOrganizations { get; set; }
-        public IList<AddressPerson> AddressPersons { get; set; }
+        public IList<AddressOrganization> AddressOrganizations { get;} = new List<AddressOrganization>();
+        public IList<AddressPerson> AddressPersons { get; } = new List<AddressPerson>();
     }
 
 }

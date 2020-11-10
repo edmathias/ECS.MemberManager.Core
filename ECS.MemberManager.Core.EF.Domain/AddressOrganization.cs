@@ -1,4 +1,5 @@
-﻿using ECS.BizBricks.CRM.Core.EF.Domain;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using ECS.BizBricks.CRM.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.EF.Domain
 {

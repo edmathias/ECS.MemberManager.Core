@@ -9,6 +9,7 @@ namespace ECS.MemberManager.Core.EF.Domain
         public Organization()
         {
             AddressOrganizations = new List<AddressOrganization>();
+            CategoryOrganizations = new List<CategoryOrganization>();
         }
         public int Id { get; private set; }
         [Required,MaxLength(50)]
@@ -25,5 +26,6 @@ namespace ECS.MemberManager.Core.EF.Domain
         [Timestamp] public byte[] RowVersion { get; private set; }
 
         public IList<AddressOrganization> AddressOrganizations { get; set; }
+        public IList<CategoryOrganization> CategoryOrganizations { get; set; }
     }
 }

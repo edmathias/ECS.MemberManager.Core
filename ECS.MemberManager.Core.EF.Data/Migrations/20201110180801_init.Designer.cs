@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECS.MemberManager.Core.EF.Data.Migrations
 {
     [DbContext(typeof(MembershipManagerDataContext))]
-    [Migration("20201109222225_initial")]
-    partial class initial
+    [Migration("20201110180801_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,26 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                 .HasAnnotation("ProductVersion", "3.1.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("ECS.BizBricks.CRM.Core.EF.Domain.CategoryOfPerson", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CategoryOfPersons");
+                });
 
             modelBuilder.Entity("ECS.BizBricks.CRM.Core.EF.Domain.Person", b =>
                 {
@@ -30,6 +50,9 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
 
                     b.Property<DateTime>("Birthdate")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("CategoryOfPersonId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("DateOfFirstContact")
                         .HasColumnType("datetime2");
@@ -60,9 +83,6 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PersonCategoryId")
-                        .HasColumnType("int");
-
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
@@ -76,35 +96,15 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MaritalStatusId");
+                    b.HasIndex("CategoryOfPersonId");
 
-                    b.HasIndex("PersonCategoryId");
+                    b.HasIndex("MaritalStatusId");
 
                     b.HasIndex("TitleId");
 
                     b.HasIndex("TitleSuffixId");
 
                     b.ToTable("Persons");
-                });
-
-            modelBuilder.Entity("ECS.BizBricks.CRM.Core.EF.Domain.PersonCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.Property<int>("DisplayOrder")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PersonCategories");
                 });
 
             modelBuilder.Entity("ECS.MemberManager.Core.EF.Domain.Address", b =>
@@ -130,9 +130,6 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                     b.Property<DateTime>("LastUpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("PersonId")
-                        .HasColumnType("int");
-
                     b.Property<string>("PostCode")
                         .IsRequired()
                         .HasColumnType("nvarchar(9)")
@@ -143,9 +140,12 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.HasKey("Id");
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(2)")
+                        .HasMaxLength(2);
 
-                    b.HasIndex("PersonId");
+                    b.HasKey("Id");
 
                     b.ToTable("Addresses");
                 });
@@ -178,6 +178,100 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                     b.HasIndex("PersonId");
 
                     b.ToTable("AddressPersons");
+                });
+
+            modelBuilder.Entity("ECS.MemberManager.Core.EF.Domain.CategoryOfOrganization", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TypeName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(35)")
+                        .HasMaxLength(35);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CategoryOfOrganizations");
+                });
+
+            modelBuilder.Entity("ECS.MemberManager.Core.EF.Domain.CategoryOrganization", b =>
+                {
+                    b.Property<int>("OrganizationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CategoryOfOrganizationId")
+                        .HasColumnType("int");
+
+                    b.HasKey("OrganizationId", "CategoryOfOrganizationId");
+
+                    b.HasIndex("CategoryOfOrganizationId");
+
+                    b.ToTable("CategoryOrganization");
+                });
+
+            modelBuilder.Entity("ECS.MemberManager.Core.EF.Domain.CategoryPerson", b =>
+                {
+                    b.Property<int>("PersonId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CategoryOfPersonId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PersonId", "CategoryOfPersonId");
+
+                    b.HasIndex("CategoryOfPersonId");
+
+                    b.ToTable("CategoryPerson");
+                });
+
+            modelBuilder.Entity("ECS.MemberManager.Core.EF.Domain.ContactForSponsor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DateWhenContacted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("LastUpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PersonId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Purpose")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(255)")
+                        .HasMaxLength(255);
+
+                    b.Property<string>("RecordOfDiscussion")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int?>("SponsorId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PersonId");
+
+                    b.HasIndex("SponsorId");
+
+                    b.ToTable("ContactForSponsors");
                 });
 
             modelBuilder.Entity("ECS.MemberManager.Core.EF.Domain.MaritalStatus", b =>
@@ -239,26 +333,6 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                     b.ToTable("Organizations");
                 });
 
-            modelBuilder.Entity("ECS.MemberManager.Core.EF.Domain.OrganizationCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("DisplayOrder")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TypeName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(35)")
-                        .HasMaxLength(35);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("OrganizationCategories");
-                });
-
             modelBuilder.Entity("ECS.MemberManager.Core.EF.Domain.OrganizationType", b =>
                 {
                     b.Property<int>("Id")
@@ -282,6 +356,54 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                     b.HasIndex("OrganizationCategoryId");
 
                     b.ToTable("OrganizationTypes");
+                });
+
+            modelBuilder.Entity("ECS.MemberManager.Core.EF.Domain.Sponsor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DateOfFirstContact")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateSponsorAccepted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Details")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OrganizationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PersonId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ReferredBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<DateTime>("SponsorUntilDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrganizationId");
+
+                    b.HasIndex("PersonId");
+
+                    b.ToTable("Sponsors");
                 });
 
             modelBuilder.Entity("ECS.MemberManager.Core.EF.Domain.Title", b =>
@@ -334,18 +456,18 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
 
             modelBuilder.Entity("ECS.BizBricks.CRM.Core.EF.Domain.Person", b =>
                 {
+                    b.HasOne("ECS.BizBricks.CRM.Core.EF.Domain.CategoryOfPerson", "CategoryOfPerson")
+                        .WithMany()
+                        .HasForeignKey("CategoryOfPersonId");
+
                     b.HasOne("ECS.MemberManager.Core.EF.Domain.MaritalStatus", "MaritalStatus")
                         .WithMany()
                         .HasForeignKey("MaritalStatusId");
 
-                    b.HasOne("ECS.BizBricks.CRM.Core.EF.Domain.PersonCategory", "PersonCategory")
-                        .WithMany()
-                        .HasForeignKey("PersonCategoryId");
-
                     b.HasOne("ECS.MemberManager.Core.EF.Domain.Title", "Title")
                         .WithMany()
                         .HasForeignKey("TitleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("ECS.MemberManager.Core.EF.Domain.TitleSuffix", "TitleSuffix")
@@ -353,25 +475,18 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                         .HasForeignKey("TitleSuffixId");
                 });
 
-            modelBuilder.Entity("ECS.MemberManager.Core.EF.Domain.Address", b =>
-                {
-                    b.HasOne("ECS.BizBricks.CRM.Core.EF.Domain.Person", null)
-                        .WithMany("Addresses")
-                        .HasForeignKey("PersonId");
-                });
-
             modelBuilder.Entity("ECS.MemberManager.Core.EF.Domain.AddressOrganization", b =>
                 {
                     b.HasOne("ECS.MemberManager.Core.EF.Domain.Address", "Address")
                         .WithMany("AddressOrganizations")
                         .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("ECS.MemberManager.Core.EF.Domain.Organization", "Organization")
                         .WithMany("AddressOrganizations")
                         .HasForeignKey("OrganizationId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
@@ -380,14 +495,57 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                     b.HasOne("ECS.MemberManager.Core.EF.Domain.Address", "Address")
                         .WithMany("AddressPersons")
                         .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("ECS.BizBricks.CRM.Core.EF.Domain.Person", "Person")
+                        .WithMany("AddressPersons")
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ECS.MemberManager.Core.EF.Domain.CategoryOrganization", b =>
+                {
+                    b.HasOne("ECS.MemberManager.Core.EF.Domain.CategoryOfOrganization", "CategoryOfOrganization")
+                        .WithMany("CategoryOrganizations")
+                        .HasForeignKey("CategoryOfOrganizationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ECS.MemberManager.Core.EF.Domain.Organization", "Organization")
+                        .WithMany("CategoryOrganizations")
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ECS.MemberManager.Core.EF.Domain.CategoryPerson", b =>
+                {
+                    b.HasOne("ECS.BizBricks.CRM.Core.EF.Domain.CategoryOfPerson", "CategoryOfPerson")
+                        .WithMany("CategoryPersons")
+                        .HasForeignKey("CategoryOfPersonId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ECS.BizBricks.CRM.Core.EF.Domain.Person", "Person")
+                        .WithMany("CategoryPersons")
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ECS.MemberManager.Core.EF.Domain.ContactForSponsor", b =>
+                {
+                    b.HasOne("ECS.BizBricks.CRM.Core.EF.Domain.Person", "Person")
                         .WithMany()
                         .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("ECS.MemberManager.Core.EF.Domain.Sponsor", "Sponsor")
+                        .WithMany()
+                        .HasForeignKey("SponsorId");
                 });
 
             modelBuilder.Entity("ECS.MemberManager.Core.EF.Domain.Organization", b =>
@@ -395,16 +553,31 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                     b.HasOne("ECS.MemberManager.Core.EF.Domain.OrganizationType", "OrganizationType")
                         .WithMany()
                         .HasForeignKey("OrganizationTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("ECS.MemberManager.Core.EF.Domain.OrganizationType", b =>
                 {
-                    b.HasOne("ECS.MemberManager.Core.EF.Domain.OrganizationCategory", "OrganizationCategory")
+                    b.HasOne("ECS.MemberManager.Core.EF.Domain.CategoryOfOrganization", "OrganizationCategory")
                         .WithMany()
                         .HasForeignKey("OrganizationCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ECS.MemberManager.Core.EF.Domain.Sponsor", b =>
+                {
+                    b.HasOne("ECS.MemberManager.Core.EF.Domain.Organization", "Organization")
+                        .WithMany()
+                        .HasForeignKey("OrganizationId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ECS.BizBricks.CRM.Core.EF.Domain.Person", "Person")
+                        .WithMany()
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 #pragma warning restore 612, 618
