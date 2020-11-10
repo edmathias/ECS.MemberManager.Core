@@ -13,15 +13,14 @@ namespace ECS.MemberManager.Core.EF.Data
         public DbSet<AddressOrganization> AddressOrganizations { get; set; }
         public DbSet<AddressPerson> AddressPersons { get; set; }
         public DbSet<CategoryOfOrganization> CategoryOfOrganizations { get; set; }
-
         public DbSet<CategoryOfPerson> CategoryOfPersons { get; set; }
-
         public DbSet<CategoryOrganization> CategoryOrganizations { get; set; }
         public DbSet<CategoryPerson> CategoryPersons { get; set; }
         public DbSet<ContactForSponsor> ContactForSponsors { get; set; }
         public DbSet<MaritalStatus> MaritalStatuses { get; set; }
         public DbSet<Organization> Organizations { get; set; }
         public DbSet<OrganizationType> OrganizationTypes { get; set; }
+        public DbSet<OrganizationPerson> OrganizationPersons { get; set; }
         public DbSet<Person> Persons { get; set; }
         public DbSet<Sponsor> Sponsors { get; set; }
         public DbSet<Title> Titles { get; set; }
@@ -41,7 +40,10 @@ namespace ECS.MemberManager.Core.EF.Data
                 .HasKey(co => new {co.OrganizationId, co.CategoryOfOrganizationId});
             modelBuilder.Entity<CategoryPerson>()
                 .HasKey(cp => new {cp.PersonId, cp.CategoryOfPersonId});
+            modelBuilder.Entity<OrganizationPerson>()
+                .HasKey(op => new {op.OrganizationId, op.PersonId});
 
+  
         }
     }
 }

@@ -7,12 +7,6 @@ namespace ECS.BizBricks.CRM.Core.EF.Domain
 {
     public class Person
     {
-        public Person()
-        {
-            AddressPersons = new List<AddressPerson>();
-            CategoryPersons = new List<CategoryPerson>();
-        }
-
         public int Id { get; private set; }
         [Required,MaxLength(50)]
         public string LastName { get; set; }
@@ -33,8 +27,9 @@ namespace ECS.BizBricks.CRM.Core.EF.Domain
         public string Notes { get; set; }
         [Timestamp] public byte[] RowVersion { get; set; }
 
-        public IList<AddressPerson> AddressPersons { get; set; }
-        public IList<CategoryPerson> CategoryPersons { get; set; }
+        public IList<AddressPerson> AddressPersons { get; } = new List<AddressPerson>();
+        public IList<CategoryPerson> CategoryPersons { get; } = new List<CategoryPerson>();
+        public IList<OrganizationPerson> OrganizationPersons { get; } = new List<OrganizationPerson>();
 
     }
 }
