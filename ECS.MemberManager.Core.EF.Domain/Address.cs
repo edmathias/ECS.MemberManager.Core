@@ -19,6 +19,8 @@ namespace ECS.MemberManager.Core.EF.Domain
         public string Address2 { get; set; }
         [Required]
         public string City { get; set; }
+        [Required,MaxLength(2)]
+        public string State { get; set; }
         [Required,MaxLength(9)]
         public string PostCode { get; set; }
         public DateTime LastUpdatedDate { get; set; }

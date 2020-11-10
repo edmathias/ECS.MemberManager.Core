@@ -6,7 +6,7 @@ namespace ECS.MemberManager.Core.EF.Domain
     {
         public int Id { get; private set; }
         [Required]
-        public OrganizationCategory OrganizationCategory { get; set; }
+        public CategoryOfOrganization OrganizationCategory { get; set; }
         [Required,MaxLength(50)]
         public string TypeName { get; set; }
         public int DisplayOrder { get; set; }

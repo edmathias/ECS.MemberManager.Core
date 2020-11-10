@@ -11,10 +11,9 @@ namespace ECS.MemberManager.Core.EF.Data
         public DbSet<AddressPerson> AddressPersons { get; set; }
         public DbSet<MaritalStatus> MaritalStatuses { get; set; }
         public DbSet<Organization> Organizations { get; set; }
-        public DbSet<OrganizationCategory> OrganizationCategories { get; set; }
-        public DbSet<OrganizationType> OrganizationTypes { get; set; }
+        public DbSet<CategoryOfOrganization> CategoryOfOrganizations { get; set; } 
         public DbSet<Person> Persons { get; set; }
-        public DbSet<PersonCategory> PersonCategories { get; set; }
+        public DbSet<CategoryOfPerson> CategoryOfPersons { get; set; }
         public DbSet<Title> Titles { get; set; }
         public DbSet<TitleSuffix> TitleSuffixes { get; set; }
 

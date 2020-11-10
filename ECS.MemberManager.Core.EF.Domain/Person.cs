@@ -26,7 +26,7 @@ namespace ECS.BizBricks.CRM.Core.EF.Domain
         public Title Title { get; set; }
         public TitleSuffix TitleSuffix { get; set; }
         public MaritalStatus MaritalStatus { get; set; }
-        public PersonCategory PersonCategory { get; set; }
+        public CategoryOfPerson CategoryOfPerson { get; set; }
         public int LastUpdatedBy { get; set; }
         public DateTime LastUpdatedDate { get; set; }
         public string Notes { get; set; }

@@ -2,7 +2,7 @@
 
 namespace ECS.MemberManager.Core.EF.Domain
 {
-    public class OrganizationCategory
+    public class CategoryOfOrganization
     {
         [Key] public int Id { get; private set; }
         [Required,MaxLength(35)] public string TypeName { get; set; }

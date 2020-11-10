@@ -2,7 +2,7 @@
 
 namespace ECS.BizBricks.CRM.Core.EF.Domain
 {
-    public class PersonCategory
+    public class CategoryOfPerson
     {
         [Key] public int Id { get; private set; }
         [Required,MaxLength(50)] public string Category { get; set; }
