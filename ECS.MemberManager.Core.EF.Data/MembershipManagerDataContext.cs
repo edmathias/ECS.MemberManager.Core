@@ -29,16 +29,13 @@ namespace ECS.MemberManager.Core.EF.Data
         public DbSet<TitleSuffix> TitleSuffixes { get; set; }
         public DbSet<Sponsor> Sponsors { get; set; }
         public DbSet<Person> Persons { get; set; }
-
-        public DbSet<MemberInfo> MemberInfos { get; set; }
-
+        public DbSet<Phone> Phones { get; set; }
+        public DbSet<MemberInfo> MemberInfo { get; set; }
         public DbSet<MembershipType> MembershipTypes { get; set; }
-
         public DbSet<MemberStatus> MemberStatuses { get; set; }
  /*
         public DbSet<ContactForSponsor> ContactForSponsors { get; set; }
         public DbSet<Payment> Payments { get; set; }
-        public DbSet<Phone> Phones { get; set; }
 */
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

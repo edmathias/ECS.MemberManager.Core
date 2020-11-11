@@ -17,8 +17,9 @@ namespace ECS.MemberManager.Core.EF.Domain
         [Required]
         public DateTime LastUpdatedDate { get; set; }
         public string Notes { get; set; }
+        
         public IList<Address> Addresses { get; set;  }
         public IList<CategoryOfOrganization> CategoryOfOrganizations { get; set; }
-
+        public IList<Phone> Phones { get; set; }
     }
 }

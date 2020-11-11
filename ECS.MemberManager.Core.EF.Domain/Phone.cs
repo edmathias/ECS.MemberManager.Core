@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using ECS.BizBricks.CRM.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.EF.Domain
 {
@@ -16,6 +17,8 @@ namespace ECS.MemberManager.Core.EF.Domain
         public string Extension { get; set; }
         public int DisplayOrder { get; set; }
         public DateTime LastUpdatedDate { get; set; }
-        [Timestamp] public byte[] RowVersion { get; set; }
+
+        public IList<Organization> Organizations { get; set; }
+        public IList<Person> Persons { get; set; }
     }
 }

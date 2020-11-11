@@ -27,5 +27,6 @@ namespace ECS.BizBricks.CRM.Core.EF.Domain
         
         public IList<Address> Addresses { get; set; }
         public IList<CategoryOfPerson> CategoryOfPersons { get; set; }
+        public IList<Phone> Phones { get; set; }
     }
 }

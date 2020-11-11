@@ -7,7 +7,6 @@
   <ItemGroup>
     <Compile Remove="ContactForSponsor.cs" />
     <Compile Remove="Payment.cs" />
-    <Compile Remove="Phone.cs" />
   </ItemGroup>
 
   <ItemGroup>
