@@ -9,7 +9,6 @@ namespace ECS.BizBricks.CRM.Core.EF.Domain
         [Key] public int Id { get; private set; }
         [Required,MaxLength(50)] public string Category { get; set; }
         public int DisplayOrder { get; set; }
-
-        public IList<CategoryPerson> CategoryPersons { get; set; }
+        public IList<Person> Persons { get; set; }
     }
 }

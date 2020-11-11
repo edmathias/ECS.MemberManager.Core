@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using ECS.BizBricks.CRM.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.EF.Domain
 {
@@ -16,10 +17,8 @@ namespace ECS.MemberManager.Core.EF.Domain
         [Required]
         public DateTime LastUpdatedDate { get; set; }
         public string Notes { get; set; }
-        [Timestamp] public byte[] RowVersion { get; private set; }
+        public IList<Address> Addresses { get; set;  }
+        public IList<CategoryOfOrganization> CategoryOfOrganizations { get; set; }
 
-        public IList<AddressOrganization> AddressOrganizations { get; } = new List<AddressOrganization>();
-        public IList<CategoryOrganization> CategoryOrganizations { get; } = new List<CategoryOrganization>();
-        public IList<OrganizationPerson> OrganizationPersons { get; } = new List<OrganizationPerson>();
     }
 }

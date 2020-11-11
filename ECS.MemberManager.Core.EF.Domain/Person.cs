@@ -21,15 +21,11 @@ namespace ECS.BizBricks.CRM.Core.EF.Domain
         public Title Title { get; set; }
         public TitleSuffix TitleSuffix { get; set; }
         public MaritalStatus MaritalStatus { get; set; }
-        public CategoryOfPerson CategoryOfPerson { get; set; }
         public int LastUpdatedBy { get; set; }
         public DateTime LastUpdatedDate { get; set; }
         public string Notes { get; set; }
-        [Timestamp] public byte[] RowVersion { get; set; }
-
-        public IList<AddressPerson> AddressPersons { get; } = new List<AddressPerson>();
-        public IList<CategoryPerson> CategoryPersons { get; } = new List<CategoryPerson>();
-        public IList<OrganizationPerson> OrganizationPersons { get; } = new List<OrganizationPerson>();
-
+        
+        public IList<Address> Addresses { get; set; }
+        public IList<CategoryOfPerson> CategoryOfPersons { get; set; }
     }
 }
