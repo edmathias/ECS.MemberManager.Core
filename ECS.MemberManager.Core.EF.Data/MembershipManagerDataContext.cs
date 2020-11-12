@@ -35,6 +35,7 @@ namespace ECS.MemberManager.Core.EF.Data
         public DbSet<PrivacyLevel> PrivacyLevels { get; set; }
         public DbSet<Sponsor> Sponsors { get; set; }
         public DbSet<TaskForEvent> TaskForEvents { get; set; }
+        public DbSet<TermInOffice> TermInOffices { get; set; }
         public DbSet<Title> Titles { get; set; }
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
