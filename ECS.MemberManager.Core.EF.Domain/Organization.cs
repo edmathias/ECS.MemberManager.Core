@@ -21,5 +21,6 @@ namespace ECS.MemberManager.Core.EF.Domain
         public IList<Address> Addresses { get; set;  }
         public IList<CategoryOfOrganization> CategoryOfOrganizations { get; set; }
         public IList<Phone> Phones { get; set; }
+        public IList<EMail> EMails { get; set; }
     }
 }

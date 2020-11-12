@@ -17,6 +17,9 @@ namespace ECS.MemberManager.Core.EF.Data
         public DbSet<DocumentType> DocumentTypes { get; set; }
         public DbSet<EMail> EMails { get; set; }
         public DbSet<EMailType> EMailTypes { get; set; }
+        public DbSet<Event> Events { get; set; }
+        public DbSet<EventDocument> EventDocuments { get; set; }
+        public EventMember EventMember { get; set; }
         public DbSet<MemberInfo> MemberInfo { get; set; }
         public DbSet<MembershipType> MembershipTypes { get; set; }
         public DbSet<MemberStatus> MemberStatuses { get; set; }

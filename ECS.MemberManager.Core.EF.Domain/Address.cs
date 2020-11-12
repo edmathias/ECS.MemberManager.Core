@@ -12,12 +12,13 @@ namespace ECS.MemberManager.Core.EF.Domain
         public string Address1 { get; set; }
         [MaxLength(35)]
         public string Address2 { get; set; }
-        [Required]
+        [Required,MaxLength(50)]
         public string City { get; set; }
         [Required,MaxLength(2)]
         public string State { get; set; }
         [Required,MaxLength(9)]
         public string PostCode { get; set; }
+        public string Notes { get; set; }
         public DateTime LastUpdatedDate { get; set; }
         public IList<Organization> Organizations { get; set; }
         public IList<Person> Persons { get; set; }
