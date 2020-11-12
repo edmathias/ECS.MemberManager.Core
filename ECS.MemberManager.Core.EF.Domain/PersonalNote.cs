@@ -1,16 +1,19 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using ECS.BizBricks.CRM.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.EF.Domain
 {
-    public class MembershipType
+    public class PersonalNote
     {
         public int Id { get; private set; }
-        [Required, MaxLength(255)]
+        [Required]
+        public Person Person { get; set; }
         public string Description { get; set; }
-        public int Level { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime DateEnd { get; set; }
         [MaxLength(255)] public string LastUpdatedBy { get; set; }
         public DateTime LastUpdatedDate { get; set; }
-        public string Notes { get; set; }
+        public string Note { get; set; }
     }
 }

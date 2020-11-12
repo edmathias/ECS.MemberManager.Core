@@ -19,18 +19,22 @@ namespace ECS.MemberManager.Core.EF.Data
         public DbSet<EMailType> EMailTypes { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<EventDocument> EventDocuments { get; set; }
-        public EventMember EventMember { get; set; }
+        public DbSet<EventMember> EventMembers { get; set; }
         public DbSet<MemberInfo> MemberInfo { get; set; }
         public DbSet<MembershipType> MembershipTypes { get; set; }
         public DbSet<MemberStatus> MemberStatuses { get; set; }
+        public DbSet<Office> Offices { get; set; }
         public DbSet<Organization> Organizations { get; set; }
         public DbSet<OrganizationType> OrganizationTypes { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<PaymentSource> PaymentSources { get; set; }
         public DbSet<PaymentType> PaymentTypes { get; set; }
         public DbSet<Person> Persons { get; set; }
+        public DbSet<PersonalNote> PersonalNotes { get; set; }
         public DbSet<Phone> Phones { get; set; }
+        public DbSet<PrivacyLevel> PrivacyLevels { get; set; }
         public DbSet<Sponsor> Sponsors { get; set; }
+        public DbSet<TaskForEvent> Type { get; set; }
         public DbSet<Title> Titles { get; set; }
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

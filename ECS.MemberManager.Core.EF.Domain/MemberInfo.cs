@@ -9,7 +9,7 @@ namespace ECS.MemberManager.Core.EF.Domain
         public int Id { get; private set; }
         [Required]
         public Person Person { get; set; }
-        [Required, MaxLength(35)]
+        [MaxLength(35)]
         public string MemberNumber { get; set; }
         [Required]
         public DateTime DateFirstJoined { get; set; }
@@ -18,6 +18,7 @@ namespace ECS.MemberManager.Core.EF.Domain
         public MemberStatus MemberStatus { get; set; }
         [Required]
         public MembershipType MembershipType { get; set; }
+        [MaxLength(255)] public string LastUpdatedBy { get; set; }
         public DateTime LastUpdatedDate { get; set; }
         public string Notes { get; set; }
 

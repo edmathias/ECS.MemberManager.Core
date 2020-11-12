@@ -8,6 +8,8 @@ namespace ECS.BizBricks.CRM.Core.EF.Domain
     public class Person
     {
         public int Id { get; private set; }
+        [Required]
+        public Title Title { get; set; }
         [Required,MaxLength(50)]
         public string LastName { get; set; }
         [MaxLength(50)]
@@ -16,11 +18,11 @@ namespace ECS.BizBricks.CRM.Core.EF.Domain
         public string FirstName { get; set; }
         [Required]
         public DateTime DateOfFirstContact { get; set; }
-        public DateTime Birthdate { get; set; }
-        [Required]
-        public Title Title { get; set; }
+        public DateTime BirthDate { get; set; }
         public int LastUpdatedBy { get; set; }
         public DateTime LastUpdatedDate { get; set; }
+        [MaxLength(5)]
+        public string Code { get; set; }
         public string Notes { get; set; }
         
         public IList<Address> Addresses { get; set; }

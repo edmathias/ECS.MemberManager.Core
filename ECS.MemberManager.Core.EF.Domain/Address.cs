@@ -19,6 +19,8 @@ namespace ECS.MemberManager.Core.EF.Domain
         [Required,MaxLength(9)]
         public string PostCode { get; set; }
         public string Notes { get; set; }
+        [MaxLength(255)]
+        public string LastUpdatedBy { get; set; }
         public DateTime LastUpdatedDate { get; set; }
         public IList<Organization> Organizations { get; set; }
         public IList<Person> Persons { get; set; }

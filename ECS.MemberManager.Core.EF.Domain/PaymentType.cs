@@ -8,7 +8,6 @@ namespace ECS.MemberManager.Core.EF.Domain
         public int Id { get; private set; }
         [Required]
         public string TypeDescription { get; set; }
-        public DateTime LastUpdatedDate { get; set; }
         public string Notes { get; set; }
     }
 }
