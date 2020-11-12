@@ -2,15 +2,11 @@
 
 namespace ECS.MemberManager.Core.EF.Domain
 {
-    public class MaritalStatus
+    public class PaymentSource
     {
-        [Key]
         public int Id { get; private set; }
-
         [Required,MaxLength(50)]
-        public string Status { get; set; }
-
-        public int DisplayOrder { get; set; }
-
+        public string Description { get; set; }
+        public string Notes { get; set; }
     }
 }

@@ -17,6 +17,5 @@ namespace ECS.MemberManager.Core.EF.Domain
         public Person Person { get; set; }
         public string Notes { get; set; }
         public DateTime LastUpdatedDate { get; set; }
-        [Timestamp] public byte[] RowVersion { get; private set; }
     }
 }

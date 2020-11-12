@@ -2,12 +2,11 @@
 
 namespace ECS.MemberManager.Core.EF.Domain
 {
-    public class MembershipType
+    public class EMailType
     {
         public int Id { get; private set; }
         [Required, MaxLength(255)]
-        public string Description { get; set; }
-        public int Level { get; set; }
-        public string Notes { get; set; }
+        public string TypeDescription { get; set; }
+        public string Notes { get; set; } 
     }
 }

@@ -6,7 +6,7 @@ namespace ECS.MemberManager.Core.EF.Domain
 {
     public class MemberInfo
     {
-        public int Id { get; set; }
+        public int Id { get; private set; }
         [Required]
         public Person Person { get; set; }
         [Required, MaxLength(35)]
