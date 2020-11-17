@@ -9,7 +9,7 @@ namespace ECS.MemberManager.Core.EF.Data
 {
     public class MembershipManagerDataContext : DbContext
     {
-
+    
         public DbSet<Address> Addresses { get; set; }
         public DbSet<ContactForSponsor> ContactForSponsors { get; set; }
         public DbSet<CategoryOfPerson> CategoryOfPersons { get; set; }
