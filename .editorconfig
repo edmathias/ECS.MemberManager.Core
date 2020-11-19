@@ -1,4 +1,1 @@
 ﻿[*.cs]
-
-# CSLA0011: Find CSLA Business Objects That Are Created Outside of a ObjectFactory
-dotnet_diagnostic.CSLA0011.severity = suggestion
