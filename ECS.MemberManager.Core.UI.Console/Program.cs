@@ -15,6 +15,7 @@ namespace ECS.MemberManager.Core.UI.Console
             var dal = dalManager.GetProvider<ITitleDal>();
 
             var title = dal.Fetch(1);
+
         }
     }
 }

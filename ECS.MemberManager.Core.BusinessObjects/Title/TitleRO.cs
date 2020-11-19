@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using Csla;
 
-namespace ECS.MemberManager.Core.BusinessObjects.Titles
+namespace ECS.MemberManager.Core.BusinessObjects.Title
 {
     [Serializable] 
     public partial class TitleRO : Csla.ReadOnlyBase<TitleRO>

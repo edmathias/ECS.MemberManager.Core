@@ -5,7 +5,7 @@ namespace ECS.MemberManager.Core.EF.Domain
 {
     public class EventMember
     {
-        public int Id { get; private set; }
+        public int Id { get; set; }
         [Required]
         public MemberInfo MemberInfo { get; set; }
         [Required]

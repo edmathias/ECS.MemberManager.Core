@@ -6,7 +6,7 @@ namespace ECS.MemberManager.Core.EF.Domain
 {
     public class PersonalNote
     {
-        public int Id { get; private set; }
+        public int Id { get; set; }
         [Required]
         public Person Person { get; set; }
         public string Description { get; set; }

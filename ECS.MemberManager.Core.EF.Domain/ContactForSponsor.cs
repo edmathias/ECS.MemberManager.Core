@@ -6,7 +6,7 @@ namespace ECS.MemberManager.Core.EF.Domain
 {
     public class ContactForSponsor
     {
-        public int Id { get; private set; }
+        public int Id { get; set; }
         [Required]
         public Sponsor Sponsor { get; set; }
         public DateTime DateWhenContacted { get; set; }

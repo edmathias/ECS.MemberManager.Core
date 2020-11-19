@@ -7,7 +7,7 @@ namespace ECS.MemberManager.Core.EF.Domain
 {
     public class Address
     {
-        public int Id { get; private set; }
+        public int Id { get; set; }
         [Required, MaxLength(35)]
         public string Address1 { get; set; }
         [MaxLength(35)]

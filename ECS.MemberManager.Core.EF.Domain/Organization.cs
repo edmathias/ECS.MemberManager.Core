@@ -8,7 +8,7 @@ namespace ECS.MemberManager.Core.EF.Domain
 {
     public class Organization
     {
-        public int Id { get; private set; }
+        public int Id { get; set; }
         [Required,MaxLength(255)]
         public string Name { get; set; }
         [Required]

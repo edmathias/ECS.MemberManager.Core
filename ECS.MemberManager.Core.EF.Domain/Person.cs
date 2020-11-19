@@ -7,7 +7,7 @@ namespace ECS.BizBricks.CRM.Core.EF.Domain
 {
     public class Person
     {
-        public int Id { get; private set; }
+        public int Id { get; set; }
         [Required]
         public Title Title { get; set; }
         [Required,MaxLength(50)]

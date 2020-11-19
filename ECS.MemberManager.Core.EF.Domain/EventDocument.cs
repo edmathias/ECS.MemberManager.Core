@@ -5,7 +5,7 @@ namespace ECS.MemberManager.Core.EF.Domain
 {
     public class EventDocument
     {
-        public int Id { get; private set; }
+        public int Id { get; set; }
         [Required]
         public Event Event { get; set; }
         [MaxLength(50)]

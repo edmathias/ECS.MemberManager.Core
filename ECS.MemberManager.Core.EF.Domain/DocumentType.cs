@@ -5,7 +5,7 @@ namespace ECS.MemberManager.Core.EF.Domain
 {
     public class DocumentType
     {
-        public int Id { get; private set; }
+        public int Id { get; set; }
         [Required,MaxLength(50)]
         public string TypeDescription { get; set; }
         [MaxLength(255)]

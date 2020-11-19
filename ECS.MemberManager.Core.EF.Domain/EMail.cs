@@ -7,7 +7,7 @@ namespace ECS.MemberManager.Core.EF.Domain
 {
     public class EMail
     {
-        public int Id { get; private set; }
+        public int Id { get; set; }
         public EMailType EMailType { get; set; }
         public string EMailAddress { get; set; }
         [MaxLength(255)] public string LastUpdatedBy { get; set; }

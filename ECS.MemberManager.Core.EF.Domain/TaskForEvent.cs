@@ -6,7 +6,7 @@ namespace ECS.MemberManager.Core.EF.Domain
 {
     public class TaskForEvent
     {
-        public int Id { get; private set; }
+        public int Id { get; set; }
         [Required] public Event Event { get; set; }
         [Required, MaxLength(50)] public string TaskName { get; set; }
         public DateTime PlannedDate { get; set; }

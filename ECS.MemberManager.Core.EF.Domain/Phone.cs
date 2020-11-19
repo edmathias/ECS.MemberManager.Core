@@ -7,7 +7,7 @@ namespace ECS.MemberManager.Core.EF.Domain
 {
     public class Phone
     {
-        public int Id { get; private set; }
+        public int Id { get; set; }
         [MaxLength(10)]
         public string PhoneType { get; set; }
         [Required,MaxLength(3)]

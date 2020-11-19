@@ -6,7 +6,7 @@ namespace ECS.MemberManager.Core.EF.Domain
 {
     public class Sponsor
     {
-        public int Id { get; private set; }
+        public int Id { get; set; }
         public Person Person { get; set; }
         public Organization Organization { get; set; }
         [MaxLength(50)]

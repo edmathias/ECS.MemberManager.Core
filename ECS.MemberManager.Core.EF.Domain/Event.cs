@@ -7,7 +7,7 @@ namespace ECS.MemberManager.Core.EF.Domain
 {
     public class Event
     {
-        public int Id { get; private set; }
+        public int Id { get; set; }
         [Required,MaxLength(255)]
         public string EventName { get; set; }
         public string Description { get; set; }

@@ -4,6 +4,7 @@ using ECS.BizBricks.CRM.Core.EF.Domain;
 using ECS.MemberManager.Core.EF.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
 
 namespace ECS.MemberManager.Core.EF.Data
 {
@@ -40,7 +41,12 @@ namespace ECS.MemberManager.Core.EF.Data
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source = (localdb)\\MSSQLLocalDB; Initial Catalog = ECSMemberManager");
+            ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+            configurationBuilder.AddJsonFile($"appsettings.json", optional: true, reloadOnChange: true);
+            var _configurationRoot    =  configurationBuilder.Build();
+            var cnxnString = _configurationRoot["ConnectionString"];
+            
+            optionsBuilder.UseSqlServer(cnxnString);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
