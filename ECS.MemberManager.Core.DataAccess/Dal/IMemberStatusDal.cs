@@ -5,9 +5,9 @@ namespace ECS.MemberManager.Core.DataAccess.Dal
 {
     public interface IMemberStatusDal : IDisposable
     {
-        public MemberStatus Fetch(int id);
-        public int Insert(MemberStatus memberStatus);
-        public void Update(MemberStatus memberStatus);
-        public void Delete(MemberStatus memberStatus);
+        MemberStatus Fetch(int id);
+        int Insert(MemberStatus memberStatus);
+        void Update(MemberStatus memberStatus );
+        void Delete(int id);
     }
 }

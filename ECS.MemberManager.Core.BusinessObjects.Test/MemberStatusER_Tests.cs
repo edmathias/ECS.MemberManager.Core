@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ECS.MemberManager.Core.BusinessObjects.MemberStatus;
+using ECS.MemberManager.Core.DataAccess.Mock;
 using Telerik.JustMock;
 
 namespace ECS.MemberManager.Core.BusinessObjects.Test
@@ -67,7 +68,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
         public void TestMemberStatusER_New()
         {
             var memberStatus = MemberStatusER.NewMemberStatusER();
-            memberStatus.Description = string.Empty;
+
             Assert.IsNotNull(memberStatus);
             Assert.IsFalse(memberStatus.IsValid);
         }
@@ -81,6 +82,30 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
 
             Assert.IsNotNull(result);
             Assert.AreEqual(result.Notes, "These are updated Notes");
+        }
+
+        [TestMethod]
+        public void TestMemberStatusER_Insert()
+        {
+            var memberStatus = MemberStatusER.NewMemberStatusER();
+            memberStatus.Description = "Standby";
+            memberStatus.Notes = "This person is on standby";
+
+            var savedMemberStatus = memberStatus.Save();
+           
+            Assert.IsNotNull(savedMemberStatus);
+            Assert.IsInstanceOfType(savedMemberStatus, typeof(MemberStatusER));
+            Assert.IsTrue( savedMemberStatus.Id > 0 );
+        }
+
+        [TestMethod]
+        public void TestMemberStatusER_Delete()
+        {
+            int beforeCount = MockDb.MemberStatuses.Count();
+            
+            MemberStatusER.DeleteMemberStatusER(1);
+            
+            Assert.AreNotEqual(beforeCount,MockDb.MemberStatuses.Count());
         }
     }
 }
