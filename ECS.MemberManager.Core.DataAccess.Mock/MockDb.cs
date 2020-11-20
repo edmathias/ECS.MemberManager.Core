@@ -129,7 +129,11 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         private static IList<MemberStatus> GetMemberStatuses()
         {
-            return new List<MemberStatus>();
+            return new List<MemberStatus>
+            {
+                new MemberStatus {Id = 1, Description = "Active", Notes = "This member is active."},
+                new MemberStatus {Id = 2, Description = "Inactive", Notes = "This member is inactive"},
+            };
         }
 
         private static IList<Office> GetOffices()

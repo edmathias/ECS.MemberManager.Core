@@ -1,10 +1,11 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using Csla;
 
 namespace ECS.MemberManager.Core.BusinessObjects.MemberStatus
 {
     [Serializable]
-    public partial class MemberStatusEdit : BusinessBase<MemberStatusEdit>
+    public partial class MemberStatusER : BusinessBase<MemberStatusER>
     {
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
         public int Id
@@ -14,6 +15,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.MemberStatus
         }
 
         public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(p => p.Description);
+        [Required,MinLength(1),MaxLength(255)]
         public string Description
         {
             get { return GetProperty(DescriptionProperty); }
@@ -27,7 +29,19 @@ namespace ECS.MemberManager.Core.BusinessObjects.MemberStatus
             set { SetProperty(NotesProperty, value); }
         }
 
+        public static MemberStatusER NewMemberStatusER()
+        {
+            return DataPortal.Create<MemberStatusER>();
+        }
 
+        public static MemberStatusER GetMemberStatusER(int id)
+        {
+            return DataPortal.Fetch<MemberStatusER>(id);
+        }
 
+        public static void DeleteMemberStatusER(int id)
+        {
+            DataPortal.Delete<MemberStatusER>(id);
+        }
     }
 }
