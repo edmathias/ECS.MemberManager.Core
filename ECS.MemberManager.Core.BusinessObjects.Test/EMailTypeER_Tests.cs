@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Csla.Rules;
+using ECS.MemberManager.Core.BusinessObjects.EMailType;
 using ECS.MemberManager.Core.BusinessObjects.MemberStatus;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using Telerik.JustMock;
@@ -14,7 +15,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
     /// Summary description for JustMockTest
     /// </summary>
     [TestClass]
-    public class MemberStatusER_Tests 
+    public class EMailTypeER_Tests 
     {
         private TestContext testContextInstance;
 
@@ -57,101 +58,101 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
         #endregion
 
         [TestMethod]
-        public void TestMemberStatusER_Get()
+        public void TestEMailTypeER_Get()
         {
-            var memberStatus = MemberStatusER.GetMemberStatusER(1);
+            var eMailType = EMailTypeER.GetEMailTypeER(1);
 
-            Assert.AreEqual(memberStatus.Id, 1);
-            Assert.IsTrue(memberStatus.IsValid);
+            Assert.AreEqual(eMailType.Id, 1);
+            Assert.IsTrue(eMailType.IsValid);
         }
 
         [TestMethod]
-        public void TestMemberStatusER_New()
+        public void TestEMailTypeER_New()
         {
-            var memberStatus = MemberStatusER.NewMemberStatusER();
+            var eMailType = EMailTypeER.NewEMailTypeER();
 
-            Assert.IsNotNull(memberStatus);
-            Assert.IsFalse(memberStatus.IsValid);
+            Assert.IsNotNull(eMailType);
+            Assert.IsFalse(eMailType.IsValid);
         }
 
         [TestMethod]
-        public void TestMemberStatusER_Update()
+        public void TestEMailTypeER_Update()
         {
-            var memberStatus = MemberStatusER.GetMemberStatusER(1);
-            memberStatus.Notes = "These are updated Notes";
+            var eMailType = EMailTypeER.GetEMailTypeER(1);
+            eMailType.Notes = "These are updated Notes";
             
-            var result = memberStatus.Save();
+            var result = eMailType.Save();
 
             Assert.IsNotNull(result);
             Assert.AreEqual(result.Notes, "These are updated Notes");
         }
 
         [TestMethod]
-        public void TestMemberStatusER_Insert()
+        public void TestEMailTypeER_Insert()
         {
-            var memberStatus = MemberStatusER.NewMemberStatusER();
-            memberStatus.Description = "Standby";
-            memberStatus.Notes = "This person is on standby";
+            var eMailType = EMailTypeER.NewEMailTypeER();
+            eMailType.Description = "Standby";
+            eMailType.Notes = "This person is on standby";
 
-            var savedMemberStatus = memberStatus.Save();
+            var savedEMailType = eMailType.Save();
            
-            Assert.IsNotNull(savedMemberStatus);
-            Assert.IsInstanceOfType(savedMemberStatus, typeof(MemberStatusER));
-            Assert.IsTrue( savedMemberStatus.Id > 0 );
+            Assert.IsNotNull(savedEMailType);
+            Assert.IsInstanceOfType(savedEMailType, typeof(EMailTypeER));
+            Assert.IsTrue( savedEMailType.Id > 0 );
         }
 
         [TestMethod]
-        public void TestMemberStatusER_Delete()
+        public void TestEMailTypeER_Delete()
         {
-            int beforeCount = MockDb.MemberStatuses.Count();
+            int beforeCount = MockDb.EMailTypes.Count();
             
-            MemberStatusER.DeleteMemberStatusER(1);
+            EMailTypeER.DeleteEMailTypeER(1);
             
-            Assert.AreNotEqual(beforeCount,MockDb.MemberStatuses.Count());
+            Assert.AreNotEqual(beforeCount,MockDb.EMailTypes.Count());
         }
         
         // test invalid state 
         [TestMethod]
-        public void TestMemberStatusER_DescriptionRequired()
+        public void TestEMailTypeER_DescriptionRequired()
         {
-            var memberStatus = MemberStatusER.NewMemberStatusER();
-            memberStatus.Description = "make valid";
-            var isObjectValidInit = memberStatus.IsValid;
-            memberStatus.Description = string.Empty;
+            var eMailType = EMailTypeER.NewEMailTypeER();
+            eMailType.Description = "make valid";
+            var isObjectValidInit = eMailType.IsValid;
+            eMailType.Description = string.Empty;
 
-            Assert.IsNotNull(memberStatus);
+            Assert.IsNotNull(eMailType);
             Assert.IsTrue(isObjectValidInit);
-            Assert.IsFalse(memberStatus.IsValid);
+            Assert.IsFalse(eMailType.IsValid);
  
         }
        
         [TestMethod]
-        public void TestMemberStatusER_DescriptionExceedsMaxLengthOf255()
+        public void TestEMailTypeER_DescriptionExceedsMaxLengthOf255()
         {
-            var memberStatus = MemberStatusER.NewMemberStatusER();
-            memberStatus.Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor "+
+            var eMailType = EMailTypeER.NewEMailTypeER();
+            eMailType.Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor "+
                                        "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis "+
                                        "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "+
                                        "Duis aute irure dolor in reprehenderit";
 
-            Assert.IsNotNull(memberStatus);
-            Assert.IsFalse(memberStatus.IsValid);
-            Assert.AreEqual(memberStatus.BrokenRulesCollection[0].Description,
+            Assert.IsNotNull(eMailType);
+            Assert.IsFalse(eMailType.IsValid);
+            Assert.AreEqual(eMailType.BrokenRulesCollection[0].Description,
                 "The field Description must be a string or array type with a maximum length of '255'.");
  
         }        
         // test exception if attempt to save in invalid state
 
         [TestMethod]
-        public void TestMemberStatusER_TestInvalidSave()
+        public void TestEMailTypeER_TestInvalidSave()
         {
-            var memberStatus = MemberStatusER.NewMemberStatusER();
-            memberStatus.Description = String.Empty;
-            MemberStatusER savedMemberStatus = null;
+            var eMailType = EMailTypeER.NewEMailTypeER();
+            eMailType.Description = String.Empty;
+            EMailTypeER savedEMailType = null;
                 
             
-            Assert.IsFalse(memberStatus.IsValid);
-            Assert.ThrowsException<ValidationException>(() => savedMemberStatus =  memberStatus.Save() );
+            Assert.IsFalse(eMailType.IsValid);
+            Assert.ThrowsException<ValidationException>(() => savedEMailType =  eMailType.Save() );
         }
     }
 }

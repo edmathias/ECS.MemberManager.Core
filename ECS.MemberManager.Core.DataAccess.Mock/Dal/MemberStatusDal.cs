@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
@@ -12,14 +13,18 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             return MockDb.MemberStatuses.FirstOrDefault(ms => ms.Id == id);
         }
 
+        public List<MemberStatus> Fetch()
+        {
+            return MockDb.MemberStatuses.ToList();
+        }
+
         public int Insert( MemberStatus memberStatus)
         {
             var lastMemberStatus = MockDb.MemberStatuses.ToList().OrderByDescending(ms => ms.Id).First();
-            var memberStatusToUpdate = new MemberStatus { Id = ++lastMemberStatus.Id, 
-                                                          Description = memberStatus.Description, 
-                                                          Notes = memberStatus.Notes };
-            MockDb.MemberStatuses.Add(memberStatusToUpdate);
-            return memberStatusToUpdate.Id;
+            memberStatus.Id = ++lastMemberStatus.Id;
+            MockDb.MemberStatuses.Add(memberStatus);
+            
+            return memberStatus.Id;
         }
 
         public void Update(MemberStatus memberStatus)
@@ -35,18 +40,10 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         public void Delete(int id)
         {
-            var memberStatusToRemove = 
-                MockDb.MemberStatuses.FirstOrDefault(ms => ms.Id == id);
-
-            if (memberStatusToRemove != null)
-            {
-                var indexToRemove = MockDb.MemberStatuses.IndexOf(memberStatusToRemove);
-
-                if (indexToRemove > -1)
-                    MockDb.MemberStatuses.RemoveAt(indexToRemove);
-                else
-                    throw new Exception("MemberStatus not found");
-            }
+            var memberStatusToDelete = MockDb.MemberStatuses.FirstOrDefault(ms => ms.Id == id);
+            var listIndex = MockDb.MemberStatuses.IndexOf(memberStatusToDelete);
+            if(listIndex > -1)
+                MockDb.MemberStatuses.RemoveAt(listIndex);
         }
 
         public void Dispose()

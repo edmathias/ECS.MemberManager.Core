@@ -3,21 +3,21 @@ using Csla;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
 
-namespace ECS.MemberManager.Core.BusinessObjects.MemberStatus
+namespace ECS.MemberManager.Core.BusinessObjects.EMailType
 {
-    public partial class MemberStatusER
+    public partial class EMailTypeER : BusinessBase<EMailTypeER>
     {
  
         [Transactional(TransactionalTypes.TransactionScope)]
         private void DataPortal_Fetch(int id)
         {
             using IDalManager dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IMemberStatusDal>();
+            var dal = dalManager.GetProvider<IEMailTypeDal>();
             var data = dal.Fetch(id);
             using (BypassPropertyChecks)
             {
                 Id = data.Id;
-                Description = data.Description;
+                Description = data.TypeDescription;
                 Notes = data.Notes;
             }
         }
@@ -26,12 +26,15 @@ namespace ECS.MemberManager.Core.BusinessObjects.MemberStatus
         protected override void DataPortal_Insert()
         {
             using IDalManager dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IMemberStatusDal>();
+            var dal = dalManager.GetProvider<IEMailTypeDal>();
             using (BypassPropertyChecks)
             {
-                var memberStatus = new ECS.MemberManager.Core.EF.Domain.MemberStatus 
-                    { Description = this.Description, Notes = this.Notes };
-                Id = dal.Insert(memberStatus);
+                var eMailType = new ECS.MemberManager.Core.EF.Domain.EMailType 
+                    { 
+                        TypeDescription = this.Description, 
+                        Notes = this.Notes 
+                    };
+                Id = dal.Insert(eMailType);
             }
         }
         
@@ -39,12 +42,17 @@ namespace ECS.MemberManager.Core.BusinessObjects.MemberStatus
         protected override void DataPortal_Update()
         {
             using IDalManager dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IMemberStatusDal>();
+            var dal = dalManager.GetProvider<IEMailTypeDal>();
             using (BypassPropertyChecks)
             {
-                var memberStatus = new EF.Domain.MemberStatus
-                    {Id = this.Id, Description = this.Description, Notes = this.Notes};
-                dal.Update(memberStatus);
+                var eMailType = new EF.Domain.EMailType
+                {
+                    Id = this.Id, 
+                    TypeDescription = Description = this.Description, 
+                    Notes = this.Notes
+                };
+                
+                dal.Update(eMailType);
             }
         }
 
@@ -58,7 +66,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.MemberStatus
         private void DataPortal_Delete(int id)
         {
             using IDalManager dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IMemberStatusDal>();
+            var dal = dalManager.GetProvider<IEMailTypeDal>();
  
             dal.Delete(id);
         }

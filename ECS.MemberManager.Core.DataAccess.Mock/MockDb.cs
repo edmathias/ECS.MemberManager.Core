@@ -99,7 +99,11 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         private static IList<EMailType> GetEmailTypes()
         {
-            return new List<EMailType>();
+            return new List<EMailType>
+            {
+                new EMailType() { Id = 1, TypeDescription = "work", Notes = String.Empty},
+                new EMailType() { Id = 2,TypeDescription = "home", Notes = "notes for home" }
+            };
         }
 
         private static IList<Event> GetEvents()
@@ -168,7 +172,10 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         private static IList<Person> GetPersons()
         {
-            return new List<Person>();
+            return new List<Person>
+            {
+                new Person() {}
+            };
         }
 
         private static IList<PersonalNote> GetPersonalNote()
