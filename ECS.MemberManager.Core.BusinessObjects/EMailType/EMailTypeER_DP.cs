@@ -7,7 +7,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
 {
     public partial class EMailTypeER : BusinessBase<EMailTypeER>
     {
- 
+        #region Data Access Methods
+        
         [Transactional(TransactionalTypes.TransactionScope)]
         private void DataPortal_Fetch(int id)
         {
@@ -71,6 +72,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
             dal.Delete(id);
         }
         
-
+        #endregion 
     } // end class
 } // end namespace

@@ -7,6 +7,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
     [Serializable]
     public partial class MemberStatusER : BusinessBase<MemberStatusER>
     {
+        #region Business Methods
+        
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
         public int Id
         {
@@ -28,6 +30,10 @@ namespace ECS.MemberManager.Core.BusinessObjects
             get { return GetProperty(NotesProperty); }
             set { SetProperty(NotesProperty, value); }
         }
+        
+        #endregion
+        
+        #region Factory Methods
 
         public static MemberStatusER NewMemberStatusER()
         {
@@ -43,5 +49,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             DataPortal.Delete<MemberStatusER>(id);
         }
+        
+        #endregion
     }
 }

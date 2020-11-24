@@ -89,7 +89,15 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         private static IList<DocumentType> GetDocumentTypes()
         {
-            return new List<DocumentType>();
+            return new List<DocumentType>
+            {
+                new DocumentType() {Id = 1, TypeDescription = "Document Type A", Notes = String.Empty, 
+                    LastUpdatedBy = "edm", LastUpdatedDate = DateTime.Now},
+                new DocumentType() {Id = 2, TypeDescription = "Document Type B", Notes = "some notes",
+                    LastUpdatedBy = "edm", LastUpdatedDate = DateTime.Now},
+                new DocumentType() {Id = 3, TypeDescription = "Document Type C", Notes = String.Empty,
+                    LastUpdatedBy = "edm", LastUpdatedDate = DateTime.Now},
+            };
         }
 
         private static IList<EMail> GetEmails()
@@ -128,7 +136,13 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         private static IList<MembershipType> GetMembershipTypes()
         {
-            return new List<MembershipType>();
+            return new List<MembershipType>()
+            {
+                new MembershipType() { Id =1,Description = "Membership Type A",LastUpdatedBy = "edm", 
+                    LastUpdatedDate = DateTime.Now, Level=1, Notes=String.Empty},
+                new MembershipType() { Id =2,Description = "Membership Type B",LastUpdatedBy = "edm", 
+                    LastUpdatedDate = DateTime.Now, Level=2, Notes="some notes"}
+            };
         }
 
         private static IList<MemberStatus> GetMemberStatuses()

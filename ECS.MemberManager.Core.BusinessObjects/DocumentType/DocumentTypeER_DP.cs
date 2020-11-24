@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Threading.Tasks.Dataflow;
 using Csla;
+using Csla.Data;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
+using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
@@ -17,6 +20,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
             using (BypassPropertyChecks)
             {
                 Id = data.Id;
+                Description = data.TypeDescription;
+                LastUpdatedBy = data.LastUpdatedBy;
+                LastUpdatedDate = data.LastUpdatedDate;
                 Notes = data.Notes;
             }
         }
@@ -26,14 +32,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             using IDalManager dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IDocumentTypeDal>();
-            var addressToInsert = new ECS.MemberManager.Core.EF.Domain.DocumentType();
+            var documentTypeToInsert = new ECS.MemberManager.Core.EF.Domain.DocumentType();
             using (BypassPropertyChecks)
             {
-                addressToInsert.LastUpdatedDate = this.LastUpdatedDate;
-                addressToInsert.LastUpdatedBy = this.LastUpdatedBy;
-                addressToInsert.Notes = this.Notes; 
+                documentTypeToInsert.TypeDescription = this.Description;
+                documentTypeToInsert.LastUpdatedDate = this.LastUpdatedDate;
+                documentTypeToInsert.LastUpdatedBy = this.LastUpdatedBy;
+                documentTypeToInsert.Notes = this.Notes; 
             }
-            Id = dal.Insert(addressToInsert);
+            Id = dal.Insert(documentTypeToInsert);
         }
         
         [Transactional(TransactionalTypes.TransactionScope)]
@@ -41,15 +48,16 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             using IDalManager dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IDocumentTypeDal>();
-            var addressToUpdate = new EF.Domain.DocumentType();
+            var documentTypeToUpdate = dal.Fetch(Id);
             using (BypassPropertyChecks)
             {
-                addressToUpdate.LastUpdatedDate = this.LastUpdatedDate;
-                addressToUpdate.LastUpdatedBy = this.LastUpdatedBy;
-                addressToUpdate.Notes = this.Notes; 
+                documentTypeToUpdate.TypeDescription = this.Description;
+                documentTypeToUpdate.LastUpdatedDate = this.LastUpdatedDate;
+                documentTypeToUpdate.LastUpdatedBy = this.LastUpdatedBy;
+                documentTypeToUpdate.Notes = this.Notes; 
             }
 
-            dal.Update(addressToUpdate);
+            dal.Update(documentTypeToUpdate);
         }
 
         [Transactional(TransactionalTypes.TransactionScope)]
@@ -66,7 +74,5 @@ namespace ECS.MemberManager.Core.BusinessObjects
  
             dal.Delete(id);
         }
-        
-
     } // end class
 } // end namespace

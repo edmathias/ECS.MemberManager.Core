@@ -34,6 +34,9 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             if (documentTypeToUpdate == null) 
                 throw new Exception("Record not found");
 
+            documentTypeToUpdate.TypeDescription = documentType.TypeDescription;
+            documentTypeToUpdate.LastUpdatedBy = documentType.LastUpdatedBy;
+            documentTypeToUpdate.LastUpdatedDate = documentType.LastUpdatedDate;
             documentTypeToUpdate.Notes = documentType.Notes;
         }
 

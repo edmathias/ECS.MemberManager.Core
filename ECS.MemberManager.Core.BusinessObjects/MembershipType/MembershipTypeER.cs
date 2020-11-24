@@ -6,7 +6,7 @@ using Csla.Rules.CommonRules;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class DocumentTypeER : BusinessBase<DocumentTypeER>
+    public partial class MembershipTypeER : BusinessBase<MembershipTypeER>
     {
         #region Business Methods
         
@@ -24,7 +24,14 @@ namespace ECS.MemberManager.Core.BusinessObjects
             get { return GetProperty(DescriptionProperty); }
             set { SetProperty(DescriptionProperty, value); }
         }
-       
+      
+        public static readonly PropertyInfo<int> LevelProperty = RegisterProperty<int>(p => p.Level);
+        public int Level
+        {
+            get { return GetProperty(LevelProperty); }
+            set { SetProperty(LevelProperty, value); }
+        }
+
         public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(p => p.LastUpdatedBy);
         [Required,MaxLength(255)]
         public string LastUpdatedBy
@@ -52,19 +59,19 @@ namespace ECS.MemberManager.Core.BusinessObjects
         
         #region Factory Methods
 
-        public static DocumentTypeER NewDocumentTypeER()
+        public static MembershipTypeER NewMembershipTypeER()
         {
-            return DataPortal.Create<DocumentTypeER>();
+            return DataPortal.Create<MembershipTypeER>();
         }
 
-        public static DocumentTypeER GetDocumentTypeER(int id)
+        public static MembershipTypeER GetMembershipTypeER(int id)
         {
-            return DataPortal.Fetch<DocumentTypeER>(id);
+            return DataPortal.Fetch<MembershipTypeER>(id);
         }
 
-        public static void DeleteDocumentTypeER(int id)
+        public static void DeleteMembershipTypeER(int id)
         {
-            DataPortal.Delete<DocumentTypeER>(id);
+            DataPortal.Delete<MembershipTypeER>(id);
         }
         
         #endregion
