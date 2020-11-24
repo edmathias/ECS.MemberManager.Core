@@ -5,19 +5,18 @@ using ECS.MemberManager.Core.DataAccess.Dal;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
-    public partial class EMailTypeER : BusinessBase<EMailTypeER>
+    public partial class DocumentTypeER : BusinessBase<DocumentTypeER>
     {
  
         [Transactional(TransactionalTypes.TransactionScope)]
         private void DataPortal_Fetch(int id)
         {
             using IDalManager dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEMailTypeDal>();
+            var dal = dalManager.GetProvider<IDocumentTypeDal>();
             var data = dal.Fetch(id);
             using (BypassPropertyChecks)
             {
                 Id = data.Id;
-                Description = data.TypeDescription;
                 Notes = data.Notes;
             }
         }
@@ -26,34 +25,31 @@ namespace ECS.MemberManager.Core.BusinessObjects
         protected override void DataPortal_Insert()
         {
             using IDalManager dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEMailTypeDal>();
+            var dal = dalManager.GetProvider<IDocumentTypeDal>();
+            var addressToInsert = new ECS.MemberManager.Core.EF.Domain.DocumentType();
             using (BypassPropertyChecks)
             {
-                var eMailType = new ECS.MemberManager.Core.EF.Domain.EMailType 
-                    { 
-                        TypeDescription = this.Description, 
-                        Notes = this.Notes 
-                    };
-                Id = dal.Insert(eMailType);
+                addressToInsert.LastUpdatedDate = this.LastUpdatedDate;
+                addressToInsert.LastUpdatedBy = this.LastUpdatedBy;
+                addressToInsert.Notes = this.Notes; 
             }
+            Id = dal.Insert(addressToInsert);
         }
         
         [Transactional(TransactionalTypes.TransactionScope)]
         protected override void DataPortal_Update()
         {
             using IDalManager dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEMailTypeDal>();
+            var dal = dalManager.GetProvider<IDocumentTypeDal>();
+            var addressToUpdate = new EF.Domain.DocumentType();
             using (BypassPropertyChecks)
             {
-                var eMailType = new EF.Domain.EMailType
-                {
-                    Id = this.Id, 
-                    TypeDescription = Description = this.Description, 
-                    Notes = this.Notes
-                };
-                
-                dal.Update(eMailType);
+                addressToUpdate.LastUpdatedDate = this.LastUpdatedDate;
+                addressToUpdate.LastUpdatedBy = this.LastUpdatedBy;
+                addressToUpdate.Notes = this.Notes; 
             }
+
+            dal.Update(addressToUpdate);
         }
 
         [Transactional(TransactionalTypes.TransactionScope)]
@@ -66,7 +62,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private void DataPortal_Delete(int id)
         {
             using IDalManager dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEMailTypeDal>();
+            var dal = dalManager.GetProvider<IDocumentTypeDal>();
  
             dal.Delete(id);
         }

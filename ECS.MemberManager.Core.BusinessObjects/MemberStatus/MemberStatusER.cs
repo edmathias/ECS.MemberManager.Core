@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Csla;
 
-namespace ECS.MemberManager.Core.BusinessObjects.MemberStatus
+namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
     public partial class MemberStatusER : BusinessBase<MemberStatusER>

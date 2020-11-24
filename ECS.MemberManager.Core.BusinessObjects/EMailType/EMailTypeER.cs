@@ -1,9 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Csla;
-using ECS.MemberManager.Core.BusinessObjects.MemberStatus;
 
-namespace ECS.MemberManager.Core.BusinessObjects.EMailType
+namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
     public partial class EMailTypeER : BusinessBase<EMailTypeER>

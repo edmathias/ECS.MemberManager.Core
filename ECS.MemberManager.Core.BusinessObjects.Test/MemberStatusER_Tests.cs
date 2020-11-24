@@ -1,12 +1,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Csla.Rules;
-using ECS.MemberManager.Core.BusinessObjects.MemberStatus;
 using ECS.MemberManager.Core.DataAccess.Mock;
-using Telerik.JustMock;
 
 namespace ECS.MemberManager.Core.BusinessObjects.Test
 {

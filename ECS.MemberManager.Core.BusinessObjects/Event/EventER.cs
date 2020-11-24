@@ -4,7 +4,7 @@ using Csla;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
 
-namespace ECS.MemberManager.Core.BusinessObjects.Event
+namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
     public class EventER : BusinessBase<EventER>

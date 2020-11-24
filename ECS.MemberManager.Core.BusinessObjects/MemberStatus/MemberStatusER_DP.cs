@@ -3,7 +3,7 @@ using Csla;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
 
-namespace ECS.MemberManager.Core.BusinessObjects.MemberStatus
+namespace ECS.MemberManager.Core.BusinessObjects
 {
     public partial class MemberStatusER
     {
