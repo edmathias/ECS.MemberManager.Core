@@ -8,7 +8,7 @@ using ECS.MemberManager.Core.DataAccess.Dal;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class MembershipTypeER : BusinessBase<MembershipTypeER>
+    public partial class PhoneER : BusinessBase<PhoneER>
     {
         #region Business Methods
         
@@ -19,21 +19,45 @@ namespace ECS.MemberManager.Core.BusinessObjects
             private set { LoadProperty(IdProperty, value); }
         }
 
-        public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(p => p.Description);
-        [Required, MaxLength(50)]
-        public string Description
+        public static readonly PropertyInfo<string> PhoneTypeProperty = RegisterProperty<string>(p => p.PhoneType);
+        [Required,MaxLength(10)]
+        public string PhoneType
         {
-            get { return GetProperty(DescriptionProperty); }
-            set { SetProperty(DescriptionProperty, value); }
+            get { return GetProperty(PhoneTypeProperty); }
+            set { SetProperty(PhoneTypeProperty, value); }
         }
-      
-        public static readonly PropertyInfo<int> LevelProperty = RegisterProperty<int>(p => p.Level);
-        public int Level
+        
+        public static readonly PropertyInfo<string> AreaCodeProperty = RegisterProperty<string>(p => p.AreaCode);
+        [Required,MaxLength(3)]
+        public string AreaCode
         {
-            get { return GetProperty(LevelProperty); }
-            set { SetProperty(LevelProperty, value); }
+            get { return GetProperty(AreaCodeProperty); }
+            set { SetProperty(AreaCodeProperty, value); }
+        }
+       
+        public static readonly PropertyInfo<string> NumberProperty = RegisterProperty<string>(p => p.Number);
+        [Required,MaxLength(25)]
+        public string Number
+        {
+            get { return GetProperty(NumberProperty); }
+            set { SetProperty(NumberProperty, value); }
         }
 
+        public static readonly PropertyInfo<string> ExtensionProperty = RegisterProperty<string>(p => p.Extension);
+        [Required,MaxLength(25)]
+        public string Extension
+        {
+            get { return GetProperty(ExtensionProperty); }
+            set { SetProperty(ExtensionProperty, value); }
+        }
+        
+        public static readonly PropertyInfo<int> DisplayOrderProperty = RegisterProperty<int>(p => p.DisplayOrder);
+        public int DisplayOrder
+        {
+            get { return GetProperty(DisplayOrderProperty); }
+            set { SetProperty(DisplayOrderProperty, value); }
+        }
+        
         public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(p => p.LastUpdatedBy);
         [Required,MaxLength(255)]
         public string LastUpdatedBy
@@ -61,35 +85,34 @@ namespace ECS.MemberManager.Core.BusinessObjects
         
         #region Factory Methods
 
-        public static MembershipTypeER NewMembershipTypeER()
+        public static PhoneER NewPhoneER()
         {
-            return DataPortal.Create<MembershipTypeER>();
+            return DataPortal.Create<PhoneER>();
         }
 
-        public static MembershipTypeER GetMembershipTypeER(int id)
+        public static PhoneER GetPhoneER(int id)
         {
-            return DataPortal.Fetch<MembershipTypeER>(id);
+            return DataPortal.Fetch<PhoneER>(id);
         }
 
-        public static void DeleteMembershipTypeER(int id)
+        public static void DeletePhoneER(int id)
         {
-            DataPortal.Delete<MembershipTypeER>(id);
+            DataPortal.Delete<PhoneER>(id);
         }
         
         #endregion
         
         #region DataPortal Methods
-               [Transactional(TransactionalTypes.TransactionScope)]
+        
+                [Transactional(TransactionalTypes.TransactionScope)]
         private void DataPortal_Fetch(int id)
         {
             using IDalManager dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IMembershipTypeDal>();
+            var dal = dalManager.GetProvider<IPhoneDal>();
             var data = dal.Fetch(id);
             using (BypassPropertyChecks)
             {
                 Id = data.Id;
-                Description = data.Description;
-                Level = data.Level;
                 LastUpdatedBy = data.LastUpdatedBy;
                 LastUpdatedDate = data.LastUpdatedDate;
                 Notes = data.Notes;
@@ -100,15 +123,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
         protected override void DataPortal_Insert()
         {
             using IDalManager dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IMembershipTypeDal>();
-            var documentTypeToInsert = new ECS.MemberManager.Core.EF.Domain.MembershipType();
+            var dal = dalManager.GetProvider<IPhoneDal>();
+            var documentTypeToInsert = new ECS.MemberManager.Core.EF.Domain.Phone();
             using (BypassPropertyChecks)
             {
-                documentTypeToInsert.Description = this.Description;
                 documentTypeToInsert.LastUpdatedDate = this.LastUpdatedDate;
                 documentTypeToInsert.LastUpdatedBy = this.LastUpdatedBy;
-                documentTypeToInsert.Notes = this.Notes;
-                documentTypeToInsert.Level = this.Level;
+                documentTypeToInsert.Notes = this.Notes; 
             }
             Id = dal.Insert(documentTypeToInsert);
         }
@@ -117,12 +138,10 @@ namespace ECS.MemberManager.Core.BusinessObjects
         protected override void DataPortal_Update()
         {
             using IDalManager dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IMembershipTypeDal>();
+            var dal = dalManager.GetProvider<IPhoneDal>();
             var documentTypeToUpdate = dal.Fetch(Id);
             using (BypassPropertyChecks)
             {
-                documentTypeToUpdate.Description = this.Description;
-                documentTypeToUpdate.Level = this.Level;
                 documentTypeToUpdate.LastUpdatedDate = this.LastUpdatedDate;
                 documentTypeToUpdate.LastUpdatedBy = this.LastUpdatedBy;
                 documentTypeToUpdate.Notes = this.Notes; 
@@ -141,11 +160,11 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private void DataPortal_Delete(int id)
         {
             using IDalManager dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IMembershipTypeDal>();
+            var dal = dalManager.GetProvider<IPhoneDal>();
  
             dal.Delete(id);
         }
-        
+
         #endregion
     }
 }

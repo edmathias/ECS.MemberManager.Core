@@ -1,6 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess.Mock;
 
@@ -14,27 +15,27 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
     {
 
         [TestMethod]
-        public void TestDocumentTypeER_Get()
+        public async Task TestDocumentTypeER_Get()
         {
-            var documentType = DocumentTypeER.GetDocumentTypeER(1);
+            var documentType = await DocumentTypeER.GetDocumentType(1);
 
             Assert.AreEqual(documentType.Id, 1);
             Assert.IsTrue(documentType.IsValid);
         }
 
         [TestMethod]
-        public void TestDocumentTypeER_GetNewObject()
+        public async Task TestDocumentTypeER_GetNewObject()
         {
-            var documentType = DocumentTypeER.NewDocumentTypeER();
+            var documentType = await DocumentTypeER.NewDocumentType();
 
             Assert.IsNotNull(documentType);
             Assert.IsFalse(documentType.IsValid);
         }
 
         [TestMethod]
-        public void TestDocumentTypeER_UpdateExistingObjectInDatabase()
+        public async Task TestDocumentTypeER_UpdateExistingObjectInDatabase()
         {
-            var documentType = DocumentTypeER.GetDocumentTypeER(1);
+            var documentType = await DocumentTypeER.GetDocumentType(1);
             documentType.Notes = "These are updated Notes";
             
             var result = documentType.Save();
@@ -44,9 +45,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
         }
 
         [TestMethod]
-        public void TestDocumentTypeER_InsertNewObjectIntoDatabase()
+        public async Task TestDocumentTypeER_InsertNewObjectIntoDatabase()
         {
-            var documentType = DocumentTypeER.NewDocumentTypeER();
+            var documentType = await DocumentTypeER.NewDocumentType();
             documentType.Description = "Standby";
             documentType.Notes = "This person is on standby";
             documentType.LastUpdatedBy = "edm";
@@ -60,20 +61,20 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
         }
 
         [TestMethod]
-        public void TestDocumentTypeER_DeleteObjectFromDatabase()
+        public async Task TestDocumentTypeER_DeleteObjectFromDatabase()
         {
             int beforeCount = MockDb.DocumentTypes.Count();
-            
-            DocumentTypeER.DeleteDocumentTypeER(1);
+
+            await DocumentTypeER.DeleteDocumentType(1);
             
             Assert.AreNotEqual(beforeCount,MockDb.DocumentTypes.Count());
         }
         
         // test invalid state 
         [TestMethod]
-        public void TestDocumentTypeER_DescriptionRequired()
+        public async Task TestDocumentTypeER_DescriptionRequired() 
         {
-            var documentType = DocumentTypeER.NewDocumentTypeER();
+            var documentType = await DocumentTypeER.NewDocumentType();
             documentType.Description = "make valid";
             documentType.LastUpdatedBy = "edm";
             documentType.LastUpdatedDate = DateTime.Now;
@@ -83,13 +84,12 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
             Assert.IsNotNull(documentType);
             Assert.IsTrue(isObjectValidInit);
             Assert.IsFalse(documentType.IsValid);
- 
         }
        
         [TestMethod]
-        public void TestDocumentTypeER_DescriptionExceedsMaxLengthOf255()
+        public async Task TestDocumentTypeER_DescriptionExceedsMaxLengthOf255()
         {
-            var documentType = DocumentTypeER.NewDocumentTypeER();
+            var documentType = await DocumentTypeER.NewDocumentType();
             documentType.LastUpdatedBy = "edm";
             documentType.LastUpdatedDate = DateTime.Now;
             documentType.Description = "valid length";
@@ -109,13 +109,12 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
         // test exception if attempt to save in invalid state
 
         [TestMethod]
-        public void TestDocumentTypeER_TestInvalidSave()
+        public async Task TestDocumentTypeER_TestInvalidSave()
         {
-            var documentType = DocumentTypeER.NewDocumentTypeER();
+            var documentType = await DocumentTypeER.NewDocumentType();
             documentType.Description = String.Empty;
             DocumentTypeER savedDocumentType = null;
                 
-            
             Assert.IsFalse(documentType.IsValid);
             Assert.ThrowsException<ValidationException>(() => savedDocumentType =  documentType.Save() );
         }

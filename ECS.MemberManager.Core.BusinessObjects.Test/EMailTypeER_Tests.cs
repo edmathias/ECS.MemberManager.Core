@@ -1,6 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess.Mock;
 
@@ -13,27 +14,27 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
     public class EMailTypeER_Tests 
     {
         [TestMethod]
-        public void TestEMailTypeER_Get()
+        public async Task TestEMailTypeER_Get()
         {
-            var eMailType = EMailTypeER.GetEMailTypeER(1);
+            var eMailType = await EMailTypeER.GetEMailType(1);
 
             Assert.AreEqual(eMailType.Id, 1);
             Assert.IsTrue(eMailType.IsValid);
         }
 
         [TestMethod]
-        public void TestEMailTypeER_New()
+        public async Task TestEMailTypeER_New()
         {
-            var eMailType = EMailTypeER.NewEMailTypeER();
+            var eMailType = await EMailTypeER.NewEMailType();
 
             Assert.IsNotNull(eMailType);
             Assert.IsFalse(eMailType.IsValid);
         }
 
         [TestMethod]
-        public void TestEMailTypeER_Update()
+        public async Task TestEMailTypeER_Update()
         {
-            var eMailType = EMailTypeER.GetEMailTypeER(1);
+            var eMailType = await EMailTypeER.GetEMailType(1);
             eMailType.Notes = "These are updated Notes";
             
             var result = eMailType.Save();
@@ -43,9 +44,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
         }
 
         [TestMethod]
-        public void TestEMailTypeER_Insert()
+        public async Task TestEMailTypeER_Insert()
         {
-            var eMailType = EMailTypeER.NewEMailTypeER();
+            var eMailType = await EMailTypeER.NewEMailType();
             eMailType.Description = "Standby";
             eMailType.Notes = "This person is on standby";
 
@@ -57,20 +58,20 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
         }
 
         [TestMethod]
-        public void TestEMailTypeER_Delete()
+        public async Task TestEMailTypeER_Delete()
         {
             int beforeCount = MockDb.EMailTypes.Count();
             
-            EMailTypeER.DeleteEMailTypeER(1);
+            await EMailTypeER.DeleteEMailType(1);
             
             Assert.AreNotEqual(beforeCount,MockDb.EMailTypes.Count());
         }
         
         // test invalid state 
         [TestMethod]
-        public void TestEMailTypeER_DescriptionRequired()
+        public async Task TestEMailTypeER_DescriptionRequired()
         {
-            var eMailType = EMailTypeER.NewEMailTypeER();
+            var eMailType = await EMailTypeER.NewEMailType();
             eMailType.Description = "make valid";
             var isObjectValidInit = eMailType.IsValid;
             eMailType.Description = string.Empty;
@@ -82,9 +83,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
         }
        
         [TestMethod]
-        public void TestEMailTypeER_DescriptionExceedsMaxLengthOf255()
+        public async Task TestEMailTypeER_DescriptionExceedsMaxLengthOf255()
         {
-            var eMailType = EMailTypeER.NewEMailTypeER();
+            var eMailType = await EMailTypeER.NewEMailType();
             eMailType.Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor "+
                                        "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis "+
                                        "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "+
@@ -99,12 +100,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
         // test exception if attempt to save in invalid state
 
         [TestMethod]
-        public void TestEMailTypeER_TestInvalidSave()
+        public async Task TestEMailTypeER_TestInvalidSave()
         {
-            var eMailType = EMailTypeER.NewEMailTypeER();
+            var eMailType = await EMailTypeER.NewEMailType();
             eMailType.Description = String.Empty;
             EMailTypeER savedEMailType = null;
-                
             
             Assert.IsFalse(eMailType.IsValid);
             Assert.ThrowsException<ValidationException>(() => savedEMailType =  eMailType.Save() );

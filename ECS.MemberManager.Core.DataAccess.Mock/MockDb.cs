@@ -199,7 +199,19 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         private static IList<Phone> GetPhones()
         {
-            return new List<Phone>();
+            return new List<Phone>
+            {
+                new Phone
+                {
+                    Id = 1, AreaCode = "216", DisplayOrder = 0, Extension = "", LastUpdatedBy = "edm",
+                    LastUpdatedDate = DateTime.Now, Number = "256-8082", PhoneType = "Home"
+                },
+                new Phone
+                {
+                    Id = 1, AreaCode = "414", DisplayOrder = 0, Extension = "", LastUpdatedBy = "edm",
+                    LastUpdatedDate = DateTime.Now, Number = "421-1634", PhoneType = "Work"
+                },
+            };
         }
 
         private static IList<PrivacyLevel> GetPrivacyLevels()

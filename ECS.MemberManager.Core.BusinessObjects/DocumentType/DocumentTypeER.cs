@@ -1,12 +1,17 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Csla;
 using Csla.Rules.CommonRules;
+using ECS.MemberManager.Core.DataAccess;
+using ECS.MemberManager.Core.DataAccess.Dal;
+using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class DocumentTypeER : BusinessBase<DocumentTypeER>
+    public class DocumentTypeER : BusinessBase<DocumentTypeER>
     {
         #region Business Methods
         
@@ -52,21 +57,95 @@ namespace ECS.MemberManager.Core.BusinessObjects
         
         #region Factory Methods
 
-        public static DocumentTypeER NewDocumentTypeER()
+        public async static Task<DocumentTypeER> NewDocumentType()
         {
-            return DataPortal.Create<DocumentTypeER>();
+            return await DataPortal.CreateAsync<DocumentTypeER>();
         }
 
-        public static DocumentTypeER GetDocumentTypeER(int id)
+        public async static Task<DocumentTypeER> GetDocumentType(int id)
         {
-            return DataPortal.Fetch<DocumentTypeER>(id);
+            return await DataPortal.FetchAsync<DocumentTypeER>(id);
         }
 
-        public static void DeleteDocumentTypeER(int id)
+        public async static Task DeleteDocumentType(int id)
         {
-            DataPortal.Delete<DocumentTypeER>(id);
+            await DataPortal.DeleteAsync<DocumentTypeER>(id);
         }
         
+        #endregion
+        
+        #region DataPortal Methods
+                
+        [Fetch]
+        private void Fetch(int id)
+        {
+            using IDalManager dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IDocumentTypeDal>();
+            var data = dal.Fetch(id);
+            using (BypassPropertyChecks)
+            {
+                Id = data.Id;
+                Description = data.TypeDescription;
+                LastUpdatedBy = data.LastUpdatedBy;
+                LastUpdatedDate = data.LastUpdatedDate;
+                Notes = data.Notes;
+            }
+        }
+
+        [Insert]
+        private void Insert()
+        {
+            using IDalManager dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IDocumentTypeDal>();
+            using (BypassPropertyChecks)
+            {
+                var documentTypeToInsert = new DocumentType
+                {
+                    TypeDescription = this.Description,
+                    LastUpdatedDate = this.LastUpdatedDate,
+                    LastUpdatedBy = this.LastUpdatedBy,
+                    Notes = this.Notes
+                };
+                dal.Insert(documentTypeToInsert);
+                Id = documentTypeToInsert.Id;
+            }
+        }
+        
+        [Update]
+        private void Update()
+        {
+            using IDalManager dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IDocumentTypeDal>();
+            using (BypassPropertyChecks)
+            {
+                var documentTypeToUpdate = new DocumentType()
+                {
+                    Id = this.Id,
+                    TypeDescription = this.Description,
+                    LastUpdatedDate = this.LastUpdatedDate,
+                    LastUpdatedBy = this.LastUpdatedBy,
+                    Notes = this.Notes
+                };
+                dal.Update(documentTypeToUpdate);
+            }
+
+        }
+
+        [DeleteSelf]
+        private void DeleteSelf()
+        {
+            Delete(this.Id);
+        }
+        
+        [Delete]
+        private void Delete(int id)
+        {
+            using IDalManager dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IDocumentTypeDal>();
+ 
+            dal.Delete(id);
+        }
+
         #endregion
     }
 }

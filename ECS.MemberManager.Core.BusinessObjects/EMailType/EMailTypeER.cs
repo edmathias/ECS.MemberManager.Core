@@ -1,11 +1,15 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using Csla;
+using ECS.MemberManager.Core.DataAccess;
+using ECS.MemberManager.Core.DataAccess.Dal;
+using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class EMailTypeER : BusinessBase<EMailTypeER>
+    public class EMailTypeER : BusinessBase<EMailTypeER>
     {
         #region Business Methods
         
@@ -35,19 +39,85 @@ namespace ECS.MemberManager.Core.BusinessObjects
         
         #region Factory Methods
 
-        public static EMailTypeER NewEMailTypeER()
+        public static async Task<EMailTypeER> NewEMailType()
         {
-            return DataPortal.Create<EMailTypeER>();
+            return await DataPortal.CreateAsync<EMailTypeER>();
         }
 
-        public static EMailTypeER GetEMailTypeER(int id)
+        public static async Task<EMailTypeER> GetEMailType(int id)
         {
-            return DataPortal.Fetch<EMailTypeER>(id);
+            return await DataPortal.FetchAsync<EMailTypeER>(id);
         }
 
-        public static void DeleteEMailTypeER(int id)
+        public static async Task  DeleteEMailType(int id)
         {
-            DataPortal.Delete<EMailTypeER>(id);
+            await DataPortal.DeleteAsync<EMailTypeER>(id);
+        }
+        
+        #endregion
+        
+        #region Data Access Methods
+        [Fetch]       
+        private void Fetch(int id)
+        {
+            using IDalManager dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IEMailTypeDal>();
+            var data = dal.Fetch(id);
+            using (BypassPropertyChecks)
+            {
+                Id = data.Id;
+                Description = data.TypeDescription;
+                Notes = data.Notes;
+            }
+        }
+
+        [Insert]
+        private void Insert()
+        {
+            using IDalManager dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IEMailTypeDal>();
+            using (BypassPropertyChecks)
+            {
+                var eMailType = new EMailType 
+                    { 
+                        TypeDescription = this.Description, 
+                        Notes = this.Notes 
+                    };
+                Id = dal.Insert(eMailType);
+            }
+        }
+        
+        [Update]
+        private void Update()
+        {
+            using IDalManager dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IEMailTypeDal>();
+            using (BypassPropertyChecks)
+            {
+                var eMailType = new EF.Domain.EMailType
+                {
+                    Id = this.Id, 
+                    TypeDescription = this.Description, 
+                    Notes = this.Notes
+                };
+                
+                dal.Update(eMailType);
+            }
+        }
+
+        [DeleteSelf]
+        private void DeleteSelf()
+        {
+            Delete(this.Id);
+        }
+       
+        [Delete]
+        private void Delete(int id)
+        {
+            using IDalManager dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IEMailTypeDal>();
+ 
+            dal.Delete(id);
         }
         
         #endregion
