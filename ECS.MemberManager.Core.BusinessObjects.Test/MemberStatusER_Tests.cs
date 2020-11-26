@@ -1,6 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess.Mock;
 
@@ -12,84 +13,46 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
     [TestClass]
     public class MemberStatusER_Tests 
     {
-        private TestContext testContextInstance;
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
+  
 
         [TestMethod]
-        public void TestMemberStatusER_Get()
+        public async void TestMemberStatusER_Get()
         {
-            var memberStatus = MemberStatusER.GetMemberStatusER(1);
+            var memberStatus = await MemberStatusER.GetMemberStatus(1);
 
             Assert.AreEqual(memberStatus.Id, 1);
             Assert.IsTrue(memberStatus.IsValid);
         }
 
         [TestMethod]
-        public void TestMemberStatusER_New()
+        public async void TestMemberStatusER_New()
         {
-            var memberStatus = MemberStatusER.NewMemberStatusER();
+            var memberStatus = await MemberStatusER.NewMemberStatus();
 
             Assert.IsNotNull(memberStatus);
             Assert.IsFalse(memberStatus.IsValid);
         }
 
         [TestMethod]
-        public void TestMemberStatusER_Update()
+        public async void TestMemberStatusER_Update()
         {
-            var memberStatus = MemberStatusER.GetMemberStatusER(1);
+            var memberStatus = await MemberStatusER.GetMemberStatus(1);
             memberStatus.Notes = "These are updated Notes";
             
-            var result = memberStatus.Save();
+            var result = await memberStatus.SaveAsync();
 
             Assert.IsNotNull(result);
             Assert.AreEqual(result.Notes, "These are updated Notes");
         }
 
         [TestMethod]
-        public void TestMemberStatusER_Insert()
+        public async void TestMemberStatusER_Insert()
         {
-            var memberStatus = MemberStatusER.NewMemberStatusER();
+            var memberStatus = await MemberStatusER.NewMemberStatus();
             memberStatus.Description = "Standby";
             memberStatus.Notes = "This person is on standby";
 
-            var savedMemberStatus = memberStatus.Save();
+            var savedMemberStatus = await memberStatus.SaveAsync();
            
             Assert.IsNotNull(savedMemberStatus);
             Assert.IsInstanceOfType(savedMemberStatus, typeof(MemberStatusER));
@@ -97,20 +60,20 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
         }
 
         [TestMethod]
-        public void TestMemberStatusER_Delete()
+        public async Task TestMemberStatusER_Delete()
         {
             int beforeCount = MockDb.MemberStatuses.Count();
             
-            MemberStatusER.DeleteMemberStatusER(1);
+            await MemberStatusER.DeleteMemberStatus(1);
             
             Assert.AreNotEqual(beforeCount,MockDb.MemberStatuses.Count());
         }
         
         // test invalid state 
         [TestMethod]
-        public void TestMemberStatusER_DescriptionRequired()
+        public async void TestMemberStatusER_DescriptionRequired()
         {
-            var memberStatus = MemberStatusER.NewMemberStatusER();
+            var memberStatus = await MemberStatusER.NewMemberStatus();
             memberStatus.Description = "make valid";
             var isObjectValidInit = memberStatus.IsValid;
             memberStatus.Description = string.Empty;
@@ -122,9 +85,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
         }
        
         [TestMethod]
-        public void TestMemberStatusER_DescriptionExceedsMaxLengthOf255()
+        public async void TestMemberStatusER_DescriptionExceedsMaxLengthOf255()
         {
-            var memberStatus = MemberStatusER.NewMemberStatusER();
+            var memberStatus = await MemberStatusER.NewMemberStatus();
             memberStatus.Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor "+
                                        "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis "+
                                        "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "+
@@ -139,15 +102,22 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
         // test exception if attempt to save in invalid state
 
         [TestMethod]
-        public void TestMemberStatusER_TestInvalidSave()
+        public async void TestMemberStatusER_TestInvalidSave()
         {
-            var memberStatus = MemberStatusER.NewMemberStatusER();
+            var memberStatus = await MemberStatusER.NewMemberStatus();
             memberStatus.Description = String.Empty;
-            MemberStatusER savedMemberStatus = null;
-                
+            bool exceptionThrown = false;
+            try
+            {
+                var savedMemberStatus = await memberStatus.SaveAsync();
+            }
+            catch (ValidationException exc)
+            {
+                exceptionThrown = true;
+            }
             
             Assert.IsFalse(memberStatus.IsValid);
-            Assert.ThrowsException<ValidationException>(() => savedMemberStatus =  memberStatus.Save() );
+            Assert.IsTrue(exceptionThrown);
         }
     }
 }

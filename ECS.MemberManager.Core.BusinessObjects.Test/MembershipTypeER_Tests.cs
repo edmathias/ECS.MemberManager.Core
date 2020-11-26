@@ -1,6 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess.Mock;
 
@@ -14,27 +15,27 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
     {
 
         [TestMethod]
-        public void TestMembershipTypeER_Get()
+        public async Task TestMembershipTypeER_Get()
         {
-            var membershipType = MembershipTypeER.GetMembershipTypeER(1);
+            var membershipType = await MembershipTypeER.GetMembershipType(1);
 
             Assert.AreEqual(membershipType.Id, 1);
             Assert.IsTrue(membershipType.IsValid);
         }
 
         [TestMethod]
-        public void TestMembershipTypeER_GetNewObject()
+        public async Task TestMembershipTypeER_GetNewObject()
         {
-            var membershipType = MembershipTypeER.NewMembershipTypeER();
+            var membershipType = await MembershipTypeER.NewMembershipType();
 
             Assert.IsNotNull(membershipType);
             Assert.IsFalse(membershipType.IsValid);
         }
 
         [TestMethod]
-        public void TestMembershipTypeER_UpdateExistingObjectInDatabase()
+        public async Task TestMembershipTypeER_UpdateExistingObjectInDatabase()
         {
-            var membershipType = MembershipTypeER.GetMembershipTypeER(1);
+            var membershipType = await MembershipTypeER.GetMembershipType(1);
             membershipType.Notes = "These are updated Notes";
             
             var result = membershipType.Save();
@@ -44,9 +45,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
         }
 
         [TestMethod]
-        public void TestMembershipTypeER_InsertNewObjectIntoDatabase()
+        public async Task TestMembershipTypeER_InsertNewObjectIntoDatabase()
         {
-            var membershipType = MembershipTypeER.NewMembershipTypeER();
+            var membershipType = await MembershipTypeER.NewMembershipType();
             membershipType.Description = "Standby";
             membershipType.Notes = "This person is on standby";
             membershipType.LastUpdatedBy = "edm";
@@ -60,20 +61,20 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
         }
 
         [TestMethod]
-        public void TestMembershipTypeER_DeleteObjectFromDatabase()
+        public async Task TestMembershipTypeER_DeleteObjectFromDatabase()
         {
             int beforeCount = MockDb.MembershipTypes.Count();
             
-            MembershipTypeER.DeleteMembershipTypeER(1);
+            await MembershipTypeER.DeleteMembershipType(1);
             
             Assert.AreNotEqual(beforeCount,MockDb.MembershipTypes.Count());
         }
         
         // test invalid state 
         [TestMethod]
-        public void TestMembershipTypeER_DescriptionRequired()
+        public async Task TestMembershipTypeER_DescriptionRequired()
         {
-            var membershipType = MembershipTypeER.NewMembershipTypeER();
+            var membershipType = await MembershipTypeER.NewMembershipType();
             membershipType.Description = "make valid";
             membershipType.Level = 2;
             membershipType.LastUpdatedBy = "edm";
@@ -84,13 +85,12 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
             Assert.IsNotNull(membershipType);
             Assert.IsTrue(isObjectValidInit);
             Assert.IsFalse(membershipType.IsValid);
- 
         }
        
         [TestMethod]
-        public void TestMembershipTypeER_DescriptionExceedsMaxLengthOf255()
+        public async Task TestMembershipTypeER_DescriptionExceedsMaxLengthOf255()
         {
-            var membershipType = MembershipTypeER.NewMembershipTypeER();
+            var membershipType = await MembershipTypeER.NewMembershipType();
             membershipType.Level = 1;
             membershipType.LastUpdatedBy = "edm";
             membershipType.LastUpdatedDate = DateTime.Now;
@@ -106,20 +106,26 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
             Assert.IsFalse(membershipType.IsValid);
             Assert.AreEqual(membershipType.BrokenRulesCollection[0].Description,
                 "The field Description must be a string or array type with a maximum length of '50'.");
- 
         }        
         // test exception if attempt to save in invalid state
 
         [TestMethod]
-        public void TestMembershipTypeER_TestInvalidSave()
+        public async Task TestMembershipTypeER_TestInvalidSave()
         {
-            var membershipType = MembershipTypeER.NewMembershipTypeER();
+            var membershipType = await MembershipTypeER.NewMembershipType();
             membershipType.Description = String.Empty;
-            MembershipTypeER savedMembershipType = null;
-                
+            bool exceptionThrown = false;
+            try
+            {
+                var savedMembershipType = await membershipType.SaveAsync();
+            }
+            catch (ValidationException exc)
+            {
+                exceptionThrown = true;
+            }
             
             Assert.IsFalse(membershipType.IsValid);
-            Assert.ThrowsException<ValidationException>(() => savedMembershipType =  membershipType.Save() );
+            Assert.IsTrue(exceptionThrown);
         }
     }
 }

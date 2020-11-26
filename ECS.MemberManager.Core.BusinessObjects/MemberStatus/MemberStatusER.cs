@@ -1,8 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
+using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
@@ -37,27 +39,27 @@ namespace ECS.MemberManager.Core.BusinessObjects
         
         #region Factory Methods
 
-        public static MemberStatusER NewMemberStatusER()
+        public static async Task<MemberStatusER> NewMemberStatus()
         {
-            return DataPortal.Create<MemberStatusER>();
+            return await DataPortal.CreateAsync<MemberStatusER>();
         }
 
-        public static MemberStatusER GetMemberStatusER(int id)
+        public static async Task<MemberStatusER> GetMemberStatus(int id)
         {
-            return DataPortal.Fetch<MemberStatusER>(id);
+            return await DataPortal.FetchAsync<MemberStatusER>(id);
         }
 
-        public static void DeleteMemberStatusER(int id)
+        public static async Task DeleteMemberStatus(int id)
         {
-            DataPortal.Delete<MemberStatusER>(id);
+            await DataPortal.DeleteAsync<MemberStatusER>(id);
         }
         
         #endregion
         
         #region Data Access 
-        
-        [Transactional(TransactionalTypes.TransactionScope)]
-        private void DataPortal_Fetch(int id)
+
+        [Fetch]
+        private void Fetch(int id)
         {
             using IDalManager dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IMemberStatusDal>();
@@ -70,8 +72,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
             }
         }
 
-        [Transactional(TransactionalTypes.TransactionScope)]
-        protected override void DataPortal_Insert()
+        [Insert] 
+        private void Insert()
         {
             using IDalManager dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IMemberStatusDal>();
@@ -83,27 +85,27 @@ namespace ECS.MemberManager.Core.BusinessObjects
             }
         }
         
-        [Transactional(TransactionalTypes.TransactionScope)]
+        [Update]
         protected override void DataPortal_Update()
         {
             using IDalManager dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IMemberStatusDal>();
             using (BypassPropertyChecks)
             {
-                var memberStatus = new EF.Domain.MemberStatus
+                var memberStatus = new MemberStatus
                     {Id = this.Id, Description = this.Description, Notes = this.Notes};
                 dal.Update(memberStatus);
             }
         }
 
-        [Transactional(TransactionalTypes.TransactionScope)]
-        protected override void DataPortal_DeleteSelf()
+        [DeleteSelf]
+        private void DeleteSelf()
         {
-            DataPortal_Delete(this.Id);
+            Delete(this.Id);
         }
-        
-        [Transactional(TransactionalTypes.TransactionScope)]
-        private void DataPortal_Delete(int id)
+
+        [Delete]
+        private void Delete(int id)
         {
             using IDalManager dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IMemberStatusDal>();
