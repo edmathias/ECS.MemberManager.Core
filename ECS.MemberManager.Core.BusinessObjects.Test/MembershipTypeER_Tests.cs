@@ -119,7 +119,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
             {
                 var savedMembershipType = await membershipType.SaveAsync();
             }
-            catch (ValidationException exc)
+            catch (ValidationException)
             {
                 exceptionThrown = true;
             }

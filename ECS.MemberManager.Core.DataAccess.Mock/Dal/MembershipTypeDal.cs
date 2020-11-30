@@ -29,16 +29,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         public void Update(MembershipType membershipType)
         {
-            var membershipTypeToUpdate = MockDb.MembershipTypes.FirstOrDefault(dt => dt.Id == membershipType.Id);
-
-            if (membershipTypeToUpdate == null) 
-                throw new Exception("Record not found");
-
-            membershipTypeToUpdate.Description = membershipType.Description;
-            membershipTypeToUpdate.Level = membershipType.Level;
-            membershipTypeToUpdate.LastUpdatedBy = membershipType.LastUpdatedBy;
-            membershipTypeToUpdate.LastUpdatedDate = membershipType.LastUpdatedDate;
-            membershipTypeToUpdate.Notes = membershipType.Notes;
+            // mockdb in memory list reference already updated
         }
 
         public void Delete(int id)

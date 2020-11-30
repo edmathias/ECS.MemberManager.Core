@@ -29,12 +29,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         public void Update(EMailType eMailType)
         {
-            var eMailTypeToUpdate = MockDb.EMailTypes.FirstOrDefault(ms => ms.Id == eMailType.Id);
-
-            if (eMailTypeToUpdate == null) 
-                throw new Exception("Record not found");
-
-            eMailTypeToUpdate.Notes = eMailType.Notes;
+            // mockdb in memory list reference already updated 
         }
 
         public void Delete(int id)

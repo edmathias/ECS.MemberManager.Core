@@ -29,13 +29,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         public void Update(MemberStatus memberStatus)
         {
-            var memberStatusToUpdate = MockDb.MemberStatuses.FirstOrDefault(ms => ms.Id == memberStatus.Id);
-
-            if (memberStatusToUpdate == null) 
-                throw new Exception("Record not found");
-
-            memberStatusToUpdate.Description = memberStatus.Description;
-            memberStatusToUpdate.Notes = memberStatus.Notes;
+            // mockdb in memory ref list already updated. 
         }
 
         public void Delete(int id)

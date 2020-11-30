@@ -29,18 +29,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         public void Update(Address address)
         {
-            var addressToUpdate = MockDb.Addresses.FirstOrDefault(a => a.Id == address.Id);
-
-            if (addressToUpdate == null) 
-                throw new Exception("Record not found");
-            addressToUpdate.Address1 = address.Address1;
-            addressToUpdate.Address2 = address.Address2;
-            addressToUpdate.City = address.City;
-            addressToUpdate.State = address.State;
-            addressToUpdate.PostCode = address.PostCode;
-            addressToUpdate.LastUpdatedDate = address.LastUpdatedDate;
-            addressToUpdate.LastUpdatedBy = address.LastUpdatedBy;
-            addressToUpdate.Notes = address.Notes;
+            // in memory database already updated
         }
 
         public void Delete(int id)

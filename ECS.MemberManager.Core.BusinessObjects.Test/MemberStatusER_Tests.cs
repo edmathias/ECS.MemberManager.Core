@@ -111,7 +111,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
             {
                 var savedMemberStatus = await memberStatus.SaveAsync();
             }
-            catch (ValidationException exc)
+            catch (ValidationException )
             {
                 exceptionThrown = true;
             }

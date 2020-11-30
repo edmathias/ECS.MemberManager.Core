@@ -29,14 +29,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         public void Update(Phone documentType)
         {
-            var documentTypeToUpdate = MockDb.Phones.FirstOrDefault(dt => dt.Id == documentType.Id);
-
-            if (documentTypeToUpdate == null) 
-                throw new Exception("Record not found");
-
-            documentTypeToUpdate.LastUpdatedBy = documentType.LastUpdatedBy;
-            documentTypeToUpdate.LastUpdatedDate = documentType.LastUpdatedDate;
-            documentTypeToUpdate.Notes = documentType.Notes;
+            // mockdb in memory list ref already updated.
         }
 
         public void Delete(int id)

@@ -156,7 +156,13 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         private static IList<Office> GetOffices()
         {
-            return new List<Office>();
+            return new List<Office>()
+            {
+                new Office { Id =1, Name = "President", Term=6,CalendarPeriod = "months",ChosenHow = 1, 
+                    Appointer = "voters", LastUpdatedDate = DateTime.Now, LastUpdatedBy = "edm", Notes = "notes"},
+                new Office { Id =2, Name = "Vice President", Term=12,CalendarPeriod = "months",ChosenHow = 2, 
+                    Appointer = "Dave", LastUpdatedDate = DateTime.Now, LastUpdatedBy = "edm", Notes = "notes"}
+            };
         }
 
         private static IList<Organization> GetOrganizations()
