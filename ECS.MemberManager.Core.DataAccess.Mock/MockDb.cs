@@ -182,7 +182,11 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         private static IList<PaymentSource> GetPaymentSources()
         {
-            return new List<PaymentSource>();
+            return new List<PaymentSource>()
+            {
+                new PaymentSource() {Id = 1, Description = "Source 1", Notes = "notes here"},
+                new PaymentSource() {Id = 2, Description = "Payment Source 2", Notes = "more notes"}
+            };
         }
 
         private static IList<PaymentType> GetPaymentTypes()
