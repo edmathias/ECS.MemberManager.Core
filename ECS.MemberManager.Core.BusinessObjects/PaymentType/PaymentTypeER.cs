@@ -6,10 +6,10 @@ using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
-namespace ECS.MemberManager.Core.BusinessObjects.PaymentSource
+namespace ECS.MemberManager.Core.BusinessObjects.PaymentType
 {
     [Serializable]
-    public class PaymentSourceER : BusinessBase<PaymentSourceER>
+    public class PaymentTypeER : BusinessBase<PaymentTypeER>
     {
         #region Business Methods
         
@@ -39,19 +39,19 @@ namespace ECS.MemberManager.Core.BusinessObjects.PaymentSource
         
         #region Factory Methods
 
-        public static async Task<PaymentSourceER> NewPaymentSource()
+        public static async Task<PaymentTypeER> NewPaymentType()
         {
-            return await DataPortal.CreateAsync<PaymentSourceER>();
+            return await DataPortal.CreateAsync<PaymentTypeER>();
         }
 
-        public static async Task<PaymentSourceER> GetPaymentSource(int id)
+        public static async Task<PaymentTypeER> GetPaymentType(int id)
         {
-            return await DataPortal.FetchAsync<PaymentSourceER>(id);
+            return await DataPortal.FetchAsync<PaymentTypeER>(id);
         }
 
-        public static async Task  DeletePaymentSource(int id)
+        public static async Task  DeletePaymentType(int id)
         {
-            await DataPortal.DeleteAsync<PaymentSourceER>(id);
+            await DataPortal.DeleteAsync<PaymentTypeER>(id);
         }
         
         #endregion
@@ -61,7 +61,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.PaymentSource
         private void Fetch(int id)
         {
             using IDalManager dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPaymentSourceDal>();
+            var dal = dalManager.GetProvider<IPaymentTypeDal>();
             var data = dal.Fetch(id);
             using (BypassPropertyChecks)
             {
@@ -75,10 +75,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.PaymentSource
         private void Insert()
         {
             using IDalManager dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPaymentSourceDal>();
+            var dal = dalManager.GetProvider<IPaymentTypeDal>();
             using (BypassPropertyChecks)
             {
-                var paymentSource = new EF.Domain.PaymentSource 
+                var paymentSource = new EF.Domain.PaymentType 
                     { 
                         Description = this.Description, 
                         Notes = this.Notes 
@@ -91,10 +91,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.PaymentSource
         private void Update()
         {
             using IDalManager dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPaymentSourceDal>();
+            var dal = dalManager.GetProvider<IPaymentTypeDal>();
             using (BypassPropertyChecks)
             {
-                var paymentSource = new EF.Domain.PaymentSource
+                var paymentSource = new EF.Domain.PaymentType
                 {
                     Id = this.Id, 
                     Description = this.Description, 
@@ -115,7 +115,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.PaymentSource
         private void Delete(int id)
         {
             using IDalManager dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPaymentSourceDal>();
+            var dal = dalManager.GetProvider<IPaymentTypeDal>();
  
             dal.Delete(id);
         }
