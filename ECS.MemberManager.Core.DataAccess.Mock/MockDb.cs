@@ -102,7 +102,22 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         private static IList<EMail> GetEmails()
         {
-            return new List<EMail>();
+            return new List<EMail>()
+            {
+                new EMail()
+                {
+                    Id = 1, EMailType = new EMailType() {Id = 1, TypeDescription = "personal", Notes = ""},
+                    EMailAddress = "edm@ecs.com", LastUpdatedBy = "edm", LastUpdatedDate = DateTime.Now,
+                    Notes = "some notes", Organizations = new List<Organization>(), Persons = new List<Person>()
+                },
+                new EMail()
+                {
+                    Id = 2, EMailType = new EMailType() {Id = 2, TypeDescription = "work", Notes = ""},
+                    EMailAddress = "edm@ecs.com", LastUpdatedBy = "edm", LastUpdatedDate = DateTime.Now,
+                    Notes = "some notes", Organizations = new List<Organization>(), Persons = new List<Person>()
+                }
+                
+            };
         }
 
         private static IList<EMailType> GetEmailTypes()
@@ -230,7 +245,11 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         private static IList<PrivacyLevel> GetPrivacyLevels()
         {
-            return new List<PrivacyLevel>();
+            return new List<PrivacyLevel>
+            {
+                new PrivacyLevel() {Id = 1, Description = "privacy level 1", Notes = "notes to save"},
+                new PrivacyLevel() {Id = 2, Description = "privacy level 2", Notes = "more notes"}
+            };
         }
 
         private static IList<Sponsor> GetSponsors()

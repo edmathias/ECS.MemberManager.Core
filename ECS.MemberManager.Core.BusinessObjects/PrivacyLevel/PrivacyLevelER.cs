@@ -1,7 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Csla;
+using Csla.Rules.CommonRules;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
@@ -9,7 +11,7 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class EMailTypeER : BusinessBase<EMailTypeER>
+    public class PrivacyLevelER : BusinessBase<PrivacyLevelER>
     {
         #region Business Methods
         
@@ -17,17 +19,17 @@ namespace ECS.MemberManager.Core.BusinessObjects
         public int Id
         {
             get { return GetProperty(IdProperty); }
-            set { SetProperty(IdProperty, value); }
+            private set { LoadProperty(IdProperty, value); }
         }
 
         public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(p => p.Description);
-        [Required,MaxLength(255)]
+        [Required, MaxLength(50)]
         public string Description
         {
             get { return GetProperty(DescriptionProperty); }
             set { SetProperty(DescriptionProperty, value); }
         }
-
+       
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
         public string Notes
         {
@@ -35,42 +37,40 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set { SetProperty(NotesProperty, value); }
         }
         
-        
-        
         #endregion
         
         #region Factory Methods
 
-        public static async Task<EMailTypeER> NewEMailType()
+        public async static Task<PrivacyLevelER> NewPrivacyLevel()
         {
-            return await DataPortal.CreateAsync<EMailTypeER>();
+            return await DataPortal.CreateAsync<PrivacyLevelER>();
         }
 
-        public static async Task<EMailTypeER> GetEMailType(int id)
+        public async static Task<PrivacyLevelER> GetPrivacyLevel(int id)
         {
-            return await DataPortal.FetchAsync<EMailTypeER>(id);
+            return await DataPortal.FetchAsync<PrivacyLevelER>(id);
         }
 
-        public static async Task  DeleteEMailType(int id)
+        public async static Task DeletePrivacyLevel(int id)
         {
-            await DataPortal.DeleteAsync<EMailTypeER>(id);
+            await DataPortal.DeleteAsync<PrivacyLevelER>(id);
         }
         
         #endregion
         
-        #region Data Access Methods
-        [Fetch]       
+        #region DataPortal Methods
+                
+        [Fetch]
         private void Fetch(int id)
         {
             using IDalManager dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEMailTypeDal>();
+            var dal = dalManager.GetProvider<IPrivacyLevelDal>();
             var data = dal.Fetch(id);
             using (BypassPropertyChecks)
             {
                 Id = data.Id;
-                Description = data.TypeDescription;
+                Description = data.Description;
                 Notes = data.Notes;
-                
             }
         }
 
@@ -78,15 +78,16 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private void Insert()
         {
             using IDalManager dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEMailTypeDal>();
+            var dal = dalManager.GetProvider<IPrivacyLevelDal>();
             using (BypassPropertyChecks)
             {
-                var eMailType = new EMailType 
-                    { 
-                        TypeDescription = this.Description, 
-                        Notes = this.Notes 
-                    };
-                Id = dal.Insert(eMailType);
+                var documentTypeToInsert = new PrivacyLevel
+                {
+                    Description = this.Description,
+                    Notes = this.Notes
+                };
+                dal.Insert(documentTypeToInsert);
+                Id = documentTypeToInsert.Id;
             }
         }
         
@@ -94,18 +95,18 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private void Update()
         {
             using IDalManager dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEMailTypeDal>();
+            var dal = dalManager.GetProvider<IPrivacyLevelDal>();
             using (BypassPropertyChecks)
             {
-                var eMailType = new EF.Domain.EMailType
+                var documentTypeToUpdate = new PrivacyLevel()
                 {
-                    Id = this.Id, 
-                    TypeDescription = this.Description, 
+                    Id = this.Id,
+                    Description = this.Description,
                     Notes = this.Notes
                 };
-                
-                dal.Update(eMailType);
+                dal.Update(documentTypeToUpdate);
             }
+
         }
 
         [DeleteSelf]
@@ -113,16 +114,16 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             Delete(this.Id);
         }
-       
+        
         [Delete]
         private void Delete(int id)
         {
             using IDalManager dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEMailTypeDal>();
+            var dal = dalManager.GetProvider<IPrivacyLevelDal>();
  
             dal.Delete(id);
         }
-        
+
         #endregion
     }
 }
