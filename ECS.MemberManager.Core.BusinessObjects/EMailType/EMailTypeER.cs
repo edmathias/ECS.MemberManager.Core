@@ -68,7 +68,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             using (BypassPropertyChecks)
             {
                 Id = data.Id;
-                Description = data.TypeDescription;
+                Description = data.Description;
                 Notes = data.Notes;
                 
             }
@@ -83,7 +83,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             {
                 var eMailType = new EMailType 
                     { 
-                        TypeDescription = this.Description, 
+                        Description = this.Description, 
                         Notes = this.Notes 
                     };
                 Id = dal.Insert(eMailType);
@@ -100,7 +100,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 var eMailType = new EF.Domain.EMailType
                 {
                     Id = this.Id, 
-                    TypeDescription = this.Description, 
+                    Description = this.Description, 
                     Notes = this.Notes
                 };
                 

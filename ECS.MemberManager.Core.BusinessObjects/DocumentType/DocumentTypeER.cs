@@ -85,7 +85,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             using (BypassPropertyChecks)
             {
                 Id = data.Id;
-                Description = data.TypeDescription;
+                Description = data.Description;
                 LastUpdatedBy = data.LastUpdatedBy;
                 LastUpdatedDate = data.LastUpdatedDate;
                 Notes = data.Notes;
@@ -101,7 +101,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             {
                 var documentTypeToInsert = new DocumentType
                 {
-                    TypeDescription = this.Description,
+                    Description = this.Description,
                     LastUpdatedDate = this.LastUpdatedDate,
                     LastUpdatedBy = this.LastUpdatedBy,
                     Notes = this.Notes
@@ -121,7 +121,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 var documentTypeToUpdate = new DocumentType()
                 {
                     Id = this.Id,
-                    TypeDescription = this.Description,
+                    Description = this.Description,
                     LastUpdatedDate = this.LastUpdatedDate,
                     LastUpdatedBy = this.LastUpdatedBy,
                     Notes = this.Notes

@@ -91,11 +91,11 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             return new List<DocumentType>
             {
-                new DocumentType() {Id = 1, TypeDescription = "Document Type A", Notes = String.Empty, 
+                new DocumentType() {Id = 1, Description = "Document Type A", Notes = String.Empty, 
                     LastUpdatedBy = "edm", LastUpdatedDate = DateTime.Now},
-                new DocumentType() {Id = 2, TypeDescription = "Document Type B", Notes = "some notes",
+                new DocumentType() {Id = 2, Description = "Document Type B", Notes = "some notes",
                     LastUpdatedBy = "edm", LastUpdatedDate = DateTime.Now},
-                new DocumentType() {Id = 3, TypeDescription = "Document Type C", Notes = String.Empty,
+                new DocumentType() {Id = 3, Description = "Document Type C", Notes = String.Empty,
                     LastUpdatedBy = "edm", LastUpdatedDate = DateTime.Now},
             };
         }
@@ -106,13 +106,13 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             {
                 new EMail()
                 {
-                    Id = 1, EMailType = new EMailType() {Id = 1, TypeDescription = "personal", Notes = ""},
+                    Id = 1, EMailType = new EMailType() {Id = 1, Description = "personal", Notes = ""},
                     EMailAddress = "edm@ecs.com", LastUpdatedBy = "edm", LastUpdatedDate = DateTime.Now,
                     Notes = "some notes", Organizations = new List<Organization>(), Persons = new List<Person>()
                 },
                 new EMail()
                 {
-                    Id = 2, EMailType = new EMailType() {Id = 2, TypeDescription = "work", Notes = ""},
+                    Id = 2, EMailType = new EMailType() {Id = 2, Description = "work", Notes = ""},
                     EMailAddress = "edm@ecs.com", LastUpdatedBy = "edm", LastUpdatedDate = DateTime.Now,
                     Notes = "some notes", Organizations = new List<Organization>(), Persons = new List<Person>()
                 }
@@ -124,8 +124,8 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             return new List<EMailType>
             {
-                new EMailType() { Id = 1, TypeDescription = "work", Notes = String.Empty},
-                new EMailType() { Id = 2,TypeDescription = "home", Notes = "notes for home" }
+                new EMailType() { Id = 1, Description = "work", Notes = String.Empty},
+                new EMailType() { Id = 2,Description = "home", Notes = "notes for home" }
             };
         }
 

@@ -39,7 +39,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             if (categoryToUpdate == null) 
                 throw new Exception("Record not found");
 
-            categoryToUpdate.TypeName = categoryOfOrganization.TypeName;
+            categoryToUpdate.Category = categoryOfOrganization.Category;
             categoryToUpdate.DisplayOrder = categoryOfOrganization.DisplayOrder;
         }
 

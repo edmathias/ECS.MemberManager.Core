@@ -6,7 +6,7 @@ namespace ECS.MemberManager.Core.EF.Domain
     public class MembershipType
     {
         public int Id { get; set; }
-        [Required, MaxLength(255)]
+        [Required, MaxLength(50)]
         public string Description { get; set; }
         public int Level { get; set; }
         [MaxLength(255)] public string LastUpdatedBy { get; set; }

@@ -109,7 +109,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 EMailAddress = data.EMailAddress;
                 EMailType = EMailTypeER.NewEMailType().Result;
                 EMailType.Id = data.EMailType.Id;
-                EMailType.Description = data.EMailType.TypeDescription;
+                EMailType.Description = data.EMailType.Description;
                 EMailType.Notes = data.EMailType.Notes;
                 LastUpdatedBy = data.LastUpdatedBy;
                 LastUpdatedDate = data.LastUpdatedDate;
@@ -129,7 +129,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 {
                     EMailAddress = this.EMailAddress,
                     EMailType = new EMailType()
-                        {Id = EMailType.Id, TypeDescription = EMailType.Description, Notes = EMailType.Notes},
+                        {Id = EMailType.Id, Description = EMailType.Description, Notes = EMailType.Notes},
                     LastUpdatedBy = this.LastUpdatedBy,
                     LastUpdatedDate = DateTime.Now,
                     Notes = this.Notes,
@@ -155,7 +155,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                     Id = this.Id,
                     EMailAddress = this.EMailAddress,
                     EMailType = new EMailType()
-                        {Id = this.EMailType.Id, TypeDescription = this.EMailType.Description, Notes = this.EMailType.Notes},
+                        {Id = this.EMailType.Id, Description = this.EMailType.Description, Notes = this.EMailType.Notes},
                     LastUpdatedBy = this.LastUpdatedBy,
                     LastUpdatedDate = DateTime.Now,
                     Notes = this.Notes,

@@ -80,7 +80,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.CategoryOfOrganization
             using (BypassPropertyChecks)
             {
                 Id = data.Id;
-                Name = data.TypeName;
+                Name = data.Category;
                 DisplayOrder = data.DisplayOrder;
             }
         }
@@ -96,7 +96,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.CategoryOfOrganization
                 {
                     Id = this.Id,
                     DisplayOrder = this.DisplayOrder,
-                    TypeName = this.Name
+                    Category = this.Name
                 };
                 dal.Insert(categoryToInsert);
                 Id = categoryToInsert.Id;
@@ -113,7 +113,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.CategoryOfOrganization
                 var categoryToUpdate = new EF.Domain.CategoryOfOrganization()
                 {
                     Id = this.Id,
-                    TypeName = this.Name,
+                    Category = this.Name,
                     DisplayOrder = this.DisplayOrder
                 };
                 dal.Update(categoryToUpdate);
