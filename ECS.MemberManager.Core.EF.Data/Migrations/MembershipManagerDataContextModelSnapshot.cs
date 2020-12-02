@@ -202,13 +202,13 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<int>("DisplayOrder")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TypeName")
+                    b.Property<string>("Category")
                         .IsRequired()
                         .HasMaxLength(35)
                         .HasColumnType("nvarchar(35)");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -264,6 +264,11 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<string>("LastUpdatedBy")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
@@ -273,11 +278,6 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
 
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TypeDescription")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -321,13 +321,13 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TypeDescription")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
 
                     b.HasKey("Id");
 
@@ -504,8 +504,8 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
@@ -524,8 +524,8 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("LastUpdatedBy")
                         .HasMaxLength(255)
@@ -632,12 +632,12 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                     b.Property<int?>("CategoryOfOrganizationId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Notes")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("TypeName")
+                    b.Property<string>("Name")
                         .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Notes")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -721,11 +721,12 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<string>("Notes")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TypeDescription")
+                    b.Property<string>("Description")
                         .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -744,7 +745,8 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("LastUpdatedBy")
                         .HasMaxLength(255)
@@ -821,8 +823,8 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
@@ -976,8 +978,8 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                         .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("DisplayOrder")
                         .HasColumnType("int");

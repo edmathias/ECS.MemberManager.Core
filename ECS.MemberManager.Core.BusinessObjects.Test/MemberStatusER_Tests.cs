@@ -85,7 +85,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
         }
        
         [TestMethod]
-        public async void TestMemberStatusER_DescriptionExceedsMaxLengthOf255()
+        public async void TestMemberStatusER_DescriptionExceedsMaxLengthOf50()
         {
             var memberStatus = await MemberStatusER.NewMemberStatus();
             memberStatus.Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor "+
@@ -96,7 +96,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
             Assert.IsNotNull(memberStatus);
             Assert.IsFalse(memberStatus.IsValid);
             Assert.AreEqual(memberStatus.BrokenRulesCollection[0].Description,
-                "The field Description must be a string or array type with a maximum length of '255'.");
+                "The field Description must be a string or array type with a maximum length of '50'.");
  
         }        
         // test exception if attempt to save in invalid state

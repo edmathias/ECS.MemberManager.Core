@@ -83,7 +83,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
         }
        
         [TestMethod]
-        public async Task TestEMailTypeER_DescriptionExceedsMaxLengthOf255()
+        public async Task TestEMailTypeER_DescriptionExceedsMaxLengthOf50()
         {
             var eMailType = await EMailTypeER.NewEMailType();
             eMailType.Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor "+
@@ -94,7 +94,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
             Assert.IsNotNull(eMailType);
             Assert.IsFalse(eMailType.IsValid);
             Assert.AreEqual(eMailType.BrokenRulesCollection[0].Description,
-                "The field Description must be a string or array type with a maximum length of '255'.");
+                "The field Description must be a string or array type with a maximum length of '50'.");
  
         }        
         // test exception if attempt to save in invalid state

@@ -83,7 +83,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
         }
        
         [TestMethod]
-        public async Task TestPrivacyLevelER_DescriptionExceedsMaxLengthOf255()
+        public async Task TestPrivacyLevelER_DescriptionExceedsMaxLengthOf50()
         {
             var privacyLevel = await PrivacyLevelER.NewPrivacyLevel();
             privacyLevel.Description = "valid length";

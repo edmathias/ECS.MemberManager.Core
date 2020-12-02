@@ -88,7 +88,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
         }
        
         [TestMethod]
-        public async Task TestMembershipTypeER_DescriptionExceedsMaxLengthOf255()
+        public async Task TestMembershipTypeER_DescriptionExceedsMaxLengthOf50()
         {
             var membershipType = await MembershipTypeER.NewMembershipType();
             membershipType.Level = 1;

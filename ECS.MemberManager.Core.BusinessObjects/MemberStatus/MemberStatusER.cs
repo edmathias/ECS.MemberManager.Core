@@ -21,7 +21,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(p => p.Description);
-        [Required,MaxLength(255)]
+        [Required,MaxLength(50)]
         public string Description
         {
             get { return GetProperty(DescriptionProperty); }
