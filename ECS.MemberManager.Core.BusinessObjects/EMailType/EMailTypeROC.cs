@@ -50,7 +50,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        [RunLocal]
         [CreateChild]
         private void Create()
         {
