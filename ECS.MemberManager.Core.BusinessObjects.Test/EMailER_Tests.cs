@@ -2,15 +2,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Csla;
 using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects.Test
 {
-    /// <summary>
-    /// Summary description for JustMockTest
-    /// </summary>
     [TestClass]
     public class EMailER_Tests 
     {
@@ -52,11 +50,13 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
             eMail.LastUpdatedBy = "edm";
             eMail.LastUpdatedDate = DateTime.Now;
             eMail.Notes = "This person is on standby";
-            eMail.EMailType = await EMailTypeER.NewEMailType();
-            eMail.EMailType.Id = 1;
-            eMail.EMailType.Description = "work";
-            eMail.EMailType.Notes = string.Empty;
-
+            var eMailTypeDto = new EMailType()
+            {
+                Id = 4,
+                Description = "secondary email",
+                Notes = "nothing to see here"
+            };
+            eMail.EMailType = await DataPortal.FetchChildAsync<EMailTypeROC>(eMailTypeDto);
             var savedEMail = eMail.Save();
            
             Assert.IsNotNull(savedEMail);
@@ -80,6 +80,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
         {
             var eMail = await EMailER.NewEMail();
             eMail.EMailAddress = "make valid";
+            eMail.EMailType = await DataPortal.CreateChildAsync<EMailTypeROC>();
             eMail.LastUpdatedDate = DateTime.Now;
             eMail.LastUpdatedBy = "edm";
             var isObjectValidInit = eMail.IsValid;
@@ -90,7 +91,26 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
             Assert.IsFalse(eMail.IsValid);
  
         }
-     
+    
+        // test invalid state 
+        [TestMethod]
+        public async Task TestEMailER_EMailTypeRequired()
+        {
+            var eMail = await EMailER.NewEMail();
+            eMail.EMailAddress = "make valid";
+            eMail.LastUpdatedDate = DateTime.Now;
+            eMail.LastUpdatedBy = "edm";
+            eMail.EMailType = await DataPortal.CreateChildAsync<EMailTypeROC>();
+            var isObjectValidInit = eMail.IsValid;
+            eMail.EMailType = null;
+
+            Assert.IsNotNull(eMail);
+            Assert.IsTrue(isObjectValidInit);
+            Assert.IsFalse(eMail.IsValid);
+            Assert.AreEqual("The EMailType field is required.",eMail.GetBrokenRules()[0].Description);
+ 
+        }
+        
         // test exception if attempt to save in invalid state
 
         [TestMethod]

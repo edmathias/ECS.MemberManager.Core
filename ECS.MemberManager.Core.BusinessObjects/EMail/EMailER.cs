@@ -54,13 +54,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set { SetProperty(NotesProperty, value); }
         }
         
-        public static readonly PropertyInfo<EMailTypeER> EMailTypeProperty = RegisterProperty<EMailTypeER>(p => p.EMailType);
-        public EMailTypeER EMailType
+        public static readonly PropertyInfo<EMailTypeROC> EMailTypeProperty = RegisterProperty<EMailTypeROC>(p => p.EMailType);
+        [Required]
+        public EMailTypeROC EMailType
         {
             get { return GetProperty(EMailTypeProperty); }
             set { SetProperty(EMailTypeProperty, value); }
         }
 
+        
         protected override void AddBusinessRules()
         {
             base.AddBusinessRules();
@@ -107,10 +109,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             {
                 Id = data.Id;
                 EMailAddress = data.EMailAddress;
-                EMailType = EMailTypeER.NewEMailType().Result;
-                EMailType.Id = data.EMailType.Id;
-                EMailType.Description = data.EMailType.Description;
-                EMailType.Notes = data.EMailType.Notes;
+                EMailType = DataPortal.FetchChild<EMailTypeROC>(data.EMailType);
                 LastUpdatedBy = data.LastUpdatedBy;
                 LastUpdatedDate = data.LastUpdatedDate;
                 Notes = data.Notes;
