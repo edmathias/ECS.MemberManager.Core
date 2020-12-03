@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Csla.Rules;
-using ECS.MemberManager.Core.BusinessObjects.Office;
+using ECS.MemberManager.Core.BusinessObjects;
 using ECS.MemberManager.Core.DataAccess.Mock;
 
 namespace ECS.MemberManager.Core.BusinessObjects.Test

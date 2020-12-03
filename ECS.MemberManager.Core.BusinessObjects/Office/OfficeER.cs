@@ -6,7 +6,7 @@ using Csla;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
 
-namespace ECS.MemberManager.Core.BusinessObjects.Office
+namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
     public class OfficeER : BusinessBase<OfficeER>

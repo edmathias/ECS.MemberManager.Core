@@ -7,7 +7,7 @@ using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
-namespace ECS.MemberManager.Core.BusinessObjects.CategoryOfOrganization
+namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
     public class CategoryOfOrganizationER : BusinessBase<CategoryOfOrganizationER>

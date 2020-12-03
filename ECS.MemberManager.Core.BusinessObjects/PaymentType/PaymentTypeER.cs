@@ -6,7 +6,7 @@ using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
-namespace ECS.MemberManager.Core.BusinessObjects.PaymentType
+namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
     public class PaymentTypeER : BusinessBase<PaymentTypeER>
