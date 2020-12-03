@@ -19,47 +19,47 @@ namespace ECS.MemberManager.Core.BusinessObjects
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
         public int Id
         {
-            get { return GetProperty(IdProperty); }
-            private set { LoadProperty(IdProperty, value); }
+            get => GetProperty(IdProperty);
+            private set => LoadProperty(IdProperty, value);
         }
        
         public static readonly PropertyInfo<string> EMailAddressProperty = RegisterProperty<string>(p => p.EMailAddress);
         [Required,MaxLength(255)]
         public string EMailAddress
         {
-            get { return GetProperty(EMailAddressProperty); }
-            set { SetProperty(EMailAddressProperty, value); }
+            get => GetProperty(EMailAddressProperty);
+            set => SetProperty(EMailAddressProperty, value);
         }
 
         public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(p => p.LastUpdatedBy);
         [Required]
         public string LastUpdatedBy
         {
-            get { return GetProperty(LastUpdatedByProperty); }
-            set { SetProperty(LastUpdatedByProperty, value); }
+            get => GetProperty(LastUpdatedByProperty);
+            set => SetProperty(LastUpdatedByProperty, value);
         }
 
         public static readonly PropertyInfo<DateTime> LastUpdatedDateProperty = RegisterProperty<DateTime>(p => p.LastUpdatedDate);
         [Required]
         public DateTime LastUpdatedDate
         {
-            get { return GetProperty(LastUpdatedDateProperty); }
-            set { SetProperty(LastUpdatedDateProperty, value); }
+            get => GetProperty(LastUpdatedDateProperty);
+            set => SetProperty(LastUpdatedDateProperty, value);
         }
 
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
         public string Notes
         {
-            get { return GetProperty(NotesProperty); }
-            set { SetProperty(NotesProperty, value); }
+            get => GetProperty(NotesProperty);
+            set => SetProperty(NotesProperty, value);
         }
         
         public static readonly PropertyInfo<EMailTypeROC> EMailTypeProperty = RegisterProperty<EMailTypeROC>(p => p.EMailType);
         [Required]
         public EMailTypeROC EMailType
         {
-            get { return GetProperty(EMailTypeProperty); }
-            set { SetProperty(EMailTypeProperty, value); }
+            get => GetProperty(EMailTypeProperty);
+            set => SetProperty(EMailTypeProperty, value);
         }
 
         
@@ -80,17 +80,17 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        public async static Task<EMailER> NewEMail()
+        public static async Task<EMailER> NewEMail()
         {
             return await DataPortal.CreateAsync<EMailER>();
         }
 
-        public async static Task<EMailER> GetEMail(int id)
+        public static async Task<EMailER> GetEMail(int id)
         {
             return await DataPortal.FetchAsync<EMailER>(id);
         }
 
-        public async static Task DeleteEMail(int id)
+        public static async Task DeleteEMail(int id)
         {
             await DataPortal.DeleteAsync<EMailER>(id);
         }
@@ -102,7 +102,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [Fetch]
         private void Fetch(int id)
         {
-            using IDalManager dalManager = DalFactory.GetManager();
+            using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEMailDal>();
             var data = dal.Fetch(id);
             using (BypassPropertyChecks)
@@ -120,7 +120,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [Insert]
         private void Insert()
         {
-            using IDalManager dalManager = DalFactory.GetManager();
+            using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEMailDal>();
             using (BypassPropertyChecks)
             {
@@ -145,7 +145,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [Update]
         private void Update()
         {
-            using IDalManager dalManager = DalFactory.GetManager();
+            using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEMailDal>();
             using (BypassPropertyChecks)
             {
@@ -176,7 +176,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [Delete]
         private void Delete(int id)
         {
-            using IDalManager dalManager = DalFactory.GetManager();
+            using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEMailDal>();
 
             dal.Delete(id);

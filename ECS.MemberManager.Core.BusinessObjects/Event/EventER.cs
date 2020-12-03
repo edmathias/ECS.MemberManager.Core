@@ -14,10 +14,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
         public int Id
         {
-            get { return GetProperty(IdProperty); }
-            private set { LoadProperty(IdProperty, value); }
+            get => GetProperty(IdProperty);
+            private set => LoadProperty(IdProperty, value);
         }
 
+        //TODO: rest of properties for Event
+        
         protected override void AddBusinessRules()
         {
             base.AddBusinessRules();
@@ -55,17 +57,18 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access
 
         [RunLocal]
-        protected override void DataPortal_Create()
+        [Create]
+        private void Create()
         {
             // omit if no defaults to set
 
             base.DataPortal_Create();
         }
 
-        [Transactional(TransactionalTypes.TransactionScope)]
-        private void DataPortal_Fetch(int id)
+        [Fetch] 
+        private void Fetch(int id)
         {
-            using IDalManager dalManager = DalFactory.GetManager();
+            using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEventDal>();
             var data = dal.Fetch(id);
             using (BypassPropertyChecks)
@@ -75,10 +78,10 @@ namespace ECS.MemberManager.Core.BusinessObjects
             }
         }
 
-        [Transactional(TransactionalTypes.TransactionScope)]
-        protected override void DataPortal_Insert()
+        [Insert]
+        private void Insert()
         {
-            using IDalManager dalManager = DalFactory.GetManager();
+            using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEventDal>();
             using (BypassPropertyChecks)
             {
@@ -87,10 +90,10 @@ namespace ECS.MemberManager.Core.BusinessObjects
             }
         }
 
-        [Transactional(TransactionalTypes.TransactionScope)]
-        protected override void DataPortal_Update()
+        [Update]
+        private void Update()
         {
-            using IDalManager dalManager = DalFactory.GetManager();
+            using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEventDal>();
             using (BypassPropertyChecks)
             {
@@ -98,16 +101,16 @@ namespace ECS.MemberManager.Core.BusinessObjects
             }
         }
 
-        [Transactional(TransactionalTypes.TransactionScope)]
-        protected override void DataPortal_DeleteSelf()
+        [DeleteSelf]
+        private void DeleteSelf()
         {
-            DataPortal_Delete(this.Id);
+            Delete(this.Id);
         }
 
-        [Transactional(TransactionalTypes.TransactionScope)]
-        private void DataPortal_Delete(int id)
+        [Delete]
+        private void Delete(int id)
         {
-            using IDalManager dalManager = DalFactory.GetManager();
+            using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEventDal>();
 
             dal.Delete(id);

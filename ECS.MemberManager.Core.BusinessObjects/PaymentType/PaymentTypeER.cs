@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
-using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
@@ -16,23 +15,23 @@ namespace ECS.MemberManager.Core.BusinessObjects
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
         public int Id
         {
-            get { return GetProperty(IdProperty); }
-            private set { LoadProperty(IdProperty, value); }
+            get => GetProperty(IdProperty);
+            private set => LoadProperty(IdProperty, value);
         }
 
         public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(p => p.Description);
         [Required,MaxLength(50)]
         public string Description
         {
-            get { return GetProperty(DescriptionProperty); }
-            set { SetProperty(DescriptionProperty, value); }
+            get => GetProperty(DescriptionProperty);
+            set => SetProperty(DescriptionProperty, value);
         }
 
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
         public string Notes
         {
-            get { return GetProperty(NotesProperty); }
-            set { SetProperty(NotesProperty, value); }
+            get => GetProperty(NotesProperty);
+            set => SetProperty(NotesProperty, value);
         }
         
         #endregion
@@ -60,7 +59,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [Fetch]       
         private void Fetch(int id)
         {
-            using IDalManager dalManager = DalFactory.GetManager();
+            using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IPaymentTypeDal>();
             var data = dal.Fetch(id);
             using (BypassPropertyChecks)
@@ -74,7 +73,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [Insert]
         private void Insert()
         {
-            using IDalManager dalManager = DalFactory.GetManager();
+            using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IPaymentTypeDal>();
             using (BypassPropertyChecks)
             {
@@ -90,7 +89,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [Update]
         private void Update()
         {
-            using IDalManager dalManager = DalFactory.GetManager();
+            using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IPaymentTypeDal>();
             using (BypassPropertyChecks)
             {
@@ -114,7 +113,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [Delete]
         private void Delete(int id)
         {
-            using IDalManager dalManager = DalFactory.GetManager();
+            using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IPaymentTypeDal>();
  
             dal.Delete(id);

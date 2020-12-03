@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using Csla;
 using ECS.MemberManager.Core.EF.Domain;
 
@@ -15,22 +14,22 @@ namespace ECS.MemberManager.Core.BusinessObjects
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
         public int Id
         {
-            get { return GetProperty(IdProperty); }
-            private set { LoadProperty(IdProperty, value); }
+            get => GetProperty(IdProperty);
+            private set => LoadProperty(IdProperty, value);
         }
         
         public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(p => p.Description);
         public string Description
         {
-            get { return GetProperty(DescriptionProperty); }
-            private set { LoadProperty(DescriptionProperty, value); }
+            get => GetProperty(DescriptionProperty);
+            private set => LoadProperty(DescriptionProperty, value);
         }
 
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
         public string Notes
         {
-            get { return GetProperty(NotesProperty); }
-            private set { LoadProperty(NotesProperty, value); }
+            get => GetProperty(NotesProperty);
+            private set => LoadProperty(NotesProperty, value);
         }
 
         protected override void AddBusinessRules()

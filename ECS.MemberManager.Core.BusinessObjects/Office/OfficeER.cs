@@ -16,69 +16,69 @@ namespace ECS.MemberManager.Core.BusinessObjects
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
         public int Id
         {
-            get { return GetProperty(IdProperty); }
-            private set { LoadProperty(IdProperty, value); }
+            get => GetProperty(IdProperty);
+            private set => LoadProperty(IdProperty, value);
         }
        
         public static readonly PropertyInfo<string> NameProperty = RegisterProperty<string>(p => p.Name);
         [Required,MaxLength(50)]
         public string Name
         {
-            get { return GetProperty(NameProperty); }
-            set { SetProperty(NameProperty, value); }
+            get => GetProperty(NameProperty);
+            set => SetProperty(NameProperty, value);
         }
         
         public static readonly PropertyInfo<int> TermProperty = RegisterProperty<int>(p => p.Term);
         public int Term
         {
-            get { return GetProperty(TermProperty); }
-            set { SetProperty(TermProperty, value); }
+            get => GetProperty(TermProperty);
+            set => SetProperty(TermProperty, value);
         }
 
         [MaxLength(25)]
         public static readonly PropertyInfo<string> CalendarPeriodProperty = RegisterProperty<string>(p => p.CalendarPeriod);
         public string CalendarPeriod
         {
-            get { return GetProperty(CalendarPeriodProperty); }
-            set { SetProperty(CalendarPeriodProperty, value); }
+            get => GetProperty(CalendarPeriodProperty);
+            set => SetProperty(CalendarPeriodProperty, value);
         }
 
         public static readonly PropertyInfo<int> ChosenHowProperty = RegisterProperty<int>(p => p.ChosenHow);
         public int ChosenHow
         {
-            get { return GetProperty(ChosenHowProperty); }
-            set { SetProperty(ChosenHowProperty, value); }
+            get => GetProperty(ChosenHowProperty);
+            set => SetProperty(ChosenHowProperty, value);
         }
 
         public static readonly PropertyInfo<string> AppointerProperty = RegisterProperty<string>(p => p.Appointer);
         [MaxLength(50)]
         public string Appointer
         {
-            get { return GetProperty(AppointerProperty); }
-            set { SetProperty(AppointerProperty, value); }
+            get => GetProperty(AppointerProperty);
+            set => SetProperty(AppointerProperty, value);
         }
 
         public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(p => p.LastUpdatedBy);
         [Required,MaxLength(255)]
         public string LastUpdatedBy
         {
-            get { return GetProperty(LastUpdatedByProperty); }
-            set { SetProperty(LastUpdatedByProperty, value); }
+            get => GetProperty(LastUpdatedByProperty);
+            set => SetProperty(LastUpdatedByProperty, value);
         }
 
         public static readonly PropertyInfo<DateTime> LastUpdatedDateProperty = RegisterProperty<DateTime>(p => p.LastUpdatedDate);
         [Required]
         public DateTime LastUpdatedDate
         {
-            get { return GetProperty(LastUpdatedDateProperty); }
-            set { SetProperty(LastUpdatedDateProperty, value); }
+            get => GetProperty(LastUpdatedDateProperty);
+            set => SetProperty(LastUpdatedDateProperty, value);
         }
 
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
         public string Notes
         {
-            get { return GetProperty(NotesProperty); }
-            set { SetProperty(NotesProperty, value); }
+            get => GetProperty(NotesProperty);
+            set => SetProperty(NotesProperty, value);
         }
 
         // TODO: add public properties and methods
@@ -101,17 +101,17 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        public async static Task<OfficeER> NewOffice()
+        public static async Task<OfficeER> NewOffice()
         {
             return await DataPortal.CreateAsync<OfficeER>();
         }
 
-        public async static Task<OfficeER> GetOffice(int id)
+        public static async Task<OfficeER> GetOffice(int id)
         {
             return await DataPortal.FetchAsync<OfficeER>(id);
         }
 
-        public async static Task DeleteOffice(int id)
+        public static async Task DeleteOffice(int id)
         {
             await DataPortal.DeleteAsync<OfficeER>(id);
         }
@@ -123,7 +123,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [Fetch]
         private void Fetch(int id)
         {
-            using IDalManager dalManager = DalFactory.GetManager();
+            using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IOfficeDal>();
             var data = dal.Fetch(id);
             using (BypassPropertyChecks)
@@ -143,7 +143,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [Insert]
         private void Insert()
         {
-            using IDalManager dalManager = DalFactory.GetManager();
+            using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider <IOfficeDal> ();
             using (BypassPropertyChecks)
             {
@@ -166,7 +166,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [Update]
         private void Update()
         {
-            using IDalManager dalManager = DalFactory.GetManager();
+            using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider <IOfficeDal>();
             var officeToUpdate = dal.Fetch(this.Id);
             
@@ -193,7 +193,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [Delete]
         private void Delete(int id)
         {
-            using IDalManager dalManager = DalFactory.GetManager();
+            using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider <IOfficeDal>();
 
             dal.Delete(id);

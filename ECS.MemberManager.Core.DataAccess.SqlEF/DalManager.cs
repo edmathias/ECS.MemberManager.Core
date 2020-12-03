@@ -1,7 +1,4 @@
 ﻿using System;
-using Csla.Data;
-using ECS.MemberManager.Core.EF.Data;
-using Microsoft.Data.SqlClient;
 
 namespace ECS.MemberManager.Core.DataAccess.SqlEF
 {
@@ -9,10 +6,6 @@ namespace ECS.MemberManager.Core.DataAccess.SqlEF
     {
             
         private static readonly string _typeMask = typeof(DalManager).FullName.Replace("DalManager", @"{0}");
-
-        public DalManager()
-        {
-        }
 
         public void Dispose()
         {

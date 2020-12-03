@@ -6,12 +6,12 @@ namespace ECS.MemberManager.Core.DataAccess
     public static class DalFactory
     {
         private static Type _dalType;
-        private static IConfigurationRoot _configurationRoot;
+        private static readonly IConfigurationRoot _configurationRoot;
 
         static DalFactory()
         {
-            ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-            configurationBuilder.AddJsonFile($"appsettings.json", optional: true, reloadOnChange: true);
+            var configurationBuilder = new ConfigurationBuilder();
+            configurationBuilder.AddJsonFile("appsettings.json", optional: true, true);
             _configurationRoot    =  configurationBuilder.Build();
             
         }
@@ -30,7 +30,7 @@ namespace ECS.MemberManager.Core.DataAccess
                     throw new NullReferenceException("DalManagerType");
 
                 if (_dalType == null)
-                    throw new ArgumentException(string.Format("Type {0} could not be found",dalTypeName));
+                    throw new ArgumentException($"Type {dalTypeName} could not be found");
             }
 
             return (IDalManager) Activator.CreateInstance(_dalType);

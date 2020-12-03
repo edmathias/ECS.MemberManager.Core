@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.BizBricks.CRM.Core.EF.Domain
 {

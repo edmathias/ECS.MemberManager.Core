@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
@@ -8,7 +9,6 @@ namespace ECS.MemberManager.Core.DataAccess.SqlEF
     {
         public void Dispose()
         {
-            throw new System.NotImplementedException();
         }
 
         public List<EMail> Fetch()

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
-using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
@@ -16,23 +15,23 @@ namespace ECS.MemberManager.Core.BusinessObjects
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
         public int Id
         {
-            get { return GetProperty(IdProperty); }
-            private set { LoadProperty(IdProperty, value); }
+            get => GetProperty(IdProperty);
+            private set => LoadProperty(IdProperty, value);
         }
 
         [Required, MaxLength(35)]
         public static readonly PropertyInfo<string> NameProperty = RegisterProperty<string>(p => p.Name);
         public string Name
         {
-            get { return GetProperty(NameProperty); }
-            set { SetProperty(NameProperty, value); }
+            get => GetProperty(NameProperty);
+            set => SetProperty(NameProperty, value);
         }
 
         public static readonly PropertyInfo<int> DisplayOrderProperty = RegisterProperty<int>(p => p.DisplayOrder);
         public int DisplayOrder
         {
-            get { return GetProperty(DisplayOrderProperty); }
-            set { SetProperty(DisplayOrderProperty, value); }
+            get => GetProperty(DisplayOrderProperty);
+            set => SetProperty(DisplayOrderProperty, value);
         }
 
         protected override void AddBusinessRules()
@@ -52,17 +51,17 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        public async static Task<CategoryOfOrganizationER> NewCategoryOfOrganization()
+        public static async Task<CategoryOfOrganizationER> NewCategoryOfOrganization()
         {
             return await DataPortal.CreateAsync<CategoryOfOrganizationER>();
         }
 
-        public async static Task<CategoryOfOrganizationER> GetCategoryOfOrganization(int id)
+        public static async Task<CategoryOfOrganizationER> GetCategoryOfOrganization(int id)
         {
             return await DataPortal.FetchAsync<CategoryOfOrganizationER>(id);
         }
 
-        public async static Task DeleteCategoryOfOrganization(int id)
+        public static async Task DeleteCategoryOfOrganization(int id)
         {
             await DataPortal.DeleteAsync<CategoryOfOrganizationER>(id);
         }
@@ -74,7 +73,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [Fetch]
         private void Fetch(int id)
         {
-            using IDalManager dalManager = DalFactory.GetManager();
+            using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<ICategoryOfOrganizationDal>();
             var data = dal.Fetch(id);
             using (BypassPropertyChecks)
@@ -88,7 +87,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [Insert]
         private void Insert()
         {
-            using IDalManager dalManager = DalFactory.GetManager();
+            using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<ICategoryOfOrganizationDal>();
             using (BypassPropertyChecks)
             {
@@ -106,7 +105,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [Update]
         private void Update()
         {
-            using IDalManager dalManager = DalFactory.GetManager();
+            using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<ICategoryOfOrganizationDal>();
             using (BypassPropertyChecks)
             {
@@ -129,7 +128,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [Delete]
         private void Delete(int id)
         {
-            using IDalManager dalManager = DalFactory.GetManager();
+            using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<CategoryOfOrganizationER>();
  
             dal.Delete(id);

@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Csla;
-using Csla.Rules.CommonRules;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
 
@@ -16,46 +15,46 @@ namespace ECS.MemberManager.Core.BusinessObjects
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
         public int Id
         {
-            get { return GetProperty(IdProperty); }
-            private set { LoadProperty(IdProperty, value); }
+            get => GetProperty(IdProperty);
+            private set => LoadProperty(IdProperty, value);
         }
 
         public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(p => p.Description);
         [Required, MaxLength(50)]
         public string Description
         {
-            get { return GetProperty(DescriptionProperty); }
-            set { SetProperty(DescriptionProperty, value); }
+            get => GetProperty(DescriptionProperty);
+            set => SetProperty(DescriptionProperty, value);
         }
       
         public static readonly PropertyInfo<int> LevelProperty = RegisterProperty<int>(p => p.Level);
         public int Level
         {
-            get { return GetProperty(LevelProperty); }
-            set { SetProperty(LevelProperty, value); }
+            get => GetProperty(LevelProperty);
+            set => SetProperty(LevelProperty, value);
         }
 
         public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(p => p.LastUpdatedBy);
         [Required,MaxLength(255)]
         public string LastUpdatedBy
         {
-            get { return GetProperty(LastUpdatedByProperty); }
-            set { SetProperty(LastUpdatedByProperty, value); }
+            get => GetProperty(LastUpdatedByProperty);
+            set => SetProperty(LastUpdatedByProperty, value);
         }
 
         public static readonly PropertyInfo<DateTime> LastUpdatedDateProperty = RegisterProperty<DateTime>(p => p.LastUpdatedDate);
         [Required]
         public DateTime LastUpdatedDate
         {
-            get { return GetProperty(LastUpdatedDateProperty); }
-            set { SetProperty(LastUpdatedDateProperty, value); }
+            get => GetProperty(LastUpdatedDateProperty);
+            set => SetProperty(LastUpdatedDateProperty, value);
         }
 
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
         public string Notes
         {
-            get { return GetProperty(NotesProperty); }
-            set { SetProperty(NotesProperty, value); }
+            get => GetProperty(NotesProperty);
+            set => SetProperty(NotesProperty, value);
         }
         
         #endregion
@@ -84,7 +83,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [Fetch]
         private void Fetch(int id)
         {
-            using IDalManager dalManager = DalFactory.GetManager();
+            using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IMembershipTypeDal>();
             var data = dal.Fetch(id);
             using (BypassPropertyChecks)
@@ -101,7 +100,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [Insert]
         private void Insert()
         {
-            using IDalManager dalManager = DalFactory.GetManager();
+            using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IMembershipTypeDal>();
             var documentTypeToInsert = new ECS.MemberManager.Core.EF.Domain.MembershipType();
             using (BypassPropertyChecks)
@@ -118,7 +117,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [Update] 
         private void Update()
         {
-            using IDalManager dalManager = DalFactory.GetManager();
+            using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IMembershipTypeDal>();
             var documentTypeToUpdate = dal.Fetch(Id);
             using (BypassPropertyChecks)
@@ -142,7 +141,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [Delete]
         private void Delete(int id)
         {
-            using IDalManager dalManager = DalFactory.GetManager();
+            using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IMembershipTypeDal>();
  
             dal.Delete(id);
