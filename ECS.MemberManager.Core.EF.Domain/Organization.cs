@@ -4,9 +4,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ECS.MemberManager.Core.EF.Domain
 {
-    public class Organization
+    public class Organization : EntityBase
     {
-        public int Id { get; set; }
         [Required,MaxLength(255)]
         public string Name { get; set; }
         [Required]

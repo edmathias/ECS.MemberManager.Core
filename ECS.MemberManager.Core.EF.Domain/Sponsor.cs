@@ -1,12 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using ECS.BizBricks.CRM.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.EF.Domain
 {
-    public class Sponsor
+    public class Sponsor : EntityBase
     {
-        public int Id { get; set; }
         public Person Person { get; set; }
         public Organization Organization { get; set; }
         [MaxLength(50)]

@@ -3,9 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ECS.MemberManager.Core.EF.Domain
 {
-    public class EventMember
+    public class EventMember : EntityBase
     {
-        public int Id { get; set; }
         [Required]
         public MemberInfo MemberInfo { get; set; }
         [Required]

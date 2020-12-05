@@ -43,7 +43,7 @@ namespace ECS.MemberManager.Core.DataAccess.SqlEF
             return eMailTypeToInsert.Id;
         }
 
-        public void Update(EMailType eMailTypeToUpdate)
+        public int Update(EMailType eMailTypeToUpdate)
         {
             using var ctx = DbContextManager<MembershipManagerDataContext>.GetManager();
             ctx.DbContext.EMailTypes.Update(eMailTypeToUpdate);
@@ -54,6 +54,8 @@ namespace ECS.MemberManager.Core.DataAccess.SqlEF
             {
                 throw new InvalidOperationException("EMailTypeDal Insert");
             }
+
+            return count;
         }
 
         public void Delete(int id)

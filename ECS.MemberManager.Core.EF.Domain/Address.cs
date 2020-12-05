@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using ECS.BizBricks.CRM.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.EF.Domain
 {
-    public class Address
+    public class Address : EntityBase
     {
-        public int Id { get; set; }
         [Required, MaxLength(35)]
         public string Address1 { get; set; }
         [MaxLength(35)]

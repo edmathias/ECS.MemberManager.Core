@@ -1,12 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using ECS.BizBricks.CRM.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.EF.Domain
 {
-    public class ContactForSponsor
+    public class ContactForSponsor : EntityBase
     {
-        public int Id { get; set; }
         [Required]
         public Sponsor Sponsor { get; set; }
         public DateTime DateWhenContacted { get; set; }

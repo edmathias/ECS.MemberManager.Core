@@ -3,9 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ECS.MemberManager.Core.EF.Domain
 {
-    public class EventDocument
+    public class EventDocument : EntityBase
     {
-        public int Id { get; set; }
         [Required]
         public Event Event { get; set; }
         [MaxLength(50)]

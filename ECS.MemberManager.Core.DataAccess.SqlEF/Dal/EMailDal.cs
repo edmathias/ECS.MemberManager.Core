@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Csla.Data.EntityFrameworkCore;
 using ECS.MemberManager.Core.DataAccess.Dal;
+using ECS.MemberManager.Core.EF.Data;
 using ECS.MemberManager.Core.EF.Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECS.MemberManager.Core.DataAccess.SqlEF
 {
@@ -13,28 +17,49 @@ namespace ECS.MemberManager.Core.DataAccess.SqlEF
 
         public List<EMail> Fetch()
         {
-            
-            throw new System.NotImplementedException();
+            using var ctx = DbContextManager<MembershipManagerDataContext>.GetManager().DbContext;
+            return ctx.EMails.Include(et => et.EMailType).ToList();
         }
 
         public EMail Fetch(int id)
         {
-            throw new System.NotImplementedException();
+            using var ctx = DbContextManager<MembershipManagerDataContext>.GetManager().DbContext;
+            var emailDto = ctx.EMails.Include(et => et.EMailType).FirstOrDefault(e => e.Id == id);
+            
+            if(emailDto == null) throw new ArgumentException($"EMail id = {id} is not found");
+
+            return emailDto;
         }
 
         public int Insert(EMail eMailToInsert)
         {
-            throw new System.NotImplementedException();
+            using var ctx = DbContextManager<MembershipManagerDataContext>.GetManager().DbContext;
+            ctx.EMails.Add(eMailToInsert);
+            var recordsAffected = ctx.SaveChanges();
+            
+            return recordsAffected;
         }
 
-        public void Update(EMail eMailToUpdate)
+        public int Update(EMail eMailToUpdate)
         {
-            throw new System.NotImplementedException();
+            using var ctx = DbContextManager<MembershipManagerDataContext>.GetManager().DbContext;
+            ctx.EMails.Update(eMailToUpdate);
+
+            int recordsAffected = ctx.SaveChanges();
+
+            return recordsAffected;
+
         }
 
         public void Delete(int id)
         {
-            throw new System.NotImplementedException();
+            using var ctx = DbContextManager<MembershipManagerDataContext>.GetManager().DbContext;
+            var emailToDelete = ctx.EMails.FirstOrDefault(e => e.Id == id);
+            
+            if(emailToDelete == null) throw new ArgumentException($"Email with id of {id} to delete was not found");
+
+            ctx.EMails.Remove(emailToDelete);
+            ctx.SaveChanges();
         }
     }
 }

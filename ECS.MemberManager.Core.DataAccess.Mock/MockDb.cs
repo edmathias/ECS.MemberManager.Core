@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using ECS.BizBricks.CRM.Core.EF.Domain;
 using ECS.MemberManager.Core.EF.Domain;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 namespace ECS.MemberManager.Core.DataAccess.Mock
 {

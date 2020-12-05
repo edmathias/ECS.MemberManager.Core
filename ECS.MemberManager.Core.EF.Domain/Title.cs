@@ -2,9 +2,8 @@
 
 namespace ECS.MemberManager.Core.EF.Domain
 {
-    public class Title
+    public class Title : EntityBase
     {
-        [Key] public int Id { get; set; }
         [Required,MaxLength(10)] public string Abbreviation { get; set; }
         [MaxLength(50)] public string Description { get; set; }
         public int DisplayOrder { get; set; }

@@ -3,9 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ECS.MemberManager.Core.EF.Domain
 {
-    public class TaskForEvent
+    public class TaskForEvent : EntityBase
     {
-        public int Id { get; set; }
         [Required] public Event Event { get; set; }
         [Required, MaxLength(50)] public string TaskName { get; set; }
         public DateTime PlannedDate { get; set; }

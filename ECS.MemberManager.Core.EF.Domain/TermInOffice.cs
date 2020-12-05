@@ -1,12 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using ECS.BizBricks.CRM.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.EF.Domain
 {
-    public class TermInOffice
+    public class TermInOffice : EntityBase
     {
-        public int Id { get; set; }
         public Person Person { get; set; }
         public Office Office { get; set; }
         public DateTime StartDate { get; set; }

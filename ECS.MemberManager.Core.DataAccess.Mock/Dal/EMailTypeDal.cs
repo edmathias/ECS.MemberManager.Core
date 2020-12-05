@@ -27,9 +27,10 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             return eMailType.Id;
         }
 
-        public void Update(EMailType eMailType)
+        public int Update(EMailType eMailType)
         {
-            // mockdb in memory list reference already updated 
+            // mockdb in memory list reference already updated
+            return 1;
         }
 
         public void Delete(int id)

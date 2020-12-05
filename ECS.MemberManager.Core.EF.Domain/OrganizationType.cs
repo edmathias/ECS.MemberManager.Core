@@ -2,9 +2,8 @@
 
 namespace ECS.MemberManager.Core.EF.Domain
 {
-    public class OrganizationType
+    public class OrganizationType : EntityBase
     {
-        public int Id { get; set; }
         [Required]
         public CategoryOfOrganization CategoryOfOrganization { get; set; }
         [Required, MaxLength(50)]

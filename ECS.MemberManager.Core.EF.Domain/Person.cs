@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using ECS.MemberManager.Core.EF.Domain;
 
-namespace ECS.BizBricks.CRM.Core.EF.Domain
+namespace ECS.MemberManager.Core.EF.Domain
 {
-    public class Person
+    public class Person : EntityBase
     {
-        public int Id { get; set; }
         [Required]
         public Title Title { get; set; }
         [Required,MaxLength(50)]

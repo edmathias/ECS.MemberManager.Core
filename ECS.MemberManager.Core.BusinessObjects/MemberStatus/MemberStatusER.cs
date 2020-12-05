@@ -113,7 +113,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             dal.Delete(id);
         }
         
-    #endregion
+        #endregion
         
     }
 }

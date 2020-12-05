@@ -9,7 +9,7 @@ namespace ECS.MemberManager.Core.DataAccess.Dal
         List<EMailType> Fetch();
         EMailType Fetch(int id);
         int Insert(EMailType eMailTypeToInsert);
-        void Update(EMailType eMailTypeToUpdate);
+        int Update(EMailType eMailTypeToUpdate);
         void Delete(int id);
     }
 }

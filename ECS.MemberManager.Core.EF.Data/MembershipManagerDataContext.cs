@@ -1,9 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using ECS.BizBricks.CRM.Core.EF.Domain;
-using ECS.MemberManager.Core.EF.Domain;
+﻿using ECS.MemberManager.Core.EF.Domain;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
 
 namespace ECS.MemberManager.Core.EF.Data

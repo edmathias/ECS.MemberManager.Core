@@ -2,9 +2,8 @@
 
 namespace ECS.MemberManager.Core.EF.Domain
 {
-    public class PaymentType
+    public class PaymentType : EntityBase
     {
-        public int Id { get; set; }
         [Required, MaxLength(50)]
         public string Description { get; set; }
         public string Notes { get; set; }

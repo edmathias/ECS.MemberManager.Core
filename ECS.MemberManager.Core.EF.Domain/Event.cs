@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using ECS.BizBricks.CRM.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.EF.Domain
 {
-    public class Event
+    public class Event : EntityBase
     {
-        public int Id { get; set; }
         [Required,MaxLength(255)]
         public string EventName { get; set; }
         public string Description { get; set; }

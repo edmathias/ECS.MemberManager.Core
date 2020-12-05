@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using ECS.BizBricks.CRM.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.EF.Domain
 {
-    public class Phone
+    public class Phone : EntityBase
     {
-        public int Id { get; set; }
         [MaxLength(10)]
         public string PhoneType { get; set; }
         [Required,MaxLength(3)]
