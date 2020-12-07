@@ -65,9 +65,23 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             Titles = GetTitles();
         }    
         
-        private static IList<Address> GetAddressRecords() 
+        private static IList<Address> GetAddressRecords()
         {
-            return new List<Address>();
+            return new List<Address>
+            {
+                new Address()
+                {
+                    Id = 1, Address1 = "8321 Oxford Drive", Address2 = "Apt 103", City = "Greendale",
+                    State = "WI", PostCode = "53129", LastUpdatedBy = "edm",
+                    LastUpdatedDate = DateTime.Now
+                },
+                new Address()
+                {
+                    Id = 2, Address1 = "921 S. Brittany Way", City = "Englewood",
+                    State = "CO", PostCode = "80112", LastUpdatedBy = "edm",
+                    LastUpdatedDate = DateTime.Now
+                }
+            };
         }
 
         private static IList<CategoryOfOrganization> GetCategoryOfOrganizationRecords()

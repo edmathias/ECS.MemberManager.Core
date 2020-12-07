@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
@@ -87,19 +88,19 @@ namespace ECS.MemberManager.Core.BusinessObjects
         
         #region Factory Methods
         
-        public static AddressER NewAddress()
+        public static async Task<AddressER> NewAddress()
         {
-            return DataPortal.Create<AddressER>();
+            return await DataPortal.CreateAsync<AddressER>();
         }
 
-        public static AddressER GetAddress(int id)
+        public static async Task<AddressER> GetAddress(int id)
         {
-            return DataPortal.Fetch<AddressER>(id);
+            return await DataPortal.FetchAsync<AddressER>(id);
         }
 
-        public static void DeleteAddress(int id)
+        public static async Task DeleteAddress(int id)
         {
-            DataPortal.Delete<AddressER>(id);
+            await DataPortal.DeleteAsync<AddressER>(id);
         }
        
         #endregion
