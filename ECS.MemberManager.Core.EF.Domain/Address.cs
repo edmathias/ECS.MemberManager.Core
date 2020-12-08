@@ -20,8 +20,8 @@ namespace ECS.MemberManager.Core.EF.Domain
         [MaxLength(255)]
         public string LastUpdatedBy { get; set; }
         public DateTime LastUpdatedDate { get; set; }
-        public IList<Organization> Organizations { get; set; }
-        public IList<Person> Persons { get; set; }
+        public IList<Organization> Organizations { get; set; } = new List<Organization>();
+        public IList<Person> Persons { get; set; } = new List<Person>();
     }
 
 }

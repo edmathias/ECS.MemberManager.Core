@@ -86,12 +86,40 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         private static IList<CategoryOfOrganization> GetCategoryOfOrganizationRecords()
         {
-           return new List<CategoryOfOrganization>();
+            return new List<CategoryOfOrganization>()
+            {
+                new CategoryOfOrganization()
+                {
+                    Id = 1,
+                    Category = "Org Category 1",
+                    DisplayOrder = 0
+                },
+                new CategoryOfOrganization()
+                {
+                    Id = 2,
+                    Category = "Org Category 2",
+                    DisplayOrder = 1
+                }
+            };
         }
 
         private static IList<CategoryOfPerson> GetCategoryOfPersons()
         {
-            return new List<CategoryOfPerson>();
+            return new List<CategoryOfPerson>()
+            {
+                new CategoryOfPerson()
+                {
+                    Id = 1,
+                    Category = "Person Category 1",
+                    DisplayOrder = 0
+                },
+                new CategoryOfPerson()
+                {
+                    Id = 2,
+                    Category = "Org Category 2",
+                    DisplayOrder = 1
+                }
+            };
         }
 
         private static IList<ContactForSponsor> GetContactForSponsors()

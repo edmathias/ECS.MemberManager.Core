@@ -1,8 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
+using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
@@ -18,8 +21,56 @@ namespace ECS.MemberManager.Core.BusinessObjects
             private set => LoadProperty(IdProperty, value);
         }
 
-        //TODO: rest of properties for Event
+        public static readonly PropertyInfo<string> EventNameProperty = RegisterProperty<string>(p => p.EventName);
+        [Required, MaxLength(255)]
+        public string EventName
+        {
+            get => GetProperty(EventNameProperty);
+            set => SetProperty(EventNameProperty, value);
+        }
         
+        public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(p => p.Description);
+        public string Description
+        {
+            get => GetProperty(DescriptionProperty);
+            set => SetProperty(DescriptionProperty, value);
+        }
+
+        public static readonly PropertyInfo<bool> IsOneTimeProperty = RegisterProperty<bool>(p => p.IsOneTime);
+        public bool IsOneTime
+        {
+            get => GetProperty(IsOneTimeProperty);
+            set => SetProperty(IsOneTimeProperty, value);
+        }
+
+        public static readonly PropertyInfo<SmartDate> NextDateProperty = RegisterProperty<SmartDate>(p => p.NextDate);
+        public SmartDate NextDate
+        {
+            get => GetProperty(NextDateProperty);
+            set => SetProperty(NextDateProperty, value);
+        }
+
+        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(p => p.LastUpdatedBy);
+        public string LastUpdatedBy
+        {
+            get => GetProperty(LastUpdatedByProperty);
+            set => SetProperty(LastUpdatedByProperty, value);
+        }
+
+        public static readonly PropertyInfo<DateTime> LastUpdatedDateProperty = RegisterProperty<DateTime>(p => p.LastUpdatedDate);
+        public DateTime LastUpdatedDate
+        {
+            get => GetProperty(LastUpdatedDateProperty);
+            set => SetProperty(LastUpdatedDateProperty, value);
+        }
+
+        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
+        public string Notes
+        {
+            get => GetProperty(NotesProperty);
+            set => SetProperty(NotesProperty, value);
+        }
+
         protected override void AddBusinessRules()
         {
             base.AddBusinessRules();
@@ -37,33 +88,24 @@ namespace ECS.MemberManager.Core.BusinessObjects
         
         #region Factory Methods
 
-        public static EventER NewEventER()
+        public static async Task<EventER> NewEvent()
         {
-            return DataPortal.Create<EventER>();
+            return await DataPortal.CreateAsync<EventER>();
         }
 
-        public static EventER GetEventER(int id)
+        public static async Task<EventER> GetEvent(int id)
         {
-            return DataPortal.Fetch<EventER>(id);
+            return await DataPortal.FetchAsync<EventER>(id);
         }
 
-        public static void DeleteEventER(int id)
+        public static async Task DeleteEvent(int id)
         {
-            DataPortal.Delete<EventER>(id);
+            await DataPortal.DeleteAsync<EventER>(id);
         }
 
         #endregion
 
         #region Data Access
-
-        [RunLocal]
-        [Create]
-        private void Create()
-        {
-            // omit if no defaults to set
-
-            base.DataPortal_Create();
-        }
 
         [Fetch] 
         private void Fetch(int id)
@@ -74,7 +116,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
             using (BypassPropertyChecks)
             {
                 Id = data.Id;
-
+                EventName = data.EventName;
+                Description = data.Description;
+                NextDate = data.NextDate;
+                IsOneTime = data.IsOneTime;
+                LastUpdatedDate = data.LastUpdatedDate;
+                LastUpdatedBy = data.LastUpdatedBy;
+                Notes = data.Notes;
             }
         }
 
@@ -85,8 +133,18 @@ namespace ECS.MemberManager.Core.BusinessObjects
             var dal = dalManager.GetProvider<IEventDal>();
             using (BypassPropertyChecks)
             {
-                // format and store dto 
+                var eventToInsert = new Event()
+                {
+                    EventName = EventName,
+                    Description = Description,
+                    IsOneTime = IsOneTime,
+                    NextDate = NextDate,
+                    LastUpdatedBy = LastUpdatedBy,
+                    LastUpdatedDate = LastUpdatedDate,
+                    Notes = Notes
+                };
 
+                Id = dal.Insert(eventToInsert);
             }
         }
 
@@ -97,14 +155,25 @@ namespace ECS.MemberManager.Core.BusinessObjects
             var dal = dalManager.GetProvider<IEventDal>();
             using (BypassPropertyChecks)
             {
-                // format dto and update dal 
+                var eventToUpdate = new Event()
+                {
+                    EventName = EventName,
+                    Description = Description,
+                    IsOneTime = IsOneTime,
+                    NextDate = NextDate,
+                    LastUpdatedBy = LastUpdatedBy,
+                    LastUpdatedDate = LastUpdatedDate,
+                    Notes = Notes
+                };
+                
+                dal.Update(eventToUpdate);
             }
         }
 
         [DeleteSelf]
         private void DeleteSelf()
         {
-            Delete(this.Id);
+            Delete(Id);
         }
 
         [Delete]

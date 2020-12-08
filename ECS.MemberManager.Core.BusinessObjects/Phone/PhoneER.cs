@@ -1,5 +1,7 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
@@ -79,24 +81,38 @@ namespace ECS.MemberManager.Core.BusinessObjects
             get => GetProperty(NotesProperty);
             set => SetProperty(NotesProperty, value);
         }
+
+        protected override void AddBusinessRules()
+        {
+            base.AddBusinessRules();
+
+            // TODO: add business rules
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static void AddObjectAuthorizationRules()
+        {
+            // TODO: add object-level authorization rules
+        }
+
         
         #endregion
         
         #region Factory Methods
 
-        public static PhoneER NewPhoneER()
+        public static async Task<PhoneER> NewPhone()
         {
-            return DataPortal.Create<PhoneER>();
+            return await DataPortal.CreateAsync<PhoneER>();
         }
 
-        public static PhoneER GetPhoneER(int id)
+        public static async Task<PhoneER> GetPhone(int id)
         {
-            return DataPortal.Fetch<PhoneER>(id);
+            return await DataPortal.FetchAsync<PhoneER>(id);
         }
 
-        public static void DeletePhoneER(int id)
+        public static async Task DeletePhone(int id)
         {
-            DataPortal.Delete<PhoneER>(id);
+            await DataPortal.DeleteAsync<PhoneER>(id);
         }
         
         #endregion

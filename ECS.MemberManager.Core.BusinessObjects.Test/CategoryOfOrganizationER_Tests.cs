@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ECS.MemberManager.Core.BusinessObjects.Test
 {
+    [TestClass]
     public class CategoryOfOrganizationER_Tests
     {
        [TestMethod]
@@ -44,7 +45,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
         public async Task TestCategoryOfOrganizationER_InsertNewObjectIntoDatabase()
         {
             var documentType = await CategoryOfOrganizationER.NewCategoryOfOrganization();
-            documentType.Name = "Category 1";
+            documentType.Category = "Category 1";
 
             var savedCategoryOfOrganization = documentType.Save();
            
@@ -65,11 +66,13 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
         
         // test invalid state 
         [TestMethod]
-        public async Task TestCategoryOfOrganizationER_NameRequired() 
+        public async Task TestCategoryOfOrganizationER_CategoryRequired() 
         {
             var documentType = await CategoryOfOrganizationER.NewCategoryOfOrganization();
-            documentType.Name = String.Empty;
+            documentType.Category = "Valid category";
+            documentType.DisplayOrder = 1;
             var isObjectValidInit = documentType.IsValid;
+            documentType.Category = String.Empty;
 
             Assert.IsNotNull(documentType);
             Assert.IsTrue(isObjectValidInit);
@@ -77,19 +80,20 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
         }
        
         [TestMethod]
-        public async Task TestCategoryOfOrganizationER_DescriptionExceedsMaxLengthOf35()
+        public async Task TestCategoryOfOrganizationER_CategoryExceedsMaxLengthOf35()
         {
             var documentType = await CategoryOfOrganizationER.NewCategoryOfOrganization();
+            documentType.Category = "valid category";
             Assert.IsTrue(documentType.IsValid);
 
-            documentType.Name =
+            documentType.Category =
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
                 "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis ";
 
             Assert.IsNotNull(documentType);
             Assert.IsFalse(documentType.IsValid);
             Assert.AreEqual(documentType.BrokenRulesCollection[0].Description,
-                "The field Name must be a string or array type with a maximum length of '35'.");
+                "The field Category must be a string or array type with a maximum length of '35'.");
  
         }        
         // test exception if attempt to save in invalid state
@@ -98,7 +102,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
         public async Task TestCategoryOfOrganizationER_TestInvalidSave()
         {
             var documentType = await CategoryOfOrganizationER.NewCategoryOfOrganization();
-            documentType.Name = String.Empty;
+            documentType.Category = String.Empty;
             CategoryOfOrganizationER savedCategoryOfOrganization = null;
                 
             Assert.IsFalse(documentType.IsValid);

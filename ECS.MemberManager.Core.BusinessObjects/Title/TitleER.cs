@@ -10,7 +10,7 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class PrivacyLevelER : BusinessBase<PrivacyLevelER>
+    public class TitleER : BusinessBase<TitleER>
     {
         #region Business Methods
         
@@ -21,19 +21,27 @@ namespace ECS.MemberManager.Core.BusinessObjects
             private set => LoadProperty(IdProperty, value);
         }
 
+        public static readonly PropertyInfo<string> AbbreviationProperty = RegisterProperty<string>(p => p.Abbreviation);
+        [Required, MaxLength(10)]
+        public string Abbreviation
+        {
+            get => GetProperty(AbbreviationProperty);
+            set => SetProperty(AbbreviationProperty, value);
+        }
+
         public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(p => p.Description);
-        [Required, MaxLength(50)]
+        [MaxLength(50)]
         public string Description
         {
             get => GetProperty(DescriptionProperty);
             set => SetProperty(DescriptionProperty, value);
         }
-       
-        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
-        public string Notes
+
+        public static readonly PropertyInfo<int> DisplayOrderProperty = RegisterProperty<int>(p => p.DisplayOrder);
+        public int DisplayOrder
         {
-            get => GetProperty(NotesProperty);
-            set => SetProperty(NotesProperty, value);
+            get => GetProperty(DisplayOrderProperty);
+            set => SetProperty(DisplayOrderProperty, value);
         }
 
         protected override void AddBusinessRules()
@@ -48,77 +56,77 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             // TODO: add object-level authorization rules
         }
-        
+
         #endregion
-        
+
         #region Factory Methods
 
-        public static async Task<PrivacyLevelER> NewPrivacyLevel()
+        public static async Task<TitleER> NewTitle()
         {
-            return await DataPortal.CreateAsync<PrivacyLevelER>();
+            return await DataPortal.CreateAsync<TitleER>();
         }
 
-        public static async Task<PrivacyLevelER> GetPrivacyLevel(int id)
+        public static async Task<TitleER> GetTitle(int id)
         {
-            return await DataPortal.FetchAsync<PrivacyLevelER>(id);
+            return await DataPortal.FetchAsync<TitleER>(id);
         }
 
-        public static async Task DeletePrivacyLevel(int id)
+        public static async Task DeleteTitle(int id)
         {
-            await DataPortal.DeleteAsync<PrivacyLevelER>(id);
+            await DataPortal.DeleteAsync<TitleER>(id);
         }
         
         #endregion
-        
-        #region DataPortal Methods
-                
+
+        #region Data Access
+
         [Fetch]
         private void Fetch(int id)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPrivacyLevelDal>();
+            using IDalManager dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<ITitleDal>();
             var data = dal.Fetch(id);
             using (BypassPropertyChecks)
             {
                 Id = data.Id;
+                Abbreviation = data.Abbreviation;
                 Description = data.Description;
-                Notes = data.Notes;
+                DisplayOrder = data.DisplayOrder;
             }
         }
 
         [Insert]
         private void Insert()
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPrivacyLevelDal>();
+            using IDalManager dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<ITitleDal>();
             using (BypassPropertyChecks)
             {
-                var documentTypeToInsert = new PrivacyLevel
+                var titleToInsert = new Title()
                 {
-                    Description = this.Description,
-                    Notes = this.Notes
+                    Abbreviation = Abbreviation,
+                    Description = Description,
+                    DisplayOrder = DisplayOrder
                 };
-                dal.Insert(documentTypeToInsert);
-                Id = documentTypeToInsert.Id;
+                
+                Id = dal.Insert(titleToInsert);
             }
         }
-        
+
         [Update]
         private void Update()
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPrivacyLevelDal>();
+            using IDalManager dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<ITitleDal>();
             using (BypassPropertyChecks)
             {
-                var documentTypeToUpdate = new PrivacyLevel()
-                {
-                    Id = this.Id,
-                    Description = this.Description,
-                    Notes = this.Notes
-                };
-                dal.Update(documentTypeToUpdate);
+                var titleToUpdate = dal.Fetch(Id);
+                titleToUpdate.Abbreviation = Abbreviation;
+                titleToUpdate.Description = Description;
+                titleToUpdate.DisplayOrder = DisplayOrder;
+                
+                dal.Update(titleToUpdate);
             }
-
         }
 
         [DeleteSelf]
@@ -126,16 +134,19 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             Delete(this.Id);
         }
-        
+
         [Delete]
         private void Delete(int id)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPrivacyLevelDal>();
- 
+            using IDalManager dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<ITitleDal>();
+
             dal.Delete(id);
         }
 
+
         #endregion
+
+        
     }
 }

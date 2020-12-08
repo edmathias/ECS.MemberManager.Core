@@ -9,10 +9,9 @@ using ECS.MemberManager.Core.DataAccess.Dal;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class PaymentSourceER : BusinessBase<PaymentSourceER>
+    public class CategoryOfPersonER : BusinessBase<CategoryOfPersonER>
     {
         #region Business Methods
-        
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
         public int Id
         {
@@ -20,19 +19,19 @@ namespace ECS.MemberManager.Core.BusinessObjects
             private set => LoadProperty(IdProperty, value);
         }
 
-        public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(p => p.Description);
-        [Required,MaxLength(50)]
-        public string Description
+        public static readonly PropertyInfo<string> CategoryProperty = RegisterProperty<string>(p => p.Category);
+        [Required, MaxLength(35)]
+        public string Category
         {
-            get => GetProperty(DescriptionProperty);
-            set => SetProperty(DescriptionProperty, value);
+            get => GetProperty(CategoryProperty);
+            set => SetProperty(CategoryProperty, value);
         }
 
-        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
-        public string Notes
+        public static readonly PropertyInfo<int> DisplayOrderProperty = RegisterProperty<int>(p => p.DisplayOrder);
+        public int DisplayOrder
         {
-            get => GetProperty(NotesProperty);
-            set => SetProperty(NotesProperty, value);
+            get => GetProperty(DisplayOrderProperty);
+            set => SetProperty(DisplayOrderProperty, value);
         }
 
         protected override void AddBusinessRules()
@@ -49,38 +48,39 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         #endregion
-        
+
         #region Factory Methods
 
-        public static async Task<PaymentSourceER> NewPaymentSource()
+        public static async Task<CategoryOfPersonER> NewCategoryOfPerson()
         {
-            return await DataPortal.CreateAsync<PaymentSourceER>();
+            return await DataPortal.CreateAsync<CategoryOfPersonER>();
         }
 
-        public static async Task<PaymentSourceER> GetPaymentSource(int id)
+        public static async Task<CategoryOfPersonER> GetCategoryOfPerson(int id)
         {
-            return await DataPortal.FetchAsync<PaymentSourceER>(id);
+            return await DataPortal.FetchAsync<CategoryOfPersonER>(id);
         }
 
-        public static async Task  DeletePaymentSource(int id)
+        public static async Task DeleteCategoryOfPerson(int id)
         {
-            await DataPortal.DeleteAsync<PaymentSourceER>(id);
+            await DataPortal.DeleteAsync<CategoryOfPersonER>(id);
         }
-        
+ 
         #endregion
+
+        #region Data Access
         
-        #region Data Access Methods
-        [Fetch]       
+        [Fetch]
         private void Fetch(int id)
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPaymentSourceDal>();
+            var dal = dalManager.GetProvider<ICategoryOfPersonDal>();
             var data = dal.Fetch(id);
             using (BypassPropertyChecks)
             {
                 Id = data.Id;
-                Description = data.Description;
-                Notes = data.Notes;
+                Category = data.Category;
+                DisplayOrder = data.DisplayOrder;
             }
         }
 
@@ -88,15 +88,17 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private void Insert()
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPaymentSourceDal>();
+            var dal = dalManager.GetProvider<ICategoryOfPersonDal>();
             using (BypassPropertyChecks)
             {
-                var paymentSource = new EF.Domain.PaymentSource 
-                    { 
-                        Description = this.Description, 
-                        Notes = this.Notes 
-                    };
-                Id = dal.Insert(paymentSource);
+                var categoryToInsert = new EF.Domain.CategoryOfPerson()
+                {
+                    Id = Id,
+                    DisplayOrder = DisplayOrder,
+                    Category = Category
+                };
+                dal.Insert(categoryToInsert);
+                Id = categoryToInsert.Id;
             }
         }
         
@@ -104,17 +106,16 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private void Update()
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPaymentSourceDal>();
+            var dal = dalManager.GetProvider<ICategoryOfPersonDal>();
             using (BypassPropertyChecks)
             {
-                var paymentSource = new EF.Domain.PaymentSource
+                var categoryToUpdate = new EF.Domain.CategoryOfPerson()
                 {
-                    Id = this.Id, 
-                    Description = this.Description, 
-                    Notes = this.Notes
+                    Id = Id,
+                    Category = Category,
+                    DisplayOrder = DisplayOrder
                 };
-                
-                dal.Update(paymentSource);
+                dal.Update(categoryToUpdate);
             }
         }
 
@@ -123,17 +124,18 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             Delete(this.Id);
         }
-       
+        
         [Delete]
         private void Delete(int id)
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPaymentSourceDal>();
+            var dal = dalManager.GetProvider<ICategoryOfPersonDal>();
  
             dal.Delete(id);
         }
-        
+
         #endregion
-       
+
+ 
     }
 }

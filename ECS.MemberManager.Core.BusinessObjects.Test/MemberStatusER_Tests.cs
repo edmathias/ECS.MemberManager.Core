@@ -13,10 +13,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
     [TestClass]
     public class MemberStatusER_Tests 
     {
-  
 
         [TestMethod]
-        public async void TestMemberStatusER_Get()
+        public async Task TestMemberStatusER_Get()
         {
             var memberStatus = await MemberStatusER.GetMemberStatus(1);
 
@@ -25,7 +24,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
         }
 
         [TestMethod]
-        public async void TestMemberStatusER_New()
+        public async Task TestMemberStatusER_New()
         {
             var memberStatus = await MemberStatusER.NewMemberStatus();
 
@@ -34,7 +33,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
         }
 
         [TestMethod]
-        public async void TestMemberStatusER_Update()
+        public async Task TestMemberStatusER_Update()
         {
             var memberStatus = await MemberStatusER.GetMemberStatus(1);
             memberStatus.Notes = "These are updated Notes";
@@ -46,7 +45,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
         }
 
         [TestMethod]
-        public async void TestMemberStatusER_Insert()
+        public async Task TestMemberStatusER_Insert()
         {
             var memberStatus = await MemberStatusER.NewMemberStatus();
             memberStatus.Description = "Standby";
@@ -71,7 +70,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
         
         // test invalid state 
         [TestMethod]
-        public async void TestMemberStatusER_DescriptionRequired()
+        public async Task TestMemberStatusER_DescriptionRequired()
         {
             var memberStatus = await MemberStatusER.NewMemberStatus();
             memberStatus.Description = "make valid";
@@ -85,7 +84,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
         }
        
         [TestMethod]
-        public async void TestMemberStatusER_DescriptionExceedsMaxLengthOf50()
+        public async Task TestMemberStatusER_DescriptionExceedsMaxLengthOf50()
         {
             var memberStatus = await MemberStatusER.NewMemberStatus();
             memberStatus.Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor "+
@@ -102,7 +101,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
         // test exception if attempt to save in invalid state
 
         [TestMethod]
-        public async void TestMemberStatusER_TestInvalidSave()
+        public async Task TestMemberStatusER_TestInvalidSave()
         {
             var memberStatus = await MemberStatusER.NewMemberStatus();
             memberStatus.Description = String.Empty;

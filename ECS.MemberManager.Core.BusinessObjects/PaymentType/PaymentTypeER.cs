@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Csla;
@@ -33,7 +34,20 @@ namespace ECS.MemberManager.Core.BusinessObjects
             get => GetProperty(NotesProperty);
             set => SetProperty(NotesProperty, value);
         }
-        
+
+        protected override void AddBusinessRules()
+        {
+            base.AddBusinessRules();
+
+            // TODO: add business rules
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static void AddObjectAuthorizationRules()
+        {
+            // TODO: add object-level authorization rules
+        }
+
         #endregion
         
         #region Factory Methods

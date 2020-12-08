@@ -19,12 +19,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
             private set => LoadProperty(IdProperty, value);
         }
 
+        public static readonly PropertyInfo<string> CategoryProperty = RegisterProperty<string>(p => p.Category);
         [Required, MaxLength(35)]
-        public static readonly PropertyInfo<string> NameProperty = RegisterProperty<string>(p => p.Name);
-        public string Name
+        public string Category
         {
-            get => GetProperty(NameProperty);
-            set => SetProperty(NameProperty, value);
+            get => GetProperty(CategoryProperty);
+            set => SetProperty(CategoryProperty, value);
         }
 
         public static readonly PropertyInfo<int> DisplayOrderProperty = RegisterProperty<int>(p => p.DisplayOrder);
@@ -79,7 +79,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             using (BypassPropertyChecks)
             {
                 Id = data.Id;
-                Name = data.Category;
+                Category = data.Category;
                 DisplayOrder = data.DisplayOrder;
             }
         }
@@ -93,9 +93,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
             {
                 var categoryToInsert = new EF.Domain.CategoryOfOrganization()
                 {
-                    Id = this.Id,
-                    DisplayOrder = this.DisplayOrder,
-                    Category = this.Name
+                    Id = Id,
+                    DisplayOrder = DisplayOrder,
+                    Category = Category
                 };
                 dal.Insert(categoryToInsert);
                 Id = categoryToInsert.Id;
@@ -111,9 +111,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
             {
                 var categoryToUpdate = new EF.Domain.CategoryOfOrganization()
                 {
-                    Id = this.Id,
-                    Category = this.Name,
-                    DisplayOrder = this.DisplayOrder
+                    Id = Id,
+                    Category = Category,
+                    DisplayOrder = DisplayOrder
                 };
                 dal.Update(categoryToUpdate);
             }
@@ -129,7 +129,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private void Delete(int id)
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<CategoryOfOrganizationER>();
+            var dal = dalManager.GetProvider<ICategoryOfOrganizationDal>();
  
             dal.Delete(id);
         }

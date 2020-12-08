@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>netcoreapp5.0</TargetFramework>
@@ -12,10 +12,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ECS.MemberManager.Core.DataAccess\ECS.MemberManager.Core.DataAccess.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Title" />
     </ItemGroup>
 
 </Project>
