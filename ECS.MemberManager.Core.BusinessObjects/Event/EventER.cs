@@ -157,6 +157,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             {
                 var eventToUpdate = new Event()
                 {
+                    Id = Id,
                     EventName = EventName,
                     Description = Description,
                     IsOneTime = IsOneTime,
@@ -185,10 +186,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
             dal.Delete(id);
         }
 
-
-
         #endregion
-
-
     }
 }

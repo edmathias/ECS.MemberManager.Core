@@ -12,7 +12,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
     /// Summary description for JustMockTest
     /// </summary>
     [TestClass]
-    public class AddressER_Tests 
+    public class AddressER_Tests
     {
         [TestMethod]
         public async Task TestAddressER_Get()
@@ -37,7 +37,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
         {
             var Address = await AddressER.GetAddress(1);
             Address.Notes = "These are updated Notes";
-            
+
             var result = Address.Save();
 
             Assert.IsNotNull(result);
@@ -51,23 +51,22 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
             BuildAddress(address);
 
             var savedAddress = address.Save();
-           
+
             Assert.IsNotNull(savedAddress);
             Assert.IsInstanceOfType(savedAddress, typeof(AddressER));
-            Assert.IsTrue( savedAddress.Id > 0 );
-
+            Assert.IsTrue(savedAddress.Id > 0);
         }
 
         [TestMethod]
         public async Task TestAddressER_Delete()
         {
             int beforeCount = MockDb.Addresses.Count();
-            
+
             await AddressER.DeleteAddress(1);
-            
-            Assert.AreNotEqual(beforeCount,MockDb.Addresses.Count());
+
+            Assert.AreNotEqual(beforeCount, MockDb.Addresses.Count());
         }
-        
+
         // test invalid state 
         [TestMethod]
         public async Task TestAddressER_Address1Required()
@@ -82,7 +81,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
             Assert.IsTrue(isObjectValidInit);
             Assert.IsFalse(address.IsValid);
         }
-      
+
         [TestMethod]
         public async Task TestAddressER_CityRequired()
         {
@@ -95,7 +94,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
             Assert.IsTrue(isObjectValidInit);
             Assert.IsFalse(address.IsValid);
         }
-        
+
         [TestMethod]
         public async Task TestAddressER_StateRequired()
         {
@@ -122,55 +121,55 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
             Assert.IsFalse(address.IsValid);
         }
 
-        
+
         [TestMethod]
         public async Task TestAddressER_Address1ExceedsMaxLengthOf35()
         {
             var address = await AddressER.NewAddress();
             BuildAddress(address);
-            address.Address1 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor "+
-                                       "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis "+
-                                       "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "+
-                                       "Duis aute irure dolor in reprehenderit";
+            address.Address1 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+                               "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                               "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
+                               "Duis aute irure dolor in reprehenderit";
 
             Assert.IsNotNull(address);
             Assert.IsFalse(address.IsValid);
             Assert.AreEqual(address.BrokenRulesCollection[0].Description,
                 "The field Address1 must be a string or array type with a maximum length of '35'.");
- 
-        }       
-        
+        }
+
         [TestMethod]
         public async Task TestAddressER_Address2ExceedsMaxLengthOf35()
         {
             var address = await AddressER.NewAddress();
             BuildAddress(address);
-            address.Address2 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor "+
-                               "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis "+
-                               "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "+
+            address.Address2 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+                               "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                               "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
                                "Duis aute irure dolor in reprehenderit";
 
             Assert.IsNotNull(address);
             Assert.IsFalse(address.IsValid);
             Assert.AreEqual(address.BrokenRulesCollection[0].Description,
                 "The field Address2 must be a string or array type with a maximum length of '35'.");
-        }        
-        
+        }
+
         [TestMethod]
         public async Task TestAddressER_CityExceedsMaxLengthOf50()
         {
             var address = await AddressER.NewAddress();
             BuildAddress(address);
-            address.City = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor "+
-                               "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis "+
-                               "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "+
-                               "Duis aute irure dolor in reprehenderit";
+            address.City = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+                           "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                           "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
+                           "Duis aute irure dolor in reprehenderit";
 
             Assert.IsNotNull(address);
             Assert.IsFalse(address.IsValid);
             Assert.AreEqual(address.BrokenRulesCollection[0].Description,
                 "The field City must be a string or array type with a maximum length of '50'.");
-        }        
+        }
+
         [TestMethod]
         public async Task TestAddressER_StateExceedsMaxLengthOf2()
         {
@@ -182,7 +181,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
             Assert.IsFalse(address.IsValid);
             Assert.AreEqual(address.BrokenRulesCollection[0].Description,
                 "The field State must be a string or array type with a maximum length of '2'.");
-        }        
+        }
 
         [TestMethod]
         public async Task TestAddressER_PostCodeExceedsMaxLengthOf9()
@@ -195,19 +194,19 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
             Assert.IsFalse(address.IsValid);
             Assert.AreEqual(address.BrokenRulesCollection[0].Description,
                 "The field PostCode must be a string or array type with a maximum length of '9'.");
-        }        
-    
+        }
+
         [TestMethod]
         public async Task TestAddressER_TestInvalidSave()
         {
             var Address = await AddressER.NewAddress();
             Address.Address1 = String.Empty;
             AddressER savedAddress = null;
-            
+
             Assert.IsFalse(Address.IsValid);
-            Assert.ThrowsException<ValidationException>(() => savedAddress =  Address.Save() );
+            Assert.ThrowsException<ValidationException>(() => savedAddress = Address.Save());
         }
-        
+
         void BuildAddress(AddressER addressER)
         {
             addressER.Address1 = "Address line 1";
@@ -219,6 +218,5 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
             addressER.LastUpdatedBy = "edm";
             addressER.Notes = "This person is on standby";
         }
-        
     }
 }

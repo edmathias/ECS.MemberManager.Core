@@ -171,7 +171,33 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         private static IList<Event> GetEvents()
         {
-            return new List<Event>();
+            return new List<Event>()
+            {
+                new Event()
+                {
+                    Description = "My new event",
+                    EventName = "Once in a lifetime event",
+                    Id = 1,
+                    IsOneTime = true,
+                    LastUpdatedBy = "edm",
+                    LastUpdatedDate = DateTime.Now,
+                    NextDate = DateTime.Now.AddMonths(3),
+                    Notes = "notes for this",
+                    Persons = new List<Person>()
+                },
+                new Event()
+                {
+                    Description = "Another new event",
+                    EventName = "Another once in a lifetime event",
+                    Id = 2,
+                    IsOneTime = false,
+                    LastUpdatedBy = "edm",
+                    LastUpdatedDate = DateTime.Now,
+                    NextDate = DateTime.Now.AddDays(14),
+                    Notes = "notes for this",
+                    Persons = new List<Person>()
+                }
+            };
         }
 
         private static IList<EventDocument> GetEventDocuments()
@@ -222,12 +248,62 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         private static IList<Organization> GetOrganizations()
         {
-            return new List<Organization>();
+            return new List<Organization>()
+            {
+                new Organization()
+                {
+                    Id = 1,
+                    Addresses = new List<Address>(),
+                    CategoryOfOrganizations = new List<CategoryOfOrganization>(),
+                    OrganizationType = new OrganizationType()
+                    {
+                        Id = 1,
+                        Name = "Organization type 1",
+                        CategoryOfOrganization = new CategoryOfOrganization(),
+                        Notes = "no notes here"
+                    },
+                    DateOfFirstContact = DateTime.Now,
+                    EMails = new List<EMail>(),
+                    LastUpdatedBy = "edm",
+                    LastUpdatedDate = DateTime.Now
+                },
+                new Organization()
+                {
+                    Id = 2,
+                    Addresses = new List<Address>(),
+                    CategoryOfOrganizations = new List<CategoryOfOrganization>(),
+                    OrganizationType = new OrganizationType()
+                    {
+                        Id = 2,
+                        Name = "Organization type 2",
+                        CategoryOfOrganization = new CategoryOfOrganization(),
+                        Notes = ""
+                    },
+                    DateOfFirstContact = DateTime.Now,
+                    EMails = new List<EMail>(),
+                    LastUpdatedBy = "edm",
+                    LastUpdatedDate = DateTime.Now
+                }
+            };
         }
 
         private static IList<OrganizationType> GetOrganizationTypes()
         {
-            return new List<OrganizationType>();
+            return new List<OrganizationType>()
+            {
+                new OrganizationType()
+                {
+                    Id = 1,
+                    Name = "Organization type 1",
+                    Notes = "notes for #1"
+                },
+                new OrganizationType()
+                {
+                    Id = 2,
+                    Name = "Organization type 2",
+                    Notes = ""
+                }
+            };
         }
 
         private static IList<Payment> GetPayments()
