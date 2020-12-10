@@ -7,6 +7,7 @@ namespace ECS.MemberManager.Core.EF.Domain
     {
         [Required]
         public Person Person { get; set; }
+        
         public decimal Amount { get; set; }
         public DateTime PaymentDate { get; set; }
         public DateTime PaymentExpirationDate { get; set; }
@@ -15,7 +16,7 @@ namespace ECS.MemberManager.Core.EF.Domain
         [Required]
         public PaymentType PaymentType { get; set; }
         [MaxLength(255)]
-        public int LastUpdatedBy { get; set; }
+        public string LastUpdatedBy { get; set; }
         public DateTime LastUpdatedDate { get; set; }
         public string Notes { get; set; }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.DataAccess.Mock
@@ -92,13 +93,15 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 {
                     Id = 1,
                     Category = "Org Category 1",
-                    DisplayOrder = 0
+                    DisplayOrder = 0,
+                    Organizations = GetOrganizations().Take(1).ToList()
                 },
                 new CategoryOfOrganization()
                 {
                     Id = 2,
                     Category = "Org Category 2",
-                    DisplayOrder = 1
+                    DisplayOrder = 1,
+                    Organizations = GetOrganizations().Take(2).ToList()
                 }
             };
         }
@@ -308,7 +311,27 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         private static IList<Payment> GetPayments()
         {
-            return new List<Payment>();
+            return new List<Payment>()
+            {
+                new Payment()
+                {
+                    Id = 1, Amount = 39.99m, PaymentDate = DateTime.Now,
+                    PaymentExpirationDate = DateTime.Now.AddDays(365), LastUpdatedBy = "edm",
+                    LastUpdatedDate = DateTime.Now, Notes = "note",
+                    PaymentSource = new PaymentSource() { Id = 1, Description = "self" },
+                    PaymentType = new PaymentType() {Id = 1, Description = "check"},
+                    Person = new Person()
+                },
+                new Payment()
+                {
+                    Id = 2, Amount = 83.61m, PaymentDate = DateTime.Now,
+                    PaymentExpirationDate = DateTime.Now.AddYears(2), LastUpdatedBy = "edm",
+                    LastUpdatedDate = DateTime.Now, Notes = "note",
+                    PaymentSource = new PaymentSource() { Id = 2, Description = "spouse" },
+                    PaymentType = new PaymentType() {Id = 2, Description = "credit card"},
+                    Person = new Person()
+                }                
+            };
         }
 
         private static IList<PaymentSource> GetPaymentSources()
@@ -333,7 +356,32 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             return new List<Person>
             {
-                new Person() {}
+                new Person()
+                {
+                    Id = 1,
+                    Addresses = new List<Address>(),
+                    BirthDate = DateTime.Now.Subtract(new TimeSpan(9125,0,0,0)),
+                    CategoryOfPersons = GetCategoryOfPersons(),
+                    Code = "n/a",
+                    DateOfFirstContact = DateTime.Now.Subtract(new TimeSpan(200,0,0,0)),
+                    Events = new List<Event>(),
+                    FirstName = "Joe",
+                    MiddleName = "E",
+                    LastName = "Blow"
+                },
+                new Person()
+                {
+                    Id = 2,
+                    Addresses = new List<Address>(),
+                    BirthDate = DateTime.Now.Subtract(new TimeSpan(9125, 0,0,0)),
+                    CategoryOfPersons = GetCategoryOfPersons(),
+                    Code = "n/a",
+                    DateOfFirstContact = DateTime.Now.Subtract(new TimeSpan(200,0,0,0)),
+                    Events = new List<Event>(),
+                    FirstName = "Fred",
+                    MiddleName = String.Empty,
+                    LastName = "Derf"
+                }
             };
         }
 

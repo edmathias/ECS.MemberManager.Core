@@ -57,9 +57,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [FetchChild]
         private void FetchChild(EMailType eMailType)
         {
-            this.Id = eMailType.Id;
-            this.Description = eMailType.Description;
-            this.Notes = eMailType.Notes;
+            Id = eMailType.Id;
+            Description = eMailType.Description;
+            Notes = eMailType.Notes;
         }
         #endregion
     }

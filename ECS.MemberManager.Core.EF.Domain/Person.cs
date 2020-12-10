@@ -18,7 +18,7 @@ namespace ECS.MemberManager.Core.EF.Domain
         [Required]
         public DateTime DateOfFirstContact { get; set; }
         public DateTime BirthDate { get; set; }
-        public int LastUpdatedBy { get; set; }
+        public string LastUpdatedBy { get; set; }
         public DateTime LastUpdatedDate { get; set; }
         [MaxLength(5)]
         public string Code { get; set; }
@@ -27,7 +27,6 @@ namespace ECS.MemberManager.Core.EF.Domain
         public IList<Address> Addresses { get; set; }
         public IList<CategoryOfPerson> CategoryOfPersons { get; set; }
         public IList<Phone> Phones { get; set; }
-        public IList<EMail> Type { get; set; }
         public IList<Event> Events { get; set; }
     }
 }

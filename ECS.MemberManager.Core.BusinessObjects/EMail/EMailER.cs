@@ -23,7 +23,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
        
         public static readonly PropertyInfo<string> EMailAddressProperty = RegisterProperty<string>(p => p.EMailAddress);
-        [Required,MaxLength(255)]
+        [Required,MaxLength(255),EmailAddress()]
         public string EMailAddress
         {
             get => GetProperty(EMailAddressProperty);
