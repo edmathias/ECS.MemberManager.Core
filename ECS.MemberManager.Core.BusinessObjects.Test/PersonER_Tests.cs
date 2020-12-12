@@ -23,6 +23,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
             Assert.IsTrue(person.IsValid);
         }
 
+
         [TestMethod]
         public async Task TestPersonER_GetNewObject()
         {

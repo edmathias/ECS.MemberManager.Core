@@ -381,7 +381,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                     FirstName = "Fred",
                     MiddleName = String.Empty,
                     LastName = "Derf"
-                }
+                }              
             };
         }
 
