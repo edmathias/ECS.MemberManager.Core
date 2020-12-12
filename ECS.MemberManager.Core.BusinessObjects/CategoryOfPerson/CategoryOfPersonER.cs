@@ -70,6 +70,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Data Access
         
+        [Create]
+        [RunLocal]
+        private void Create()
+        {
+            BusinessRules.CheckRules();
+        }
+        
         [Fetch]
         private void Fetch(int id)
         {
@@ -97,8 +104,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                     DisplayOrder = DisplayOrder,
                     Category = Category
                 };
-                dal.Insert(categoryToInsert);
-                Id = categoryToInsert.Id;
+                Id = dal.Insert(categoryToInsert);
             }
         }
         
@@ -109,12 +115,10 @@ namespace ECS.MemberManager.Core.BusinessObjects
             var dal = dalManager.GetProvider<ICategoryOfPersonDal>();
             using (BypassPropertyChecks)
             {
-                var categoryToUpdate = new EF.Domain.CategoryOfPerson()
-                {
-                    Id = Id,
-                    Category = Category,
-                    DisplayOrder = DisplayOrder
-                };
+                var categoryToUpdate = dal.Fetch(Id);
+                categoryToUpdate.Category = Category;
+                categoryToUpdate.DisplayOrder = DisplayOrder;
+                    
                 dal.Update(categoryToUpdate);
             }
         }

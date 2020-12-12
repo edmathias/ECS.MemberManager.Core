@@ -70,7 +70,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
         [TestMethod]
         public async Task TestPaymentER_DescriptionRequired() 
         {
-            var payment = await PaymentER.NewPayment();
+            var payment = await BuildValidPaymentER();
             payment.LastUpdatedBy = "edm";
             payment.LastUpdatedDate = DateTime.Now;
             var isObjectValidInit = payment.IsValid;

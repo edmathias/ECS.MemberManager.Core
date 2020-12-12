@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Csla;
+using Csla.Data;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
@@ -132,29 +133,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IAddressDal>();
-            var addressToInsert = new ECS.MemberManager.Core.EF.Domain.Address();
             using (BypassPropertyChecks)
             {
-                addressToInsert.Address1 = this.Address1;
-                addressToInsert.Address2 = this.Address2;
-                addressToInsert.City = this.City;
-                addressToInsert.State = this.State;
-                addressToInsert.PostCode = this.PostCode;
-                addressToInsert.LastUpdatedDate = this.LastUpdatedDate;
-                addressToInsert.LastUpdatedBy = this.LastUpdatedBy;
-                addressToInsert.Notes = this.Notes; 
-            }
-            Id = dal.Insert(addressToInsert);
-        }
-        
-        [Update]
-        private void Update()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IAddressDal>();
-            using (BypassPropertyChecks)
-            {
-                var addressToUpdate = new Address()
+                var addressToInsert = new ECS.MemberManager.Core.EF.Domain.Address()
                 {
                     Address1 = this.Address1,
                     Address2 = this.Address2,
@@ -165,6 +146,28 @@ namespace ECS.MemberManager.Core.BusinessObjects
                     LastUpdatedBy = this.LastUpdatedBy,
                     Notes = this.Notes
                 };
+                
+                Id = dal.Insert(addressToInsert);
+            }
+        }
+        
+        [Update]
+        private void Update()
+        {
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IAddressDal>();
+            using (BypassPropertyChecks)
+            {
+                var addressToUpdate = dal.Fetch(Id);
+                addressToUpdate.Address1 = this.Address1;
+                addressToUpdate.Address2 = this.Address2;
+                addressToUpdate.City = this.City;
+                addressToUpdate.State = this.State;
+                addressToUpdate.PostCode = this.PostCode;
+                addressToUpdate.LastUpdatedDate = this.LastUpdatedDate;
+                addressToUpdate.LastUpdatedBy = this.LastUpdatedBy;
+                addressToUpdate.Notes = this.Notes;
+                    
                 dal.Update(addressToUpdate);
             }
 

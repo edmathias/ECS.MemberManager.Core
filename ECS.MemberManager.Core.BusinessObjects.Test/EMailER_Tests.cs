@@ -79,7 +79,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
         public async Task TestEMailER_EMailAddressRequired()
         {
             var eMail = await EMailER.NewEMail();
-            eMail.EMailAddress = "make valid";
+            eMail.EMailAddress = "person@emailaddress.com";
             eMail.EMailType = await DataPortal.CreateChildAsync<EMailTypeROC>();
             eMail.LastUpdatedDate = DateTime.Now;
             eMail.LastUpdatedBy = "edm";
@@ -97,7 +97,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
         public async Task TestEMailER_EMailTypeRequired()
         {
             var eMail = await EMailER.NewEMail();
-            eMail.EMailAddress = "make valid";
+            eMail.EMailAddress = "person@emailadddress.com";
             eMail.LastUpdatedDate = DateTime.Now;
             eMail.LastUpdatedBy = "edm";
             eMail.EMailType = await DataPortal.CreateChildAsync<EMailTypeROC>();
