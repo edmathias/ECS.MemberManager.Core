@@ -25,7 +25,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         public int Insert(CategoryOfPerson categoryOfPerson)
         {
             var lastCategory = MockDb.CategoryOfPersons.ToList().OrderByDescending( co => co.Id).First();
-            categoryOfPerson.Id = ++lastCategory.Id;
+            categoryOfPerson.Id = lastCategory.Id + 1;
             MockDb.CategoryOfPersons.Add(categoryOfPerson);
             
             return categoryOfPerson.Id;

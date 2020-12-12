@@ -21,7 +21,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         public int Insert( Address address)
         {
             var lastAddress = MockDb.Addresses.ToList().OrderByDescending(a =>a.Id).First();
-            address.Id = ++lastAddress.Id;
+            address.Id = lastAddress.Id+1;
             MockDb.Addresses.Add(address);
             
             return address.Id;

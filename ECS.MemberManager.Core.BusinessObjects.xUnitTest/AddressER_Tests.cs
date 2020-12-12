@@ -4,13 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess.Mock;
+using ECS.MemberManager.Core.EF.Domain;
 using Xunit;
 
-namespace ECS.MemberManager.Core.BusinessObjects.Test
+namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    /// <summary>
-    /// Summary description for JustMockTest
-    /// </summary>
     public class AddressER_Tests
     {
         [Fact]
@@ -32,12 +30,12 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
         }
 
         [Fact]
-        public async Task TestAddressER_Update()
+        public async void TestAddressER_Update()
         {
-            var Address = await AddressER.GetAddress(1);
-            Address.Notes = "These are updated Notes";
+            var address = await AddressER.GetAddress(1);
+            address.Notes = "These are updated Notes";
 
-            var result = Address.Save();
+            var result = await address.SaveAsync();
 
             Assert.NotNull(result);
             Assert.Equal("These are updated Notes",result.Notes );
@@ -61,7 +59,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
         {
             int beforeCount = MockDb.Addresses.Count();
 
-            await AddressER.DeleteAddress(1);
+            await AddressER.DeleteAddress(99);
 
             Assert.NotEqual(MockDb.Addresses.Count(),beforeCount );
         }
@@ -178,6 +176,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
             Assert.Equal("The field State must be a string or array type with a maximum length of '2'.",address.BrokenRulesCollection[0].Description);
         }
 
+        [Fact]
         public async Task TestAddressER_PostCodeExceedsMaxLengthOf9()
         {
             var address = await AddressER.NewAddress();

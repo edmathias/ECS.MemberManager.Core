@@ -57,7 +57,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             int beforeCount = MockDb.CategoryOfOrganizations.Count();
 
-            await CategoryOfOrganizationER.DeleteCategoryOfOrganization(1);
+            await CategoryOfOrganizationER.DeleteCategoryOfOrganization(99);
             
             Assert.NotEqual(MockDb.CategoryOfOrganizations.Count(),beforeCount);
         }

@@ -81,7 +81,15 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                     Id = 2, Address1 = "921 S. Brittany Way", City = "Englewood",
                     State = "CO", PostCode = "80112", LastUpdatedBy = "edm",
                     LastUpdatedDate = DateTime.Now
+                },
+                // use this record for delete only otherwise xunit will contend
+                new Address()
+                {
+                    Id = 99, Address1 = "921 Delete St.", City = "Kirtland",
+                    State = "OH", PostCode = "44094", LastUpdatedBy = "edm",
+                    LastUpdatedDate = DateTime.Now
                 }
+                
             };
         }
 
@@ -102,7 +110,14 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                     Category = "Org Category 2",
                     DisplayOrder = 1,
                     Organizations = GetOrganizations().Take(2).ToList()
-                }
+                },
+                new CategoryOfOrganization()
+                {
+                    Id = 99,
+                    Category = "Org to delete",
+                    DisplayOrder = 1,
+                    Organizations = GetOrganizations().Take(2).ToList()
+                }                
             };
         }
 
@@ -121,7 +136,14 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                     Id = 2,
                     Category = "Org Category 2",
                     DisplayOrder = 1
+                },
+                new CategoryOfPerson()
+                {
+                    Id = 99,
+                    Category = "Org Category 2",
+                    DisplayOrder = 1
                 }
+                
             };
         }
 
@@ -140,6 +162,9 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                     LastUpdatedBy = "edm", LastUpdatedDate = DateTime.Now},
                 new DocumentType() {Id = 3, Description = "Document Type C", Notes = String.Empty,
                     LastUpdatedBy = "edm", LastUpdatedDate = DateTime.Now},
+                new DocumentType() {Id = 99, Description = "Document Type to Delete", Notes = String.Empty,
+                    LastUpdatedBy = "edm", LastUpdatedDate = DateTime.Now},
+                
             };
         }
 

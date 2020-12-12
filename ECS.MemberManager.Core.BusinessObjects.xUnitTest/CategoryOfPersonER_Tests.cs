@@ -5,7 +5,7 @@ using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using Xunit;
 
-namespace ECS.MemberManager.Core.BusinessObjects.Test
+namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
     public class CategoryOfPersonER_Tests
     {
@@ -14,7 +14,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
         {
             var person = await CategoryOfPersonER.GetCategoryOfPerson(1);
 
-            Assert.Equal(person.Id, 1);
+            Assert.Equal(1, person.Id);
             Assert.True(person.IsValid);
         }
 
@@ -24,7 +24,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
             var person = await CategoryOfPersonER.NewCategoryOfPerson();
 
             Assert.NotNull(person);
-            Assert.IsType(typeof(CategoryOfPersonER),person);
+            Assert.IsType<CategoryOfPersonER>(person);
         }
 
         [Fact]
@@ -36,7 +36,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
             var result = await person.SaveAsync();
 
             Assert.NotNull(result);
-            Assert.Equal(result.DisplayOrder,2);
+            Assert.Equal(2, result.DisplayOrder);
         }
 
         [Fact]
@@ -56,9 +56,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
         {
             int beforeCount = MockDb.CategoryOfPersons.Count();
 
-            await CategoryOfPersonER.DeleteCategoryOfPerson(1);
+            await CategoryOfPersonER.DeleteCategoryOfPerson(99);
             
-            Assert.NotEqual(beforeCount,MockDb.CategoryOfPersons.Count());
+            Assert.NotEqual(MockDb.CategoryOfPersons.Count(),beforeCount);
         }
         
         // test invalid state 
@@ -90,9 +90,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
             Assert.NotNull(person);
             Assert.True(isInitialObjectValid);
             Assert.False(person.IsValid);
-            Assert.Equal(person.BrokenRulesCollection[0].Description,
-                "The field Category must be a string or array type with a maximum length of '35'.");
- 
+            Assert.Equal("The field Category must be a string or array type with a maximum length of '35'.",person.BrokenRulesCollection[0].Description);
         }        
         // test exception if attempt to save in invalid state
 

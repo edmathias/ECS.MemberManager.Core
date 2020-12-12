@@ -124,6 +124,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
             using (BypassPropertyChecks)
             {
                 Id = data.Id;
+                Address1 = data.Address1;
+                Address2 = data.Address2;
+                City = data.City;
+                State = data.State;
+                PostCode = data.PostCode;
+                LastUpdatedBy = data.LastUpdatedBy;
+                LastUpdatedDate = data.LastUpdatedDate;
                 Notes = data.Notes;
             }
         }

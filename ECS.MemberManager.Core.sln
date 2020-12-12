@@ -9,21 +9,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECS.MemberManager.Core.EF.D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECS.MemberManager.Core.BusinessObjects", "ECS.MemberManager.Core.BusinessObjects\ECS.MemberManager.Core.BusinessObjects.csproj", "{BC4318C5-2750-408C-B2B0-DBF37A6B2CA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECS.MemberManager.Core.UI.Web.Razor", "ECS.MemberManager.Core.UI.Web.Razor\ECS.MemberManager.Core.UI.Web.Razor.csproj", "{6E32F548-4781-4E5F-8585-FD69FCF6B7BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECS.MemberManager.Core.UI.Web.Razor", "ECS.MemberManager.Core.UI.Web.Razor\ECS.MemberManager.Core.UI.Web.Razor.csproj", "{6E32F548-4781-4E5F-8585-FD69FCF6B7BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECS.MemberManager.Core.UI.Web.MVC", "ECS.MemberManager.Core.UI.Web.MVC\ECS.MemberManager.Core.UI.Web.MVC.csproj", "{9AC04A79-AAA0-4DA1-B377-5DBAA03BBD13}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECS.MemberManager.Core.UI.Web.MVC", "ECS.MemberManager.Core.UI.Web.MVC\ECS.MemberManager.Core.UI.Web.MVC.csproj", "{9AC04A79-AAA0-4DA1-B377-5DBAA03BBD13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECS.MemberManager.Core.UI.Console", "ECS.MemberManager.Core.UI.Console\ECS.MemberManager.Core.UI.Console.csproj", "{64023567-8804-42C1-92E4-C3A4F0855817}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECS.MemberManager.Core.UI.Console", "ECS.MemberManager.Core.UI.Console\ECS.MemberManager.Core.UI.Console.csproj", "{64023567-8804-42C1-92E4-C3A4F0855817}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECS.MemberManager.Core.DataAccess", "ECS.MemberManager.Core.DataAccess\ECS.MemberManager.Core.DataAccess.csproj", "{CE31E6AF-6A9E-4172-884A-8C18D51C70A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECS.MemberManager.Core.DataAccess", "ECS.MemberManager.Core.DataAccess\ECS.MemberManager.Core.DataAccess.csproj", "{CE31E6AF-6A9E-4172-884A-8C18D51C70A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECS.MemberManager.Core.DataAccess.SqlEF", "ECS.MemberManager.Core.DataAccess.SqlEF\ECS.MemberManager.Core.DataAccess.SqlEF.csproj", "{11D9477C-99F9-452E-920E-F9EFFD430915}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECS.MemberManager.Core.DataAccess.SqlEF", "ECS.MemberManager.Core.DataAccess.SqlEF\ECS.MemberManager.Core.DataAccess.SqlEF.csproj", "{11D9477C-99F9-452E-920E-F9EFFD430915}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECS.MemberManager.Core.BusinessObjects.Test", "ECS.MemberManager.Core.BusinessObjects.Test\ECS.MemberManager.Core.BusinessObjects.Test.csproj", "{E6060EB7-5A56-4044-BD50-DEA584F94D5F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECS.MemberManager.Core.BusinessObjects.Test", "ECS.MemberManager.Core.BusinessObjects.Test\ECS.MemberManager.Core.BusinessObjects.Test.csproj", "{E6060EB7-5A56-4044-BD50-DEA584F94D5F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECS.MemberManager.Core.DataAccess.Mock", "ECS.MemberManager.Core.DataAccess.Mock\ECS.MemberManager.Core.DataAccess.Mock.csproj", "{8C811541-A666-4D8D-A51A-FC93C81375A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECS.MemberManager.Core.DataAccess.Mock", "ECS.MemberManager.Core.DataAccess.Mock\ECS.MemberManager.Core.DataAccess.Mock.csproj", "{8C811541-A666-4D8D-A51A-FC93C81375A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECS.MemberManager.Core.BusinessObjects.xUnitTest", "ECS.MemberManager.Core.BusinessObjects.xUnitTest\ECS.MemberManager.Core.BusinessObjects.xUnitTest.csproj", "{0C03EF12-A89B-4375-8C87-B29BC032270C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECS.MemberManager.Core.BusinessObjects.xUnitTest", "ECS.MemberManager.Core.BusinessObjects.xUnitTest\ECS.MemberManager.Core.BusinessObjects.xUnitTest.csproj", "{0C03EF12-A89B-4375-8C87-B29BC032270C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
