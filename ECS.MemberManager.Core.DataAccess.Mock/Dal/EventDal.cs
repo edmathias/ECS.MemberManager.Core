@@ -25,7 +25,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         public int Insert(Event eventToInsert)
         {
             var lastEvent = MockDb.Events.ToList().OrderByDescending(e =>e.Id).First();
-            eventToInsert.Id = ++lastEvent.Id;
+            eventToInsert.Id = 1+lastEvent.Id;
             
             MockDb.Events.Add(eventToInsert);
             return eventToInsert.Id;        

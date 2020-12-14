@@ -22,8 +22,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
             private set => LoadProperty(IdProperty, value);
         }
 
-        public static readonly PropertyInfo<decimal> AmountProperty = RegisterProperty<decimal>(p => p.Amount);
-        public decimal Amount
+        public static readonly PropertyInfo<double> AmountProperty = RegisterProperty<double>(p => p.Amount);
+        public double Amount
         {
             get => GetProperty(AmountProperty);
             set => SetProperty(AmountProperty, Math.Round(value,2));
@@ -60,6 +60,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(PaymentTypeProperty, value);
         }
        
+        public static readonly PropertyInfo<PersonER> PersonProperty = RegisterProperty<PersonER>(p => p.Person);
+        public PersonER Person
+        {
+            get => GetProperty(PersonProperty);
+            set => SetProperty(PersonProperty, value);
+        }
+        
         public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(p => p.LastUpdatedBy);
         [Required]
         public string LastUpdatedBy
@@ -119,6 +126,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Data Access
 
+        [Create]
+        private async void Create()
+        {
+            PaymentDate = new SmartDate();
+            PaymentSource = await PaymentSourceER.NewPaymentSource();
+            PaymentType = await PaymentTypeER.NewPaymentType();
+            Person = await PersonER.NewPerson();
+        }
+        
         [Fetch]
         private async void Fetch(int id)
         {
@@ -128,16 +144,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
             {
                 var data = dal.Fetch(id);
                 Id = data.Id;
-                Amount = data.Amount;
+                Amount = Convert.ToDouble(data.Amount);
                 Notes = data.Notes;
                 PaymentDate = data.PaymentDate;
                 LastUpdatedBy = data.LastUpdatedBy;
                 PaymentExpirationDate = data.PaymentExpirationDate;
-                // TODO: add Person                
-                
-                // TODO: child relationships
-                PaymentSource = await PaymentSourceER.NewPaymentSource();
-                PaymentType = await PaymentTypeER.NewPaymentType();
+
+                PaymentSource = await PaymentSourceER.GetPaymentSource(PaymentSource.Id);
+                PaymentType = await PaymentTypeER.GetPaymentType(PaymentType.Id);
+                Person = await PersonER.GetPerson(Person.Id);
             }
         }
 
@@ -150,7 +165,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             {
                 var paymentToInsert = new Payment();
 
-                paymentToInsert.Amount = Amount;
+                paymentToInsert.Amount = Convert.ToDecimal(Amount);
                 paymentToInsert.Notes = Notes;
                 paymentToInsert.PaymentDate = PaymentDate;
                 paymentToInsert.LastUpdatedBy = LastUpdatedBy;
@@ -175,7 +190,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 var paymentToUpdate = dal.Fetch(Id);
 
                 paymentToUpdate.Id = Id;
-                paymentToUpdate.Amount = Amount;
+                paymentToUpdate.Amount = Convert.ToDecimal(Amount);
                 paymentToUpdate.Notes = Notes;
                 paymentToUpdate.PaymentDate = PaymentDate;
                 paymentToUpdate.LastUpdatedBy = LastUpdatedBy;

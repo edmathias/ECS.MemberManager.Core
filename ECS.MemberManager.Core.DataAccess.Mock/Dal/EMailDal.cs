@@ -21,7 +21,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         public int Insert( EMail eMail)
         {
             var lastEMail = MockDb.EMails.ToList().OrderByDescending(ms => ms.Id).First();
-            eMail.Id = ++lastEMail.Id;
+            eMail.Id = lastEMail.Id+1;
             MockDb.EMails.Add(eMail);
             
             return eMail.Id;

@@ -5,32 +5,31 @@ using Csla;
 using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Mock;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
-namespace ECS.MemberManager.Core.BusinessObjects.Test
+namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    [TestClass]
     public class OrganizationER_Tests
     {
-        [TestMethod]
+        [Fact]
         public async Task TestOrganizationER_Get()
         {
             var organization = await OrganizationER.GetOrganization(1);
 
-            Assert.AreEqual(organization.Id, 1);
-            Assert.IsTrue(organization.IsValid);
+            Assert.Equal(1,organization.Id);
+            Assert.True(organization.IsValid);
         }
         
-        [TestMethod]
+        [Fact]
         public async Task TestOrganizationER_New()
         {
             var organizationType = await OrganizationER.NewOrganization();
 
-            Assert.IsNotNull(organizationType);
-            Assert.IsFalse(organizationType.IsValid);
+            Assert.NotNull(organizationType);
+            Assert.False(organizationType.IsValid);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task TestOrganizationER_Update()
         {
             var organization = await OrganizationER.GetOrganization(1);
@@ -38,11 +37,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
             
             var result = organization.Save();
 
-            Assert.IsNotNull(result);
-            Assert.AreEqual(result.Notes, "These are updated Notes");
+            Assert.NotNull(result);
+            Assert.Equal("These are updated Notes",result.Notes);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task TestOrganizationER_Insert()
         {
             var organization = await OrganizationER.NewOrganization();
@@ -51,23 +50,23 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
 
             var savedOrganization = organization.Save();
            
-            Assert.IsNotNull(savedOrganization);
-            Assert.IsInstanceOfType(savedOrganization, typeof(OrganizationER));
-            Assert.IsTrue( savedOrganization.Id > 0 );
+            Assert.NotNull(savedOrganization);
+            Assert.IsType<OrganizationER>(savedOrganization);
+            Assert.True( savedOrganization.Id > 0 );
         }
 
-        [TestMethod]
+        [Fact]
         public async Task TestOrganizationER_Delete()
         {
             int beforeCount = MockDb.Organizations.Count();
             
-            await OrganizationER.DeleteOrganization(1);
+            await OrganizationER.DeleteOrganization(99);
             
-            Assert.AreNotEqual(beforeCount,MockDb.Organizations.Count());
+            Assert.NotEqual(beforeCount,MockDb.Organizations.Count());
         }
         
         // test invalid state 
-        [TestMethod]
+        [Fact]
         public async Task TestOrganizationER_DescriptionRequired()
         {
             var organization = await OrganizationER.NewOrganization();
@@ -75,13 +74,13 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
             var isObjectValidInit = organization.IsValid;
             organization.Name = string.Empty;
 
-            Assert.IsNotNull(organization);
-            Assert.IsTrue(isObjectValidInit);
-            Assert.IsFalse(organization.IsValid);
+            Assert.NotNull(organization);
+            Assert.True(isObjectValidInit);
+            Assert.False(organization.IsValid);
  
         }
        
-        [TestMethod]
+        [Fact]
         public async Task TestOrganizationER_DescriptionExceedsMaxLengthOf50()
         {
             var organization = await OrganizationER.NewOrganization();
@@ -90,22 +89,22 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
                                        "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "+
                                        "Duis aute irure dolor in reprehenderit";
 
-            Assert.IsNotNull(organization);
-            Assert.IsFalse(organization.IsValid);
-            Assert.AreEqual(organization.BrokenRulesCollection[0].Description,
-                "The field Name must be a string or array type with a maximum length of '50'.");
+            Assert.NotNull(organization);
+            Assert.False(organization.IsValid);
+            Assert.Equal("The field Name must be a string or array type with a maximum length of '50'.",
+                organization.BrokenRulesCollection[0].Description);
  
         }        
         // test exception if attempt to save in invalid state
 
-        [TestMethod]
+        [Fact]
         public async Task TestOrganizationER_TestInvalidSave()
         {
             var organization = await OrganizationER.NewOrganization();
             OrganizationER savedOrganization = null;
             
-            Assert.IsFalse(organization.IsValid);
-            Assert.ThrowsException<ValidationException>(() => savedOrganization =  organization.Save() );
+            Assert.False(organization.IsValid);
+            Assert.Throws<ValidationException>(() => savedOrganization =  organization.Save() );
         }
 
     }

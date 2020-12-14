@@ -21,7 +21,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         public int Insert( MemberStatus memberStatus)
         {
             var lastMemberStatus = MockDb.MemberStatuses.ToList().OrderByDescending(ms => ms.Id).First();
-            memberStatus.Id = ++lastMemberStatus.Id;
+            memberStatus.Id = 1+lastMemberStatus.Id;
             MockDb.MemberStatuses.Add(memberStatus);
             
             return memberStatus.Id;

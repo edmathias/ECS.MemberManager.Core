@@ -21,7 +21,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         public int Insert( Phone documentType)
         {
             var lastPhone = MockDb.Phones.ToList().OrderByDescending(dt => dt.Id).First();
-            documentType.Id = ++lastPhone.Id;
+            documentType.Id = 1+lastPhone.Id;
             MockDb.Phones.Add(documentType);
             
             return documentType.Id;

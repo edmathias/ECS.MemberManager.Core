@@ -24,7 +24,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         public int Insert(Payment payment)
         {
             var lastPayment = MockDb.Payments.ToList().OrderByDescending(dt => dt.Id).First();
-            payment.Id = ++lastPayment.Id;
+            payment.Id = 1+lastPayment.Id;
             MockDb.Payments.Add(payment);
             
             return payment.Id;

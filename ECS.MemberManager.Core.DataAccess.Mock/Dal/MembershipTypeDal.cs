@@ -21,7 +21,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         public int Insert( MembershipType membershipType)
         {
             var lastMembershipType = MockDb.MembershipTypes.ToList().OrderByDescending(dt => dt.Id).First();
-            membershipType.Id = ++lastMembershipType.Id;
+            membershipType.Id = 1+lastMembershipType.Id;
             MockDb.MembershipTypes.Add(membershipType);
             
             return membershipType.Id;

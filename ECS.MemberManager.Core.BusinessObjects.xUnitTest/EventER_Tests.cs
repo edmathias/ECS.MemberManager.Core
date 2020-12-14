@@ -1,4 +1,3 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,32 +5,32 @@ using Csla;
 using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using ECS.MemberManager.Core.EF.Domain;
+using Xunit;
 
-namespace ECS.MemberManager.Core.BusinessObjects.Test
+namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    [TestClass]
     public class EventER_Tests 
     {
-        [TestMethod]
+        [Fact]
         public async Task TestEventER_Get()
         {
             var getEvent = await EventER.GetEvent(1);
             
 
-            Assert.AreEqual(getEvent.Id, 1);
-            Assert.IsTrue(getEvent.IsValid);
+            Assert.Equal(1, getEvent.Id);
+            Assert.True(getEvent.IsValid);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task TestEventER_New()
         {
             var newEvent = await EventER.NewEvent();
 
-            Assert.IsNotNull(newEvent);
-            Assert.IsFalse(newEvent.IsValid);
+            Assert.NotNull(newEvent);
+            Assert.False(newEvent.IsValid);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task TestEventER_Update()
         {
             var eventToUpdate = await EventER.GetEvent(1);
@@ -39,11 +38,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
             
             var result = await eventToUpdate.SaveAsync();
 
-            Assert.IsNotNull(result);
-            Assert.AreEqual(result.Notes, "These are updated Notes");
+            Assert.NotNull(result);
+            Assert.Equal( "These are updated Notes",result.Notes);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task TestEventER_Insert()
         {
             var newEvent = await EventER.NewEvent();
@@ -51,24 +50,24 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
 
             var savedEvent = await newEvent.SaveAsync();
            
-            Assert.IsNotNull(savedEvent);
-            Assert.IsInstanceOfType(savedEvent, typeof(EventER));
-            Assert.IsTrue( savedEvent.Id > 0 );
+            Assert.NotNull(savedEvent);
+            Assert.IsType<EventER>(savedEvent);
+            Assert.True( savedEvent.Id > 0 );
         }
 
  
-        [TestMethod]
+        [Fact]
         public async Task TestEventER_Delete()
         {
             int beforeCount = MockDb.Events.Count();
             
-            await EventER.DeleteEvent(1);
+            await EventER.DeleteEvent(99);
             
-            Assert.AreNotEqual(beforeCount,MockDb.Events.Count());
+            Assert.NotEqual(MockDb.Events.Count(),beforeCount);
         }
         
         // test invalid state 
-        [TestMethod]
+        [Fact]
         public async Task TestEventER_EventNameRequired()
         {
             var validEvent = await EventER.NewEvent();
@@ -76,19 +75,19 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
             var isObjectValidInit = validEvent.IsValid;
             validEvent.EventName = string.Empty;
             
-            Assert.IsTrue(isObjectValidInit);
-            Assert.IsFalse(validEvent.IsValid);
+            Assert.True(isObjectValidInit);
+            Assert.False(validEvent.IsValid);
         }
     
          
         // test exception if attempt to save in invalid state
 
-        [TestMethod]
+        [Fact]
         public async Task TestEventER_TestInvalidSave()
         {
             var eventToSave = await EventER.NewEvent();
             
-            Assert.ThrowsException<ValidationException>(() => eventToSave.Save() );
+            Assert.Throws<ValidationException>(() => eventToSave.Save() );
         } 
         
         private static void CreateValidEvent(EventER newEvent)

@@ -24,7 +24,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         public int Insert(PrivacyLevel privacyLevel)
         {
             var lastPrivacyLevel = MockDb.PrivacyLevels.ToList().OrderByDescending(dt => dt.Id).First();
-            privacyLevel.Id = ++lastPrivacyLevel.Id;
+            privacyLevel.Id = 1+lastPrivacyLevel.Id;
             MockDb.PrivacyLevels.Add(privacyLevel);
             
             return privacyLevel.Id;

@@ -183,7 +183,13 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                     Id = 2, EMailType = new EMailType() {Id = 2, Description = "work", Notes = ""},
                     EMailAddress = "edm@ecs.com", LastUpdatedBy = "edm", LastUpdatedDate = DateTime.Now,
                     Notes = "some notes", Organizations = new List<Organization>(), Persons = new List<Person>()
-                }
+                },
+                new EMail()
+                {
+                Id = 99, EMailType = new EMailType() {Id = 2, Description = "work", Notes = ""},
+                EMailAddress = "edm@ecs.com", LastUpdatedBy = "edm", LastUpdatedDate = DateTime.Now,
+                Notes = "test the delete", Organizations = new List<Organization>(), Persons = new List<Person>()
+            }
                 
             };
         }
@@ -193,7 +199,8 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             return new List<EMailType>
             {
                 new EMailType() { Id = 1, Description = "work", Notes = String.Empty},
-                new EMailType() { Id = 2,Description = "home", Notes = "notes for home" }
+                new EMailType() { Id = 2,Description = "home", Notes = "notes for home" },
+                new EMailType() { Id = 99,Description = "delete this", Notes = "notes for home" }
             };
         }
 
@@ -224,7 +231,19 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                     NextDate = DateTime.Now.AddDays(14),
                     Notes = "notes for this",
                     Persons = new List<Person>()
-                }
+                },
+                new Event()
+                {
+                    Description = "event to delete",
+                    EventName = "Another once in a lifetime event",
+                    Id = 99,
+                    IsOneTime = false,
+                    LastUpdatedBy = "edm",
+                    LastUpdatedDate = DateTime.Now,
+                    NextDate = DateTime.Now.AddDays(14),
+                    Notes = "notes for this",
+                    Persons = new List<Person>()
+                }                
             };
         }
 
@@ -250,6 +269,8 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 new MembershipType() { Id =1,Description = "Membership Type A",LastUpdatedBy = "edm", 
                     LastUpdatedDate = DateTime.Now, Level=1, Notes=String.Empty},
                 new MembershipType() { Id =2,Description = "Membership Type B",LastUpdatedBy = "edm", 
+                    LastUpdatedDate = DateTime.Now, Level=2, Notes="some notes"},
+                new MembershipType() { Id =99,Description = "Membership Type to delete",LastUpdatedBy = "edm", 
                     LastUpdatedDate = DateTime.Now, Level=2, Notes="some notes"}
             };
         }
@@ -260,6 +281,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             {
                 new MemberStatus {Id = 1, Description = "Active", Notes = "This member is active."},
                 new MemberStatus {Id = 2, Description = "Inactive", Notes = "This member is inactive"},
+                new MemberStatus {Id = 99, Description = "Inactive", Notes = "This member is deleted"},
             };
         }
 
@@ -270,6 +292,8 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 new Office { Id =1, Name = "President", Term=6,CalendarPeriod = "months",ChosenHow = 1, 
                     Appointer = "voters", LastUpdatedDate = DateTime.Now, LastUpdatedBy = "edm", Notes = "notes"},
                 new Office { Id =2, Name = "Vice President", Term=12,CalendarPeriod = "months",ChosenHow = 2, 
+                    Appointer = "Dave", LastUpdatedDate = DateTime.Now, LastUpdatedBy = "edm", Notes = "notes"},
+                new Office { Id =99, Name = "delete this", Term=12,CalendarPeriod = "months",ChosenHow = 2, 
                     Appointer = "Dave", LastUpdatedDate = DateTime.Now, LastUpdatedBy = "edm", Notes = "notes"}
             };
         }
@@ -311,7 +335,25 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                     EMails = new List<EMail>(),
                     LastUpdatedBy = "edm",
                     LastUpdatedDate = DateTime.Now
+                },
+                new Organization()
+                {
+                    Id = 99,
+                    Addresses = new List<Address>(),
+                    CategoryOfOrganizations = new List<CategoryOfOrganization>(),
+                    OrganizationType = new OrganizationType()
+                    {
+                        Id = 2,
+                        Name = "Organization type 2",
+                        CategoryOfOrganization = new CategoryOfOrganization(),
+                        Notes = ""
+                    },
+                    DateOfFirstContact = DateTime.Now,
+                    EMails = new List<EMail>(),
+                    LastUpdatedBy = "edm",
+                    LastUpdatedDate = DateTime.Now
                 }
+                
             };
         }
 
@@ -330,6 +372,12 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                     Id = 2,
                     Name = "Organization type 2",
                     Notes = ""
+                },
+                new OrganizationType()
+                {
+                    Id = 99,
+                    Name = "Organization to delete",
+                    Notes = ""
                 }
             };
         }
@@ -345,7 +393,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                     LastUpdatedDate = DateTime.Now, Notes = "note",
                     PaymentSource = new PaymentSource() { Id = 1, Description = "self" },
                     PaymentType = new PaymentType() {Id = 1, Description = "check"},
-                    Person = new Person()
+                    Person = GetPersons()[1]
                 },
                 new Payment()
                 {
@@ -354,7 +402,16 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                     LastUpdatedDate = DateTime.Now, Notes = "note",
                     PaymentSource = new PaymentSource() { Id = 2, Description = "spouse" },
                     PaymentType = new PaymentType() {Id = 2, Description = "credit card"},
-                    Person = new Person()
+                    Person = GetPersons()[2]
+                },
+                new Payment()
+                {
+                    Id = 99, Amount = 83.61m, PaymentDate = DateTime.Now,
+                    PaymentExpirationDate = DateTime.Now.AddYears(2), LastUpdatedBy = "edm",
+                    LastUpdatedDate = DateTime.Now, Notes = "delete this record",
+                    PaymentSource = new PaymentSource() { Id = 2, Description = "spouse" },
+                    PaymentType = new PaymentType() {Id = 2, Description = "credit card"},
+                    Person = GetPersons()[1]
                 }                
             };
         }

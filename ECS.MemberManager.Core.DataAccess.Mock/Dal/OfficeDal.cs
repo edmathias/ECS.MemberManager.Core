@@ -22,7 +22,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             var lastOffice = MockDb.Offices.ToList().OrderByDescending(o => o.Id).First();
             
-            office.Id = ++lastOffice.Id;
+            office.Id = 1+lastOffice.Id;
             MockDb.Offices.Add(office);
             
             return office.Id;

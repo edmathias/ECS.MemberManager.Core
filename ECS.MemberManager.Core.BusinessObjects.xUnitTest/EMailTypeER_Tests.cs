@@ -1,37 +1,36 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess.Mock;
+using Xunit;
 
-namespace ECS.MemberManager.Core.BusinessObjects.Test
+namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
     /// <summary>
     /// Summary description for JustMockTest
     /// </summary>
-    [TestClass]
     public class EMailTypeER_Tests 
     {
-        [TestMethod]
+        [Fact]
         public async Task TestEMailTypeER_Get()
         {
             var eMailType = await EMailTypeER.GetEMailType(1);
 
-            Assert.AreEqual(eMailType.Id, 1);
-            Assert.IsTrue(eMailType.IsValid);
+            Assert.Equal(1, eMailType.Id);
+            Assert.True(eMailType.IsValid);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task TestEMailTypeER_New()
         {
             var eMailType = await EMailTypeER.NewEMailType();
 
-            Assert.IsNotNull(eMailType);
-            Assert.IsFalse(eMailType.IsValid);
+            Assert.NotNull(eMailType);
+            Assert.False(eMailType.IsValid);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task TestEMailTypeER_Update()
         {
             var eMailType = await EMailTypeER.GetEMailType(1);
@@ -39,11 +38,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
             
             var result = eMailType.Save();
 
-            Assert.IsNotNull(result);
-            Assert.AreEqual(result.Notes, "These are updated Notes");
+            Assert.NotNull(result);
+            Assert.Equal( "These are updated Notes",result.Notes);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task TestEMailTypeER_Insert()
         {
             var eMailType = await EMailTypeER.NewEMailType();
@@ -52,23 +51,23 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
 
             var savedEMailType = eMailType.Save();
            
-            Assert.IsNotNull(savedEMailType);
-            Assert.IsInstanceOfType(savedEMailType, typeof(EMailTypeER));
-            Assert.IsTrue( savedEMailType.Id > 0 );
+            Assert.NotNull(savedEMailType);
+            Assert.IsType<EMailTypeER>(savedEMailType);
+            Assert.True( savedEMailType.Id > 0 );
         }
 
-        [TestMethod]
+        [Fact]
         public async Task TestEMailTypeER_Delete()
         {
             int beforeCount = MockDb.EMailTypes.Count();
             
-            await EMailTypeER.DeleteEMailType(1);
+            await EMailTypeER.DeleteEMailType(99);
             
-            Assert.AreNotEqual(beforeCount,MockDb.EMailTypes.Count());
+            Assert.NotEqual(MockDb.EMailTypes.Count(),beforeCount);
         }
         
         // test invalid state 
-        [TestMethod]
+        [Fact]
         public async Task TestEMailTypeER_DescriptionRequired()
         {
             var eMailType = await EMailTypeER.NewEMailType();
@@ -76,13 +75,13 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
             var isObjectValidInit = eMailType.IsValid;
             eMailType.Description = string.Empty;
 
-            Assert.IsNotNull(eMailType);
-            Assert.IsTrue(isObjectValidInit);
-            Assert.IsFalse(eMailType.IsValid);
+            Assert.NotNull(eMailType);
+            Assert.True(isObjectValidInit);
+            Assert.False(eMailType.IsValid);
  
         }
        
-        [TestMethod]
+        [Fact]
         public async Task TestEMailTypeER_DescriptionExceedsMaxLengthOf50()
         {
             var eMailType = await EMailTypeER.NewEMailType();
@@ -91,23 +90,23 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
                                        "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "+
                                        "Duis aute irure dolor in reprehenderit";
 
-            Assert.IsNotNull(eMailType);
-            Assert.IsFalse(eMailType.IsValid);
-            Assert.AreEqual(eMailType.BrokenRulesCollection[0].Description,
-                "The field Description must be a string or array type with a maximum length of '50'.");
+            Assert.NotNull(eMailType);
+            Assert.False(eMailType.IsValid);
+            Assert.Equal("The field Description must be a string or array type with a maximum length of '50'.", 
+                eMailType.BrokenRulesCollection[0].Description);
  
         }        
         // test exception if attempt to save in invalid state
 
-        [TestMethod]
+        [Fact]
         public async Task TestEMailTypeER_TestInvalidSave()
         {
             var eMailType = await EMailTypeER.NewEMailType();
             eMailType.Description = String.Empty;
             EMailTypeER savedEMailType = null;
             
-            Assert.IsFalse(eMailType.IsValid);
-            Assert.ThrowsException<ValidationException>(() => savedEMailType =  eMailType.Save() );
+            Assert.False(eMailType.IsValid);
+            Assert.Throws<ValidationException>(() => savedEMailType =  eMailType.Save() );
         }
     }
 }

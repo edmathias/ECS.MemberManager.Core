@@ -20,7 +20,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         public int Insert( Person person)
         {
             var lastPerson = MockDb.Persons.ToList().OrderByDescending(p => p.Id).First();
-            person.Id = ++lastPerson.Id;
+            person.Id = 1+lastPerson.Id;
             MockDb.Persons.Add(person);
             
             return person.Id;

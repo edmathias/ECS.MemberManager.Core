@@ -1,4 +1,3 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,31 +5,31 @@ using Csla;
 using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using ECS.MemberManager.Core.EF.Domain;
+using Xunit;
 
-namespace ECS.MemberManager.Core.BusinessObjects.Test
+namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    [TestClass]
     public class EMailER_Tests 
     {
-        [TestMethod]
+        [Fact]
         public async Task TestEMailER_Get()
         {
             var eMail = await EMailER.GetEMail(1);
 
-            Assert.AreEqual(eMail.Id, 1);
-            Assert.IsTrue(eMail.IsValid);
+            Assert.Equal(1,eMail.Id);
+            Assert.True(eMail.IsValid);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task TestEMailER_New()
         {
             var eMail = await EMailER.NewEMail();
 
-            Assert.IsNotNull(eMail);
-            Assert.IsFalse(eMail.IsValid);
+            Assert.NotNull(eMail);
+            Assert.False(eMail.IsValid);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task TestEMailER_Update()
         {
             var eMail = await EMailER.GetEMail(1);
@@ -38,11 +37,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
             
             var result = eMail.Save();
 
-            Assert.IsNotNull(result);
-            Assert.AreEqual(result.Notes, "These are updated Notes");
+            Assert.NotNull(result);
+            Assert.Equal("These are updated Notes",result.Notes );
         }
 
-        [TestMethod]
+        [Fact]
         public async Task TestEMailER_Insert()
         {
             var eMail = await EMailER.NewEMail();
@@ -59,23 +58,23 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
             eMail.EMailType = await DataPortal.FetchChildAsync<EMailTypeROC>(eMailTypeDto);
             var savedEMail = eMail.Save();
            
-            Assert.IsNotNull(savedEMail);
-            Assert.IsInstanceOfType(savedEMail, typeof(EMailER));
-            Assert.IsTrue( savedEMail.Id > 0 );
+            Assert.NotNull(savedEMail);
+            Assert.IsType<EMailER>(savedEMail);
+            Assert.True( savedEMail.Id > 0 );
         }
 
-        [TestMethod]
+        [Fact]
         public async Task TestEMailER_Delete()
         {
             int beforeCount = MockDb.EMails.Count();
             
-            await EMailER.DeleteEMail(1);
+            await EMailER.DeleteEMail(99);
             
-            Assert.AreNotEqual(beforeCount,MockDb.EMails.Count());
+            Assert.NotEqual(beforeCount,MockDb.EMails.Count());
         }
         
         // test invalid state 
-        [TestMethod]
+        [Fact]
         public async Task TestEMailER_EMailAddressRequired()
         {
             var eMail = await EMailER.NewEMail();
@@ -86,14 +85,14 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
             var isObjectValidInit = eMail.IsValid;
             eMail.EMailAddress = string.Empty;
 
-            Assert.IsNotNull(eMail);
-            Assert.IsTrue(isObjectValidInit);
-            Assert.IsFalse(eMail.IsValid);
+            Assert.NotNull(eMail);
+            Assert.True(isObjectValidInit);
+            Assert.False(eMail.IsValid);
  
         }
     
         // test invalid state 
-        [TestMethod]
+        [Fact]
         public async Task TestEMailER_EMailTypeRequired()
         {
             var eMail = await EMailER.NewEMail();
@@ -104,24 +103,24 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
             var isObjectValidInit = eMail.IsValid;
             eMail.EMailType = null;
 
-            Assert.IsNotNull(eMail);
-            Assert.IsTrue(isObjectValidInit);
-            Assert.IsFalse(eMail.IsValid);
-            Assert.AreEqual("The EMailType field is required.",eMail.GetBrokenRules()[0].Description);
+            Assert.NotNull(eMail);
+            Assert.True(isObjectValidInit);
+            Assert.False(eMail.IsValid);
+            Assert.Equal("The EMailType field is required.",eMail.GetBrokenRules()[0].Description);
  
         }
         
         // test exception if attempt to save in invalid state
 
-        [TestMethod]
+        [Fact]
         public async Task TestEMailER_TestInvalidSave()
         {
             var eMail = await EMailER.NewEMail();
             eMail.EMailAddress = String.Empty;
             EMailER savedEMail = null;
             
-            Assert.IsFalse(eMail.IsValid);
-            Assert.ThrowsException<ValidationException>(() => savedEMail =  eMail.Save() );
+            Assert.False(eMail.IsValid);
+            Assert.Throws<ValidationException>(() => savedEMail =  eMail.Save() );
         }
     }
 }

@@ -21,7 +21,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         public int Insert( Title documentType)
         {
             var lastTitle = MockDb.Titles.ToList().OrderByDescending(dt => dt.Id).First();
-            documentType.Id = ++lastTitle.Id;
+            documentType.Id = 1+lastTitle.Id;
             MockDb.Titles.Add(documentType);
             
             return documentType.Id;

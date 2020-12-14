@@ -22,7 +22,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         public int Insert( Organization organizationToInsert)
         {
             var lastOrganization = MockDb.Organizations.ToList().OrderByDescending(ms => ms.Id).First();
-            organizationToInsert.Id = ++lastOrganization.Id;
+            organizationToInsert.Id = 1+lastOrganization.Id;
             MockDb.Organizations.Add(organizationToInsert);
             
             return organizationToInsert.Id;

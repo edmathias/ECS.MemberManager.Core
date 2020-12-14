@@ -18,7 +18,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             var documentType = await DocumentTypeER.GetDocumentType(1);
 
-            Assert.Equal(documentType.Id, 1);
+            Assert.Equal(1, documentType.Id);
             Assert.True(documentType.IsValid);
         }
 
@@ -40,7 +40,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var result = documentType.Save();
 
             Assert.NotNull(result);
-            Assert.Equal(result.Notes, "These are updated Notes");
+            Assert.Equal("These are updated Notes",result.Notes );
         }
 
         [Fact]
@@ -101,8 +101,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             Assert.NotNull(documentType);
             Assert.False(documentType.IsValid);
-            Assert.Equal(documentType.BrokenRulesCollection[0].Description,
-                "The field Description must be a string or array type with a maximum length of '50'.");
+            Assert.Equal("The field Description must be a string or array type with a maximum length of '50'.",
+                documentType.BrokenRulesCollection[0].Description);
  
         }        
         // test exception if attempt to save in invalid state

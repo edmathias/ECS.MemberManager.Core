@@ -1,38 +1,36 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Csla;
 using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess.Mock;
+using ECS.MemberManager.Core.EF.Domain;
+using Xunit;
 
-namespace ECS.MemberManager.Core.BusinessObjects.Test
+namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    /// <summary>
-    /// Summary description for JustMockTest
-    /// </summary>
-    [TestClass]
     public class PaymentER_Tests 
     {
 
-        [TestMethod]
+        [Fact]
         public async Task TestPaymentER_Get()
         {
             var payment = await PaymentER.GetPayment(1);
  
-            Assert.AreEqual(payment.Id, 1);
-            Assert.IsTrue(payment.IsValid);
+            Assert.Equal(1, payment.Id);
+            Assert.True(payment.IsValid);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task TestPaymentER_GetNewObject()
         {
             var payment = await PaymentER.NewPayment();
 
-            Assert.IsNotNull(payment);
-            Assert.IsFalse(payment.IsValid);
+            Assert.NotNull(payment);
+            Assert.False(payment.IsValid);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task TestPaymentER_UpdateExistingObjectInDatabase()
         {
             var payment = await PaymentER.GetPayment(1);
@@ -40,63 +38,65 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
             
             var result = payment.Save();
 
-            Assert.IsNotNull(result);
-            Assert.AreEqual(result.Notes, "These are updated Notes");
+            Assert.NotNull(result);
+            Assert.Equal("These are updated Notes",result.Notes );
         }
 
-        [TestMethod]
+        [Fact]
         public async Task TestPaymentER_InsertNewObjectIntoDatabase()
         {
             var payment = await BuildValidPaymentER();
 
             var savedPayment = await payment.SaveAsync();
 
-            Assert.IsNotNull(savedPayment);
-            Assert.IsInstanceOfType(savedPayment, typeof(PaymentER));
-            Assert.IsTrue( savedPayment.Id > 0 );
+            Assert.NotNull(savedPayment);
+            Assert.IsType<PaymentER>(savedPayment);
+            Assert.True( savedPayment.Id > 0 );
         }
 
-        [TestMethod]
+        [Fact]
         public async Task TestPaymentER_DeleteObjectFromDatabase()
         {
             int beforeCount = MockDb.Payments.Count();
 
-            await PaymentER.DeletePayment(1);
+            await PaymentER.DeletePayment(99);
             
-            Assert.AreNotEqual(beforeCount,MockDb.Payments.Count());
+            Assert.NotEqual(beforeCount,MockDb.Payments.Count());
         }
         
         // test invalid state 
-        [TestMethod]
-        public async Task TestPaymentER_DescriptionRequired() 
+        [Fact]
+        public async Task TestPaymentER_PaymentDateRequired() 
         {
             var payment = await BuildValidPaymentER();
             payment.LastUpdatedBy = "edm";
             payment.LastUpdatedDate = DateTime.Now;
             var isObjectValidInit = payment.IsValid;
-
-            Assert.IsNotNull(payment);
-            Assert.IsTrue(isObjectValidInit);
-            Assert.IsFalse(payment.IsValid);
+            payment.PaymentSource = await PaymentSourceER.NewPaymentSource();
+            payment.PaymentType = await PaymentTypeER.NewPaymentType();
+            payment.PaymentDate = null;
+            
+            Assert.NotNull(payment);
+            Assert.True(isObjectValidInit);
+            Assert.False(payment.IsValid);
         }
        
          // test exception if attempt to save in invalid state
 
-        [TestMethod]
+        [Fact]
         public async Task TestPaymentER_TestInvalidSave()
         {
             var payment = await PaymentER.NewPayment();
-            PaymentER savedPayment = null;
                 
-            Assert.IsFalse(payment.IsValid);
-            Assert.ThrowsException<ValidationException>(() => savedPayment =  payment.Save() );
+            Assert.False(payment.IsValid);
+            Assert.Throws<ValidationException>(() => payment.Save() );
         }
 
         private async Task<PaymentER> BuildValidPaymentER()
         {
             var paymentER = await PaymentER.NewPayment();
 
-            paymentER.Amount = 39.99m;
+            paymentER.Amount = 39.99d;
             paymentER.LastUpdatedBy = "edm";
             paymentER.LastUpdatedDate = DateTime.Now;
             paymentER.Notes = "notes here";
