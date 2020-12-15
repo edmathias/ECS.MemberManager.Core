@@ -107,9 +107,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(CategoryOfPersonListProperty, value);
         }
 
+        public static readonly PropertyInfo<EventECL> EventsProperty = RegisterProperty<EventECL>(p => p.Events);
+        public EventECL Events
+        {
+            get => GetProperty(EventsProperty);
+            set => SetProperty(EventsProperty, value);
+        }
 
-//        CategoryOfPersons = new List<CategoryOfPerson>(),
-//        Events = new List<Event>(),
 //        Addresses = new List<Address>(),
 //        Phones = new List<Phone>(),
 
@@ -149,6 +153,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Data Access
 
+        [Create]
+        private async void Create()
+        {
+            CategoryOfPersonList = await CategoryOfPersonECL.NewCategoryOfPersonList();
+//            Events = await Events.ne
+        }
+        
         [Fetch]
         private async void Fetch(int id)
         {
@@ -196,14 +207,23 @@ namespace ECS.MemberManager.Core.BusinessObjects
                     Notes = Notes,
                     LastUpdatedBy = LastUpdatedBy,
                     LastUpdatedDate = LastUpdatedDate,
-
-                    // TODO : Relationships
-                    CategoryOfPersons = new List<CategoryOfPerson>(),
-                    Events = new List<Event>(),
-                    Addresses = new List<Address>(),
-                    Phones = new List<Phone>(),
-                    Title = new Title()
                 };
+                    // TODO : Relationships
+                foreach(var categoryOfPerson in CategoryOfPersonList )
+                {
+                    var categoryToInsert = new CategoryOfPerson()
+                    {
+                        Id = categoryOfPerson.Id,
+                        Category = categoryOfPerson.Category,
+                        DisplayOrder = categoryOfPerson.DisplayOrder
+                    };
+                    personToInsert.CategoryOfPersons.Add(categoryToInsert);   
+                }
+                
+//                Events = new List<Event>()
+               //     Addresses = new List<Address>(),
+               //     Phones = new List<Phone>(),
+               //     Title = new Title()
 
                 Id = dal.Insert(personToInsert);
             }
@@ -250,7 +270,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private void Delete(int id)
         {
             using IDalManager dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<PersonER>();
+            var dal = dalManager.GetProvider<IPersonDal>();
 
             dal.Delete(id);
         }

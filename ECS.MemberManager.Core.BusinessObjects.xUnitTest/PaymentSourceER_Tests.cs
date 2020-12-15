@@ -1,38 +1,33 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Csla.Rules;
-using ECS.MemberManager.Core.BusinessObjects;
 using ECS.MemberManager.Core.DataAccess.Mock;
+using Xunit;
 
-namespace ECS.MemberManager.Core.BusinessObjects.Test
+namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    /// <summary>
-    /// Summary description for JustMockTest
-    /// </summary>
-    [TestClass]
     public class PaymentSourceER_Tests 
     {
-        [TestMethod]
+        [Fact]
         public async Task TestPaymentSourceER_Get()
         {
             var paymentSource = await PaymentSourceER.GetPaymentSource(1);
 
-            Assert.AreEqual(paymentSource.Id, 1);
-            Assert.IsTrue(paymentSource.IsValid);
+            Assert.Equal(1, paymentSource.Id);
+            Assert.True(paymentSource.IsValid);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task TestPaymentSourceER_New()
         {
             var paymentSource = await PaymentSourceER.NewPaymentSource();
 
-            Assert.IsNotNull(paymentSource);
-            Assert.IsFalse(paymentSource.IsValid);
+            Assert.NotNull(paymentSource);
+            Assert.False(paymentSource.IsValid);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task TestPaymentSourceER_Update()
         {
             var paymentSource = await PaymentSourceER.GetPaymentSource(1);
@@ -40,11 +35,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
             
             var result = paymentSource.Save();
 
-            Assert.IsNotNull(result);
-            Assert.AreEqual(result.Notes, "These are updated Notes");
+            Assert.NotNull(result);
+            Assert.Equal("These are updated Notes",result.Notes);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task TestPaymentSourceER_Insert()
         {
             var paymentSource = await PaymentSourceER.NewPaymentSource();
@@ -53,23 +48,23 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
 
             var savedPaymentSource = paymentSource.Save();
            
-            Assert.IsNotNull(savedPaymentSource);
-            Assert.IsInstanceOfType(savedPaymentSource, typeof(PaymentSourceER));
-            Assert.IsTrue( savedPaymentSource.Id > 0 );
+            Assert.NotNull(savedPaymentSource);
+            Assert.IsType<PaymentSourceER>(savedPaymentSource);
+            Assert.True( savedPaymentSource.Id > 0 );
         }
 
-        [TestMethod]
+        [Fact]
         public async Task TestPaymentSourceER_Delete()
         {
             int beforeCount = MockDb.PaymentSources.Count();
             
-            await PaymentSourceER.DeletePaymentSource(1);
+            await PaymentSourceER.DeletePaymentSource(99);
             
-            Assert.AreNotEqual(beforeCount,MockDb.PaymentSources.Count());
+            Assert.NotEqual(beforeCount,MockDb.PaymentSources.Count());
         }
         
         // test invalid state 
-        [TestMethod]
+        [Fact]
         public async Task TestPaymentSourceER_DescriptionRequired()
         {
             var paymentSource = await PaymentSourceER.NewPaymentSource();
@@ -77,13 +72,13 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
             var isObjectValidInit = paymentSource.IsValid;
             paymentSource.Description = string.Empty;
 
-            Assert.IsNotNull(paymentSource);
-            Assert.IsTrue(isObjectValidInit);
-            Assert.IsFalse(paymentSource.IsValid);
+            Assert.NotNull(paymentSource);
+            Assert.True(isObjectValidInit);
+            Assert.False(paymentSource.IsValid);
  
         }
        
-        [TestMethod]
+        [Fact]
         public async Task TestPaymentSourceER_DescriptionExceedsMaxLengthOf50()
         {
             var paymentSource = await PaymentSourceER.NewPaymentSource();
@@ -92,23 +87,22 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
                                        "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "+
                                        "Duis aute irure dolor in reprehenderit";
 
-            Assert.IsNotNull(paymentSource);
-            Assert.IsFalse(paymentSource.IsValid);
-            Assert.AreEqual(paymentSource.BrokenRulesCollection[0].Description,
-                "The field Description must be a string or array type with a maximum length of '50'.");
+            Assert.NotNull(paymentSource);
+            Assert.False(paymentSource.IsValid);
+            Assert.Equal("The field Description must be a string or array type with a maximum length of '50'.",
+                paymentSource.BrokenRulesCollection[0].Description);
  
         }        
         // test exception if attempt to save in invalid state
 
-        [TestMethod]
+        [Fact]
         public async Task TestPaymentSourceER_TestInvalidSave()
         {
             var paymentSource = await PaymentSourceER.NewPaymentSource();
             paymentSource.Description = String.Empty;
-            PaymentSourceER savedPaymentSource = null;
             
-            Assert.IsFalse(paymentSource.IsValid);
-            Assert.ThrowsException<ValidationException>(() => savedPaymentSource =  paymentSource.Save() );
+            Assert.False(paymentSource.IsValid);
+            Assert.Throws<ValidationException>(() =>  paymentSource.Save() );
         }
     }
 }

@@ -421,7 +421,8 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             return new List<PaymentSource>()
             {
                 new PaymentSource() {Id = 1, Description = "Source 1", Notes = "notes here"},
-                new PaymentSource() {Id = 2, Description = "Payment Source 2", Notes = "more notes"}
+                new PaymentSource() {Id = 2, Description = "Payment Source 2", Notes = "more notes"},
+                new PaymentSource() {Id = 99, Description = "Payment to Delete", Notes = "more notes"}
             };
         }
 
@@ -430,7 +431,8 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             return new List<PaymentType>()
             {
                 new PaymentType() {Id = 1, Description = "Payment Type 1", Notes = "notes here"},
-                new PaymentType() {Id = 2, Description = "Payment Type 2", Notes = "more notes here"}
+                new PaymentType() {Id = 2, Description = "Payment Type 2", Notes = "more notes here"},
+                new PaymentType() {Id = 99, Description = "Payment Type to delete", Notes = "more notes here"}
             };
         }
 
@@ -463,7 +465,20 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                     FirstName = "Fred",
                     MiddleName = String.Empty,
                     LastName = "Derf"
-                }              
+                },
+                new Person()  // person for delete
+                {
+                    Id = 99,
+                    Addresses = new List<Address>(),
+                    BirthDate = DateTime.Now.Subtract(new TimeSpan(9125, 0,0,0)),
+                    CategoryOfPersons = GetCategoryOfPersons(),
+                    Code = "n/a",
+                    DateOfFirstContact = DateTime.Now.Subtract(new TimeSpan(200,0,0,0)),
+                    Events = new List<Event>(),
+                    FirstName = "Fred",
+                    MiddleName = String.Empty,
+                    LastName = "Derf"
+                }                 
             };
         }
 
@@ -483,9 +498,14 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 },
                 new Phone
                 {
-                    Id = 1, AreaCode = "414", DisplayOrder = 0, Extension = "", LastUpdatedBy = "edm",
+                    Id = 2, AreaCode = "414", DisplayOrder = 0, Extension = "", LastUpdatedBy = "edm",
                     LastUpdatedDate = DateTime.Now, Number = "421-1634", PhoneType = "Work"
                 },
+                new Phone
+                {
+                    Id = 99, AreaCode = "303", DisplayOrder = 0, Extension = "", LastUpdatedBy = "edm",
+                    LastUpdatedDate = DateTime.Now, Number = "555-2368", PhoneType = "Work"
+                },                
             };
         }
 

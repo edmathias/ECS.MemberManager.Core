@@ -1,39 +1,35 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Csla;
 using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess.Mock;
+using Xunit;
 
-namespace ECS.MemberManager.Core.BusinessObjects.Test
+namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    /// <summary>
-    /// Summary description for JustMockTest
-    /// </summary>
-    [TestClass]
     public class PersonER_Tests 
     {
-
-        [TestMethod]
+        [Fact]
         public async Task TestPersonER_Get()
         {
             var person = await PersonER.GetPerson(1);
  
-            Assert.AreEqual(person.Id, 1);
-            Assert.IsTrue(person.IsValid);
+            Assert.Equal(1, person.Id);
+            Assert.True(person.IsValid);
+            Assert.Equal(3,person.CategoryOfPersonList.Count);
         }
 
 
-        [TestMethod]
+        [Fact]
         public async Task TestPersonER_GetNewObject()
         {
             var person = await PersonER.NewPerson();
 
-            Assert.IsNotNull(person);
-            Assert.IsFalse(person.IsValid);
+            Assert.NotNull(person);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task TestPersonER_UpdateExistingObjectInDatabase()
         {
             var person = await PersonER.GetPerson(1);
@@ -41,56 +37,64 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
             
             var result = person.Save();
 
-            Assert.IsNotNull(result);
-            Assert.AreEqual(result.Notes, "These are updated Notes");
+            Assert.NotNull(result);
+            Assert.Equal("These are updated Notes",result.Notes );
         }
 
-        [TestMethod]
+        [Fact]
         public async Task TestPersonER_InsertNewObjectIntoDatabase()
         {
             var person = await BuildValidPersonER();
 
             var savedPerson = await person.SaveAsync();
 
-            Assert.IsNotNull(savedPerson);
-            Assert.IsInstanceOfType(savedPerson, typeof(PersonER));
-            Assert.IsTrue( savedPerson.Id > 0 );
+            Assert.NotNull(savedPerson);
+            Assert.IsType<PersonER>(savedPerson);
+            Assert.True( savedPerson.Id > 0 );
         }
 
-        [TestMethod]
+        [Fact]
         public async Task TestPersonER_DeleteObjectFromDatabase()
         {
             int beforeCount = MockDb.Persons.Count();
 
-            await PersonER.DeletePerson(1);
+            await PersonER.DeletePerson(99);
             
-            Assert.AreNotEqual(beforeCount,MockDb.Persons.Count());
+            Assert.NotEqual(beforeCount,MockDb.Persons.Count());
         }
         
         // test invalid state 
-        [TestMethod]
-        public async Task TestPersonER_DescriptionRequired() 
+        [Fact]
+        public async Task TestPersonER_LastNameRequired() 
         {
             var person = await PersonER.NewPerson();
+            person.LastName = "lastname";
             person.LastUpdatedBy = "edm";
             person.LastUpdatedDate = DateTime.Now;
             var isObjectValidInit = person.IsValid;
-
-            Assert.IsNotNull(person);
-            Assert.IsTrue(isObjectValidInit);
-            Assert.IsFalse(person.IsValid);
+            person.LastName = string.Empty;
+            
+            Assert.NotNull(person);
+            Assert.True(isObjectValidInit);
+            Assert.False(person.IsValid);
         }
        
          // test exception if attempt to save in invalid state
 
-        [TestMethod]
+        [Fact]
         public async Task TestPersonER_TestInvalidSave()
         {
             var person = await PersonER.NewPerson();
-            PersonER savedPerson = null;
+            person.LastName = "lastname";
+            person.LastUpdatedBy = "edm";
+            person.LastUpdatedDate = DateTime.Now;
+            var isPersonValid = person.IsValid;
+
+            person.LastName = string.Empty;
                 
-            Assert.IsFalse(person.IsValid);
-            Assert.ThrowsException<ValidationException>(() => savedPerson =  person.Save() );
+            Assert.True(isPersonValid);
+            Assert.False(person.IsValid);
+            Assert.Throws<ValidationException>(() => person.Save() );
         }
 
         private async Task<PersonER> BuildValidPersonER()
@@ -100,6 +104,13 @@ namespace ECS.MemberManager.Core.BusinessObjects.Test
             personER.LastUpdatedBy = "edm";
             personER.LastUpdatedDate = DateTime.Now;
             personER.Notes = "notes here";
+            personER.Code = "n/a";
+            personER.BirthDate = new SmartDate(DateTime.Now);
+            personER.FirstName = "Joe";
+            personER.LastName = "Insert";
+            personER.DateOfFirstContact = new SmartDate();
+            personER.LastUpdatedBy = "edm";
+            personER.LastUpdatedDate = DateTime.Now;
 
             return personER;
         }

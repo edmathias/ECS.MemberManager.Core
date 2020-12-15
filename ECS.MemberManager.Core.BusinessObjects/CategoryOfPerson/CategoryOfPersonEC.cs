@@ -13,6 +13,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
     public class CategoryOfPersonEC : BusinessBase<CategoryOfPersonEC>
     {
         #region Business Methods
+        
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
         public int Id
         {
