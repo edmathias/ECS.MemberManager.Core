@@ -114,6 +114,22 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(EventsProperty, value);
         }
 
+        public static readonly PropertyInfo<AddressERL> AddressesProperty = RegisterProperty<AddressERL>(p => p.Addresses);
+        public AddressERL Addresses
+        {
+            get => GetProperty(AddressesProperty);
+            set => SetProperty(AddressesProperty, value);
+        }
+
+        public static readonly PropertyInfo<PhoneECL> PhoneListProperty = RegisterProperty<PhoneECL>(p => p.PhoneList);
+        public PhoneECL PhoneList
+        {
+            get => GetProperty(PhoneListProperty);
+            set => SetProperty(PhoneListProperty, value);
+        }
+
+
+
 //        Addresses = new List<Address>(),
 //        Phones = new List<Phone>(),
 
@@ -157,7 +173,10 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private async void Create()
         {
             CategoryOfPersonList = await CategoryOfPersonECL.NewCategoryOfPersonList();
-//            Events = await Events.ne
+            Events = await EventECL.NewEventList();
+            
+            
+            BusinessRules.CheckRules();
         }
         
         [Fetch]
@@ -181,10 +200,10 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 
                 // TODO : Relationships
                 CategoryOfPersonList = await CategoryOfPersonECL.GetCategoryOfPersonList(data.CategoryOfPersons);
-             //   Events = ;
-             //   Addresses = new List<Address>();
-             //   Phones = new List<Phone>();
-             //   Title = new Title();
+                Events = await EventECL.GetEventList(data.Events);
+                Addresses = await AddressERL.GetAddressList(data.Addresses);
+                PhoneList = await PhoneECL.GetPhoneList(data.Phones);
+                //   Title = new Title();
 
             }
         }
@@ -208,24 +227,80 @@ namespace ECS.MemberManager.Core.BusinessObjects
                     LastUpdatedBy = LastUpdatedBy,
                     LastUpdatedDate = LastUpdatedDate,
                 };
-                    // TODO : Relationships
-                foreach(var categoryOfPerson in CategoryOfPersonList )
-                {
-                    var categoryToInsert = new CategoryOfPerson()
-                    {
-                        Id = categoryOfPerson.Id,
-                        Category = categoryOfPerson.Category,
-                        DisplayOrder = categoryOfPerson.DisplayOrder
-                    };
-                    personToInsert.CategoryOfPersons.Add(categoryToInsert);   
-                }
                 
-//                Events = new List<Event>()
-               //     Addresses = new List<Address>(),
-               //     Phones = new List<Phone>(),
+                    // TODO : Relationships
+                CreatePersonRelationships(personToInsert);
+                //     Phones = new List<Phone>(),
                //     Title = new Title()
 
                 Id = dal.Insert(personToInsert);
+            }
+        }
+
+        private void CreatePersonRelationships(Person personToInsert)
+        {
+            CreateCategoryOfPersonRelationship(personToInsert);
+
+            CreateEventRelationship(personToInsert);
+
+            CreateAddressRelationship(personToInsert);
+            
+            CreatePhoneRelationship(personToInsert);
+        }
+
+        private void CreatePhoneRelationship(Person personToInsert)
+        {
+        }
+        private void CreateAddressRelationship(Person personToInsert)
+        {
+            foreach (var addressToProcess in Addresses)
+            {
+                var addressToInsert = new Address()
+                {
+                    Id = addressToProcess.Id,
+                    Address1 = addressToProcess.Address1,
+                    Address2 = addressToProcess.Address2,
+                    City = addressToProcess.City,
+                    State = addressToProcess.State,
+                    PostCode = addressToProcess.PostCode,
+                    Notes = addressToProcess.Notes,
+                    LastUpdatedBy = addressToProcess.LastUpdatedBy,
+                    LastUpdatedDate = addressToProcess.LastUpdatedDate
+                };
+                personToInsert.Addresses.Add(addressToInsert);
+            }
+        }
+
+        private void CreateEventRelationship(Person personToInsert)
+        {
+            foreach (var eventToProcess in Events)
+            {
+                var eventToInsert = new Event()
+                {
+                    Id = eventToProcess.Id,
+                    Description = eventToProcess.Description,
+                    Notes = eventToProcess.Notes,
+                    EventName = eventToProcess.EventName,
+                    NextDate = eventToProcess.NextDate,
+                    IsOneTime = eventToProcess.IsOneTime,
+                    LastUpdatedBy = eventToProcess.LastUpdatedBy,
+                    LastUpdatedDate = eventToProcess.LastUpdatedDate
+                };
+                personToInsert.Events.Add(eventToInsert);
+            }
+        }
+
+        private void CreateCategoryOfPersonRelationship(Person personToInsert)
+        {
+            foreach (var categoryOfPerson in CategoryOfPersonList)
+            {
+                var categoryToInsert = new CategoryOfPerson()
+                {
+                    Id = categoryOfPerson.Id,
+                    Category = categoryOfPerson.Category,
+                    DisplayOrder = categoryOfPerson.DisplayOrder
+                };
+                personToInsert.CategoryOfPersons.Add(categoryToInsert);
             }
         }
 

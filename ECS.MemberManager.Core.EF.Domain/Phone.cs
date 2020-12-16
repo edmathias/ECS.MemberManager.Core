@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ECS.MemberManager.Core.EF.Domain
 {
+    [Serializable]
     public class Phone : EntityBase
     {
         [MaxLength(10)]
