@@ -8,27 +8,25 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class EventECL : BusinessListBase<EventECL, EventEC>
+    public class EventERL : BusinessListBase<EventERL, EventEC>
     {
-        
-        [EditorBrowsable(EditorBrowsableState.Never)]
         public static void AddObjectAuthorizationRules()
         {
             // TODO: add object-level authorization rules
         }
 
-        internal static async Task<EventECL> NewEventList()
+        public static async Task<EventERL> NewEventList()
         {
-            return await DataPortal.CreateChildAsync<EventECL>();
+            return await DataPortal.CreateAsync<EventERL>();
         }
 
-        internal static async Task<EventECL> GetEventList(IList<Event> listOfChildren)
+        public static async Task<EventERL> GetEventList(IList<Event> listOfChildren)
         {
-            return await DataPortal.FetchChildAsync<EventECL>(listOfChildren);
+            return await DataPortal.FetchAsync<EventERL>(listOfChildren);
         }
 
-        [FetchChild]
-        private async void FetchChild(IList<Event> listOfChildren)
+        [Fetch]
+        private async void Fetch(IList<Event> listOfChildren)
         {
             RaiseListChangedEvents = false;
             
@@ -36,9 +34,14 @@ namespace ECS.MemberManager.Core.BusinessObjects
             {
                 this.Add(await EventEC.GetEvent(eventData));
             }
-
+            
             RaiseListChangedEvents = true;
         }
-            
+
+        [Update]
+        private void Update()
+        {
+            base.Child_Update();
+        }
     }
 }

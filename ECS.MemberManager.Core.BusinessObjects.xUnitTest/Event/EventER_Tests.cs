@@ -14,11 +14,16 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async Task TestEventER_Get()
         {
-            var getEvent = await EventER.GetEvent(1);
-            
+            var eventToCompare = MockDb.Events.First();
+            var getEvent = await EventER.GetEvent(eventToCompare.Id);
 
-            Assert.Equal(1, getEvent.Id);
             Assert.True(getEvent.IsValid);
+            Assert.IsType<EventER>(getEvent);
+            Assert.Equal(eventToCompare.Description, getEvent.Description);
+            Assert.Equal(eventToCompare.EventName,getEvent.EventName);
+            Assert.Equal(eventToCompare.NextDate, (DateTime)getEvent.NextDate);
+            Assert.Equal(eventToCompare.LastUpdatedBy, getEvent.LastUpdatedBy);
+            Assert.Equal(eventToCompare.IsOneTime, getEvent.IsOneTime);
         }
 
         [Fact]

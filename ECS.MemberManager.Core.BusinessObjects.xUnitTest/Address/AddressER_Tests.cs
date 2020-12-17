@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Csla;
 using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using ECS.MemberManager.Core.EF.Domain;
@@ -14,10 +15,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async Task TestAddressER_Get()
         {
-            var address = await AddressER.GetAddress(1);
-            var expectedAddress = MockDb.Addresses.First(a => a.Id == 1);
+            var fetchId = MockDb.Addresses.Min(dt => dt.Id);
+            var address = await AddressER.GetAddress(fetchId);
+            var expectedAddress = MockDb.Addresses.First(a => a.Id == fetchId);
             
-            Assert.Equal(1,address.Id);
+            Assert.Equal(fetchId,address.Id);
             Assert.True(address.IsValid);
             Assert.Equal(expectedAddress.Address1,address.Address1);
             Assert.Equal(expectedAddress.Address2,address.Address2);
@@ -26,7 +28,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.Equal(expectedAddress.PostCode,address.PostCode);
             Assert.Equal(expectedAddress.Notes,address.Notes);
             Assert.Equal(expectedAddress.LastUpdatedBy,address.LastUpdatedBy);
-            Assert.Equal(expectedAddress.LastUpdatedDate,address.LastUpdatedDate);
+            Assert.Equal(expectedAddress.LastUpdatedDate,(DateTime)address.LastUpdatedDate);
         }
 
         [Fact]
@@ -41,7 +43,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async void TestAddressER_Update()
         {
-            var address = await AddressER.GetAddress(1);
+            var fetchId = MockDb.Addresses.Min(dt => dt.Id);
+            var address = await AddressER.GetAddress(fetchId);
             address.Notes = "These are updated Notes";
 
             var result = await address.SaveAsync();
@@ -66,9 +69,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async Task TestAddressER_Delete()
         {
-            int beforeCount = MockDb.Addresses.Count();
+            var deleteId = MockDb.Addresses.Max(a => a.Id);
+            
+            var beforeCount = MockDb.Addresses.Count();
 
-            await AddressER.DeleteAddress(99);
+            await AddressER.DeleteAddress(deleteId);
 
             Assert.NotEqual(MockDb.Addresses.Count(),beforeCount );
         }

@@ -16,7 +16,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async Task TestDocumentTypeER_Get()
         {
-            var fetchId = 1;
+            var fetchId = MockDb.DocumentTypes.Min(dt => dt.Id);
             var documentType = await DocumentTypeER.GetDocumentType(fetchId);
 
             var compareDocType = MockDb.DocumentTypes.First(dt => dt.Id == fetchId);
@@ -25,7 +25,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.Equal(compareDocType.Description,documentType.Description);
             Assert.Equal(compareDocType.Notes,documentType.Notes);
             Assert.Equal(compareDocType.LastUpdatedBy,documentType.LastUpdatedBy);
-            Assert.Equal(compareDocType.LastUpdatedDate,documentType.LastUpdatedDate);
+            Assert.Equal(compareDocType.LastUpdatedDate,(DateTime)documentType.LastUpdatedDate);
             
         }
 
@@ -69,9 +69,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async Task TestDocumentTypeER_DeleteObjectFromDatabase()
         {
+            var deleteId = MockDb.DocumentTypes.Max(dt => dt.Id);
             int beforeCount = MockDb.DocumentTypes.Count();
 
-            await DocumentTypeER.DeleteDocumentType(99);
+            await DocumentTypeER.DeleteDocumentType(deleteId);
             
             Assert.NotEqual(beforeCount,MockDb.DocumentTypes.Count());
         }

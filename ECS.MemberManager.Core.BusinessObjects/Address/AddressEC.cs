@@ -77,9 +77,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(LastUpdatedByProperty, value);
         }
 
-        public static readonly PropertyInfo<DateTime> LastUpdatedDateProperty = RegisterProperty<DateTime>(p => p.LastUpdatedDate);
+        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
         [Required]
-        public DateTime LastUpdatedDate
+        public SmartDate LastUpdatedDate
         {
             get => GetProperty(LastUpdatedDateProperty);
             set => SetProperty(LastUpdatedDateProperty, value);
@@ -88,18 +88,18 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #endregion
         
         #region Factory Methods
-        
-        public static async Task<AddressEC> NewAddress()
+
+        internal static async Task<AddressEC> NewAddress()
         {
             return await DataPortal.CreateChildAsync<AddressEC>();
         }
 
-        public static async Task<AddressEC> GetAddress(Address childData)
+        internal static async Task<AddressEC> GetAddress(Address childData)
         {
             return await DataPortal.FetchChildAsync<AddressEC>(childData);
         }
 
-        public static async Task DeleteAddress(int id)
+        internal static async Task DeleteAddress(int id)
         {
             await DataPortal.DeleteAsync<AddressEC>(id);
         }
@@ -108,18 +108,17 @@ namespace ECS.MemberManager.Core.BusinessObjects
         
         #region DataPortal Methods
 
-        [Create]
-        [RunLocal]
+        [CreateChild]
         private void Create()
         {
+            MarkAsChild();
+            
             BusinessRules.CheckRules();
         }
  
         [FetchChild]
         private void Fetch(Address childData)
         {
-            MarkAsChild();
-            
             using (BypassPropertyChecks)
             {
                 Id = childData.Id;

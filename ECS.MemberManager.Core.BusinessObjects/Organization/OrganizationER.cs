@@ -37,8 +37,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(DateOfFirstContactProperty, value);
         }
 
-        public static readonly PropertyInfo<DateTime> LastUpdatedDateProperty = RegisterProperty<DateTime>(p => p.LastUpdatedDate);
-        public DateTime LastUpdatedDate
+        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
+        public SmartDate LastUpdatedDate
         {
             get => GetProperty(LastUpdatedDateProperty);
             set => SetProperty(LastUpdatedDateProperty, value);

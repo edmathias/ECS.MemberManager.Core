@@ -8,7 +8,7 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class AddressERL : BusinessListBase<AddressERL, AddressEC>
+    public class CategoryOfPersonERL : BusinessListBase<CategoryOfPersonERL, CategoryOfPersonEC>
     {
         
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -17,24 +17,24 @@ namespace ECS.MemberManager.Core.BusinessObjects
             // TODO: add object-level authorization rules
         }
 
-        public static async Task<AddressERL> NewAddressList()
+        public static async Task<CategoryOfPersonERL> NewCategoryOfPersonList()
         {
-            return await DataPortal.CreateAsync<AddressERL>();
+            return await DataPortal.CreateAsync<CategoryOfPersonERL>();
         }
 
-        public static async Task<AddressERL> GetAddressList(IList<Address> listOfChildren)
+        public static async Task<CategoryOfPersonERL> GetCategoryOfPersonList(IList<CategoryOfPerson> listOfChildren)
         {
-            return await DataPortal.FetchAsync<AddressERL>(listOfChildren);
+            return await DataPortal.FetchAsync<CategoryOfPersonERL>(listOfChildren);
         }
 
         [Fetch]
-        private async void Fetch(IList<Address> listOfChildren)
+        private async void Fetch(IList<CategoryOfPerson> listOfChildren)
         {
             RaiseListChangedEvents = false;
             
             foreach (var addressData in listOfChildren)
             {
-                this.Add(await AddressEC.GetAddress(addressData));
+                this.Add(await CategoryOfPersonEC.GetCategoryOfPerson(addressData));
             }
             
             RaiseListChangedEvents = true;
@@ -45,6 +45,5 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             base.Child_Update();
         }
-            
     }
 }

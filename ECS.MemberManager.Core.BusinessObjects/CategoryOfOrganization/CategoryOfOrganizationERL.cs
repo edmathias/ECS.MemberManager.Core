@@ -8,7 +8,7 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class AddressECL : BusinessListBase<AddressECL, AddressEC>
+    public class CategoryOfOrganizationERL : BusinessListBase<CategoryOfOrganizationERL, CategoryOfOrganizationEC>
     {
         
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -17,24 +17,24 @@ namespace ECS.MemberManager.Core.BusinessObjects
             // TODO: add object-level authorization rules
         }
 
-        public static async Task<AddressECL> NewAddressList()
+        public static async Task<CategoryOfOrganizationERL> NewCategoryOfOrganizationList()
         {
-            return await DataPortal.CreateChildAsync<AddressECL>();
+            return await DataPortal.CreateAsync<CategoryOfOrganizationERL>();
         }
 
-        public static async Task<AddressECL> GetAddressList(IList<Address> listOfChildren)
+        public static async Task<CategoryOfOrganizationERL> GetCategoryOfOrganizationList(IList<CategoryOfOrganization> listOfChildren)
         {
-            return await DataPortal.FetchChildAsync<AddressECL>(listOfChildren);
+            return await DataPortal.FetchAsync<CategoryOfOrganizationERL>(listOfChildren);
         }
 
-        [FetchChild]
-        private async void FetchChild(IList<Address> listOfChildren)
+        [Fetch]
+        private async void Fetch(IList<CategoryOfOrganization> listOfChildren)
         {
             RaiseListChangedEvents = false;
             
             foreach (var addressData in listOfChildren)
             {
-                this.Add(await AddressEC.GetAddress(addressData));
+                this.Add(await CategoryOfOrganizationEC.GetCategoryOfOrganization(addressData));
             }
             
             RaiseListChangedEvents = true;

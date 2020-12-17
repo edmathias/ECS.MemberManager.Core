@@ -53,17 +53,17 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        public static async Task<CategoryOfPersonEC> NewCategoryOfPerson()
+        internal static async Task<CategoryOfPersonEC> NewCategoryOfPerson()
         {
             return await DataPortal.CreateAsync<CategoryOfPersonEC>();
         }
 
-        public static async Task<CategoryOfPersonEC> GetCategoryOfPerson(CategoryOfPerson categoryOfPerson)
+        internal static async Task<CategoryOfPersonEC> GetCategoryOfPerson(CategoryOfPerson categoryOfPerson)
         {
             return await DataPortal.FetchChildAsync<CategoryOfPersonEC>(categoryOfPerson);
         }
 
-        public static async Task DeleteCategoryOfPerson(int id)
+        internal static async Task DeleteCategoryOfPerson(int id)
         {
             await DataPortal.DeleteAsync<CategoryOfPersonEC>(id);
         }

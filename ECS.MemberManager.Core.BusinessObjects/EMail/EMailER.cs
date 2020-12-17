@@ -38,9 +38,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(LastUpdatedByProperty, value);
         }
 
-        public static readonly PropertyInfo<DateTime> LastUpdatedDateProperty = RegisterProperty<DateTime>(p => p.LastUpdatedDate);
+        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
         [Required]
-        public DateTime LastUpdatedDate
+        public SmartDate LastUpdatedDate
         {
             get => GetProperty(LastUpdatedDateProperty);
             set => SetProperty(LastUpdatedDateProperty, value);
@@ -129,7 +129,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                     EMailType = new EMailType()
                         {Id = EMailType.Id, Description = EMailType.Description, Notes = EMailType.Notes},
                     LastUpdatedBy = this.LastUpdatedBy,
-                    LastUpdatedDate = DateTime.Now,
+                    LastUpdatedDate = this.LastUpdatedDate,
                     Notes = this.Notes,
                     // TODO: many-to-many
                     Organizations = new List<Organization>(),
@@ -155,7 +155,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                     EMailType = new EMailType()
                         {Id = this.EMailType.Id, Description = this.EMailType.Description, Notes = this.EMailType.Notes},
                     LastUpdatedBy = this.LastUpdatedBy,
-                    LastUpdatedDate = DateTime.Now,
+                    LastUpdatedDate = this.LastUpdatedDate,
                     Notes = this.Notes,
                     // TODO: many-to-many
                     Organizations = new List<Organization>(),

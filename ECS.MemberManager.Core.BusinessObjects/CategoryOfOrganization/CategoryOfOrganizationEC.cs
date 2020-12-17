@@ -5,11 +5,12 @@ using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
+using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class CategoryOfOrganizationER : BusinessBase<CategoryOfOrganizationER>
+    public class CategoryOfOrganizationEC : BusinessBase<CategoryOfOrganizationEC>
     {
         #region Business Methods
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
@@ -50,34 +51,35 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #endregion
 
         #region Factory Methods
-        
-        [Create]
-        [RunLocal]
-        private void Create()
+
+        internal static async Task<CategoryOfOrganizationEC> NewCategoryOfOrganization()
         {
-            BusinessRules.CheckRules();
+            return await DataPortal.CreateAsync<CategoryOfOrganizationEC>();
         }
 
-        public static async Task<CategoryOfOrganizationER> NewCategoryOfOrganization()
+        internal static async Task<CategoryOfOrganizationEC> GetCategoryOfOrganization(CategoryOfOrganization childData)
         {
-            return await DataPortal.CreateAsync<CategoryOfOrganizationER>();
+            return await DataPortal.FetchAsync<CategoryOfOrganizationEC>(childData);
         }
 
-        public static async Task<CategoryOfOrganizationER> GetCategoryOfOrganization(int id)
+        internal static async Task DeleteCategoryOfOrganization(int id)
         {
-            return await DataPortal.FetchAsync<CategoryOfOrganizationER>(id);
-        }
-
-        public static async Task DeleteCategoryOfOrganization(int id)
-        {
-            await DataPortal.DeleteAsync<CategoryOfOrganizationER>(id);
+            await DataPortal.DeleteAsync<CategoryOfOrganizationEC>(id);
         }
  
         #endregion
 
         #region Data Access
+       
+        [CreateChild]
+        private void Create()
+        {
+            MarkAsChild();
+            
+            BusinessRules.CheckRules();
+        }
         
-        [Fetch]
+        [FetchChild]
         private void Fetch(int id)
         {
             using var dalManager = DalFactory.GetManager();
@@ -91,7 +93,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             }
         }
 
-        [Insert]
+        [InsertChild]
         private void Insert()
         {
             using var dalManager = DalFactory.GetManager();
@@ -109,7 +111,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             }
         }
         
-        [Update]
+        [UpdateChild]
         private void Update()
         {
             using var dalManager = DalFactory.GetManager();
@@ -126,7 +128,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             }
         }
 
-        [DeleteSelf]
+        [DeleteSelfChild]
         private void DeleteSelf()
         {
             Delete(this.Id);

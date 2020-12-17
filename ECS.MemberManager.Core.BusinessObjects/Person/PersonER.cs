@@ -68,9 +68,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(LastUpdatedByProperty, value);
         }
 
-        public static readonly PropertyInfo<DateTime> LastUpdatedDateProperty = RegisterProperty<DateTime>(p => p.LastUpdatedDate);
+        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
         [Required]
-        public DateTime LastUpdatedDate
+        public SmartDate LastUpdatedDate
         {
             get => GetProperty(LastUpdatedDateProperty);
             set => SetProperty(LastUpdatedDateProperty, value);
@@ -100,15 +100,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(TitleProperty, value);
         }
 
-        public static readonly PropertyInfo<CategoryOfPersonECL> CategoryOfPersonListProperty = RegisterProperty<CategoryOfPersonECL>(p => p.CategoryOfPersonList);
-        public CategoryOfPersonECL CategoryOfPersonList
+        public static readonly PropertyInfo<CategoryOfPersonERL> CategoryOfPersonListProperty = RegisterProperty<CategoryOfPersonERL>(p => p.CategoryOfPersonList);
+        public CategoryOfPersonERL CategoryOfPersonList
         {
             get => GetProperty(CategoryOfPersonListProperty);
             set => SetProperty(CategoryOfPersonListProperty, value);
         }
 
-        public static readonly PropertyInfo<EventECL> EventsProperty = RegisterProperty<EventECL>(p => p.Events);
-        public EventECL Events
+        public static readonly PropertyInfo<EventERL> EventsProperty = RegisterProperty<EventERL>(p => p.Events);
+        public EventERL Events
         {
             get => GetProperty(EventsProperty);
             set => SetProperty(EventsProperty, value);
@@ -128,7 +128,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(PhoneListProperty, value);
         }
 
-
+        public static readonly PropertyInfo<AddressERL> AddressListProperty = RegisterProperty<AddressERL>(p => p.AddressList);
+        public AddressERL AddressList
+        {
+            get => GetProperty(AddressListProperty);
+            set => SetProperty(AddressListProperty, value);
+        }
 
 //        Addresses = new List<Address>(),
 //        Phones = new List<Phone>(),
@@ -172,8 +177,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [Create]
         private async void Create()
         {
-            CategoryOfPersonList = await CategoryOfPersonECL.NewCategoryOfPersonList();
-            Events = await EventECL.NewEventList();
+            CategoryOfPersonList = await CategoryOfPersonERL.NewCategoryOfPersonList();
+            Events = await EventERL.NewEventList();
             
             
             BusinessRules.CheckRules();
@@ -199,8 +204,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 LastUpdatedBy = data.LastUpdatedBy;
                 
                 // TODO : Relationships
-                CategoryOfPersonList = await CategoryOfPersonECL.GetCategoryOfPersonList(data.CategoryOfPersons);
-                Events = await EventECL.GetEventList(data.Events);
+                CategoryOfPersonList = await CategoryOfPersonERL.GetCategoryOfPersonList(data.CategoryOfPersons);
+                Events = await EventERL.GetEventList(data.Events);
                 Addresses = await AddressERL.GetAddressList(data.Addresses);
                 PhoneList = await PhoneECL.GetPhoneList(data.Phones);
                 //   Title = new Title();
