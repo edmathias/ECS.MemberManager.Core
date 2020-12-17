@@ -14,10 +14,19 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async Task TestAddressER_Get()
         {
-            var Address = await AddressER.GetAddress(1);
-
-            Assert.Equal(1,Address.Id);
-            Assert.True(Address.IsValid);
+            var address = await AddressER.GetAddress(1);
+            var expectedAddress = MockDb.Addresses.First(a => a.Id == 1);
+            
+            Assert.Equal(1,address.Id);
+            Assert.True(address.IsValid);
+            Assert.Equal(expectedAddress.Address1,address.Address1);
+            Assert.Equal(expectedAddress.Address2,address.Address2);
+            Assert.Equal(expectedAddress.City,address.City);
+            Assert.Equal(expectedAddress.State,address.State);
+            Assert.Equal(expectedAddress.PostCode,address.PostCode);
+            Assert.Equal(expectedAddress.Notes,address.Notes);
+            Assert.Equal(expectedAddress.LastUpdatedBy,address.LastUpdatedBy);
+            Assert.Equal(expectedAddress.LastUpdatedDate,address.LastUpdatedDate);
         }
 
         [Fact]

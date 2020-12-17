@@ -12,28 +12,30 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
        [Fact]
         public async void TestCategoryOfOrganizationER_Get()
         {
-            var documentType = await CategoryOfOrganizationER.GetCategoryOfOrganization(1);
+            var categoryOfOrganization = await CategoryOfOrganizationER.GetCategoryOfOrganization(1);
 
-            Assert.Equal(1,documentType.Id);
-            Assert.True(documentType.IsValid);
+            var compareCategory = MockDb.CategoryOfOrganizations.First(dt => dt.Id == 1);
+            Assert.True(categoryOfOrganization.IsValid);
+            Assert.Equal(compareCategory.Category,categoryOfOrganization.Category);
+            Assert.Equal(compareCategory.DisplayOrder,categoryOfOrganization.DisplayOrder);
         }
 
         [Fact]
         public async void TestCategoryOfOrganizationER_GetNewObject()
         {
-            var documentType = await CategoryOfOrganizationER.NewCategoryOfOrganization();
+            var categoryOfOrganization = await CategoryOfOrganizationER.NewCategoryOfOrganization();
 
-            Assert.NotNull(documentType);
-            Assert.False(documentType.IsValid);
+            Assert.NotNull(categoryOfOrganization);
+            Assert.False(categoryOfOrganization.IsValid);
         }
 
         [Fact]
         public async void TestCategoryOfOrganizationER_UpdateExistingObjectInDatabase()
         {
-            var documentType = await CategoryOfOrganizationER.GetCategoryOfOrganization(1);
-            documentType.DisplayOrder = 2;
+            var categoryOfOrganization = await CategoryOfOrganizationER.GetCategoryOfOrganization(1);
+            categoryOfOrganization.DisplayOrder = 2;
             
-            var result = await documentType.SaveAsync();
+            var result = await categoryOfOrganization.SaveAsync();
 
             Assert.NotNull(result);
             Assert.Equal(2,result.DisplayOrder);
@@ -42,10 +44,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async Task TestCategoryOfOrganizationER_InsertNewObjectIntoDatabase()
         {
-            var documentType = await CategoryOfOrganizationER.NewCategoryOfOrganization();
-            documentType.Category = "Category 1";
+            var categoryOfOrganization = await CategoryOfOrganizationER.NewCategoryOfOrganization();
+            categoryOfOrganization.Category = "Category 1";
 
-            var savedCategoryOfOrganization = await documentType.SaveAsync();
+            var savedCategoryOfOrganization = await categoryOfOrganization.SaveAsync();
            
             Assert.NotNull(savedCategoryOfOrganization);
             Assert.IsType<CategoryOfOrganizationER>(savedCategoryOfOrganization);
@@ -66,32 +68,32 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async Task TestCategoryOfOrganizationER_CategoryRequired() 
         {
-            var documentType = await CategoryOfOrganizationER.NewCategoryOfOrganization();
-            documentType.Category = "Valid category";
-            documentType.DisplayOrder = 1;
-            var isObjectValidInit = documentType.IsValid;
-            documentType.Category = String.Empty;
+            var categoryOfOrganization = await CategoryOfOrganizationER.NewCategoryOfOrganization();
+            categoryOfOrganization.Category = "Valid category";
+            categoryOfOrganization.DisplayOrder = 1;
+            var isObjectValidInit = categoryOfOrganization.IsValid;
+            categoryOfOrganization.Category = String.Empty;
 
-            Assert.NotNull(documentType);
+            Assert.NotNull(categoryOfOrganization);
             Assert.True(isObjectValidInit);
-            Assert.False(documentType.IsValid);
+            Assert.False(categoryOfOrganization.IsValid);
         }
        
         [Fact]
         public async Task TestCategoryOfOrganizationER_CategoryExceedsMaxLengthOf35()
         {
-            var documentType = await CategoryOfOrganizationER.NewCategoryOfOrganization();
-            documentType.Category = "valid category";
-            Assert.True(documentType.IsValid);
+            var categoryOfOrganization = await CategoryOfOrganizationER.NewCategoryOfOrganization();
+            categoryOfOrganization.Category = "valid category";
+            Assert.True(categoryOfOrganization.IsValid);
 
-            documentType.Category =
+            categoryOfOrganization.Category =
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
                 "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis ";
 
-            Assert.NotNull(documentType);
-            Assert.False(documentType.IsValid);
+            Assert.NotNull(categoryOfOrganization);
+            Assert.False(categoryOfOrganization.IsValid);
             Assert.Equal("The field Category must be a string or array type with a maximum length of '35'.",
-                documentType.BrokenRulesCollection[0].Description);
+                categoryOfOrganization.BrokenRulesCollection[0].Description);
  
         }        
         // test exception if attempt to save in invalid state
@@ -99,12 +101,12 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async Task TestCategoryOfOrganizationER_TestInvalidSave()
         {
-            var documentType = await CategoryOfOrganizationER.NewCategoryOfOrganization();
-            documentType.Category = String.Empty;
+            var categoryOfOrganization = await CategoryOfOrganizationER.NewCategoryOfOrganization();
+            categoryOfOrganization.Category = String.Empty;
             CategoryOfOrganizationER savedCategoryOfOrganization = null;
                 
-            Assert.False(documentType.IsValid);
-            Assert.Throws<Csla.Rules.ValidationException>(() => savedCategoryOfOrganization = documentType.Save());
+            Assert.False(categoryOfOrganization.IsValid);
+            Assert.Throws<Csla.Rules.ValidationException>(() => savedCategoryOfOrganization = categoryOfOrganization.Save());
         }
     }
 }

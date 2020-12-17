@@ -12,10 +12,13 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
        [Fact]
         public async Task TestCategoryOfPersonER_Get()
         {
-            var person = await CategoryOfPersonER.GetCategoryOfPerson(1);
+            var fetchId = 1;
+            var person = await CategoryOfPersonER.GetCategoryOfPerson(fetchId);
+            var comparePerson = MockDb.CategoryOfPersons.First(p => p.Id == fetchId);
 
-            Assert.Equal(1, person.Id);
             Assert.True(person.IsValid);
+            Assert.Equal(comparePerson.Category, person.Category );
+            Assert.Equal(comparePerson.DisplayOrder, person.DisplayOrder );
         }
 
         [Fact]

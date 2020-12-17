@@ -16,10 +16,17 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async Task TestDocumentTypeER_Get()
         {
-            var documentType = await DocumentTypeER.GetDocumentType(1);
+            var fetchId = 1;
+            var documentType = await DocumentTypeER.GetDocumentType(fetchId);
 
-            Assert.Equal(1, documentType.Id);
-            Assert.True(documentType.IsValid);
+            var compareDocType = MockDb.DocumentTypes.First(dt => dt.Id == fetchId);
+
+            Assert.IsType<DocumentTypeER>(documentType);
+            Assert.Equal(compareDocType.Description,documentType.Description);
+            Assert.Equal(compareDocType.Notes,documentType.Notes);
+            Assert.Equal(compareDocType.LastUpdatedBy,documentType.LastUpdatedBy);
+            Assert.Equal(compareDocType.LastUpdatedDate,documentType.LastUpdatedDate);
+            
         }
 
         [Fact]
