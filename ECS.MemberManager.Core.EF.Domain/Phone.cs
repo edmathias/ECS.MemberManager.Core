@@ -7,6 +7,12 @@ namespace ECS.MemberManager.Core.EF.Domain
     [Serializable]
     public class Phone : EntityBase
     {
+        public Phone()
+        {
+            Organizations = new List<Organization>();
+            Persons = new List<Person>();
+        }
+        
         [MaxLength(10)]
         public string PhoneType { get; set; }
         [Required,MaxLength(3)]

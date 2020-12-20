@@ -120,7 +120,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
         
         #region DataPortal Methods
         
-        
+        [CreateChild]
+        private void Create()
+        {
+            MarkAsChild();
+            
+            BusinessRules.CheckRules();
+        }
         [Fetch]
         private void Fetch(Phone childData)
         {
@@ -135,6 +141,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 LastUpdatedDate = childData.LastUpdatedDate;
                 Notes = childData.Notes;
             }
+            MarkAsChild();
+            BusinessRules.CheckRules();
         }
 
         [Insert]

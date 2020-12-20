@@ -129,6 +129,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [Create]
         private async void Create()
         {
+            await BusinessRules.CheckRulesAsync();
+            
             PaymentDate = new SmartDate();
             PaymentSource = await PaymentSourceER.NewPaymentSource();
             PaymentType = await PaymentTypeER.NewPaymentType();

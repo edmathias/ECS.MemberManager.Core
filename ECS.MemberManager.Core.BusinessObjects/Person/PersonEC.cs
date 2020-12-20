@@ -11,7 +11,7 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class PersonER : BusinessBase<PersonER>
+    public class PersonEC : BusinessBase<PersonEC>
     {
         #region Business Methods
 
@@ -155,19 +155,19 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        public static async Task<PersonER> NewPerson()
+        public static async Task<PersonEC> NewPerson()
         {
-            return await DataPortal.CreateAsync<PersonER>();
+            return await DataPortal.CreateAsync<PersonEC>();
         }
 
-        public static async Task<PersonER> GetPerson(int id)
+        public static async Task<PersonEC> GetPerson(int id)
         {
-            return await DataPortal.FetchAsync<PersonER>(id);
+            return await DataPortal.FetchAsync<PersonEC>(id);
         }
 
         public static async Task DeletePerson(int id)
         {
-            await DataPortal.DeleteAsync<PersonER>(id);
+            await DataPortal.DeleteAsync<PersonEC>(id);
         }
         
         #endregion

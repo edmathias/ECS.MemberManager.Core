@@ -78,9 +78,20 @@ namespace ECS.MemberManager.Core.BusinessObjects
             Id = categoryOfPerson.Id;
             Category = categoryOfPerson.Category;
             DisplayOrder = categoryOfPerson.DisplayOrder;
+            
+            MarkAsChild();
+            BusinessRules.CheckRules();
 
         }
 
+        [CreateChild]
+        private void CreateChild()
+        {
+            MarkAsChild();
+
+            BusinessRules.CheckRules();
+        }
+        
         [InsertChild]
         private void InsertChild()
         {

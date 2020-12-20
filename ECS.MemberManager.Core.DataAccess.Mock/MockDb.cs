@@ -451,7 +451,8 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                     Events = new List<Event>(),
                     FirstName = "Joe",
                     MiddleName = "E",
-                    LastName = "Blow"
+                    LastName = "Blow",
+                    Phones = GetPhones()
                 },
                 new Person()
                 {
@@ -464,7 +465,8 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                     Events = new List<Event>(),
                     FirstName = "Fred",
                     MiddleName = String.Empty,
-                    LastName = "Derf"
+                    LastName = "Derf",
+                    Phones = GetPhones()
                 },
                 new Person()  // person for delete
                 {
@@ -477,7 +479,8 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                     Events = new List<Event>(),
                     FirstName = "Fred",
                     MiddleName = String.Empty,
-                    LastName = "Derf"
+                    LastName = "Derf",
+                    Phones = GetPhones()
                 }                 
             };
         }

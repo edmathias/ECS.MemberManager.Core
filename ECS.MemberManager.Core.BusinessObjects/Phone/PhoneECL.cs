@@ -11,7 +11,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
     public class PhoneECL : BusinessListBase<PhoneECL, PhoneEC>
     {
         
-        [EditorBrowsable(EditorBrowsableState.Never)]
         public static void AddObjectAuthorizationRules()
         {
             // TODO: add object-level authorization rules
