@@ -36,12 +36,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(NotesProperty, value);
         } 
         
-        public static readonly PropertyInfo<EMailTypeROC> EMailTypeProperty = RegisterProperty<EMailTypeROC>(p => p.EMailType);
-        public EMailTypeROC EMailType
-        {
-            get => GetProperty(EMailTypeProperty);
-            private set => LoadProperty(EMailTypeProperty, value);
-        }
+       
         protected override void AddBusinessRules()
         {
             base.AddBusinessRules();

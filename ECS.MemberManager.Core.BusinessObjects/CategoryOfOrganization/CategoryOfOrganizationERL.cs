@@ -39,6 +39,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
             
             RaiseListChangedEvents = true;
         }
+
+        [Update]
+        private void Update()
+        {
+            base.Child_Update();
+        }
             
     }
 }

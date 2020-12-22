@@ -111,6 +111,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [CreateChild]
         private void Create()
         {
+            base.Child_Create();
+            
             MarkAsChild();
             
             BusinessRules.CheckRules();
@@ -131,7 +133,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 LastUpdatedDate = childData.LastUpdatedDate;
                 Notes = childData.Notes;
             }
-            
+            MarkAsChild();
+            BusinessRules.CheckRules();
         }
 
         [InsertChild]

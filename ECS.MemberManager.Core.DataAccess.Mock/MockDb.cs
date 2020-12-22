@@ -7,7 +7,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 {
     public class MockDb
     {
-        public static IList<Address> Addresses { get; }
+        public static IList<Address> Addresses { get; private set; }
         public static IList<CategoryOfOrganization> CategoryOfOrganizations { get; private set; }
         public static IList<CategoryOfPerson> CategoryOfPersons { get; private set; }
         public static IList<ContactForSponsor> ContactForSponsors { get; private set; }
@@ -37,6 +37,11 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         
         static MockDb()
         {
+            ResetMockDb();
+        }
+
+        public static void ResetMockDb()
+        {
             Addresses = GetAddressRecords();
             CategoryOfOrganizations = GetCategoryOfOrganizationRecords();
             CategoryOfPersons = GetCategoryOfPersons();
@@ -63,8 +68,8 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             Sponsors = GetSponsors();
             TaskForEvents = GetTaskForEvents();
             TermInOffices = GetTermInOffices();
-            Titles = GetTitles();
-        }    
+            Titles = GetTitles();            
+        }
         
         private static IList<Address> GetAddressRecords()
         {
@@ -143,13 +148,32 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                     Category = "Org Category 2",
                     DisplayOrder = 1
                 }
-                
             };
         }
 
         private static IList<ContactForSponsor> GetContactForSponsors()
         {
-            return new List<ContactForSponsor>();
+            return new List<ContactForSponsor>()
+            {
+                new ContactForSponsor()
+                {
+                    Id = 1, Person = new Person(), Purpose = "purpose for contact", DateWhenContacted = DateTime.Now,
+                    Notes = "Notes here", RecordOfDiscussion = "record of discussion here", LastUpdatedBy = "edm",
+                    LastUpdatedDate = DateTime.Now, Sponsor = new Sponsor()
+                },
+                new ContactForSponsor()
+                {
+                    Id = 2, Person = new Person(), Purpose = "purpose for contact 2", DateWhenContacted = DateTime.Now,
+                    Notes = "Notes here", RecordOfDiscussion = "record of discussion here", LastUpdatedBy = "edm",
+                    LastUpdatedDate = DateTime.Now, Sponsor = new Sponsor()
+                },
+                new ContactForSponsor()
+                {
+                    Id = 99, Person = new Person(), Purpose = "delete this contact", DateWhenContacted = DateTime.Now,
+                    Notes = "Deleted Notes here", RecordOfDiscussion = "deleted record", LastUpdatedBy = "edm",
+                    LastUpdatedDate = DateTime.Now, Sponsor = new Sponsor()
+                }
+            };
         }
 
         private static IList<DocumentType> GetDocumentTypes()
@@ -176,21 +200,20 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 {
                     Id = 1, EMailType = new EMailType() {Id = 1, Description = "personal", Notes = ""},
                     EMailAddress = "edm@ecs.com", LastUpdatedBy = "edm", LastUpdatedDate = DateTime.Now,
-                    Notes = "some notes", Organizations = new List<Organization>(), Persons = new List<Person>()
+                    Notes = "some notes", Organizations = GetOrganizations(), Persons = GetPersons() 
                 },
                 new EMail()
                 {
                     Id = 2, EMailType = new EMailType() {Id = 2, Description = "work", Notes = ""},
                     EMailAddress = "edm@ecs.com", LastUpdatedBy = "edm", LastUpdatedDate = DateTime.Now,
-                    Notes = "some notes", Organizations = new List<Organization>(), Persons = new List<Person>()
+                    Notes = "some notes", Organizations = GetOrganizations(), Persons = GetPersons()
                 },
                 new EMail()
                 {
                 Id = 99, EMailType = new EMailType() {Id = 2, Description = "work", Notes = ""},
                 EMailAddress = "edm@ecs.com", LastUpdatedBy = "edm", LastUpdatedDate = DateTime.Now,
-                Notes = "test the delete", Organizations = new List<Organization>(), Persons = new List<Person>()
-            }
-                
+                Notes = "test the delete", Organizations = GetOrganizations(), Persons = GetPersons()
+                }
             };
         }
 

@@ -9,6 +9,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
     public class CategoryOfOrganizationER_Tests
     {
+        public CategoryOfOrganizationER_Tests()
+        {
+            MockDb.ResetMockDb();
+        }
+        
        [Fact]
         public async void TestCategoryOfOrganizationER_Get()
         {

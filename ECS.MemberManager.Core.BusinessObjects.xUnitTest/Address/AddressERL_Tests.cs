@@ -7,6 +7,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
     public class AddressERL_Tests
     {
+        public AddressERL_Tests()
+        {
+            MockDb.ResetMockDb();
+        }
+        
         [Fact]
         private async void TestAddressERL_GetAddressList()
         {

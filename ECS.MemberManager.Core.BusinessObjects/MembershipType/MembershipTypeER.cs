@@ -102,16 +102,16 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IMembershipTypeDal>();
-            var documentTypeToInsert = new ECS.MemberManager.Core.EF.Domain.MembershipType();
+            var membershipTypeToInsert = new ECS.MemberManager.Core.EF.Domain.MembershipType();
             using (BypassPropertyChecks)
             {
-                documentTypeToInsert.Description = this.Description;
-                documentTypeToInsert.LastUpdatedDate = this.LastUpdatedDate;
-                documentTypeToInsert.LastUpdatedBy = this.LastUpdatedBy;
-                documentTypeToInsert.Notes = this.Notes;
-                documentTypeToInsert.Level = this.Level;
+                membershipTypeToInsert.Description = this.Description;
+                membershipTypeToInsert.LastUpdatedDate = this.LastUpdatedDate;
+                membershipTypeToInsert.LastUpdatedBy = this.LastUpdatedBy;
+                membershipTypeToInsert.Notes = this.Notes;
+                membershipTypeToInsert.Level = this.Level;
             }
-            Id = dal.Insert(documentTypeToInsert);
+            Id = dal.Insert(membershipTypeToInsert);
         }
 
         [Update] 
@@ -119,17 +119,17 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IMembershipTypeDal>();
-            var documentTypeToUpdate = dal.Fetch(Id);
+            var membershipTypeToUpdate = dal.Fetch(Id);
             using (BypassPropertyChecks)
             {
-                documentTypeToUpdate.Description = this.Description;
-                documentTypeToUpdate.Level = this.Level;
-                documentTypeToUpdate.LastUpdatedDate = this.LastUpdatedDate;
-                documentTypeToUpdate.LastUpdatedBy = this.LastUpdatedBy;
-                documentTypeToUpdate.Notes = this.Notes; 
+                membershipTypeToUpdate.Description = this.Description;
+                membershipTypeToUpdate.Level = this.Level;
+                membershipTypeToUpdate.LastUpdatedDate = this.LastUpdatedDate;
+                membershipTypeToUpdate.LastUpdatedBy = this.LastUpdatedBy;
+                membershipTypeToUpdate.Notes = this.Notes; 
             }
 
-            dal.Update(documentTypeToUpdate);
+            dal.Update(membershipTypeToUpdate);
         }
 
         [DeleteSelf]

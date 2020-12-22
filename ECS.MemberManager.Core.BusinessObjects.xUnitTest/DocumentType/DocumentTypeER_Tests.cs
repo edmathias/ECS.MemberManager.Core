@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Csla.Rules;
@@ -7,14 +7,15 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    /// <summary>
-    /// Summary description for JustMockTest
-    /// </summary>
     public class DocumentTypeER_Tests 
     {
+        public DocumentTypeER_Tests()
+        {
+            MockDb.ResetMockDb();
+        }
 
         [Fact]
-        public async Task TestDocumentTypeER_Get()
+        public async Task DocumentTypeER_TestGetDocumentType()
         {
             var fetchId = MockDb.DocumentTypes.Min(dt => dt.Id);
             var documentType = await DocumentTypeER.GetDocumentType(fetchId);
@@ -30,7 +31,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestDocumentTypeER_GetNewObject()
+        public async Task DocumentTypeER_TestGetNewDocumentType()
         {
             var documentType = await DocumentTypeER.NewDocumentType();
 
@@ -39,7 +40,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestDocumentTypeER_UpdateExistingObjectInDatabase()
+        public async Task DocumentTypeER_TestUpdateExistingDocumentType()
         {
             var documentType = await DocumentTypeER.GetDocumentType(1);
             documentType.Notes = "These are updated Notes";
@@ -51,7 +52,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestDocumentTypeER_InsertNewObjectIntoDatabase()
+        public async Task DocumentTypeER_TestInsertNewDocumentType()
         {
             var documentType = await DocumentTypeER.NewDocumentType();
             documentType.Description = "Standby";
@@ -67,7 +68,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestDocumentTypeER_DeleteObjectFromDatabase()
+        public async Task DocumentTypeER_TestDeleteObjectFromDatabase()
         {
             var deleteId = MockDb.DocumentTypes.Max(dt => dt.Id);
             int beforeCount = MockDb.DocumentTypes.Count();
@@ -79,7 +80,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         
         // test invalid state 
         [Fact]
-        public async Task TestDocumentTypeER_DescriptionRequired() 
+        public async Task DocumentTypeER_TestDescriptionRequired() 
         {
             var documentType = await DocumentTypeER.NewDocumentType();
             documentType.Description = "make valid";
@@ -94,7 +95,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
        
         [Fact]
-        public async Task TestDocumentTypeER_DescriptionExceedsMaxLengthOf50()
+        public async Task DocumentTypeER_TestDescriptionExceedsMaxLengthOf50()
         {
             var documentType = await DocumentTypeER.NewDocumentType();
             documentType.LastUpdatedBy = "edm";
@@ -116,7 +117,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         // test exception if attempt to save in invalid state
 
         [Fact]
-        public async Task TestDocumentTypeER_TestInvalidSave()
+        public async Task DocumentTypeER_TestInvalidSaveDocumentType()
         {
             var documentType = await DocumentTypeER.NewDocumentType();
             documentType.Description = String.Empty;
@@ -125,5 +126,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.False(documentType.IsValid);
             Assert.Throws<Csla.Rules.ValidationException>(() => savedDocumentType =  documentType.Save() );
         }
+        
+        
     }
 }

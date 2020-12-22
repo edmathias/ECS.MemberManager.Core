@@ -45,5 +45,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             base.Child_Update();
         }
+            
     }
 }

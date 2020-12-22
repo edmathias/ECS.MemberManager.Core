@@ -7,6 +7,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
     public class CategoryOfPersonERL_Tests
     {
+        public CategoryOfPersonERL_Tests()
+        {
+            MockDb.ResetMockDb();
+        }
+        
         [Fact]
         private async void TestCategoryOfPersonERL_GetCategoryOfPersonList()
         {

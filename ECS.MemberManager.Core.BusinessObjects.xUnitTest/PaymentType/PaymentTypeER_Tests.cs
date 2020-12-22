@@ -9,6 +9,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
     public class PaymentTypeER_Tests 
     {
+        public PaymentTypeER_Tests()
+        {
+            MockDb.ResetMockDb();
+        }
+        
         [Fact]
         public async Task TestPaymentTypeER_Get()
         {

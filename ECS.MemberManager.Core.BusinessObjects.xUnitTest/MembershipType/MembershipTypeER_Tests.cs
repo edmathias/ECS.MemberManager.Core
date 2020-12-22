@@ -7,11 +7,13 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    /// <summary>
-    /// Summary description for JustMockTest
-    /// </summary>
     public class MembershipTypeER_Tests 
     {
+        public MembershipTypeER_Tests()
+        {
+            MockDb.ResetMockDb();
+        }
+        
         [Fact]
         public async Task TestMembershipTypeER_Get()
         {

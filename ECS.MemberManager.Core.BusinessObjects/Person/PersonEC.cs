@@ -157,12 +157,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         public static async Task<PersonEC> NewPerson()
         {
-            return await DataPortal.CreateAsync<PersonEC>();
+            return await DataPortal.CreateChildAsync<PersonEC>();
         }
 
-        public static async Task<PersonEC> GetPerson(int id)
+        public static async Task<PersonEC> GetPerson(Person childData)
         {
-            return await DataPortal.FetchAsync<PersonEC>(id);
+            return await DataPortal.FetchChildAsync<PersonEC>(childData);
         }
 
         public static async Task DeletePerson(int id)
@@ -184,36 +184,33 @@ namespace ECS.MemberManager.Core.BusinessObjects
             BusinessRules.CheckRules();
         }
         
-        [Fetch]
-        private async void Fetch(int id)
+        [FetchChild]
+        private async void Fetch(Person childData)
         {
-            using IDalManager dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPersonDal>();
-            var data = dal.Fetch(id);
             using (BypassPropertyChecks)
             {
-                Id = data.Id;
-                Code = data.Code;
-                Notes = data.Notes;
-                BirthDate = data.BirthDate;
-                FirstName = data.FirstName;
-                MiddleName = data.MiddleName;
-                LastName = data.LastName;
-                DateOfFirstContact = data.DateOfFirstContact;
-                LastUpdatedDate = data.LastUpdatedDate;
-                LastUpdatedBy = data.LastUpdatedBy;
+                Id = childData.Id;
+                Code = childData.Code;
+                Notes = childData.Notes;
+                BirthDate = childData.BirthDate;
+                FirstName = childData.FirstName;
+                MiddleName = childData.MiddleName;
+                LastName = childData.LastName;
+                DateOfFirstContact = childData.DateOfFirstContact;
+                LastUpdatedDate = childData.LastUpdatedDate;
+                LastUpdatedBy = childData.LastUpdatedBy;
                 
                 // TODO : Relationships
-                CategoryOfPersonList = await CategoryOfPersonECL.GetCategoryOfPersonList(data.CategoryOfPersons);
-                Events = await EventERL.GetEventList(data.Events);
-                Addresses = await AddressERL.GetAddressList(data.Addresses);
-                PhoneList = await PhoneECL.GetPhoneList(data.Phones);
+                CategoryOfPersonList = await CategoryOfPersonECL.GetCategoryOfPersonList(childData.CategoryOfPersons);
+                Events = await EventERL.GetEventList(childData.Events);
+                Addresses = await AddressERL.GetAddressList(childData.Addresses);
+                PhoneList = await PhoneECL.GetPhoneList(childData.Phones);
                 //   Title = new Title();
 
             }
         }
 
-        [Insert]
+        [InsertChild]
         private void Insert()
         {
             using IDalManager dalManager = DalFactory.GetManager();
@@ -309,7 +306,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             }
         }
 
-        [Update]
+        [UpdateChild]
         private void Update()
         {
             using IDalManager dalManager = DalFactory.GetManager();
@@ -340,7 +337,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             }
         }
 
-        [DeleteSelf]
+        [DeleteSelfChild]
         private void DeleteSelf()
         {
             Delete(this.Id);

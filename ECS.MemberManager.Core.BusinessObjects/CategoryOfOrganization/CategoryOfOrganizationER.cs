@@ -12,7 +12,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
     public class CategoryOfOrganizationER : BusinessBase<CategoryOfOrganizationER>
     {
         #region Business Methods
+
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
+
         public int Id
         {
             get => GetProperty(IdProperty);
@@ -20,6 +22,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<string> CategoryProperty = RegisterProperty<string>(p => p.Category);
+
         [Required, MaxLength(35)]
         public string Category
         {
@@ -28,6 +31,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<int> DisplayOrderProperty = RegisterProperty<int>(p => p.DisplayOrder);
+
         public int DisplayOrder
         {
             get => GetProperty(DisplayOrderProperty);
@@ -50,7 +54,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #endregion
 
         #region Factory Methods
-        
+
         [Create]
         [RunLocal]
         private void Create()
@@ -72,11 +76,11 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             await DataPortal.DeleteAsync<CategoryOfOrganizationER>(id);
         }
- 
+
         #endregion
 
         #region Data Access
-        
+
         [Fetch]
         private void Fetch(int id)
         {
@@ -96,34 +100,28 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<ICategoryOfOrganizationDal>();
-            using (BypassPropertyChecks)
+            var categoryToInsert = new EF.Domain.CategoryOfOrganization()
             {
-                var categoryToInsert = new EF.Domain.CategoryOfOrganization()
-                {
-                    Id = Id,
-                    DisplayOrder = DisplayOrder,
-                    Category = Category
-                };
-                dal.Insert(categoryToInsert);
-                Id = categoryToInsert.Id;
-            }
+                Id = Id,
+                DisplayOrder = DisplayOrder,
+                Category = Category
+            };
+            dal.Insert(categoryToInsert);
+            Id = categoryToInsert.Id;
         }
-        
+
         [Update]
         private void Update()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<ICategoryOfOrganizationDal>();
-            using (BypassPropertyChecks)
+            var categoryToUpdate = new EF.Domain.CategoryOfOrganization()
             {
-                var categoryToUpdate = new EF.Domain.CategoryOfOrganization()
-                {
-                    Id = Id,
-                    Category = Category,
-                    DisplayOrder = DisplayOrder
-                };
-                dal.Update(categoryToUpdate);
-            }
+                Id = Id,
+                Category = Category,
+                DisplayOrder = DisplayOrder
+            };
+            dal.Update(categoryToUpdate);
         }
 
         [DeleteSelf]
@@ -131,18 +129,16 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             Delete(this.Id);
         }
-        
+
         [Delete]
         private void Delete(int id)
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<ICategoryOfOrganizationDal>();
- 
+
             dal.Delete(id);
         }
 
         #endregion
-
- 
     }
 }

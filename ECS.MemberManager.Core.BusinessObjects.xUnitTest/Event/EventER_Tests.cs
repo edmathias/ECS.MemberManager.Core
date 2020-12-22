@@ -11,8 +11,13 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
     public class EventER_Tests 
     {
+        public EventER_Tests()
+        {
+            MockDb.ResetMockDb();     
+        }
+        
         [Fact]
-        public async Task TestEventER_Get()
+        public async Task TestEventER_TestGetEvent()
         {
             var eventToCompare = MockDb.Events.First();
             var getEvent = await EventER.GetEvent(eventToCompare.Id);
@@ -27,7 +32,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestEventER_New()
+        public async Task EventER_TestNewEvent()
         {
             var newEvent = await EventER.NewEvent();
 
@@ -36,7 +41,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestEventER_Update()
+        public async Task EventER_TestUpdateEvent()
         {
             var eventToUpdate = await EventER.GetEvent(1);
             eventToUpdate.Notes = "These are updated Notes";
@@ -48,7 +53,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestEventER_Insert()
+        public async Task EventER_TestInsertEvent()
         {
             var newEvent = await EventER.NewEvent();
             CreateValidEvent(newEvent);
@@ -62,7 +67,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
  
         [Fact]
-        public async Task TestEventER_Delete()
+        public async Task EventER_TestDeleteEvent()
         {
             int beforeCount = MockDb.Events.Count();
             
@@ -73,7 +78,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         
         // test invalid state 
         [Fact]
-        public async Task TestEventER_EventNameRequired()
+        public async Task EventER_TestEventNameRequired()
         {
             var validEvent = await EventER.NewEvent();
             CreateValidEvent(validEvent);
@@ -88,7 +93,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         // test exception if attempt to save in invalid state
 
         [Fact]
-        public async Task TestEventER_TestInvalidSave()
+        public async Task EventER_TestInvalidSaveEvent()
         {
             var eventToSave = await EventER.NewEvent();
             

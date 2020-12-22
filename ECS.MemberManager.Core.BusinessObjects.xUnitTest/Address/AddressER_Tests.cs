@@ -12,6 +12,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
     public class AddressER_Tests
     {
+        public AddressER_Tests()
+        {
+            MockDb.ResetMockDb();
+        }
+        
         [Fact]
         public async Task TestAddressER_Get()
         {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
@@ -58,11 +59,11 @@ namespace ECS.MemberManager.Core.BusinessObjects
             return await DataPortal.CreateAsync<CategoryOfPersonEC>();
         }
 
-        internal static async Task<CategoryOfPersonEC> GetCategoryOfPerson(CategoryOfPerson categoryOfPerson)
+        internal static async Task<CategoryOfPersonEC> GetCategoryOfPerson(CategoryOfPerson childData)
         {
-            return await DataPortal.FetchChildAsync<CategoryOfPersonEC>(categoryOfPerson);
+            return await DataPortal.FetchChildAsync<CategoryOfPersonEC>(childData);
         }
-
+        
         internal static async Task DeleteCategoryOfPerson(int id)
         {
             await DataPortal.DeleteAsync<CategoryOfPersonEC>(id);
@@ -71,29 +72,30 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #endregion
 
         #region Data Access
+        
+        [CreateChild]
+        private void Create()
+        {
+            MarkAsChild();
+            
+            BusinessRules.CheckRules();
+        }        
 
         [FetchChild]
-        private void FetchChild(CategoryOfPerson categoryOfPerson)
+        private void Fetch(CategoryOfPerson categoryOfPerson)
         {
-            Id = categoryOfPerson.Id;
-            Category = categoryOfPerson.Category;
-            DisplayOrder = categoryOfPerson.DisplayOrder;
+            using (BypassPropertyChecks)
+            {
+                Id = categoryOfPerson.Id;
+                Category = categoryOfPerson.Category;
+                DisplayOrder = categoryOfPerson.DisplayOrder;
+            }
             
-            MarkAsChild();
-            BusinessRules.CheckRules();
-
-        }
-
-        [CreateChild]
-        private void CreateChild()
-        {
-            MarkAsChild();
-
             BusinessRules.CheckRules();
         }
-        
+
         [InsertChild]
-        private void InsertChild()
+        private void Insert()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<ICategoryOfPersonDal>();

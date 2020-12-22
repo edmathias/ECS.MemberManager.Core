@@ -9,7 +9,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
     public class PrivacyLevelER_Tests 
     {
-
+        public PrivacyLevelER_Tests()
+        {
+            MockDb.ResetMockDb();
+        }
+        
         [Fact]
         public async Task TestPrivacyLevelER_Get()
         {

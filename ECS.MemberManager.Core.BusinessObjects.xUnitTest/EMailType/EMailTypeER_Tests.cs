@@ -12,6 +12,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
     /// </summary>
     public class EMailTypeER_Tests 
     {
+        public EMailTypeER_Tests()
+        {
+            MockDb.ResetMockDb();     
+        }
+        
         [Fact]
         public async Task TestEMailTypeER_Get()
         {

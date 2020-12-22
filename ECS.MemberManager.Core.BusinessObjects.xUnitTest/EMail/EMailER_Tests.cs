@@ -11,8 +11,13 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
     public class EMailER_Tests 
     {
+        public EMailER_Tests()
+        {
+            MockDb.ResetMockDb();
+        }
+        
         [Fact]
-        public async Task TestEMailER_Get()
+        public async Task TestEMailER_GetEMail()
         {
             var eMail = await EMailER.GetEMail(1);
 
@@ -55,7 +60,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 Description = "secondary email",
                 Notes = "nothing to see here"
             };
-            eMail.EMailType = await DataPortal.FetchChildAsync<EMailTypeROC>(eMailTypeDto);
+            eMail.EMailType = await DataPortal.FetchChildAsync<EMailTypeEC>(eMailTypeDto);
             var savedEMail = eMail.Save();
            
             Assert.NotNull(savedEMail);
@@ -79,7 +84,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             var eMail = await EMailER.NewEMail();
             eMail.EMailAddress = "person@emailaddress.com";
-            eMail.EMailType = await DataPortal.CreateChildAsync<EMailTypeROC>();
+            eMail.EMailType = await DataPortal.CreateChildAsync<EMailTypeEC>();
+            eMail.EMailType.Description = "EmailType description";
             eMail.LastUpdatedDate = DateTime.Now;
             eMail.LastUpdatedBy = "edm";
             var isObjectValidInit = eMail.IsValid;
@@ -99,7 +105,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             eMail.EMailAddress = "person@emailadddress.com";
             eMail.LastUpdatedDate = DateTime.Now;
             eMail.LastUpdatedBy = "edm";
-            eMail.EMailType = await DataPortal.CreateChildAsync<EMailTypeROC>();
+            eMail.EMailType = await DataPortal.CreateChildAsync<EMailTypeEC>();
+            eMail.EMailType.Description = "EMailType description";
             var isObjectValidInit = eMail.IsValid;
             eMail.EMailType = null;
 

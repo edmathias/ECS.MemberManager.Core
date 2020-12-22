@@ -10,6 +10,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
     public class OfficeER_Tests 
     {
+        public OfficeER_Tests()
+        {
+            MockDb.ResetMockDb();
+        }
+        
         [Fact]
         public async Task TestOfficeER_Get()
         {

@@ -9,6 +9,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
     public class PhoneER_Tests
     {
+        public PhoneER_Tests()
+        {
+            MockDb.ResetMockDb();    
+        }
+        
         [Fact]
         public async Task TestPhoneER_Get()
         {

@@ -53,9 +53,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(NotesProperty, value);
         }
         
-        public static readonly PropertyInfo<EMailTypeROC> EMailTypeProperty = RegisterProperty<EMailTypeROC>(p => p.EMailType);
+        public static readonly PropertyInfo<EMailTypeEC> EMailTypeProperty = RegisterProperty<EMailTypeEC>(p => p.EMailType);
         [Required]
-        public EMailTypeROC EMailType
+        public EMailTypeEC EMailType
         {
             get => GetProperty(EMailTypeProperty);
             set => SetProperty(EMailTypeProperty, value);
@@ -108,7 +108,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             {
                 Id = data.Id;
                 EMailAddress = data.EMailAddress;
-                EMailType = DataPortal.FetchChild<EMailTypeROC>(data.EMailType);
+                EMailType = DataPortal.FetchChild<EMailTypeEC>(data.EMailType);
                 LastUpdatedBy = data.LastUpdatedBy;
                 LastUpdatedDate = data.LastUpdatedDate;
                 Notes = data.Notes;

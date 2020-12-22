@@ -15,6 +15,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Business Methods
 
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
+
         public int Id
         {
             get => GetProperty(IdProperty);
@@ -22,14 +23,16 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<string> EventNameProperty = RegisterProperty<string>(p => p.EventName);
+
         [Required, MaxLength(255)]
         public string EventName
         {
             get => GetProperty(EventNameProperty);
             set => SetProperty(EventNameProperty, value);
         }
-        
+
         public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(p => p.Description);
+
         public string Description
         {
             get => GetProperty(DescriptionProperty);
@@ -37,6 +40,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<bool> IsOneTimeProperty = RegisterProperty<bool>(p => p.IsOneTime);
+
         public bool IsOneTime
         {
             get => GetProperty(IsOneTimeProperty);
@@ -44,20 +48,25 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<SmartDate> NextDateProperty = RegisterProperty<SmartDate>(p => p.NextDate);
+
         public SmartDate NextDate
         {
             get => GetProperty(NextDateProperty);
             set => SetProperty(NextDateProperty, value);
         }
 
-        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(p => p.LastUpdatedBy);
+        public static readonly PropertyInfo<string> LastUpdatedByProperty =
+            RegisterProperty<string>(p => p.LastUpdatedBy);
+
         public string LastUpdatedBy
         {
             get => GetProperty(LastUpdatedByProperty);
             set => SetProperty(LastUpdatedByProperty, value);
         }
 
-        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
+        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty =
+            RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
+
         public SmartDate LastUpdatedDate
         {
             get => GetProperty(LastUpdatedDateProperty);
@@ -65,6 +74,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
+
         public string Notes
         {
             get => GetProperty(NotesProperty);
@@ -85,17 +95,17 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         #endregion
-        
+
         #region Factory Methods
 
         public static async Task<EventEC> NewEvent()
         {
-            return await DataPortal.CreateAsync<EventEC>();
+            return await DataPortal.CreateChildAsync<EventEC>();
         }
 
         public static async Task<EventEC> GetEvent(Event childData)
         {
-            return await DataPortal.FetchAsync<EventEC>(childData);
+            return await DataPortal.FetchChildAsync<EventEC>(childData);
         }
 
         public static async Task DeleteEvent(int id)
@@ -107,7 +117,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Data Access
 
-        [FetchChild] 
+        [FetchChild]
         private void Fetch(Event eventData)
         {
             Id = eventData.Id;
@@ -147,22 +157,18 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEventDal>();
-            using (BypassPropertyChecks)
-            {
-                var eventToUpdate = new Event()
-                {
-                    Id = Id,
-                    EventName = EventName,
-                    Description = Description,
-                    IsOneTime = IsOneTime,
-                    NextDate = NextDate,
-                    LastUpdatedBy = LastUpdatedBy,
-                    LastUpdatedDate = LastUpdatedDate,
-                    Notes = Notes
-                };
-                
-                dal.Update(eventToUpdate);
-            }
+
+            var eventToUpdate = dal.Fetch(Id);
+            eventToUpdate.Id = Id;
+            eventToUpdate.EventName = EventName;
+            eventToUpdate.Description = Description;
+            eventToUpdate.IsOneTime = IsOneTime;
+            eventToUpdate.NextDate = NextDate;
+            eventToUpdate.LastUpdatedBy = LastUpdatedBy;
+            eventToUpdate.LastUpdatedDate = LastUpdatedDate;
+            eventToUpdate.Notes = Notes;
+
+            dal.Update(eventToUpdate);
         }
 
         [DeleteSelfChild]
@@ -180,6 +186,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
             dal.Delete(id);
         }
 
-        #endregion       
+        #endregion
     }
 }
