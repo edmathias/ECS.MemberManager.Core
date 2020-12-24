@@ -107,15 +107,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(CategoryOfPersonListProperty, value);
         }
 
-        public static readonly PropertyInfo<EventERL> EventsProperty = RegisterProperty<EventERL>(p => p.Events);
-        public EventERL Events
+        public static readonly PropertyInfo<EventECL> EventsProperty = RegisterProperty<EventECL>(p => p.Events);
+        public EventECL Events
         {
             get => GetProperty(EventsProperty);
             set => SetProperty(EventsProperty, value);
         }
 
-        public static readonly PropertyInfo<AddressERL> AddressesProperty = RegisterProperty<AddressERL>(p => p.Addresses);
-        public AddressERL Addresses
+        public static readonly PropertyInfo<AddressECL> AddressesProperty = RegisterProperty<AddressECL>(p => p.Addresses);
+        public AddressECL Addresses
         {
             get => GetProperty(AddressesProperty);
             set => SetProperty(AddressesProperty, value);
@@ -128,8 +128,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(PhoneListProperty, value);
         }
 
-        public static readonly PropertyInfo<AddressERL> AddressListProperty = RegisterProperty<AddressERL>(p => p.AddressList);
-        public AddressERL AddressList
+        public static readonly PropertyInfo<AddressECL> AddressListProperty = RegisterProperty<AddressECL>(p => p.AddressList);
+        public AddressECL AddressList
         {
             get => GetProperty(AddressListProperty);
             set => SetProperty(AddressListProperty, value);
@@ -178,7 +178,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private async void Create()
         {
             CategoryOfPersonList = await CategoryOfPersonECL.NewCategoryOfPersonList();
-            Events = await EventERL.NewEventList();
+            Events = await EventECL.NewEventList();
             
             
             BusinessRules.CheckRules();
@@ -202,8 +202,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 
                 // TODO : Relationships
                 CategoryOfPersonList = await CategoryOfPersonECL.GetCategoryOfPersonList(childData.CategoryOfPersons);
-                Events = await EventERL.GetEventList(childData.Events);
-                Addresses = await AddressERL.GetAddressList(childData.Addresses);
+                Events = await EventECL.GetEventList(childData.Events);
+                Addresses = await AddressECL.GetAddressList(childData.Addresses);
                 PhoneList = await PhoneECL.GetPhoneList(childData.Phones);
                 //   Title = new Title();
 

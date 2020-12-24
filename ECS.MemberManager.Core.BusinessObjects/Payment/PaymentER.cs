@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
@@ -14,8 +15,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
     {
         #region Business Methods
 
-
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
+
         public int Id
         {
             get => GetProperty(IdProperty);
@@ -23,13 +24,16 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<double> AmountProperty = RegisterProperty<double>(p => p.Amount);
+
         public double Amount
         {
             get => GetProperty(AmountProperty);
-            set => SetProperty(AmountProperty, Math.Round(value,2));
+            set => SetProperty(AmountProperty, Math.Round(value, 2));
         }
-        
-        public static readonly PropertyInfo<SmartDate> PaymentDateProperty = RegisterProperty<SmartDate>(p => p.PaymentDate);
+
+        public static readonly PropertyInfo<SmartDate> PaymentDateProperty =
+            RegisterProperty<SmartDate>(p => p.PaymentDate);
+
         [Required]
         public SmartDate PaymentDate
         {
@@ -37,37 +41,46 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(PaymentDateProperty, value);
         }
 
-        public static readonly PropertyInfo<SmartDate> PaymentExpirationDateProperty = RegisterProperty<SmartDate>(p => p.PaymentExpirationDate);
+        public static readonly PropertyInfo<SmartDate> PaymentExpirationDateProperty =
+            RegisterProperty<SmartDate>(p => p.PaymentExpirationDate);
+
         public SmartDate PaymentExpirationDate
         {
             get => GetProperty(PaymentExpirationDateProperty);
             set => SetProperty(PaymentExpirationDateProperty, value);
         }
 
-        public static readonly PropertyInfo<PaymentSourceER> PaymentSourceProperty = RegisterProperty<PaymentSourceER>(p => p.PaymentSource);
-        [Required]    
-        public PaymentSourceER PaymentSource
+        public static readonly PropertyInfo<PaymentSourceEC> PaymentSourceProperty =
+            RegisterProperty<PaymentSourceEC>(p => p.PaymentSource);
+
+        [Required]
+        public PaymentSourceEC PaymentSource
         {
             get => GetProperty(PaymentSourceProperty);
             set => SetProperty(PaymentSourceProperty, value);
         }
 
-        public static readonly PropertyInfo<PaymentTypeER> PaymentTypeProperty = RegisterProperty<PaymentTypeER>(p => p.PaymentType);
-        [Required]    
-        public PaymentTypeER PaymentType
+        public static readonly PropertyInfo<PaymentTypeEC> PaymentTypeProperty =
+            RegisterProperty<PaymentTypeEC>(p => p.PaymentType);
+
+        [Required]
+        public PaymentTypeEC PaymentType
         {
             get => GetProperty(PaymentTypeProperty);
             set => SetProperty(PaymentTypeProperty, value);
         }
-       
-        public static readonly PropertyInfo<PersonER> PersonProperty = RegisterProperty<PersonER>(p => p.Person);
-        public PersonER Person
+
+        public static readonly PropertyInfo<PersonEC> PersonProperty = RegisterProperty<PersonEC>(p => p.Person);
+
+        public PersonEC Person
         {
             get => GetProperty(PersonProperty);
             set => SetProperty(PersonProperty, value);
         }
-        
-        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(p => p.LastUpdatedBy);
+
+        public static readonly PropertyInfo<string> LastUpdatedByProperty =
+            RegisterProperty<string>(p => p.LastUpdatedBy);
+
         [Required]
         public string LastUpdatedBy
         {
@@ -75,7 +88,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(LastUpdatedByProperty, value);
         }
 
-        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
+        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty =
+            RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
+
         [Required]
         public SmartDate LastUpdatedDate
         {
@@ -84,6 +99,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
+
         public string Notes
         {
             get => GetProperty(NotesProperty);
@@ -126,17 +142,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Data Access
 
-        [Create]
-        private async void Create()
-        {
-            await BusinessRules.CheckRulesAsync();
-            
-            PaymentDate = new SmartDate();
-            PaymentSource = await PaymentSourceER.NewPaymentSource();
-            PaymentType = await PaymentTypeER.NewPaymentType();
-            Person = await PersonER.NewPerson();
-        }
-        
         [Fetch]
         private async void Fetch(int id)
         {
@@ -152,9 +157,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 LastUpdatedBy = data.LastUpdatedBy;
                 PaymentExpirationDate = data.PaymentExpirationDate;
 
-                PaymentSource = await PaymentSourceER.GetPaymentSource(PaymentSource.Id);
-                PaymentType = await PaymentTypeER.GetPaymentType(PaymentType.Id);
-                Person = await PersonER.GetPerson(Person.Id);
+                PaymentSource = await PaymentSourceEC.GetPaymentSource(data.PaymentSource);
+                PaymentType = await PaymentTypeEC.GetPaymentType(data.PaymentType);
+                Person = await PersonEC.GetPerson(data.Person);
             }
         }
 
@@ -163,23 +168,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             using IDalManager dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IPaymentDal>();
-            using (BypassPropertyChecks)
-            {
-                var paymentToInsert = new Payment();
+            var paymentToInsert = new Payment();
 
-                paymentToInsert.Amount = Convert.ToDecimal(Amount);
-                paymentToInsert.Notes = Notes;
-                paymentToInsert.PaymentDate = PaymentDate;
-                paymentToInsert.LastUpdatedBy = LastUpdatedBy;
-                paymentToInsert.PaymentExpirationDate = PaymentExpirationDate;
-                // TODO: add Person                
-                
-                // TODO: child relationships
-                paymentToInsert.PaymentSource = new PaymentSource();
-                paymentToInsert.PaymentType = new PaymentType();
+            paymentToInsert.Amount = Amount;
+            paymentToInsert.Notes = Notes;
+            paymentToInsert.PaymentDate = PaymentDate;
+            paymentToInsert.LastUpdatedBy = LastUpdatedBy;
+            paymentToInsert.PaymentExpirationDate = PaymentExpirationDate;
 
-                Id = dal.Insert(paymentToInsert);
-            }
+            Id = dal.Insert(paymentToInsert);
         }
 
         [Update]
@@ -192,17 +189,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 var paymentToUpdate = dal.Fetch(Id);
 
                 paymentToUpdate.Id = Id;
-                paymentToUpdate.Amount = Convert.ToDecimal(Amount);
+                paymentToUpdate.Amount = Amount;
                 paymentToUpdate.Notes = Notes;
                 paymentToUpdate.PaymentDate = PaymentDate;
                 paymentToUpdate.LastUpdatedBy = LastUpdatedBy;
                 paymentToUpdate.PaymentExpirationDate = PaymentExpirationDate;
 
-                // TODO: child relationships
-                paymentToUpdate.PaymentSource = new PaymentSource();
-                paymentToUpdate.PaymentType = new PaymentType();
-
-                dal.Update(paymentToUpdate); 
+                dal.Update(paymentToUpdate);
             }
         }
 
@@ -222,7 +215,5 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         #endregion
-
- 
     }
 }

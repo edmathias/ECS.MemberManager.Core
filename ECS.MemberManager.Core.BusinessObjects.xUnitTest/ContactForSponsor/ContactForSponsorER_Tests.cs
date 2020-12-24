@@ -82,15 +82,18 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async Task ContactForSponsorER_TestInvalidSaveContactForSponsor()
         {
-            var ContactForSponsor = await ContactForSponsorER.NewContactForSponsor();
+            var contactForSponsor = await ContactForSponsorER.NewContactForSponsor();
+            
             ContactForSponsorER savedContactForSponsor = null;
 
-            Assert.False(ContactForSponsor.IsValid);
-            Assert.Throws<Csla.Rules.ValidationException>(() => savedContactForSponsor = ContactForSponsor.Save());
+            Assert.False(contactForSponsor.IsValid);
+            Assert.Throws<Csla.Rules.ValidationException>(() => savedContactForSponsor = contactForSponsor.Save());
         }
 
         void BuildContactForSponsor(ContactForSponsorER contactForSponsorER)
         {
+            contactForSponsorER.Purpose = "purpose";
+            contactForSponsorER.DateWhenContacted = DateTime.Today;
             contactForSponsorER.LastUpdatedDate = DateTime.Now;
             contactForSponsorER.LastUpdatedBy = "edm";
             contactForSponsorER.Notes = "This person is on standby";

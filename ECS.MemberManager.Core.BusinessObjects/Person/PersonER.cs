@@ -107,18 +107,11 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(CategoryOfPersonListProperty, value);
         }
 
-        public static readonly PropertyInfo<EventERL> EventsProperty = RegisterProperty<EventERL>(p => p.Events);
-        public EventERL Events
+        public static readonly PropertyInfo<EventECL> EventsProperty = RegisterProperty<EventECL>(p => p.EventList);
+        public EventECL EventList
         {
             get => GetProperty(EventsProperty);
             set => SetProperty(EventsProperty, value);
-        }
-
-        public static readonly PropertyInfo<AddressERL> AddressesProperty = RegisterProperty<AddressERL>(p => p.Addresses);
-        public AddressERL Addresses
-        {
-            get => GetProperty(AddressesProperty);
-            set => SetProperty(AddressesProperty, value);
         }
 
         public static readonly PropertyInfo<PhoneECL> PhoneListProperty = RegisterProperty<PhoneECL>(p => p.PhoneList);
@@ -128,15 +121,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(PhoneListProperty, value);
         }
 
-        public static readonly PropertyInfo<AddressERL> AddressListProperty = RegisterProperty<AddressERL>(p => p.AddressList);
-        public AddressERL AddressList
+        public static readonly PropertyInfo<AddressECL> AddressListProperty = RegisterProperty<AddressECL>(p => p.AddressList);
+        public AddressECL AddressList
         {
             get => GetProperty(AddressListProperty);
             set => SetProperty(AddressListProperty, value);
         }
-
-//        Addresses = new List<Address>(),
-//        Phones = new List<Phone>(),
 
         protected override void AddBusinessRules()
         {
@@ -178,7 +168,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private async void Create()
         {
             CategoryOfPersonList = await CategoryOfPersonECL.NewCategoryOfPersonList();
-            Events = await EventERL.NewEventList();
+            EventList= await EventECL.NewEventList();
             
             
             BusinessRules.CheckRules();
@@ -205,8 +195,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 
                 // TODO : Relationships
                 CategoryOfPersonList = await CategoryOfPersonECL.GetCategoryOfPersonList(data.CategoryOfPersons);
-                Events = await EventERL.GetEventList(data.Events);
-                Addresses = await AddressERL.GetAddressList(data.Addresses);
+                EventList= await EventECL.GetEventList(data.Events);
+                AddressList = await AddressECL.GetAddressList(data.Addresses);
                 PhoneList = await PhoneECL.GetPhoneList(data.Phones);
                 //   Title = new Title();
 
@@ -258,7 +248,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
         private void CreateAddressRelationship(Person personToInsert)
         {
-            foreach (var addressToProcess in Addresses)
+            foreach (var addressToProcess in AddressList)
             {
                 var addressToInsert = new Address()
                 {
@@ -278,7 +268,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         private void CreateEventRelationship(Person personToInsert)
         {
-            foreach (var eventToProcess in Events)
+            foreach (var eventToProcess in EventList)
             {
                 var eventToInsert = new Event()
                 {
@@ -331,7 +321,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
                 // TODO : Relationships
                 personToUpdate.CategoryOfPersons = new List<CategoryOfPerson>();
-                personToUpdate.Events = new List<Event>();
+                personToUpdate.Events= new List<Event>();
                 personToUpdate.Addresses = new List<Address>();
                 personToUpdate.Phones = new List<Phone>();
                 personToUpdate.Title = new Title();

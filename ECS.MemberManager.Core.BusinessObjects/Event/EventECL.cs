@@ -8,21 +8,21 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class EventERL : BusinessListBase<EventERL, EventEC>
+    public class EventECL : BusinessListBase<EventECL, EventEC>
     {
         public static void AddObjectAuthorizationRules()
         {
             // TODO: add object-level authorization rules
         }
 
-        public static async Task<EventERL> NewEventList()
+        public static async Task<EventECL> NewEventList()
         {
-            return await DataPortal.CreateAsync<EventERL>();
+            return await DataPortal.CreateAsync<EventECL>();
         }
 
-        public static async Task<EventERL> GetEventList(IList<Event> listOfChildren)
+        public static async Task<EventECL> GetEventList(IList<Event> listOfChildren)
         {
-            return await DataPortal.FetchAsync<EventERL>(listOfChildren);
+            return await DataPortal.FetchAsync<EventECL>(listOfChildren);
         }
 
         [Fetch]

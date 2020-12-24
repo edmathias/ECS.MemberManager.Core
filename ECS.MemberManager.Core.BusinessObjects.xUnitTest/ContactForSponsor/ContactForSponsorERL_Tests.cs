@@ -5,7 +5,6 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    [Collection("ContactForSponsor")]
     public class ContactForSponsorERL_Tests
     {
         public ContactForSponsorERL_Tests()
@@ -14,7 +13,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
         
         [Fact]
-        private async void ContactForSponsorERL_GetAddressList()
+        private async void ContactForSponsorERL_GetContactForSponsorList()
         {
             var listToTest = MockDb.ContactForSponsors;
             
@@ -25,7 +24,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
         
         [Fact]
-        private async void ContactForSponsorERL_DeleteAddressEntry()
+        private async void ContactForSponsorERL_DeleteContactForSponsorEntry()
         {
             var listToTest = MockDb.ContactForSponsors;
             var listCount = listToTest.Count;
@@ -44,7 +43,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        private async void ContactForSponsorERL_UpdateAddressEntry()
+        private async void ContactForSponsorERL_UpdateContactForSponsorEntry()
         {
             var contactForSponsorList = await ContactForSponsorERL.GetContactForSponsorList(MockDb.ContactForSponsors);
             var countBeforeUpdate = contactForSponsorList.Count;
@@ -54,30 +53,30 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             contactForSponsorToUpdate.Notes = "This was updated";
             await contactForSponsorList.SaveAsync();
             
-            var updatedAddressList = await ContactForSponsorERL.GetContactForSponsorList(MockDb.ContactForSponsors);
+            var updatedContactForSponsorList = await ContactForSponsorERL.GetContactForSponsorList(MockDb.ContactForSponsors);
             
-            Assert.Equal("This was updated",updatedAddressList.First(a => a.Id == idToUpdate).Notes);
-            Assert.Equal(countBeforeUpdate, updatedAddressList.Count);
+            Assert.Equal("This was updated",updatedContactForSponsorList.First(a => a.Id == idToUpdate).Notes);
+            Assert.Equal(countBeforeUpdate, updatedContactForSponsorList.Count);
         }
 
         [Fact]
-        private async void ContactForSponsorERL_AddAddressEntry()
+        private async void ContactForSponsorERL_AddContactForSponsorEntry()
         {
             var contactForSponsorList = await ContactForSponsorERL.GetContactForSponsorList(MockDb.ContactForSponsors);
             var countBeforeAdd = contactForSponsorList.Count;
             
             var contactForSponsorToAdd = contactForSponsorList.AddNew();
-            BuildAddress(contactForSponsorToAdd);
+            BuildContactForSponsor(contactForSponsorToAdd);
 
             await contactForSponsorList.SaveAsync();
             
-            var updatedAddressList = await ContactForSponsorERL.GetContactForSponsorList(MockDb.ContactForSponsors);
+            var updatedContactForSponsorList = await ContactForSponsorERL.GetContactForSponsorList(MockDb.ContactForSponsors);
             
-            Assert.NotEqual(countBeforeAdd, updatedAddressList.Count);
+            Assert.NotEqual(countBeforeAdd, updatedContactForSponsorList.Count);
             
         }
         
-        void BuildAddress(ContactForSponsorEC contactForSponsor)
+        void BuildContactForSponsor(ContactForSponsorEC contactForSponsor)
         {
             contactForSponsor.LastUpdatedBy = "edm";
             contactForSponsor.Notes = "This person is on standby";

@@ -411,7 +411,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             {
                 new Payment()
                 {
-                    Id = 1, Amount = 39.99m, PaymentDate = DateTime.Now,
+                    Id = 1, Amount = 39.99d, PaymentDate = DateTime.Now,
                     PaymentExpirationDate = DateTime.Now.AddDays(365), LastUpdatedBy = "edm",
                     LastUpdatedDate = DateTime.Now, Notes = "note",
                     PaymentSource = new PaymentSource() { Id = 1, Description = "self" },
@@ -420,7 +420,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 },
                 new Payment()
                 {
-                    Id = 2, Amount = 83.61m, PaymentDate = DateTime.Now,
+                    Id = 2, Amount = 83.61d, PaymentDate = DateTime.Now,
                     PaymentExpirationDate = DateTime.Now.AddYears(2), LastUpdatedBy = "edm",
                     LastUpdatedDate = DateTime.Now, Notes = "note",
                     PaymentSource = new PaymentSource() { Id = 2, Description = "spouse" },
@@ -429,7 +429,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 },
                 new Payment()
                 {
-                    Id = 99, Amount = 83.61m, PaymentDate = DateTime.Now,
+                    Id = 99, Amount = 83.61d, PaymentDate = DateTime.Now,
                     PaymentExpirationDate = DateTime.Now.AddYears(2), LastUpdatedBy = "edm",
                     LastUpdatedDate = DateTime.Now, Notes = "delete this record",
                     PaymentSource = new PaymentSource() { Id = 2, Description = "spouse" },
@@ -466,12 +466,12 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 new Person()
                 {
                     Id = 1,
-                    Addresses = new List<Address>(),
+                    Addresses = GetAddressRecords(),
                     BirthDate = DateTime.Now.Subtract(new TimeSpan(9125,0,0,0)),
                     CategoryOfPersons = GetCategoryOfPersons(),
                     Code = "n/a",
                     DateOfFirstContact = DateTime.Now.Subtract(new TimeSpan(200,0,0,0)),
-                    Events = new List<Event>(),
+                    Events = GetEvents(),
                     FirstName = "Joe",
                     MiddleName = "E",
                     LastName = "Blow",
@@ -480,12 +480,12 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 new Person()
                 {
                     Id = 2,
-                    Addresses = new List<Address>(),
+                    Addresses = GetAddressRecords(),
                     BirthDate = DateTime.Now.Subtract(new TimeSpan(9125, 0,0,0)),
                     CategoryOfPersons = GetCategoryOfPersons(),
                     Code = "n/a",
                     DateOfFirstContact = DateTime.Now.Subtract(new TimeSpan(200,0,0,0)),
-                    Events = new List<Event>(),
+                    Events = GetEvents(),
                     FirstName = "Fred",
                     MiddleName = String.Empty,
                     LastName = "Derf",
@@ -494,12 +494,12 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 new Person()  // person for delete
                 {
                     Id = 99,
-                    Addresses = new List<Address>(),
+                    Addresses = GetAddressRecords(),
                     BirthDate = DateTime.Now.Subtract(new TimeSpan(9125, 0,0,0)),
                     CategoryOfPersons = GetCategoryOfPersons(),
                     Code = "n/a",
                     DateOfFirstContact = DateTime.Now.Subtract(new TimeSpan(200,0,0,0)),
-                    Events = new List<Event>(),
+                    Events = GetEvents(),
                     FirstName = "Fred",
                     MiddleName = String.Empty,
                     LastName = "Derf",

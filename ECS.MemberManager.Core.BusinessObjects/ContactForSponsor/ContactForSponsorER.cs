@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.BusinessObjects.Sponsor;
@@ -25,6 +26,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         public static readonly PropertyInfo<SmartDate> DateWhenContactedProperty =
             RegisterProperty<SmartDate>(p => p.DateWhenContacted);
 
+        [Required]
         public SmartDate DateWhenContacted
         {
             get => GetProperty(DateWhenContactedProperty);
@@ -33,6 +35,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         public static readonly PropertyInfo<string> PurposeProperty = RegisterProperty<string>(p => p.Purpose);
 
+        [Required, MaxLength(255)]
         public string Purpose
         {
             get => GetProperty(PurposeProperty);
@@ -59,6 +62,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         public static readonly PropertyInfo<string> LastUpdatedByProperty =
             RegisterProperty<string>(p => p.LastUpdatedBy);
 
+        [Required, MaxLength(255)]
         public string LastUpdatedBy
         {
             get => GetProperty(LastUpdatedByProperty);
@@ -68,6 +72,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty =
             RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
 
+        [Required]
         public SmartDate LastUpdatedDate
         {
             get => GetProperty(LastUpdatedDateProperty);
@@ -119,6 +124,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Data Access
 
+        [Create]
+        private void Create()
+        {
+            BusinessRules.CheckRules();
+        }
+
         [Fetch]
         private async void Fetch(int id)
         {
@@ -152,10 +163,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 LastUpdatedBy = LastUpdatedBy,
                 LastUpdatedDate = LastUpdatedDate,
                 RecordOfDiscussion = RecordOfDiscussion,
-                Sponsor = Sponsor,
-                
+                Sponsor = new EF.Domain.Sponsor()
             };
-            dal.Insert(contactToInsert);
+            Id = dal.Insert(contactToInsert);
         }
 
         [Update]

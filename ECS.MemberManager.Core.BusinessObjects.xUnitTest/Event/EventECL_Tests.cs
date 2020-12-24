@@ -6,32 +6,32 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class EventERL_Tests
+    public class EventECL_Tests
     {
-        public EventERL_Tests()
+        public EventECL_Tests()
         {
             MockDb.ResetMockDb();
         }
         
         [Fact]
-        private async void EventERL_TestGetEventList()
+        private async void EventECL_TestGetEventList()
         {
             var listToTest = MockDb.Events;
             
-            var eventErl = await EventERL.GetEventList(listToTest);
+            var eventErl = await EventECL.GetEventList(listToTest);
 
             Assert.NotNull(eventErl);
             Assert.Equal(MockDb.Events.Count, eventErl.Count);
         }
         
         [Fact]
-        private async void EventERL_TestDeleteEventsEntry()
+        private async void EventECL_TestDeleteEventsEntry()
         {
             var listToTest = MockDb.Events;
             var listCount = listToTest.Count;
             
             var idToDelete = MockDb.Events.Max(a => a.Id);
-            var eventErl = await EventERL.GetEventList(listToTest);
+            var eventErl = await EventECL.GetEventList(listToTest);
 
             var eventToDelete = eventErl.First(a => a.Id == idToDelete);
 
@@ -44,9 +44,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        private async void EventERL_TestUpdateEventsEntry()
+        private async void EventECL_TestUpdateEventsEntry()
         {
-            var eventList = await EventERL.GetEventList(MockDb.Events);
+            var eventList = await EventECL.GetEventList(MockDb.Events);
             var countBeforeUpdate = eventList.Count;
             var idToUpdate = MockDb.Events.Min(a => a.Id);
             var eventToUpdate = eventList.First(a => a.Id == idToUpdate);
@@ -54,16 +54,16 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             eventToUpdate.Description = "This was updated";
             await eventList.SaveAsync();
             
-            var updatedEventsList = await EventERL.GetEventList(MockDb.Events);
+            var updatedEventsList = await EventECL.GetEventList(MockDb.Events);
             
             Assert.Equal("This was updated",updatedEventsList.First(a => a.Id == idToUpdate).Description);
             Assert.Equal(countBeforeUpdate, updatedEventsList.Count);
         }
 
         [Fact]
-        private async void EventERL_TestAddEventsEntry()
+        private async void EventECL_TestAddEventsEntry()
         {
-            var eventList = await EventERL.GetEventList(MockDb.Events);
+            var eventList = await EventECL.GetEventList(MockDb.Events);
             var countBeforeAdd = eventList.Count;
             
             var eventToAdd = eventList.AddNew();
@@ -71,7 +71,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             await eventList.SaveAsync();
             
-            var updatedEventsList = await EventERL.GetEventList(MockDb.Events);
+            var updatedEventsList = await EventECL.GetEventList(MockDb.Events);
             
             Assert.NotEqual(countBeforeAdd, updatedEventsList.Count);
         }

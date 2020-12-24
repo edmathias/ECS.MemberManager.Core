@@ -54,6 +54,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
             get => GetProperty(LastUpdatedByProperty);
             set => SetProperty(LastUpdatedByProperty, value);
         }
+        
+        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
+        public SmartDate LastUpdatedDate
+        {
+            get => GetProperty(LastUpdatedDateProperty);
+            set => SetProperty(LastUpdatedDateProperty, value);
+        }
 
         protected override void AddBusinessRules()
         {
@@ -75,12 +82,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         public static async Task<ContactForSponsorEC> NewContactForSponsor()
         {
-            return await DataPortal.CreateAsync<ContactForSponsorEC>();
+            return await DataPortal.CreateChildAsync<ContactForSponsorEC>();
         }
 
         public static async Task<ContactForSponsorEC> GetContactForSponsor(ContactForSponsor childData)
         {
-            return await DataPortal.FetchAsync<ContactForSponsorEC>(childData);
+            return await DataPortal.FetchChildAsync<ContactForSponsorEC>(childData);
         }
 
         public static async Task DeleteContactForSponsor(int id)
@@ -101,17 +108,17 @@ namespace ECS.MemberManager.Core.BusinessObjects
         } 
         
         [FetchChild]
-        private void Fetch(int id)
+        private void Fetch(ContactForSponsor childData)
         {
-            using IDalManager dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IContactForSponsorDal>();
-            var data = dal.Fetch(id);
             using (BypassPropertyChecks)
             {
-                Id = data.Id;
+                Id = childData.Id;
+                Notes = childData.Notes;
+                Purpose = childData.Purpose;
+                DateWhenContacted = childData.DateWhenContacted;
+                LastUpdatedBy = childData.LastUpdatedBy;
+                RecordOfDiscussion = childData.RecordOfDiscussion;
             }
-            MarkAsChild();
-            BusinessRules.CheckRules();
         }
 
         [InsertChild]
@@ -119,11 +126,20 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             using IDalManager dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IContactForSponsorDal>();
-            using (BypassPropertyChecks)
+            var contactToInsert = new ContactForSponsor()
             {
-                // format and store dto 
+                Notes = Notes,
+                DateWhenContacted = DateWhenContacted,
+                LastUpdatedBy = LastUpdatedBy,
+                LastUpdatedDate = LastUpdatedDate,
+                Purpose = Purpose,
+                RecordOfDiscussion = RecordOfDiscussion
+                
+                //TODO: sponsor & person
+            };
 
-            }
+            Id = dal.Insert(contactToInsert);
+
         }
 
         [UpdateChild]
@@ -131,10 +147,17 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             using IDalManager dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IContactForSponsorDal>();
-            using (BypassPropertyChecks)
-            {
-                // format dto and update dal 
-            }
+
+            var contactToUpdate = dal.Fetch(Id);
+
+            contactToUpdate.Notes = Notes;
+            contactToUpdate.Purpose = Purpose;
+            contactToUpdate.DateWhenContacted = DateWhenContacted;
+            contactToUpdate.LastUpdatedBy = LastUpdatedDate;
+            contactToUpdate.LastUpdatedBy = LastUpdatedBy;
+            contactToUpdate.RecordOfDiscussion = RecordOfDiscussion;
+
+            dal.Update(contactToUpdate);
         }
 
         [DeleteSelfChild]
@@ -151,7 +174,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
             dal.Delete(id);
         }
-
 
         #endregion
 

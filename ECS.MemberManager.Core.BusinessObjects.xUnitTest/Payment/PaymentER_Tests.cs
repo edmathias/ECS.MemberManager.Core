@@ -76,8 +76,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             payment.LastUpdatedBy = "edm";
             payment.LastUpdatedDate = DateTime.Now;
             var isObjectValidInit = payment.IsValid;
-            payment.PaymentSource = await PaymentSourceER.NewPaymentSource();
-            payment.PaymentType = await PaymentTypeER.NewPaymentType();
+            payment.PaymentSource = await PaymentSourceEC.NewPaymentSource();
+            payment.PaymentType = await PaymentTypeEC.NewPaymentType();
             payment.PaymentDate = null;
             
             Assert.NotNull(payment);
@@ -106,10 +106,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             paymentER.Notes = "notes here";
             paymentER.PaymentDate = DateTime.Now;
             paymentER.PaymentExpirationDate = DateTime.Now;
-            paymentER.PaymentSource = await PaymentSourceER.NewPaymentSource();
+            paymentER.PaymentSource = await PaymentSourceEC.NewPaymentSource();
             paymentER.PaymentSource.Description = "Source 1";
             paymentER.PaymentSource.Notes = "source notes";
-            paymentER.PaymentType = await PaymentTypeER.NewPaymentType();
+            paymentER.PaymentType = await PaymentTypeEC.NewPaymentType();
             paymentER.PaymentType.Description = "type description";
             paymentER.PaymentType.Notes = "notes for type";
 

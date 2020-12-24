@@ -36,7 +36,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(NotesProperty, value);
         }
 
-        public static readonly PropertyInfo<CategoryOfOrganizationECL> CategoryOfOrganizationsProperty = RegisterProperty<CategoryOfOrganizationECL>(p => p.CategoryOfOrganization);
+        public static readonly PropertyInfo<CategoryOfOrganizationECL> CategoryOfOrganizationsProperty = RegisterProperty<CategoryOfOrganizationECL>(p => p.CategoryOfOrganizations);
         public CategoryOfOrganizationECL CategoryOfOrganizations
         {
             get => GetProperty(CategoryOfOrganizationsProperty);
@@ -80,16 +80,14 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access
 
         [FetchChild]
-        private void Fetch(Organization childData)
+        private async void Fetch(Organization childData)
         {
             using (BypassPropertyChecks)
             {
                 Id = childData.Id;
                 Name = childData.Name;
                 Notes = childData.Notes;
-                CategoryOfOrganization =
-                    CategoryOfOrganizationECL.GetCategoryOfOrganizationList(childData.CategoryOfOrganizations);
-                // TODO: get categoryoforganization
+                CategoryOfOrganizations = await CategoryOfOrganizationECL.NewCategoryOfOrganizationList();
             }
         }
 

@@ -59,8 +59,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<OrganizationTypeEC> OrganizationTypeProperty =
-            RegisterProperty<OrganizationTypeROC>(p => p.OrganizationType);
-        public OrganizationTypeROC OrganizationType
+            RegisterProperty<OrganizationTypeEC>(p => p.OrganizationType);
+        public OrganizationTypeEC OrganizationType
         {
             get => GetProperty(OrganizationTypeProperty);
             set => SetProperty(OrganizationTypeProperty, value);
@@ -105,18 +105,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [FetchChild]
         private void Fetch(Organization childData)
         {
-            using IDalManager dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IOrganizationDal>();
-            var data = dal.Fetch(id);
             using (BypassPropertyChecks)
             {
-                Id = data.Id;
-                OrganizationType = DataPortal.FetchChild<OrganizationTypeROC>(data.OrganizationType);
-                this.Name = data.Name;
-                this.Notes = data.Notes;
-                this.LastUpdatedBy = data.LastUpdatedBy;
-                this.LastUpdatedDate = data.LastUpdatedDate;
-                this.DateOfFirstContact = data.DateOfFirstContact;
+                Id = childData.Id;
+                OrganizationType = DataPortal.FetchChild<OrganizationTypeEC>(childData.OrganizationType);
+                this.Name = childData.Name;
+                this.Notes = childData.Notes;
+                this.LastUpdatedBy = childData.LastUpdatedBy;
+                this.LastUpdatedDate = childData.LastUpdatedDate;
+                this.DateOfFirstContact = childData.DateOfFirstContact;
                 //TODO: many to many 
             }
         }
@@ -161,7 +158,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                     Id = OrganizationType.Id,
                     Name = OrganizationType.Name,
                     Notes = OrganizationType.Notes,
-                    CategoryOfOrganization = OrganizationTypeEC.
+                    CategoryOfOrganization = new CategoryOfOrganization()
                 },
                 DateOfFirstContact = DateOfFirstContact,
                 LastUpdatedBy = LastUpdatedBy,
