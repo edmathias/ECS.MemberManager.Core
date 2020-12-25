@@ -179,8 +179,15 @@ namespace ECS.MemberManager.Core.BusinessObjects.Sponsor
                 Notes = childData.Notes;
                 LastUpdatedBy = childData.LastUpdatedBy;
                 LastUpdatedDate = childData.LastUpdatedDate;
-                Person = await PersonEC.GetPerson(childData.Person);
-                Organization = await OrganizationEC.GetOrganization(childData.Organization);
+                if (childData.Person != null)
+                {
+                    Person = await PersonEC.GetPerson(childData.Person);
+                }
+
+                if (childData.Organization != null)
+                {
+                    Organization = await OrganizationEC.GetOrganization(childData.Organization);
+                }
             }
         }
 

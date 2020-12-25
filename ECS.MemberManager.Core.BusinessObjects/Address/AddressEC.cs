@@ -84,6 +84,20 @@ namespace ECS.MemberManager.Core.BusinessObjects
             get => GetProperty(LastUpdatedDateProperty);
             set => SetProperty(LastUpdatedDateProperty, value);
         }
+        
+        public static readonly PropertyInfo<OrganizationECL> OrganizationListProperty = RegisterProperty<OrganizationECL>(p => p.OrganizationList);
+        public OrganizationECL OrganizationList
+        {
+            get => GetProperty(OrganizationListProperty);
+            set => SetProperty(OrganizationListProperty, value);
+        }
+
+        public static readonly PropertyInfo<PersonECL> PersonListProperty = RegisterProperty<PersonECL>(p => p.PersonList);
+        public PersonECL PersonList
+        {
+            get => GetProperty(PersonListProperty);
+            set => SetProperty(PersonListProperty, value);
+        }
 
         #endregion
         
@@ -111,15 +125,11 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [CreateChild]
         private void Create()
         {
-            base.Child_Create();
-            
-            MarkAsChild();
-            
-            BusinessRules.CheckRules();
+            base.DataPortal_Create();
         }
  
         [FetchChild]
-        private void Fetch(Address childData)
+        private async void Fetch(Address childData)
         {
             using (BypassPropertyChecks)
             {
@@ -132,9 +142,11 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 LastUpdatedBy = childData.LastUpdatedBy;
                 LastUpdatedDate = childData.LastUpdatedDate;
                 Notes = childData.Notes;
+                if (childData.Persons != null)
+                    PersonList = await PersonECL.GetPersonList(childData.Persons);
+                if (childData.Organizations != null)
+                    OrganizationList = await OrganizationECL.GetOrganizationList(childData.Organizations);                
             }
-            MarkAsChild();
-            BusinessRules.CheckRules();
         }
 
         [InsertChild]
@@ -157,6 +169,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 };
                 
                 Id = dal.Insert(addressToInsert);
+                
             }
         }
         

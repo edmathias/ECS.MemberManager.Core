@@ -85,12 +85,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         internal static async Task<OrganizationEC> NewOrganization()
         {
-            return await DataPortal.CreateAsync<OrganizationEC>();
+            return await DataPortal.CreateChildAsync<OrganizationEC>();
         }
 
         internal static async Task<OrganizationEC> GetOrganization(Organization childData)
         {
-            return await DataPortal.FetchAsync<OrganizationEC>(childData);
+            return await DataPortal.FetchChildAsync<OrganizationEC>(childData);
         }
 
         internal static async Task DeleteOrganization(int id)
@@ -103,18 +103,23 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access
 
         [FetchChild]
-        private void Fetch(Organization childData)
+        private async void Fetch(Organization childData)
         {
             using (BypassPropertyChecks)
             {
                 Id = childData.Id;
-                OrganizationType = DataPortal.FetchChild<OrganizationTypeEC>(childData.OrganizationType);
                 this.Name = childData.Name;
                 this.Notes = childData.Notes;
                 this.LastUpdatedBy = childData.LastUpdatedBy;
                 this.LastUpdatedDate = childData.LastUpdatedDate;
                 this.DateOfFirstContact = childData.DateOfFirstContact;
-                //TODO: many to many 
+                
+                if(childData.OrganizationType != null)
+                    OrganizationType = await DataPortal.FetchChildAsync<OrganizationTypeEC>(childData.OrganizationType);
+                else
+                {
+                    OrganizationType = await OrganizationTypeEC.NewOrganizationType();
+                }
             }
         }
 

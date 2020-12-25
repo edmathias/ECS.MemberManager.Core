@@ -22,7 +22,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<string> PhoneTypeProperty = RegisterProperty<string>(p => p.PhoneType);
-        [Required,MaxLength(10)]
+        [MaxLength(10)]
         public string PhoneType
         {
             get => GetProperty(PhoneTypeProperty);
@@ -46,7 +46,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<string> ExtensionProperty = RegisterProperty<string>(p => p.Extension);
-        [Required,MaxLength(25)]
+        [MaxLength(25)]
         public string Extension
         {
             get => GetProperty(ExtensionProperty);

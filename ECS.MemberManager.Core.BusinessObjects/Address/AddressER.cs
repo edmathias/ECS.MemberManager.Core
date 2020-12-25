@@ -94,7 +94,21 @@ namespace ECS.MemberManager.Core.BusinessObjects
             get => GetProperty(LastUpdatedDateProperty);
             set => SetProperty(LastUpdatedDateProperty, value);
         }
+        
+        public static readonly PropertyInfo<OrganizationECL> OrganizationListProperty = RegisterProperty<OrganizationECL>(p => p.OrganizationList);
+        public OrganizationECL OrganizationList
+        {
+            get => GetProperty(OrganizationListProperty);
+            set => SetProperty(OrganizationListProperty, value);
+        }
 
+        public static readonly PropertyInfo<PersonECL> PersonListProperty = RegisterProperty<PersonECL>(p => p.PersonList);
+        public PersonECL PersonList
+        {
+            get => GetProperty(PersonListProperty);
+            set => SetProperty(PersonListProperty, value);
+        }
+        
         #endregion
 
         #region Factory Methods
@@ -126,7 +140,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         [Fetch]
-        private void Fetch(int id)
+        private async void Fetch(int id)
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IAddressDal>();
@@ -142,7 +156,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 LastUpdatedBy = data.LastUpdatedBy;
                 LastUpdatedDate = data.LastUpdatedDate;
                 Notes = data.Notes;
+                
+                if (data.Persons != null)
+                    PersonList = await PersonECL.GetPersonList(data.Persons);
+                if (data.Organizations != null)
+                    OrganizationList = await OrganizationECL.GetOrganizationList(data.Organizations);
             }
+            
         }
 
         [Insert]

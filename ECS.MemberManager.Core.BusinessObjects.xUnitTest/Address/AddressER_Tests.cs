@@ -59,6 +59,18 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
+        public async void AddressER_UpdateChildren()
+        {
+            var fetchId = MockDb.Addresses.Min(dt => dt.Id);
+            var address = await AddressER.GetAddress(fetchId);
+            var result = await address.SaveAsync();
+
+            Assert.NotNull(result);
+            Assert.Equal("These are updated Notes",result.Notes );
+            
+        }
+
+        [Fact]
         public async Task TestAddressER_Insert()
         {
             var address = await AddressER.NewAddress();

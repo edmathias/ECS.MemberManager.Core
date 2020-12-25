@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess.Mock;
+using ECS.MemberManager.Core.EF.Domain;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
@@ -112,5 +114,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.False(person.IsValid);
             Assert.Throws<Csla.Rules.ValidationException>(() => savedCategoryOfPerson =  person.Save() );
         }
+
     }
 }

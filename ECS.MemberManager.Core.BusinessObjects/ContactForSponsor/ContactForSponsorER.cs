@@ -125,8 +125,10 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access
 
         [Create]
-        private void Create()
+        private async void Create()
         {
+            Sponsor = await SponsorEC.NewSponsor();
+            
             BusinessRules.CheckRules();
         }
 
@@ -165,6 +167,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 RecordOfDiscussion = RecordOfDiscussion,
                 Sponsor = new EF.Domain.Sponsor()
             };
+            
             Id = dal.Insert(contactToInsert);
         }
 

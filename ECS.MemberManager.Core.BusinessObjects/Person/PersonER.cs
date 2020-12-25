@@ -135,7 +135,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
             // TODO: add business rules
         }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
         public static void AddObjectAuthorizationRules()
         {
             // TODO: add object-level authorization rules
@@ -169,7 +168,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             CategoryOfPersonList = await CategoryOfPersonECL.NewCategoryOfPersonList();
             EventList= await EventECL.NewEventList();
-            
+            AddressList = await AddressECL.NewAddressList();
+            PhoneList = await PhoneECL.NewPhoneList();
             
             BusinessRules.CheckRules();
         }
@@ -222,7 +222,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                     LastUpdatedBy = LastUpdatedBy,
                     LastUpdatedDate = LastUpdatedDate,
                 };
-                
+               
                     // TODO : Relationships
                 CreatePersonRelationships(personToInsert);
                 //     Phones = new List<Phone>(),

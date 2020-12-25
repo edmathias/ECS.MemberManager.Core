@@ -36,11 +36,11 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(NotesProperty, value);
         }
 
-        public static readonly PropertyInfo<CategoryOfOrganizationECL> CategoryOfOrganizationsProperty = RegisterProperty<CategoryOfOrganizationECL>(p => p.CategoryOfOrganizations);
-        public CategoryOfOrganizationECL CategoryOfOrganizations
+        public static readonly PropertyInfo<CategoryOfOrganizationEC> CategoryOfOrganizationProperty = RegisterProperty<CategoryOfOrganizationEC>(p => p.CategoryOfOrganization);
+        public CategoryOfOrganizationEC CategoryOfOrganization
         {
-            get => GetProperty(CategoryOfOrganizationsProperty);
-            set => SetProperty(CategoryOfOrganizationsProperty, value);
+            get => GetProperty(CategoryOfOrganizationProperty);
+            set => SetProperty(CategoryOfOrganizationProperty, value);
         }
 
         protected override void AddBusinessRules()
@@ -62,12 +62,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         public static async Task<OrganizationTypeEC> NewOrganizationType()
         {
-            return await DataPortal.CreateAsync<OrganizationTypeEC>();
+            return await DataPortal.CreateChildAsync<OrganizationTypeEC>();
         }
 
         public static async Task<OrganizationTypeEC> GetOrganizationType(Organization childData)
         {
-            return await DataPortal.FetchAsync<OrganizationTypeEC>(childData);
+            return await DataPortal.FetchChildAsync<OrganizationTypeEC>(childData);
         }
 
         public static async Task DeleteOrganizationType(int id)
@@ -80,18 +80,21 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access
 
         [FetchChild]
-        private async void Fetch(Organization childData)
+        private async void Fetch(OrganizationType childData)
         {
             using (BypassPropertyChecks)
             {
                 Id = childData.Id;
                 Name = childData.Name;
                 Notes = childData.Notes;
-                CategoryOfOrganizations = await CategoryOfOrganizationECL.NewCategoryOfOrganizationList();
+                if(childData.CategoryOfOrganization != null )
+                    CategoryOfOrganization = await CategoryOfOrganizationEC.GetCategoryOfOrganization(childData.CategoryOfOrganization);
+                else
+                    CategoryOfOrganization = await CategoryOfOrganizationEC.NewCategoryOfOrganization();
             }
         }
 
-        [Insert]
+        [InsertChild]
         private void Insert()
         {
             using IDalManager dalManager = DalFactory.GetManager();
@@ -109,7 +112,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             }
         }
 
-        [Update]
+        [UpdateChild]
         private void Update()
         {
             using IDalManager dalManager = DalFactory.GetManager();
@@ -125,7 +128,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             }
         }
 
-        [DeleteSelf]
+        [DeleteSelfChild]
         private void DeleteSelf()
         {
             Delete(this.Id);

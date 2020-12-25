@@ -79,13 +79,44 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 {
                     Id = 1, Address1 = "8321 Oxford Drive", Address2 = "Apt 103", City = "Greendale",
                     State = "WI", PostCode = "53129", LastUpdatedBy = "edm", Notes = "some notes",
-                    LastUpdatedDate = DateTime.Now
+                    LastUpdatedDate = DateTime.Now, 
+                    Organizations = new List<Organization>()
+                    {
+                        new Organization()
+                        {
+                            Id=1,
+                            Name = "test org",
+                            DateOfFirstContact = DateTime.Now,
+                            LastUpdatedBy = "edm",
+                            LastUpdatedDate = DateTime.Now,
+                            OrganizationType = new OrganizationType()
+                            {
+                                Id = 1, Name = "org type",
+                                CategoryOfOrganization = new CategoryOfOrganization()
+                                {
+                                    Id = 1,Category = "cat org"
+                                }
+                            }
+                        }
+                    },
                 },
                 new Address()
                 {
                     Id = 2, Address1 = "921 S. Brittany Way", City = "Englewood",
                     State = "CO", PostCode = "80112", LastUpdatedBy = "edm", Notes = "notes",
-                    LastUpdatedDate = DateTime.Now
+                    LastUpdatedDate = DateTime.Now,
+                    Organizations = new List<Organization>()
+                    {
+                        new Organization()
+                        {
+                            Id=1,
+                            Name = "test org",
+                            DateOfFirstContact = DateTime.Now,
+                            LastUpdatedBy = "edm",
+                            LastUpdatedDate = DateTime.Now
+                        }
+                    },
+//                    Persons = GetPersons()                    
                 },
                 // use this record for delete only otherwise xunit will contend
                 new Address()
