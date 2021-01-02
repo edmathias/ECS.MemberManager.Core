@@ -17,13 +17,13 @@ namespace ECS.MemberManager.Core.DataAccess.SqlEF
 
         public List<EMail> Fetch()
         {
-            using var ctx = DbContextManager<MembershipManagerDataContext>.GetManager().DbContext;
+            var ctx = DbContextManager<MembershipManagerDataContext>.GetManager().DbContext;
             return ctx.EMails.Include(et => et.EMailType).ToList();
         }
 
         public EMail Fetch(int id)
         {
-            using var ctx = DbContextManager<MembershipManagerDataContext>.GetManager().DbContext;
+            var ctx = DbContextManager<MembershipManagerDataContext>.GetManager().DbContext;
             var emailDto = ctx.EMails.Include(et => et.EMailType).FirstOrDefault(e => e.Id == id);
             
             if(emailDto == null) throw new ArgumentException($"EMail id = {id} is not found");
@@ -33,7 +33,7 @@ namespace ECS.MemberManager.Core.DataAccess.SqlEF
 
         public int Insert(EMail eMailToInsert)
         {
-            using var ctx = DbContextManager<MembershipManagerDataContext>.GetManager().DbContext;
+            var ctx = DbContextManager<MembershipManagerDataContext>.GetManager().DbContext;
             ctx.EMails.Add(eMailToInsert);
             var recordsAffected = ctx.SaveChanges();
             
@@ -42,7 +42,7 @@ namespace ECS.MemberManager.Core.DataAccess.SqlEF
 
         public int Update(EMail eMailToUpdate)
         {
-            using var ctx = DbContextManager<MembershipManagerDataContext>.GetManager().DbContext;
+            var ctx = DbContextManager<MembershipManagerDataContext>.GetManager().DbContext;
             ctx.EMails.Update(eMailToUpdate);
 
             int recordsAffected = ctx.SaveChanges();
@@ -53,7 +53,7 @@ namespace ECS.MemberManager.Core.DataAccess.SqlEF
 
         public void Delete(int id)
         {
-            using var ctx = DbContextManager<MembershipManagerDataContext>.GetManager().DbContext;
+            var ctx = DbContextManager<MembershipManagerDataContext>.GetManager().DbContext;
             var emailToDelete = ctx.EMails.FirstOrDefault(e => e.Id == id);
             
             if(emailToDelete == null) throw new ArgumentException($"Email with id of {id} to delete was not found");

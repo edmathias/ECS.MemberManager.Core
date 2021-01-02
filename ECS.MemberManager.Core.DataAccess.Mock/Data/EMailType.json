@@ -1,0 +1,20 @@
+﻿{
+  "EMailType" :  [
+    { 
+      "Id" :  1,
+      "Description" : "work",
+      "Notes" : ""
+    },
+    { 
+      "Id" : 2,
+      "Description" : "home",
+      "Notes" : "notes for home"
+    },
+    { 
+      "Id" : 99,
+      "Description" : "delete this",
+      "Notes" : "notes to delete"
+    }
+  ]
+}
+

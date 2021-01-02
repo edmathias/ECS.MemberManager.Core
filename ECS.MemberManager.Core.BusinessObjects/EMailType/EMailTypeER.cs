@@ -65,7 +65,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             return await DataPortal.FetchAsync<EMailTypeER>(id);
         }
 
-        public static async Task  DeleteEMailType(int id)
+        public static async Task DeleteEMailType(int id)
         {
             await DataPortal.DeleteAsync<EMailTypeER>(id);
         }

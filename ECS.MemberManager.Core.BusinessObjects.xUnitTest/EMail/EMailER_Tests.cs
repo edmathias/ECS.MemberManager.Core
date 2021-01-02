@@ -61,7 +61,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 Notes = "nothing to see here"
             };
             eMail.EMailType = await DataPortal.FetchChildAsync<EMailTypeEC>(eMailTypeDto);
-            var savedEMail = eMail.Save();
+            var savedEMail = await eMail.SaveAsync();
            
             Assert.NotNull(savedEMail);
             Assert.IsType<EMailER>(savedEMail);

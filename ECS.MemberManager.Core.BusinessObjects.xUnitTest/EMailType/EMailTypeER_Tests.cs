@@ -36,25 +36,26 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestEMailTypeER_Update()
+        public async void TestEMailTypeER_Update()
         {
             var eMailType = await EMailTypeER.GetEMailType(1);
-            eMailType.Notes = "These are updated Notes";
+            var notesUpdate =$"These are updated Notes {DateTime.Now}";
+            eMailType.Notes = notesUpdate;
             
-            var result = eMailType.Save();
+            var result =  await eMailType.SaveAsync();
 
             Assert.NotNull(result);
-            Assert.Equal( "These are updated Notes",result.Notes);
+            Assert.Equal( notesUpdate,result.Notes);
         }
 
         [Fact]
-        public async Task TestEMailTypeER_Insert()
+        public async void TestEMailTypeER_Insert()
         {
             var eMailType = await EMailTypeER.NewEMailType();
             eMailType.Description = "Standby";
             eMailType.Notes = "This person is on standby";
 
-            var savedEMailType = eMailType.Save();
+            var savedEMailType = await eMailType.SaveAsync();
            
             Assert.NotNull(savedEMailType);
             Assert.IsType<EMailTypeER>(savedEMailType);
@@ -64,11 +65,14 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async Task TestEMailTypeER_Delete()
         {
-            int beforeCount = MockDb.EMailTypes.Count();
+            var emailTypeList = await EMailTypeERL.GetEMailTypeList();
+            int beforeCount = emailTypeList.Count;
             
             await EMailTypeER.DeleteEMailType(99);
-            
-            Assert.NotEqual(MockDb.EMailTypes.Count(),beforeCount);
+           
+            var emailTypeListAfter = await EMailTypeERL.GetEMailTypeList();
+             
+            Assert.NotEqual(beforeCount, emailTypeListAfter.Count);
         }
         
         // test invalid state 
