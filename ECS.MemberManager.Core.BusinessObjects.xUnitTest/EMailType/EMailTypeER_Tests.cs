@@ -3,18 +3,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess.Mock;
+using ECS.MemberManager.Core.EF.Domain;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    /// <summary>
-    /// Summary description for JustMockTest
-    /// </summary>
     public class EMailTypeER_Tests 
     {
         public EMailTypeER_Tests()
         {
-            MockDb.ResetMockDb();     
+     //       MockDb.ResetMockDb();     
         }
         
         [Fact]
@@ -53,7 +51,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             var eMailType = await EMailTypeER.NewEMailType();
             eMailType.Description = "Standby";
-            eMailType.Notes = "This person is on standby";
+            eMailType.Notes = "This person is inserted";
 
             var savedEMailType = await eMailType.SaveAsync();
            
@@ -65,17 +63,18 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async Task TestEMailTypeER_Delete()
         {
-            var emailTypeList = await EMailTypeERL.GetEMailTypeList();
-            int beforeCount = emailTypeList.Count;
+            var eMailType = await EMailTypeER.NewEMailType();
+            eMailType.Description = "Standby";
+            eMailType.Notes = "This person will be deleted";
+
+            var savedEMailType = await eMailType.SaveAsync();
             
-            await EMailTypeER.DeleteEMailType(99);
-           
-            var emailTypeListAfter = await EMailTypeERL.GetEMailTypeList();
-             
-            Assert.NotEqual(beforeCount, emailTypeListAfter.Count);
+            await EMailTypeER.DeleteEMailType(savedEMailType.Id);
+
+            var emailTypeToCheck = await Assert.ThrowsAsync<Csla.DataPortalException>
+                (() => EMailTypeER.GetEMailType(savedEMailType.Id));
         }
         
-        // test invalid state 
         [Fact]
         public async Task TestEMailTypeER_DescriptionRequired()
         {
@@ -87,7 +86,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(eMailType);
             Assert.True(isObjectValidInit);
             Assert.False(eMailType.IsValid);
- 
         }
        
         [Fact]
@@ -112,10 +110,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             var eMailType = await EMailTypeER.NewEMailType();
             eMailType.Description = String.Empty;
-            EMailTypeER savedEMailType = null;
             
             Assert.False(eMailType.IsValid);
-            Assert.Throws<ValidationException>(() => savedEMailType =  eMailType.Save() );
+            await Assert.ThrowsAsync<ValidationException>(() => eMailType.SaveAsync() );
         }
     }
 }

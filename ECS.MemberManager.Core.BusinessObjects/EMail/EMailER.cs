@@ -61,6 +61,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(EMailTypeProperty, value);
         }
 
+        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
+        public byte[] RowVersion
+        {
+            get => GetProperty(RowVersionProperty);
+            private set => LoadProperty(RowVersionProperty, value);
+        }
         
         protected override void AddBusinessRules()
         {
@@ -102,16 +108,19 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private void Fetch(int id)
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEMailDal>();
-            var data = dal.Fetch(id);
+            var eMailDal = dalManager.GetProvider<IEMailDal>();
+            var eMail = eMailDal.Fetch(id);
+            var eMailTypeDal = dalManager.GetProvider<IEMailTypeDal>();
+            var eMailType = eMailTypeDal.Fetch(eMail.EMailTypeId); 
             using (BypassPropertyChecks)
             {
-                Id = data.Id;
-                EMailAddress = data.EMailAddress;
-                EMailType = DataPortal.FetchChild<EMailTypeEC>(data.EMailType);
-                LastUpdatedBy = data.LastUpdatedBy;
-                LastUpdatedDate = data.LastUpdatedDate;
-                Notes = data.Notes;
+                Id = eMail.Id;
+                EMailAddress = eMail.EMailAddress;
+                EMailType = DataPortal.FetchChild<EMailTypeEC>(eMailType);
+                LastUpdatedBy = eMail.LastUpdatedBy;
+                LastUpdatedDate = eMail.LastUpdatedDate;
+                Notes = eMail.Notes;
+                RowVersion = eMail.RowVersion;
                 // TODO: many-to-many
             }
         }
@@ -125,19 +134,18 @@ namespace ECS.MemberManager.Core.BusinessObjects
             {
                 var eMailToInsert = new EMail()
                 {
-                    EMailAddress = this.EMailAddress,
-                    EMailType = new EMailType()
-                        {Id = EMailType.Id, Description = EMailType.Description, Notes = EMailType.Notes},
-                    LastUpdatedBy = this.LastUpdatedBy,
-                    LastUpdatedDate = this.LastUpdatedDate,
-                    Notes = this.Notes,
+                    EMailAddress = EMailAddress,
+                    EMailTypeId = EMailType.Id,
+                    LastUpdatedBy = LastUpdatedBy,
+                    LastUpdatedDate = LastUpdatedDate,
+                    Notes = Notes,
                     // TODO: many-to-many
                     Organizations = new List<Organization>(),
                     Persons = new List<Person>()
                 };
 
-                var id = dal.Insert(eMailToInsert);
-                this.Id = id;
+                var eMail = dal.Insert(eMailToInsert);
+                Id = eMail.Id;
             }
         }
 
@@ -152,12 +160,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 {
                     Id = this.Id,
                     EMailAddress = this.EMailAddress,
-                    EMailType = new EMailType()
-                        {Id = this.EMailType.Id, Description = this.EMailType.Description, Notes = this.EMailType.Notes},
+                    EMailTypeId = EMailType.Id,
                     LastUpdatedBy = this.LastUpdatedBy,
                     LastUpdatedDate = this.LastUpdatedDate,
                     Notes = this.Notes,
-                    // TODO: many-to-many
+                    RowVersion = this.RowVersion,
+
                     Organizations = new List<Organization>(),
                     Persons = new List<Person>()
                 };

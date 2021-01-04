@@ -8,8 +8,8 @@ namespace ECS.MemberManager.Core.DataAccess.Dal
     {
         List<EMail> Fetch();
         EMail Fetch(int id);
-        int Insert(EMail eMailToInsert);
-        int Update(EMail eMailToUpdate);
+        EMail Insert(EMail eMailToInsert);
+        EMail Update(EMail eMailToUpdate);
         void Delete(int id);
     }
 }

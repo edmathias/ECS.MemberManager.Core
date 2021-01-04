@@ -97,7 +97,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
                         Description = this.Description, 
                         Notes = this.Notes 
                     };
-                Id = dal.Insert(eMailType);
+                eMailType = dal.Insert(eMailType);
+                Id = eMailType.Id;
             }
         }
         

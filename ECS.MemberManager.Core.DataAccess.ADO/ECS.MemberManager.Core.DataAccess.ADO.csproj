@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <RootNamespace>ECS.MemberManager.Core.DataAccess.SqlServer</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ECS.MemberManager.Core.DataAccess\ECS.MemberManager.Core.DataAccess.csproj" />
+      <ProjectReference Include="..\ECS.MemberManager.Core.EF.Domain\ECS.MemberManager.Core.EF.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Csla" Version="5.4.0" />
+      <PackageReference Include="Dapper" Version="2.0.78" />
+      <PackageReference Include="Dapper.Contrib" Version="2.0.78" />
+      <PackageReference Include="Microsoft.Data.SqlClient" Version="2.1.1" />
+      <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
+    </ItemGroup>
+
+</Project>

@@ -13,7 +13,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
     {
         public EMailER_Tests()
         {
-            MockDb.ResetMockDb();
+ //           MockDb.ResetMockDb();
         }
         
         [Fact]
@@ -22,9 +22,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var eMail = await EMailER.GetEMail(1);
 
             Assert.Equal(1,eMail.Id);
+            Assert.NotNull(eMail.EMailType);
             Assert.True(eMail.IsValid);
         }
 
+        
         [Fact]
         public async Task TestEMailER_New()
         {
@@ -71,11 +73,12 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async Task TestEMailER_Delete()
         {
-            int beforeCount = MockDb.EMails.Count();
+            var emailToDelete = await EMailER.GetEMail(3);
             
-            await EMailER.DeleteEMail(99);
+            await EMailER.DeleteEMail(emailToDelete.Id);
             
-            Assert.NotEqual(beforeCount,MockDb.EMails.Count());
+            var emailTypeToCheck = await Assert.ThrowsAsync<Csla.DataPortalException>
+                (() => EMailER.GetEMail(emailToDelete.Id));        
         }
         
         // test invalid state 

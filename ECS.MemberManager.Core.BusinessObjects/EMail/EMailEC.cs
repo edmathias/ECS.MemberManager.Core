@@ -99,17 +99,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access
 
         [Fetch]
-        private void Fetch(EMail childData)
+        private async void Fetch(EMailType childData)
         {
             using (BypassPropertyChecks)
             {
                 Id = childData.Id;
-                EMailAddress = childData.EMailAddress;
-                EMailType = DataPortal.FetchChild<EMailTypeEC>(childData.EMailType);
-                LastUpdatedBy = childData.LastUpdatedBy;
-                LastUpdatedDate = childData.LastUpdatedDate;
-                Notes = childData.Notes;
-                // TODO: many-to-many
+                EMailType = await EMailTypeEC.GetEMailType(childData);
             }
         }
 
@@ -122,19 +117,11 @@ namespace ECS.MemberManager.Core.BusinessObjects
             {
                 var eMailToInsert = new EMail()
                 {
-                    EMailAddress = this.EMailAddress,
-                    EMailType = new EMailType()
-                        {Id = EMailType.Id, Description = EMailType.Description, Notes = EMailType.Notes},
-                    LastUpdatedBy = this.LastUpdatedBy,
-                    LastUpdatedDate = this.LastUpdatedDate,
-                    Notes = this.Notes,
-                    // TODO: many-to-many
-                    Organizations = new List<Organization>(),
-                    Persons = new List<Person>()
+
                 };
 
-                var id = dal.Insert(eMailToInsert);
-                this.Id = id;
+                var eMail = dal.Insert(eMailToInsert);
+                this.Id = eMail.Id;
             }
         }
 
@@ -149,8 +136,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 {
                     Id = this.Id,
                     EMailAddress = this.EMailAddress,
-                    EMailType = new EMailType()
-                        {Id = this.EMailType.Id, Description = this.EMailType.Description, Notes = this.EMailType.Notes},
+                    EMailTypeId = this.EMailType.Id,
                     LastUpdatedBy = this.LastUpdatedBy,
                     LastUpdatedDate = this.LastUpdatedDate,
                     Notes = this.Notes,

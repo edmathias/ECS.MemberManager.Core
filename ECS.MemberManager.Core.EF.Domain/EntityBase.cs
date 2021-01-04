@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Dapper.Contrib.Extensions;
 
 namespace ECS.MemberManager.Core.EF.Domain
 {
     public class EntityBase
     {
-        [Key] public int Id { get; set; }
-        [Timestamp] public byte[] Timestamp { get; set; }
+        [System.ComponentModel.DataAnnotations.Key] public int Id { get; set; }
+        [Timestamp] public byte[] RowVersion { get; set; }
     }
 }

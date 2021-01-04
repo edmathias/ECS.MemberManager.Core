@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECS.MemberManager.Core.Data
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECS.MemberManager.Core.BusinessObjects.xUnitTest", "ECS.MemberManager.Core.BusinessObjects.xUnitTest\ECS.MemberManager.Core.BusinessObjects.xUnitTest.csproj", "{0C03EF12-A89B-4375-8C87-B29BC032270C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECS.MemberManager.Core.DataAccess.ADO", "ECS.MemberManager.Core.DataAccess.ADO\ECS.MemberManager.Core.DataAccess.ADO.csproj", "{AA49716A-046B-4ECC-88EE-802D39CB4ED7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{0C03EF12-A89B-4375-8C87-B29BC032270C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C03EF12-A89B-4375-8C87-B29BC032270C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C03EF12-A89B-4375-8C87-B29BC032270C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA49716A-046B-4ECC-88EE-802D39CB4ED7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA49716A-046B-4ECC-88EE-802D39CB4ED7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA49716A-046B-4ECC-88EE-802D39CB4ED7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA49716A-046B-4ECC-88EE-802D39CB4ED7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

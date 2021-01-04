@@ -36,7 +36,14 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(NotesProperty, value);
         } 
         
-       
+        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
+        public byte[] RowVersion
+        {
+            get => GetProperty(RowVersionProperty);
+            private set => LoadProperty(RowVersionProperty, value);
+        }
+
+        
         protected override void AddBusinessRules()
         {
             base.AddBusinessRules();
@@ -79,11 +86,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEMailTypeDal>();
             var data = dal.Fetch(id);
+             
             using (BypassPropertyChecks)
             {
                 Id = data.Id;
                 Description = data.Description;
                 Notes = data.Notes;
+                RowVersion = data.RowVersion;
             }
         }
 
@@ -97,9 +106,11 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 var eMailType = new EMailType 
                     { 
                         Description = this.Description, 
-                        Notes = this.Notes 
+                        Notes = this.Notes,
+                        RowVersion = RowVersion
                     };
-                Id = dal.Insert(eMailType);
+                eMailType = dal.Insert(eMailType);
+                Id = eMailType.Id;
             }
         }
         
@@ -114,7 +125,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 {
                     Id = this.Id, 
                     Description = this.Description, 
-                    Notes = this.Notes
+                    Notes = this.Notes,
+                    RowVersion = RowVersion
                 };
                 
                 dal.Update(eMailType);
