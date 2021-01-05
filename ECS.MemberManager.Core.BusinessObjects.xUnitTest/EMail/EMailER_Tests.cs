@@ -1,21 +1,45 @@
 using System;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Csla;
 using Csla.Rules;
+using Dapper;
+using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using ECS.MemberManager.Core.EF.Domain;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
     public class EMailER_Tests 
     {
+        private IConfigurationRoot _config = null;
+        private bool IsDatabaseBuilt = false;
+
         public EMailER_Tests()
         {
- //           MockDb.ResetMockDb();
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            _config = builder.Build();
+            var testLibrary = _config.GetValue<string>("TestLibrary");
+            
+            if(testLibrary == "Mock")
+                MockDb.ResetMockDb();
+            else
+            {
+                if (!IsDatabaseBuilt)
+                {
+                    ADODb.BuildMemberManagerADODb();
+                    IsDatabaseBuilt = true;
+                }
+            }
         }
-        
+      
         [Fact]
         public async Task TestEMailER_GetEMail()
         {
@@ -73,7 +97,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async Task TestEMailER_Delete()
         {
-            var emailToDelete = await EMailER.GetEMail(3);
+            var emailToDelete = await EMailER.GetEMail(99);
             
             await EMailER.DeleteEMail(emailToDelete.Id);
             
@@ -132,5 +156,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.False(eMail.IsValid);
             Assert.Throws<ValidationException>(() => savedEMail =  eMail.Save() );
         }
+
+        
     }
 }

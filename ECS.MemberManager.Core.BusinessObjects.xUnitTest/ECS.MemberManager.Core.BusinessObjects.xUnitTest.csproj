@@ -24,7 +24,6 @@
       <ProjectReference Include="..\ECS.MemberManager.Core.BusinessObjects\ECS.MemberManager.Core.BusinessObjects.csproj" />
       <ProjectReference Include="..\ECS.MemberManager.Core.DataAccess.ADO\ECS.MemberManager.Core.DataAccess.ADO.csproj" />
       <ProjectReference Include="..\ECS.MemberManager.Core.DataAccess.Mock\ECS.MemberManager.Core.DataAccess.Mock.csproj" />
-      <ProjectReference Include="..\ECS.MemberManager.Core.DataAccess.SqlEF\ECS.MemberManager.Core.DataAccess.SqlEF.csproj" />
     </ItemGroup>
 
     <ItemGroup>

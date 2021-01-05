@@ -40,7 +40,12 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
 
         public EMailType Insert(EMailType eMailTypeToInsert)
         {
-            _db.Insert<EMailType>(eMailTypeToInsert);
+            var sql = "INSERT INTO EMailTypes (Description, Notes) " +
+                      "VALUES(@Description, @Notes);" +
+                      "SELECT SCOPE_IDENTITY()";
+            
+            var id = _db.ExecuteScalar<int>(sql, eMailTypeToInsert);
+            eMailTypeToInsert.Id = id;
             
             return eMailTypeToInsert;
             

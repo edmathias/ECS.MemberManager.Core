@@ -106,8 +106,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 var eMailType = new EMailType 
                     { 
                         Description = this.Description, 
-                        Notes = this.Notes,
-                        RowVersion = RowVersion
+                        Notes = this.Notes
                     };
                 eMailType = dal.Insert(eMailType);
                 Id = eMailType.Id;

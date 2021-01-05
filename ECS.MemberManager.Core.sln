@@ -17,8 +17,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECS.MemberManager.Core.UI.C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECS.MemberManager.Core.DataAccess", "ECS.MemberManager.Core.DataAccess\ECS.MemberManager.Core.DataAccess.csproj", "{CE31E6AF-6A9E-4172-884A-8C18D51C70A0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECS.MemberManager.Core.DataAccess.SqlEF", "ECS.MemberManager.Core.DataAccess.SqlEF\ECS.MemberManager.Core.DataAccess.SqlEF.csproj", "{11D9477C-99F9-452E-920E-F9EFFD430915}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECS.MemberManager.Core.DataAccess.Mock", "ECS.MemberManager.Core.DataAccess.Mock\ECS.MemberManager.Core.DataAccess.Mock.csproj", "{8C811541-A666-4D8D-A51A-FC93C81375A8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECS.MemberManager.Core.BusinessObjects.xUnitTest", "ECS.MemberManager.Core.BusinessObjects.xUnitTest\ECS.MemberManager.Core.BusinessObjects.xUnitTest.csproj", "{0C03EF12-A89B-4375-8C87-B29BC032270C}"
@@ -59,10 +57,6 @@ Global
 		{CE31E6AF-6A9E-4172-884A-8C18D51C70A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE31E6AF-6A9E-4172-884A-8C18D51C70A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE31E6AF-6A9E-4172-884A-8C18D51C70A0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{11D9477C-99F9-452E-920E-F9EFFD430915}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{11D9477C-99F9-452E-920E-F9EFFD430915}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{11D9477C-99F9-452E-920E-F9EFFD430915}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{11D9477C-99F9-452E-920E-F9EFFD430915}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8C811541-A666-4D8D-A51A-FC93C81375A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8C811541-A666-4D8D-A51A-FC93C81375A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C811541-A666-4D8D-A51A-FC93C81375A8}.Release|Any CPU.ActiveCfg = Release|Any CPU

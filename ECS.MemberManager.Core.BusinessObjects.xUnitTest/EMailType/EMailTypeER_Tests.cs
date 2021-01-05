@@ -1,20 +1,46 @@
 using System;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Csla.Rules;
+using Dapper;
+using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using ECS.MemberManager.Core.EF.Domain;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class EMailTypeER_Tests 
+    public class EMailTypeER_Tests
     {
+        private IConfigurationRoot _config = null;
+        private bool IsDatabaseBuilt = false;
+
         public EMailTypeER_Tests()
         {
-     //       MockDb.ResetMockDb();     
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            _config = builder.Build();
+            var testLibrary = _config.GetValue<string>("TestLibrary");
+            
+            if(testLibrary == "Mock")
+                   MockDb.ResetMockDb();
+            else
+            {
+                if (!IsDatabaseBuilt)
+                {
+                    ADODb.BuildMemberManagerADODb();
+                    IsDatabaseBuilt = true;
+                }
+            }
         }
-        
+
+  
+
         [Fact]
         public async Task TestEMailTypeER_Get()
         {
@@ -37,13 +63,13 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         public async void TestEMailTypeER_Update()
         {
             var eMailType = await EMailTypeER.GetEMailType(1);
-            var notesUpdate =$"These are updated Notes {DateTime.Now}";
+            var notesUpdate = $"These are updated Notes {DateTime.Now}";
             eMailType.Notes = notesUpdate;
-            
-            var result =  await eMailType.SaveAsync();
+
+            var result = await eMailType.SaveAsync();
 
             Assert.NotNull(result);
-            Assert.Equal( notesUpdate,result.Notes);
+            Assert.Equal(notesUpdate, result.Notes);
         }
 
         [Fact]
@@ -54,27 +80,21 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             eMailType.Notes = "This person is inserted";
 
             var savedEMailType = await eMailType.SaveAsync();
-           
+
             Assert.NotNull(savedEMailType);
             Assert.IsType<EMailTypeER>(savedEMailType);
-            Assert.True( savedEMailType.Id > 0 );
+            Assert.True(savedEMailType.Id > 0);
         }
 
         [Fact]
         public async Task TestEMailTypeER_Delete()
         {
-            var eMailType = await EMailTypeER.NewEMailType();
-            eMailType.Description = "Standby";
-            eMailType.Notes = "This person will be deleted";
-
-            var savedEMailType = await eMailType.SaveAsync();
-            
-            await EMailTypeER.DeleteEMailType(savedEMailType.Id);
+            await EMailTypeER.DeleteEMailType(99);
 
             var emailTypeToCheck = await Assert.ThrowsAsync<Csla.DataPortalException>
-                (() => EMailTypeER.GetEMailType(savedEMailType.Id));
+                (() => EMailTypeER.GetEMailType(99));
         }
-        
+
         [Fact]
         public async Task TestEMailTypeER_DescriptionRequired()
         {
@@ -87,22 +107,21 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.True(isObjectValidInit);
             Assert.False(eMailType.IsValid);
         }
-       
+
         [Fact]
         public async Task TestEMailTypeER_DescriptionExceedsMaxLengthOf50()
         {
             var eMailType = await EMailTypeER.NewEMailType();
-            eMailType.Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor "+
-                                       "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis "+
-                                       "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "+
-                                       "Duis aute irure dolor in reprehenderit";
+            eMailType.Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+                                    "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                                    "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
+                                    "Duis aute irure dolor in reprehenderit";
 
             Assert.NotNull(eMailType);
             Assert.False(eMailType.IsValid);
-            Assert.Equal("The field Description must be a string or array type with a maximum length of '50'.", 
+            Assert.Equal("The field Description must be a string or array type with a maximum length of '50'.",
                 eMailType.BrokenRulesCollection[0].Description);
- 
-        }        
+        }
         // test exception if attempt to save in invalid state
 
         [Fact]
@@ -110,9 +129,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             var eMailType = await EMailTypeER.NewEMailType();
             eMailType.Description = String.Empty;
-            
+
             Assert.False(eMailType.IsValid);
-            await Assert.ThrowsAsync<ValidationException>(() => eMailType.SaveAsync() );
+            await Assert.ThrowsAsync<ValidationException>(() => eMailType.SaveAsync());
         }
     }
 }

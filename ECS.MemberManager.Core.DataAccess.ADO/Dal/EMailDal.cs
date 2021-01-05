@@ -36,17 +36,30 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             return _db.Get<EMail>(id);
         }
 
-        public EMail Insert(EMail eMailTypeToInsert)
+        public EMail Insert(EMail eMailToInsert)
         {
-            _db.Insert(eMailTypeToInsert);
+            var sql = "INSERT INTO EMails (EMailTypeId,EMailAddress,LastUpdatedBy,LastUpdatedDate,Notes) " +
+                      "VALUES(@EMailTypeId,@EMailAddress,@LastUpdatedBy,@LastUpdatedDate,@Notes);" +
+                      "SELECT SCOPE_IDENTITY()";
+
+            eMailToInsert.Id =_db.ExecuteScalar<int>(sql, eMailToInsert);
             
-            return eMailTypeToInsert;
+            return eMailToInsert;
             
         }
 
         public EMail Update(EMail eMailToUpdate)
         {
-            _db.Update<EMail>(eMailToUpdate);
+            var sql = "UPDATE EMails " +
+                      "SET EMailTypeId=@EMailTypeId," +
+                      "EMailAddress=@EMailAddress," +
+                      "LastUpdatedBy=@LastUpdatedBy," +
+                      "LastUpdatedDate=@LastUpdatedDate," +
+                      "Notes=@Notes "+
+                      "OUTPUT inserted.RowVersion " +
+                      "WHERE Id = @Id AND RowVersion = @RowVersion ";
+            
+            eMailToUpdate.RowVersion = _db.ExecuteScalar<byte[]>(sql,eMailToUpdate);
             
             return eMailToUpdate;
         }
