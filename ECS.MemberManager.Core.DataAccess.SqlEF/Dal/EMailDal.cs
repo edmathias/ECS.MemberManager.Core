@@ -18,36 +18,36 @@ namespace ECS.MemberManager.Core.DataAccess.SqlEF
         public List<EMail> Fetch()
         {
             var ctx = DbContextManager<MembershipManagerDataContext>.GetManager().DbContext;
-            return ctx.EMails.Include(et => et.EMailType).ToList();
+            return ctx.EMails.ToList();
         }
 
         public EMail Fetch(int id)
         {
             var ctx = DbContextManager<MembershipManagerDataContext>.GetManager().DbContext;
-            var emailDto = ctx.EMails.Include(et => et.EMailType).FirstOrDefault(e => e.Id == id);
+            var emailDto = ctx.EMails.FirstOrDefault(e => e.Id == id);
             
             if(emailDto == null) throw new ArgumentException($"EMail id = {id} is not found");
 
             return emailDto;
         }
 
-        public int Insert(EMail eMailToInsert)
+        public EMail Insert(EMail eMailToInsert)
         {
             var ctx = DbContextManager<MembershipManagerDataContext>.GetManager().DbContext;
             ctx.EMails.Add(eMailToInsert);
             var recordsAffected = ctx.SaveChanges();
             
-            return recordsAffected;
+            return eMailToInsert;
         }
 
-        public int Update(EMail eMailToUpdate)
+        public EMail Update(EMail eMailToUpdate)
         {
             var ctx = DbContextManager<MembershipManagerDataContext>.GetManager().DbContext;
             ctx.EMails.Update(eMailToUpdate);
 
             int recordsAffected = ctx.SaveChanges();
 
-            return recordsAffected;
+            return eMailToUpdate;
 
         }
 

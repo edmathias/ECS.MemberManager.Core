@@ -229,19 +229,19 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             {
                 new EMail()
                 {
-                    Id = 1, EMailType = new EMailType() {Id = 1, Description = "personal", Notes = ""},
+                    Id = 1, EMailTypeId = 1,
                     EMailAddress = "edm@ecs.com", LastUpdatedBy = "edm", LastUpdatedDate = DateTime.Now,
                     Notes = "some notes", Organizations = GetOrganizations(), Persons = GetPersons() 
                 },
                 new EMail()
                 {
-                    Id = 2, EMailType = new EMailType() {Id = 2, Description = "work", Notes = ""},
+                    Id = 2, EMailTypeId = 2,
                     EMailAddress = "edm@ecs.com", LastUpdatedBy = "edm", LastUpdatedDate = DateTime.Now,
                     Notes = "some notes", Organizations = GetOrganizations(), Persons = GetPersons()
                 },
                 new EMail()
                 {
-                Id = 99, EMailType = new EMailType() {Id = 2, Description = "work", Notes = ""},
+                Id = 99, EMailTypeId = 2,
                 EMailAddress = "edm@ecs.com", LastUpdatedBy = "edm", LastUpdatedDate = DateTime.Now,
                 Notes = "test the delete", Organizations = GetOrganizations(), Persons = GetPersons()
                 }

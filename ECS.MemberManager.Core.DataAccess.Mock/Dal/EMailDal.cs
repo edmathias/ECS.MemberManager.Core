@@ -18,19 +18,19 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             return MockDb.EMails.ToList();
         }
 
-        public int Insert( EMail eMail)
+        public EMail Insert( EMail eMail)
         {
             var lastEMail = MockDb.EMails.ToList().OrderByDescending(ms => ms.Id).First();
             eMail.Id = lastEMail.Id+1;
             MockDb.EMails.Add(eMail);
             
-            return eMail.Id;
+            return eMail;
         }
 
-        public int Update(EMail eMail)
+        public EMail Update(EMail eMail)
         {
-            // mockdb in memory list reference already updated 
-            return 1;
+            // mockdb in memory list reference already updated
+            return eMail;
         }
 
         public void Delete(int id)

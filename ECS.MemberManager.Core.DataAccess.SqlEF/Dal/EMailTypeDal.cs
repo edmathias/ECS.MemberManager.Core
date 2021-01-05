@@ -33,7 +33,7 @@ namespace ECS.MemberManager.Core.DataAccess.SqlEF
             return emailType.FirstOrDefault();
         }
 
-        public int Insert(EMailType eMailTypeToInsert)
+        public EMailType Insert(EMailType eMailTypeToInsert)
         {
             using var ctx = DbContextManager<MembershipManagerDataContext>.GetManager().DbContext;
             ctx.EMailTypes.Add(eMailTypeToInsert);
@@ -43,10 +43,10 @@ namespace ECS.MemberManager.Core.DataAccess.SqlEF
                 throw new InvalidOperationException("EMailTypeDal Insert");
             }
 
-            return eMailTypeToInsert.Id;
+            return eMailTypeToInsert;
         }
 
-        public int Update(EMailType eMailTypeToUpdate)
+        public EMailType Update(EMailType eMailTypeToUpdate)
         {
             var ctx = DbContextManager<MembershipManagerDataContext>.GetManager().DbContext;
             var emailTypeUpdated = ctx.EMailTypes.Find(eMailTypeToUpdate.Id);
@@ -61,7 +61,7 @@ namespace ECS.MemberManager.Core.DataAccess.SqlEF
                 throw new InvalidOperationException("EMailTypeDal Insert");
             }
 
-            return count;
+            return eMailTypeToUpdate;
         }
 
         public void Delete(int id)
