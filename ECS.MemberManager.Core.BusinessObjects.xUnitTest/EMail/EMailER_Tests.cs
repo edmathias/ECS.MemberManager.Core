@@ -1,15 +1,11 @@
 using System;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Csla;
 using Csla.Rules;
-using Dapper;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using ECS.MemberManager.Core.EF.Domain;
-using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Xunit;
 

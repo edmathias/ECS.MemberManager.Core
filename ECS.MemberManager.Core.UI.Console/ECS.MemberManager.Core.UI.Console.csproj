@@ -21,7 +21,6 @@
     
     <ItemGroup>
       <ProjectReference Include="..\ECS.MemberManager.Core.BusinessObjects\ECS.MemberManager.Core.BusinessObjects.csproj" />
-      <ProjectReference Include="..\ECS.MemberManager.Core.DataAccess.SqlEF\ECS.MemberManager.Core.DataAccess.SqlEF.csproj" />
       <ProjectReference Include="..\ECS.MemberManager.Core.DataAccess\ECS.MemberManager.Core.DataAccess.csproj" />
     </ItemGroup>
 </Project>
