@@ -1,7 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ECS.MemberManager.Core.EF.Domain
 {
+    [Serializable]
+    [Table("EMailTypes")]
     public class EMailType : EntityBase
     {
         [Required, MaxLength(50)]

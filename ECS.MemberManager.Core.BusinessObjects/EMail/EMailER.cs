@@ -53,9 +53,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(NotesProperty, value);
         }
         
-        public static readonly PropertyInfo<EMailTypeEC> EMailTypeProperty = RegisterProperty<EMailTypeEC>(p => p.EMailType);
+        public static readonly PropertyInfo<EMailTypeEdit> EMailTypeProperty = RegisterProperty<EMailTypeEdit>(p => p.EMailType);
         [Required]
-        public EMailTypeEC EMailType
+        public EMailTypeEdit EMailType
         {
             get => GetProperty(EMailTypeProperty);
             set => SetProperty(EMailTypeProperty, value);
@@ -116,7 +116,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             {
                 Id = eMail.Id;
                 EMailAddress = eMail.EMailAddress;
-                EMailType = DataPortal.FetchChild<EMailTypeEC>(eMailType);
+                EMailType = DataPortal.FetchChild<EMailTypeEdit>(eMailType);
                 LastUpdatedBy = eMail.LastUpdatedBy;
                 LastUpdatedDate = eMail.LastUpdatedDate;
                 Notes = eMail.Notes;
@@ -139,13 +139,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
                     LastUpdatedBy = LastUpdatedBy,
                     LastUpdatedDate = LastUpdatedDate,
                     Notes = Notes,
-                    // TODO: many-to-many
-                    Organizations = new List<Organization>(),
-                    Persons = new List<Person>()
                 };
 
-                var eMail = dal.Insert(eMailToInsert);
-                Id = eMail.Id;
+                Id = dal.Insert(eMailToInsert).Id;
             }
         }
 
@@ -165,12 +161,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
                     LastUpdatedDate = this.LastUpdatedDate,
                     Notes = this.Notes,
                     RowVersion = this.RowVersion,
-
-                    Organizations = new List<Organization>(),
-                    Persons = new List<Person>()
                 };
                 
-                dal.Update(eMailToUpdate);
+                RowVersion = dal.Update(eMailToUpdate).RowVersion;
             }
         }
 

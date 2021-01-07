@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Dapper.Contrib.Extensions;
 
 namespace ECS.MemberManager.Core.EF.Domain
 {
     [Serializable]
+    [Table("Addresses")]
     public class Address : EntityBase
     {
         [Required, MaxLength(35)]
@@ -21,7 +23,9 @@ namespace ECS.MemberManager.Core.EF.Domain
         [MaxLength(255)]
         public string LastUpdatedBy { get; set; }
         public DateTime LastUpdatedDate { get; set; }
+        [Write(false)]
         public IList<Organization> Organizations { get; set; } = new List<Organization>();
+        [Write(false)]
         public IList<Person> Persons { get; set; } = new List<Person>();
     }
 

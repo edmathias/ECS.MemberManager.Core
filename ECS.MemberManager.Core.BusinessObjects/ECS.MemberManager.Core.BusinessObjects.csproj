@@ -14,8 +14,4 @@
       <ProjectReference Include="..\ECS.MemberManager.Core.DataAccess\ECS.MemberManager.Core.DataAccess.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Compile Remove="EMailType\EMailTypeROC.cs" />
-    </ItemGroup>
-
 </Project>

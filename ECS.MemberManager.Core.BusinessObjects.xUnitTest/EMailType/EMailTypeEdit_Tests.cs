@@ -9,12 +9,12 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class EMailTypeER_Tests
+    public class EMailTypeEdit_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
 
-        public EMailTypeER_Tests()
+        public EMailTypeEdit_Tests()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -28,7 +28,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             {
                 if (!IsDatabaseBuilt)
                 {
-                    ADODb.BuildMemberManagerADODb();
+                    var adoDb = new ADODb();
+                    adoDb.BuildMemberManagerADODb();
                     IsDatabaseBuilt = true;
                 }
             }
@@ -37,27 +38,27 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
   
 
         [Fact]
-        public async Task TestEMailTypeER_Get()
+        public async Task TestEMailTypeEdit_Get()
         {
-            var eMailType = await EMailTypeER.GetEMailType(1);
+            var eMailType = await EMailTypeEdit.GetEMailType(1);
 
             Assert.Equal(1, eMailType.Id);
             Assert.True(eMailType.IsValid);
         }
 
         [Fact]
-        public async Task TestEMailTypeER_New()
+        public async Task TestEMailTypeEdit_New()
         {
-            var eMailType = await EMailTypeER.NewEMailType();
+            var eMailType = await EMailTypeEdit.NewEMailType();
 
             Assert.NotNull(eMailType);
             Assert.False(eMailType.IsValid);
         }
 
         [Fact]
-        public async void TestEMailTypeER_Update()
+        public async void TestEMailTypeEdit_Update()
         {
-            var eMailType = await EMailTypeER.GetEMailType(1);
+            var eMailType = await EMailTypeEdit.GetEMailType(1);
             var notesUpdate = $"These are updated Notes {DateTime.Now}";
             eMailType.Notes = notesUpdate;
 
@@ -68,32 +69,33 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async void TestEMailTypeER_Insert()
+        public async void TestEMailTypeEdit_Insert()
         {
-            var eMailType = await EMailTypeER.NewEMailType();
+            var eMailType = await EMailTypeEdit.NewEMailType();
             eMailType.Description = "Standby";
             eMailType.Notes = "This person is inserted";
 
             var savedEMailType = await eMailType.SaveAsync();
 
             Assert.NotNull(savedEMailType);
-            Assert.IsType<EMailTypeER>(savedEMailType);
+            Assert.IsType<EMailTypeEdit>(savedEMailType);
             Assert.True(savedEMailType.Id > 0);
+            Assert.NotNull(savedEMailType.RowVersion);
         }
 
         [Fact]
-        public async Task TestEMailTypeER_Delete()
+        public async Task TestEMailTypeEdit_Delete()
         {
-            await EMailTypeER.DeleteEMailType(99);
+            await EMailTypeEdit.DeleteEMailType(99);
 
             var emailTypeToCheck = await Assert.ThrowsAsync<Csla.DataPortalException>
-                (() => EMailTypeER.GetEMailType(99));
+                (() => EMailTypeEdit.GetEMailType(99));
         }
 
         [Fact]
-        public async Task TestEMailTypeER_DescriptionRequired()
+        public async Task TestEMailTypeEdit_DescriptionRequired()
         {
-            var eMailType = await EMailTypeER.NewEMailType();
+            var eMailType = await EMailTypeEdit.NewEMailType();
             eMailType.Description = "make valid";
             var isObjectValidInit = eMailType.IsValid;
             eMailType.Description = string.Empty;
@@ -104,9 +106,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestEMailTypeER_DescriptionExceedsMaxLengthOf50()
+        public async Task TestEMailTypeEdit_DescriptionExceedsMaxLengthOf50()
         {
-            var eMailType = await EMailTypeER.NewEMailType();
+            var eMailType = await EMailTypeEdit.NewEMailType();
             eMailType.Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
                                     "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
                                     "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
@@ -120,9 +122,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         // test exception if attempt to save in invalid state
 
         [Fact]
-        public async Task TestEMailTypeER_TestInvalidSave()
+        public async Task TestEMailTypeEdit_TestInvalidSave()
         {
-            var eMailType = await EMailTypeER.NewEMailType();
+            var eMailType = await EMailTypeEdit.NewEMailType();
             eMailType.Description = String.Empty;
 
             Assert.False(eMailType.IsValid);

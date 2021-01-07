@@ -7,12 +7,12 @@ using Microsoft.Extensions.Configuration;
 
 namespace ECS.MemberManager.Core.DataAccess.ADO
 {
-    public static class ADODb
+    public  class ADODb
     {
-        private static IConfigurationRoot _config;
-        private static SqlConnection _db = null;
+        private  IConfigurationRoot _config;
+        private  SqlConnection _db = null;
 
-        static ADODb()
+        public ADODb()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -23,7 +23,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             _db = new SqlConnection(cnxnString);
         }
 
-        public static void BuildMemberManagerADODb()
+        public void BuildMemberManagerADODb()
         {
             _db.Execute(sbDbTearDown());
 
@@ -34,6 +34,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             var sb = new StringBuilder();
             
             sb.AppendLine("SET IDENTITY_INSERT [dbo].[EMailTypes] ON;");
+            sb.AppendLine("DBCC CHECKIDENT ('EMailTypes', RESEED, 1)");
             sb.AppendLine("INSERT INTO [dbo].[EMailTypes]([Id], [Description], [Notes])");
             sb.AppendLine("VALUES(1,'work','work notes')");
             sb.AppendLine("INSERT INTO [dbo].[EMailTypes]([Id], [Description], [Notes])");
@@ -43,6 +44,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             sb.AppendLine("SET IDENTITY_INSERT [dbo].[EMailTypes] OFF;");
             
             sb.AppendLine("SET IDENTITY_INSERT [dbo].[EMails] ON;");
+            sb.AppendLine("DBCC CHECKIDENT ('EMails', RESEED, 1)");
             sb.AppendLine("INSERT INTO [dbo].[EMails]([Id],[EMailTypeId],[EMailAddress],[LastUpdatedBy],[LastUpdatedDate], [Notes])");
             sb.AppendLine($"VALUES(1,1,'edm@ecs.com','edm','{DateTime.Now}','Notes')");
             sb.AppendLine("INSERT INTO [dbo].[EMails]([Id],[EMailTypeId],[EMailAddress],[LastUpdatedBy],[LastUpdatedDate], [Notes])");
@@ -50,11 +52,19 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             sb.AppendLine("INSERT INTO [dbo].[EMails]([Id],[EMailTypeId],[EMailAddress],[LastUpdatedBy],[LastUpdatedDate], [Notes])");
             sb.AppendLine($"VALUES(99,1,'deleteme@ecs.com','mary','{DateTime.Now}','test a delete')");
             sb.AppendLine("SET IDENTITY_INSERT [dbo].[EMails] OFF;");
+            
+            sb.AppendLine("SET IDENTITY_INSERT [dbo].[Addresses] ON;");
+            sb.AppendLine("DBCC CHECKIDENT ('EMails', RESEED, 1)");
+            sb.AppendLine("INSERT INTO Addresses(Id,Address1,Address2,City,State,PostCode,Notes,LastUpdatedBy,LastUpdatedDate)");
+            sb.AppendLine($"VALUES(1,'8321 Oxford Drive','Apt 103','Greendale','WI','53129','edm','some notes','{DateTime.Now}')");
+            sb.AppendLine("INSERT INTO Addresses(Id,Address1,Address2,City,State,PostCode,Notes,LastUpdatedBy,LastUpdatedDate)");
+            sb.AppendLine($"VALUES(99,'2221 Locust Drive','','Kirtland','OH','44094','edm','delete this','{DateTime.Now}')");
+            sb.AppendLine("SET IDENTITY_INSERT [dbo].[Addresses] OFF;");
 
             return sb.ToString();
         }
 
-        private static string sbDbTearDown()
+        private string sbDbTearDown()
         {
             var sb = new StringBuilder();
             sb.AppendLine("delete from AddressOrganization");
@@ -71,11 +81,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             sb.AppendLine("delete from PersonalNotes");
             sb.AppendLine("delete from TaskForEvents");
             sb.AppendLine("delete from TermInOffices");
-            sb.AppendLine("delete from Addresses");
-            sb.AppendLine("delete from EMails");
             sb.AppendLine("delete from EMailTypes");
-            sb.AppendLine("delete from DocumentTypes");
-            sb.AppendLine("delete from MemberInfo");
             sb.AppendLine("delete from MemberStatuses");
             sb.AppendLine("delete from MembershipTypes");
             sb.AppendLine("delete from PaymentSources");
@@ -91,6 +97,10 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             sb.AppendLine("delete from Persons");
             sb.AppendLine("delete from Titles");
             sb.AppendLine("delete from CategoryOfPersons");
+            sb.AppendLine("delete from Addresses");
+            sb.AppendLine("delete from EMails");
+            sb.AppendLine("delete from DocumentTypes");
+            sb.AppendLine("delete from MemberInfo");
 
             return sb.ToString();
         } 

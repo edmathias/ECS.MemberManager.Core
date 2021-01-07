@@ -18,18 +18,19 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             return MockDb.Addresses.ToList();
         }
 
-        public int Insert( Address address)
+        public Address Insert( Address address)
         {
             var lastAddress = MockDb.Addresses.ToList().OrderByDescending(a =>a.Id).First();
             address.Id = lastAddress.Id+1;
             MockDb.Addresses.Add(address);
             
-            return address.Id;
+            return address;
         }
 
-        public void Update(Address address)
+        public Address Update(Address address)
         {
             // in memory database already updated
+            return address;
         }
 
         public void Delete(int id)

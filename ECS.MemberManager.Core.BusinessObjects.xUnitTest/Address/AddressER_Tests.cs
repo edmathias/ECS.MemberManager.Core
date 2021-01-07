@@ -1,39 +1,53 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Csla;
 using Csla.Rules;
+using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using ECS.MemberManager.Core.EF.Domain;
+using Microsoft.Extensions.Configuration;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
     public class AddressER_Tests
     {
+        private IConfigurationRoot _config = null;
+        private bool IsDatabaseBuilt = false;
+
         public AddressER_Tests()
         {
-            MockDb.ResetMockDb();
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            _config = builder.Build();
+            var testLibrary = _config.GetValue<string>("TestLibrary");
+            
+            if(testLibrary == "Mock")
+                MockDb.ResetMockDb();
+            else
+            {
+                if (!IsDatabaseBuilt)
+                {
+                    var adoDb = new ADODb();
+                    adoDb.BuildMemberManagerADODb();
+                    IsDatabaseBuilt = true;
+                }
+            }
         }
         
         [Fact]
         public async Task TestAddressER_Get()
         {
-            var fetchId = MockDb.Addresses.Min(dt => dt.Id);
-            var address = await AddressER.GetAddress(fetchId);
-            var expectedAddress = MockDb.Addresses.First(a => a.Id == fetchId);
-            
-            Assert.Equal(fetchId,address.Id);
+            var address = await AddressER.GetAddress(1);
+
+            Assert.NotNull(address);
+            Assert.IsType<AddressER>(address);
+            Assert.Equal(1,address.Id);
             Assert.True(address.IsValid);
-            Assert.Equal(expectedAddress.Address1,address.Address1);
-            Assert.Equal(expectedAddress.Address2,address.Address2);
-            Assert.Equal(expectedAddress.City,address.City);
-            Assert.Equal(expectedAddress.State,address.State);
-            Assert.Equal(expectedAddress.PostCode,address.PostCode);
-            Assert.Equal(expectedAddress.Notes,address.Notes);
-            Assert.Equal(expectedAddress.LastUpdatedBy,address.LastUpdatedBy);
-            Assert.Equal(expectedAddress.LastUpdatedDate,(DateTime)address.LastUpdatedDate);
         }
 
         [Fact]
@@ -48,8 +62,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async void TestAddressER_Update()
         {
-            var fetchId = MockDb.Addresses.Min(dt => dt.Id);
-            var address = await AddressER.GetAddress(fetchId);
+            var address = await AddressER.GetAddress(1);
             address.Notes = "These are updated Notes";
 
             var result = await address.SaveAsync();
@@ -57,19 +70,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(result);
             Assert.Equal("These are updated Notes",result.Notes );
         }
-
-        [Fact]
-        public async void AddressER_UpdateChildren()
-        {
-            var fetchId = MockDb.Addresses.Min(dt => dt.Id);
-            var address = await AddressER.GetAddress(fetchId);
-            var result = await address.SaveAsync();
-
-            Assert.NotNull(result);
-            Assert.Equal("These are updated Notes",result.Notes );
-            
-        }
-
+ 
         [Fact]
         public async Task TestAddressER_Insert()
         {
@@ -86,13 +87,13 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async Task TestAddressER_Delete()
         {
-            var deleteId = MockDb.Addresses.Max(a => a.Id);
+            var addressToDelete = await AddressER.GetAddress(99);
             
-            var beforeCount = MockDb.Addresses.Count();
+            await AddressER.DeleteAddress(addressToDelete.Id);
+            
+            var addressToCheck = await Assert.ThrowsAsync<Csla.DataPortalException>
+                (() => AddressER.GetAddress(addressToDelete.Id));        
 
-            await AddressER.DeleteAddress(deleteId);
-
-            Assert.NotEqual(MockDb.Addresses.Count(),beforeCount );
         }
 
         // test invalid state 

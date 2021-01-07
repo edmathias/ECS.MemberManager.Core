@@ -94,20 +94,14 @@ namespace ECS.MemberManager.Core.BusinessObjects
             get => GetProperty(LastUpdatedDateProperty);
             set => SetProperty(LastUpdatedDateProperty, value);
         }
-        
-        public static readonly PropertyInfo<OrganizationECL> OrganizationListProperty = RegisterProperty<OrganizationECL>(p => p.OrganizationList);
-        public OrganizationECL OrganizationList
+
+        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
+        public byte[] RowVersion
         {
-            get => GetProperty(OrganizationListProperty);
-            set => SetProperty(OrganizationListProperty, value);
+            get => GetProperty(RowVersionProperty);
+            private set => LoadProperty(RowVersionProperty, value);
         }
 
-        public static readonly PropertyInfo<PersonECL> PersonListProperty = RegisterProperty<PersonECL>(p => p.PersonList);
-        public PersonECL PersonList
-        {
-            get => GetProperty(PersonListProperty);
-            set => SetProperty(PersonListProperty, value);
-        }
         
         #endregion
 
@@ -140,7 +134,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         [Fetch]
-        private async void Fetch(int id)
+        private void Fetch(int id)
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IAddressDal>();
@@ -156,13 +150,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 LastUpdatedBy = data.LastUpdatedBy;
                 LastUpdatedDate = data.LastUpdatedDate;
                 Notes = data.Notes;
-                
-                if (data.Persons != null)
-                    PersonList = await PersonECL.GetPersonList(data.Persons);
-                if (data.Organizations != null)
-                    OrganizationList = await OrganizationECL.GetOrganizationList(data.Organizations);
+                RowVersion = data.RowVersion;
             }
-            
         }
 
         [Insert]
@@ -182,7 +171,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 Notes = this.Notes
             };
 
-            Id = dal.Insert(addressToInsert);
+            Id = dal.Insert(addressToInsert).Id;
+            RowVersion = dal.Fetch(addressToInsert.Id).RowVersion;
         }
 
         [Update]
@@ -200,8 +190,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
             addressToUpdate.LastUpdatedDate = this.LastUpdatedDate;
             addressToUpdate.LastUpdatedBy = this.LastUpdatedBy;
             addressToUpdate.Notes = this.Notes;
+            addressToUpdate.RowVersion = this.RowVersion;
 
-            dal.Update(addressToUpdate);
+            RowVersion = dal.Update(addressToUpdate).RowVersion;
         }
 
         [DeleteSelf]

@@ -168,7 +168,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                     Notes = this.Notes
                 };
                 
-                Id = dal.Insert(addressToInsert);
+                var address = dal.Insert(addressToInsert);
                 
             }
         }

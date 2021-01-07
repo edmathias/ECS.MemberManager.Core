@@ -30,7 +30,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             {
                 if (!IsDatabaseBuilt)
                 {
-                    ADODb.BuildMemberManagerADODb();
+                    var adoDb = new ADODb();
+                    adoDb.BuildMemberManagerADODb();
                     IsDatabaseBuilt = true;
                 }
             }

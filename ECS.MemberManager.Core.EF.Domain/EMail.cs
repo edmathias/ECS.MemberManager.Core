@@ -5,6 +5,8 @@ using Dapper.Contrib.Extensions;
 
 namespace ECS.MemberManager.Core.EF.Domain
 {
+    [Serializable]
+    [Table("EMails")]
     public class EMail : EntityBase
     {
         public int EMailTypeId { get; set; }

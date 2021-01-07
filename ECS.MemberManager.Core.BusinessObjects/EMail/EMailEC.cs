@@ -53,9 +53,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(NotesProperty, value);
         }
         
-        public static readonly PropertyInfo<EMailTypeEC> EMailTypeProperty = RegisterProperty<EMailTypeEC>(p => p.EMailType);
+        public static readonly PropertyInfo<EMailTypeEdit> EMailTypeProperty = RegisterProperty<EMailTypeEdit>(p => p.EMailType);
         [Required]
-        public EMailTypeEC EMailType
+        public EMailTypeEdit EMailType
         {
             get => GetProperty(EMailTypeProperty);
             set => SetProperty(EMailTypeProperty, value);
@@ -104,7 +104,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             using (BypassPropertyChecks)
             {
                 Id = childData.Id;
-                EMailType = await EMailTypeEC.GetEMailType(childData);
+                EMailType = await EMailTypeEdit.GetEMailType(childData);
             }
         }
 

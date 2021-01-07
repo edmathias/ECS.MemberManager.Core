@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using Dapper;
@@ -26,6 +27,11 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             _db = new SqlConnection(cnxnString);
         }
 
+        public EMailDal(SqlConnection cnxn)
+        {
+            _db = cnxn;
+        }
+
         public List<EMail> Fetch()
         {
             return _db.GetAll<EMail>().ToList();
@@ -42,10 +48,9 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                       "VALUES(@EMailTypeId,@EMailAddress,@LastUpdatedBy,@LastUpdatedDate,@Notes);" +
                       "SELECT SCOPE_IDENTITY()";
 
-            eMailToInsert.Id =_db.ExecuteScalar<int>(sql, eMailToInsert);
-            
+            eMailToInsert.Id = _db.ExecuteScalar<int>(sql, eMailToInsert);
+
             return eMailToInsert;
-            
         }
 
         public EMail Update(EMail eMailToUpdate)
@@ -59,7 +64,10 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                       "OUTPUT inserted.RowVersion " +
                       "WHERE Id = @Id AND RowVersion = @RowVersion ";
             
-            eMailToUpdate.RowVersion = _db.ExecuteScalar<byte[]>(sql,eMailToUpdate);
+            var rowVersion = _db.ExecuteScalar<byte[]>(sql,eMailToUpdate);
+            if (rowVersion == null)
+                throw new DBConcurrencyException("Entity has been updated since last read. Try again!");
+            eMailToUpdate.RowVersion = rowVersion;
             
             return eMailToUpdate;
         }

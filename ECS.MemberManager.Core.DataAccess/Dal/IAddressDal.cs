@@ -8,8 +8,8 @@ namespace ECS.MemberManager.Core.DataAccess.Dal
     {
         Address Fetch(int id);
         List<Address> Fetch();
-        int Insert(Address address);
-        void Update(Address address );
+        Address Insert(Address address);
+        Address Update(Address address );
         void Delete(int id);
     }
 }

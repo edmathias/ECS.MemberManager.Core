@@ -28,6 +28,10 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             _db = new SqlConnection(cnxnString);
         }
 
+        public EMailTypeDal(SqlConnection cnxn)
+        {
+            _db = cnxn;
+        }
         public List<EMailType> Fetch()
         {
             return _db.GetAll<EMailType>().ToList();
@@ -43,12 +47,13 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             var sql = "INSERT INTO EMailTypes (Description, Notes) " +
                       "VALUES(@Description, @Notes);" +
                       "SELECT SCOPE_IDENTITY()";
-            
-            var id = _db.ExecuteScalar<int>(sql, eMailTypeToInsert);
-            eMailTypeToInsert.Id = id;
+            eMailTypeToInsert.Id = _db.ExecuteScalar<int>(sql,eMailTypeToInsert);
+
+            //reretrieve EMailType to get rowversion
+            var insertedEmail = _db.Get<EMailType>(eMailTypeToInsert.Id);
+            eMailTypeToInsert.RowVersion = insertedEmail.RowVersion;
             
             return eMailTypeToInsert;
-            
         }
 
         public EMailType Update(EMailType eMailTypeToUpdate)
@@ -60,7 +65,6 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                       "WHERE Id = @Id AND RowVersion = @RowVersion ";
 
             var rowVersion = _db.ExecuteScalar<byte[]>(sql,eMailTypeToUpdate);
-
             if (rowVersion == null)
                 throw new DBConcurrencyException("Entity has been updated since last read. Try again!");
             eMailTypeToUpdate.RowVersion = rowVersion;
@@ -77,5 +81,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
         {
             _db.Dispose(); 
         }
+
+  
     }
 }

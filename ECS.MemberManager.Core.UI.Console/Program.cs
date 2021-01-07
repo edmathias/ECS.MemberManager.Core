@@ -8,9 +8,6 @@ namespace ECS.MemberManager.Core.UI.Console
     {
         static void Main(string[] args)
         {
-            
-    
-
         }
     }
 }
