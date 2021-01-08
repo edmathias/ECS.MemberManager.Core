@@ -104,7 +104,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             using (BypassPropertyChecks)
             {
                 Id = childData.Id;
-                EMailType = await EMailTypeEdit.GetEMailType(childData);
+                EMailType = await EMailTypeEdit.GetEMailTypeEdit(childData);
             }
         }
 

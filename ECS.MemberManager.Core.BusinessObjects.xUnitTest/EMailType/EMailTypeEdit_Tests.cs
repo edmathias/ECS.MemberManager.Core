@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using Csla;
 using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Mock;
@@ -40,8 +41,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async Task TestEMailTypeEdit_Get()
         {
-            var eMailType = await EMailTypeEdit.GetEMailType(1);
+            var eMailType = await EMailTypeEdit.GetEMailTypeEdit(1);
 
+            Assert.NotNull(eMailType);
+            Assert.IsType<EMailTypeEdit>(eMailType);
             Assert.Equal(1, eMailType.Id);
             Assert.True(eMailType.IsValid);
         }
@@ -49,7 +52,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async Task TestEMailTypeEdit_New()
         {
-            var eMailType = await EMailTypeEdit.NewEMailType();
+            var eMailType = await EMailTypeEdit.NewEMailTypeEdit();
 
             Assert.NotNull(eMailType);
             Assert.False(eMailType.IsValid);
@@ -58,7 +61,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async void TestEMailTypeEdit_Update()
         {
-            var eMailType = await EMailTypeEdit.GetEMailType(1);
+            var eMailType = await EMailTypeEdit.GetEMailTypeEdit(1);
             var notesUpdate = $"These are updated Notes {DateTime.Now}";
             eMailType.Notes = notesUpdate;
 
@@ -71,7 +74,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async void TestEMailTypeEdit_Insert()
         {
-            var eMailType = await EMailTypeEdit.NewEMailType();
+            var eMailType = await EMailTypeEdit.NewEMailTypeEdit();
             eMailType.Description = "Standby";
             eMailType.Notes = "This person is inserted";
 
@@ -86,16 +89,16 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async Task TestEMailTypeEdit_Delete()
         {
-            await EMailTypeEdit.DeleteEMailType(99);
+            await EMailTypeEdit.DeleteEMailTypeEdit(99);
 
             var emailTypeToCheck = await Assert.ThrowsAsync<Csla.DataPortalException>
-                (() => EMailTypeEdit.GetEMailType(99));
+                (() => EMailTypeEdit.GetEMailTypeEdit(99));
         }
 
         [Fact]
         public async Task TestEMailTypeEdit_DescriptionRequired()
         {
-            var eMailType = await EMailTypeEdit.NewEMailType();
+            var eMailType = await EMailTypeEdit.NewEMailTypeEdit();
             eMailType.Description = "make valid";
             var isObjectValidInit = eMailType.IsValid;
             eMailType.Description = string.Empty;
@@ -108,7 +111,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async Task TestEMailTypeEdit_DescriptionExceedsMaxLengthOf50()
         {
-            var eMailType = await EMailTypeEdit.NewEMailType();
+            var eMailType = await EMailTypeEdit.NewEMailTypeEdit();
             eMailType.Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
                                     "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
                                     "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
@@ -124,11 +127,19 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async Task TestEMailTypeEdit_TestInvalidSave()
         {
-            var eMailType = await EMailTypeEdit.NewEMailType();
+            var eMailType = await EMailTypeEdit.NewEMailTypeEdit();
             eMailType.Description = String.Empty;
 
             Assert.False(eMailType.IsValid);
             await Assert.ThrowsAsync<ValidationException>(() => eMailType.SaveAsync());
         }
+       
+        [Fact]
+        public async Task TestEMailTypeEdit_InvalidGet()
+        {
+            await Assert.ThrowsAsync<DataPortalException>(() => EMailTypeEdit.GetEMailTypeEdit(999));
+        }
+        
+        
     }
 }

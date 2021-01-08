@@ -16,31 +16,48 @@ namespace ECS.MemberManager.Core.BusinessObjects
             // TODO: add object-level authorization rules
         }
 
-        internal static async Task<EMailTypeInfoList> NewEMailTypeList()
+        public static async Task<EMailTypeInfoList> NewEMailTypeInfoList()
         {
-            return await DataPortal.CreateChildAsync<EMailTypeInfoList>();
+            return await DataPortal.CreateAsync<EMailTypeInfoList>();
         }
 
-        internal static async Task<EMailTypeInfoList> GetEMailTypeList(IList<EMailType> listOfChildren)
+        public static async Task<EMailTypeInfoList> GetEMailTypeInfoList()
+        {
+            return await DataPortal.FetchAsync<EMailTypeInfoList>();
+        }
+
+        public static async Task<EMailTypeInfoList> GetEMailTypeInfoList(IList<EMailType> listOfChildren)
         {
             return await DataPortal.FetchChildAsync<EMailTypeInfoList>(listOfChildren);
         }
 
+        [RunLocal]
+        [Create]
+        private void Create()
+        {
+        }
+        
         [Fetch]
-        private async void Fetch()
+        private async Task Fetch()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEMailTypeDal>();
-            var data = dal.Fetch();
+            var childData = dal.Fetch();
 
+            await Fetch(childData);
+        }
+ 
+        [Fetch]
+        private async Task Fetch(List<EMailType> childData)
+        {
             using (LoadListMode)
             {
-                foreach (var eMailType in data)
+                foreach (var eMailType in childData)
                 {
                     Add(await EMailTypeInfo.GetEMailType(eMailType));             
                 }
             }
         }
-  
+        
     }
 }

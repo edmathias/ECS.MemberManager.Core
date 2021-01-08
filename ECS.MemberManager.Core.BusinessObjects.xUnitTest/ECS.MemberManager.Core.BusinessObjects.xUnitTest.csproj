@@ -35,6 +35,10 @@
     <ItemGroup>
       <Folder Include="MemberInfo" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="MembershipType\MembershipTypeERL_Tests.cs" />
+    </ItemGroup>
     
 
 </Project>

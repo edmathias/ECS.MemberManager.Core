@@ -11,7 +11,7 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class EMailER : BusinessBase<EMailER>
+    public class EMailEdit : BusinessBase<EMailEdit>
     {
         #region Business Methods
         
@@ -85,19 +85,19 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        public static async Task<EMailER> NewEMail()
+        public static async Task<EMailEdit> NewEMail()
         {
-            return await DataPortal.CreateAsync<EMailER>();
+            return await DataPortal.CreateAsync<EMailEdit>();
         }
 
-        public static async Task<EMailER> GetEMail(int id)
+        public static async Task<EMailEdit> GetEMail(int id)
         {
-            return await DataPortal.FetchAsync<EMailER>(id);
+            return await DataPortal.FetchAsync<EMailEdit>(id);
         }
 
         public static async Task DeleteEMail(int id)
         {
-            await DataPortal.DeleteAsync<EMailER>(id);
+            await DataPortal.DeleteAsync<EMailEdit>(id);
         }
         
         #endregion
@@ -121,10 +121,30 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 LastUpdatedDate = eMail.LastUpdatedDate;
                 Notes = eMail.Notes;
                 RowVersion = eMail.RowVersion;
-                // TODO: many-to-many
             }
         }
 
+        [Fetch]
+        private void Fetch(EMail childData)
+        {
+            using var dalManager = DalFactory.GetManager();
+            var eMailDal = dalManager.GetProvider<IEMailDal>();
+            var eMail = eMailDal.Fetch(Id);
+            var eMailTypeDal = dalManager.GetProvider<IEMailTypeDal>();
+            var eMailType = eMailTypeDal.Fetch(eMail.EMailTypeId); 
+            using (BypassPropertyChecks)
+            {
+                Id = eMail.Id;
+                EMailAddress = eMail.EMailAddress;
+                EMailType = DataPortal.FetchChild<EMailTypeEdit>(eMailType);
+                LastUpdatedBy = eMail.LastUpdatedBy;
+                LastUpdatedDate = eMail.LastUpdatedDate;
+                Notes = eMail.Notes;
+                RowVersion = eMail.RowVersion;
+                // TODO: many-to-many
+            }
+        }
+        
         [Insert]
         private void Insert()
         {
@@ -141,7 +161,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
                     Notes = Notes,
                 };
 
-                Id = dal.Insert(eMailToInsert).Id;
+                var insertedEMail = dal.Insert(eMailToInsert);
+                Id = insertedEMail.Id;
+                RowVersion = insertedEMail.RowVersion;
             }
         }
 

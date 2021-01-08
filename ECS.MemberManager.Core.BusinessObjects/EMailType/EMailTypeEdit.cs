@@ -65,23 +65,22 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        public static async Task<EMailTypeEdit> NewEMailType()
+        public static async Task<EMailTypeEdit> NewEMailTypeEdit()
         {
             return await DataPortal.CreateAsync<EMailTypeEdit>();
         }
 
-        public static async Task<EMailTypeEdit> GetEMailType(EMailType childData)
+        public static async Task<EMailTypeEdit> GetEMailTypeEdit(EMailType childData)
         {
             return await DataPortal.FetchChildAsync<EMailTypeEdit>(childData);
         }
 
-        public static async Task<EMailTypeEdit> GetEMailType(int id)
+        public static async Task<EMailTypeEdit> GetEMailTypeEdit(int id)
         {
             return await DataPortal.FetchAsync<EMailTypeEdit>(id);
         }
 
-
-        public static async Task DeleteEMailType(int id)
+        public static async Task DeleteEMailTypeEdit(int id)
         {
             await DataPortal.DeleteAsync<EMailTypeEdit>(id);
         }
@@ -89,7 +88,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #endregion
 
         #region Data Access Methods
-
+        
         [FetchChild]
         private void Fetch(EMailType childData)
         {
@@ -102,39 +101,46 @@ namespace ECS.MemberManager.Core.BusinessObjects
             }
         }
 
-        [FetchChild]
+        [Fetch]
         private void Fetch(int id)
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEMailTypeDal>();
             var data = dal.Fetch(id);
-            using (BypassPropertyChecks)
-            {
-                Id = data.Id;
-                Description = data.Description;
-                Notes = data.Notes;
-                RowVersion = data.RowVersion;
-            }
+
+            Fetch(data);
+        }
+
+        [Insert]
+        private void Insert()
+        {
+            InsertChild();
         }
 
         [InsertChild]
-        private void Insert()
+        private void InsertChild()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEMailTypeDal>();
-            var emailTypeToInsert = new EMailType()
+            var data = new EMailType()
             {
                 Notes = Notes,
                 Description = Description
             };
 
-            var insertedEMailType = dal.Insert(emailTypeToInsert);
+            var insertedEMailType = dal.Insert(data);
             Id = insertedEMailType.Id;
             RowVersion = insertedEMailType.RowVersion;
         }
 
-        [UpdateChild]
+        [Update]
         private void Update()
+        {
+            ChildUpdate();
+        }
+
+        [UpdateChild]
+        private void ChildUpdate()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEMailTypeDal>();
@@ -150,7 +156,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             var updatedEmail = dal.Update(emailTypeToUpdate);
             RowVersion = updatedEmail.RowVersion;
         }
-
+        
         [DeleteSelfChild]
         private void DeleteSelf()
         {

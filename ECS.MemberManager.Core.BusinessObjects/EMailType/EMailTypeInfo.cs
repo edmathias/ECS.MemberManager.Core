@@ -13,8 +13,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
     public class EMailTypeInfo : ReadOnlyBase<EMailTypeInfo>
     {
         #region Business Methods
-        
+
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
+
         public int Id
         {
             get => GetProperty(IdProperty);
@@ -22,7 +23,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(p => p.Description);
-        [Required,MaxLength(50)]
+
+        [Required, MaxLength(50)]
         public string Description
         {
             get => GetProperty(DescriptionProperty);
@@ -30,13 +32,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
+
         public string Notes
         {
             get => GetProperty(NotesProperty);
             private set => LoadProperty(NotesProperty, value);
-        } 
-        
+        }
+
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
+
         public byte[] RowVersion
         {
             get => GetProperty(RowVersionProperty);
@@ -56,27 +60,43 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             // TODO: add object-level authorization rules
         }
- 
-        
+
         #endregion
-        
+
         #region Factory Methods
 
         internal static async Task<EMailTypeInfo> GetEMailType(EMailType childData)
         {
             return await DataPortal.FetchChildAsync<EMailTypeInfo>(childData);
         }
-        
+
+        internal static async Task<EMailTypeInfo> GetEMailType(int id)
+        {
+            return await DataPortal.FetchAsync<EMailTypeInfo>(id);
+        }
+
         #endregion
-        
+
         #region Data Access Methods
-        
-        [FetchChild]       
+
+        [Fetch]
+        private void Fetch(int id)
+        {
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IEMailTypeDal>();
+            
+            var data = dal.Fetch(id);
+            
+            Fetch(data);
+        }
+
+        [FetchChild]
         private void Fetch(EMailType childData)
         {
             Id = childData.Id;
             Description = childData.Description;
             Notes = childData.Notes;
+            RowVersion = childData.RowVersion;
         }
 
         #endregion
