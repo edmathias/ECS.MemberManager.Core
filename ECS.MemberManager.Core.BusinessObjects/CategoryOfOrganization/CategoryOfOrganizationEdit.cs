@@ -10,7 +10,7 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class CategoryOfOrganizationEC : BusinessBase<CategoryOfOrganizationEC>
+    public class CategoryOfOrganizationEdit : BusinessBase<CategoryOfOrganizationEdit>
     {
         #region Business Methods
 
@@ -38,6 +38,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
             get => GetProperty(DisplayOrderProperty);
             set => SetProperty(DisplayOrderProperty, value);
         }
+        
+        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
+        public byte[] RowVersion
+        {
+            get => GetProperty(RowVersionProperty);
+            set => SetProperty(RowVersionProperty, value);
+        }
+
+
 
         protected override void AddBusinessRules()
         {
@@ -56,47 +65,53 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        internal static async Task<CategoryOfOrganizationEC> NewCategoryOfOrganization()
+        public static async Task<CategoryOfOrganizationEdit> NewCategoryOfOrganizationEdit()
         {
-            return await DataPortal.CreateChildAsync<CategoryOfOrganizationEC>();
+            return await DataPortal.CreateAsync<CategoryOfOrganizationEdit>();
         }
 
-        internal static async Task<CategoryOfOrganizationEC> GetCategoryOfOrganization(CategoryOfOrganization childData)
+        public static async Task<CategoryOfOrganizationEdit> GetCategoryOfOrganizationEdit(int id)
         {
-            return await DataPortal.FetchChildAsync<CategoryOfOrganizationEC>(childData);
+            return await DataPortal.FetchAsync<CategoryOfOrganizationEdit>(id);
         }
-
-        internal static async Task DeleteCategoryOfOrganization(int id)
+        
+        public static async Task<CategoryOfOrganizationEdit> GetCategoryOfOrganizationEdit(CategoryOfOrganization childData)
         {
-            await DataPortal.DeleteAsync<CategoryOfOrganizationEC>(id);
+            return await DataPortal.FetchChildAsync<CategoryOfOrganizationEdit>(childData);
+        }        
+
+        public static async Task DeleteCategoryOfOrganizationEdit(int id)
+        {
+            await DataPortal.DeleteAsync<CategoryOfOrganizationEdit>(id);
         }
 
         #endregion
 
         #region Data Access
 
-        [CreateChild]
-        private void Create()
-        {
-            MarkAsChild();
-
-            BusinessRules.CheckRules();
-        }
-
         [FetchChild]
-        private void Fetch(CategoryOfOrganization childData)
+        private void FetchChild(CategoryOfOrganization childData)
         {
             using (BypassPropertyChecks)
             {
                 Id = childData.Id;
                 Category = childData.Category;
                 DisplayOrder = childData.DisplayOrder;
+                RowVersion = childData.RowVersion;
             }
-
-            BusinessRules.CheckRules();
         }
 
-        [InsertChild]
+        [Fetch]
+        private void Fetch(int id)
+        {
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<ICategoryOfOrganizationDal>();
+            var data = dal.Fetch(id);
+            
+            FetchChild(data);
+         }
+
+        [Insert]
         private void Insert()
         {
             using var dalManager = DalFactory.GetManager();
@@ -111,7 +126,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             Id = categoryToInsert.Id;
         }
 
-        [UpdateChild]
+        [Update]
         private void Update()
         {
             using var dalManager = DalFactory.GetManager();
@@ -120,12 +135,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
             {
                 Id = Id,
                 Category = Category,
-                DisplayOrder = DisplayOrder
+                DisplayOrder = DisplayOrder,
+                RowVersion = RowVersion
             };
             dal.Update(categoryToUpdate);
         }
 
-        [DeleteSelfChild]
+        [DeleteSelf]
         private void DeleteSelf()
         {
             Delete(this.Id);

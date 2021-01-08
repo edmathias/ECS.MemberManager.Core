@@ -1,4 +1,5 @@
 using System;
+using System.Data;
 using System.IO;
 using System.Threading.Tasks;
 using Csla;
@@ -133,13 +134,41 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.False(eMailType.IsValid);
             await Assert.ThrowsAsync<ValidationException>(() => eMailType.SaveAsync());
         }
-       
+    
+        [Fact]
+        public async Task EMailTypeEdit_TestSaveOutOfOrder()
+        {
+            var emailType1 = await EMailTypeEdit.GetEMailTypeEdit(1);
+            var emailType2 = await EMailTypeEdit.GetEMailTypeEdit(1);
+            emailType1.Notes = "set up timestamp issue";  // turn on IsDirty
+            emailType2.Notes = "set up timestamp issue";
+
+            var emailType2_2 = await emailType2.SaveAsync();
+            
+            Assert.NotEqual(emailType2_2.RowVersion, emailType1.RowVersion);
+            Assert.Equal("set up timestamp issue",emailType2_2.Notes);
+            await Assert.ThrowsAsync<DataPortalException>(() => emailType1.SaveAsync());
+        }
+
+        [Fact]
+        public async Task EMailTypeEdit_TestSubsequentSaves()
+        {
+            var emailType = await EMailTypeEdit.GetEMailTypeEdit(1);
+            emailType.Notes = "set up timestamp issue";  // turn on IsDirty
+
+            var emailType2 = await emailType.SaveAsync();
+            var rowVersion1 = emailType2.RowVersion;
+            emailType2.Notes = "another timestamp trigger";
+
+            var emailType3 = await emailType2.SaveAsync();
+            
+            Assert.NotEqual(emailType2.RowVersion, emailType3.RowVersion);
+        }
+        
         [Fact]
         public async Task TestEMailTypeEdit_InvalidGet()
         {
             await Assert.ThrowsAsync<DataPortalException>(() => EMailTypeEdit.GetEMailTypeEdit(999));
         }
-        
-        
     }
 }

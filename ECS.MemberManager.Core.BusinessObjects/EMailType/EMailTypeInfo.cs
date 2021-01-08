@@ -65,12 +65,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        internal static async Task<EMailTypeInfo> GetEMailType(EMailType childData)
+        public static async Task<EMailTypeInfo> GetEMailTypeInfo(EMailType childData)
         {
             return await DataPortal.FetchChildAsync<EMailTypeInfo>(childData);
         }
 
-        internal static async Task<EMailTypeInfo> GetEMailType(int id)
+        public static async Task<EMailTypeInfo> GetEMailTypeInfo(int id)
         {
             return await DataPortal.FetchAsync<EMailTypeInfo>(id);
         }

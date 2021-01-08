@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -9,50 +10,44 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class EMailTypeInfoList : ReadOnlyListBase<EMailTypeInfoList,EMailTypeInfo>
+    public class EMailInfoList : ReadOnlyListBase<EMailInfoList,EMailInfo>
     {
         public static void AddObjectAuthorizationRules()
         {
             // TODO: add object-level authorization rules
         }
 
-        public static async Task<EMailTypeInfoList> GetEMailTypeInfoList()
+        public static async Task<EMailInfoList> GetEMailInfoList()
         {
-            return await DataPortal.FetchAsync<EMailTypeInfoList>();
+            return await DataPortal.FetchAsync<EMailInfoList>();
         }
 
-        public static async Task<EMailTypeInfoList> GetEMailTypeInfoList(IList<EMailType> listOfChildren)
+        public static async Task<EMailInfoList> GetEMailInfoList(List<EMailInfo> childData)
         {
-            return await DataPortal.FetchChildAsync<EMailTypeInfoList>(listOfChildren);
+            return await DataPortal.FetchAsync<EMailInfoList>(childData);
         }
 
-        [RunLocal]
-        [Create]
-        private void Create()
-        {
-        }
-        
         [Fetch]
-        private async Task Fetch()
+        private async void Fetch()
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEMailTypeDal>();
+            var dal = dalManager.GetProvider<IEMailDal>();
             var childData = dal.Fetch();
 
             await Fetch(childData);
         }
- 
+
         [Fetch]
-        private async Task Fetch(List<EMailType> childData)
+        private async Task Fetch(List<EMail> childData)
         {
             using (LoadListMode)
             {
                 foreach (var eMailType in childData)
                 {
-                    Add(await EMailTypeInfo.GetEMailTypeInfo(eMailType));             
+                    var eMailTypeToAdd = await EMailInfo.GetEMailInfo(eMailType);
+                    Add(eMailTypeToAdd);
                 }
             }
         }
-        
     }
 }

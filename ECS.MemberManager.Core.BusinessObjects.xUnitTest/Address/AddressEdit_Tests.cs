@@ -13,12 +13,12 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class AddressER_Tests
+    public class AddressEdit_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
 
-        public AddressER_Tests()
+        public AddressEdit_Tests()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -40,29 +40,29 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
         
         [Fact]
-        public async Task TestAddressER_Get()
+        public async Task TestAddressEdit_Get()
         {
-            var address = await AddressER.GetAddress(1);
+            var address = await AddressEdit.GetAddressEdit(1);
 
             Assert.NotNull(address);
-            Assert.IsType<AddressER>(address);
+            Assert.IsType<AddressEdit>(address);
             Assert.Equal(1,address.Id);
             Assert.True(address.IsValid);
         }
 
         [Fact]
-        public async Task TestAddressER_New()
+        public async Task TestAddressEdit_New()
         {
-            var Address = await AddressER.NewAddress();
+            var Address = await AddressEdit.NewAddressEdit();
 
             Assert.NotNull(Address);
             Assert.False(Address.IsValid);
         }
 
         [Fact]
-        public async void TestAddressER_Update()
+        public async void TestAddressEdit_Update()
         {
-            var address = await AddressER.GetAddress(1);
+            var address = await AddressEdit.GetAddressEdit(1);
             address.Notes = "These are updated Notes";
 
             var result = await address.SaveAsync();
@@ -72,35 +72,35 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
  
         [Fact]
-        public async Task TestAddressER_Insert()
+        public async Task TestAddressEdit_Insert()
         {
-            var address = await AddressER.NewAddress();
+            var address = await AddressEdit.NewAddressEdit();
             BuildAddress(address);
 
             var savedAddress = await address.SaveAsync();
 
             Assert.NotNull(savedAddress);
-            Assert.IsType<AddressER>(savedAddress);
+            Assert.IsType<AddressEdit>(savedAddress);
             Assert.True(savedAddress.Id > 0);
         }
 
         [Fact]
-        public async Task TestAddressER_Delete()
+        public async Task TestAddressEdit_Delete()
         {
-            var addressToDelete = await AddressER.GetAddress(99);
+            var addressToDelete = await AddressEdit.GetAddressEdit(99);
             
-            await AddressER.DeleteAddress(addressToDelete.Id);
+            await AddressEdit.DeleteAddressEdit(addressToDelete.Id);
             
             var addressToCheck = await Assert.ThrowsAsync<Csla.DataPortalException>
-                (() => AddressER.GetAddress(addressToDelete.Id));        
+                (() => AddressEdit.GetAddressEdit(addressToDelete.Id));        
 
         }
 
         // test invalid state 
         [Fact]
-        public async Task TestAddressER_Address1Required()
+        public async Task TestAddressEdit_Address1Required()
         {
-            var address = await AddressER.NewAddress();
+            var address = await AddressEdit.NewAddressEdit();
             BuildAddress(address);
             address.Address1 = "make valid";
             var isObjectValidInit = address.IsValid;
@@ -112,9 +112,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestAddressER_CityRequired()
+        public async Task TestAddressEdit_CityRequired()
         {
-            var address = await AddressER.NewAddress();
+            var address = await AddressEdit.NewAddressEdit();
             BuildAddress(address);
             var isObjectValidInit = address.IsValid;
             address.City = string.Empty;
@@ -125,9 +125,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestAddressER_StateRequired()
+        public async Task TestAddressEdit_StateRequired()
         {
-            var address = await AddressER.NewAddress();
+            var address = await AddressEdit.NewAddressEdit();
             BuildAddress(address);
             var isObjectValidInit = address.IsValid;
             address.State = string.Empty;
@@ -138,9 +138,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestAddressER_PostCodeRequired()
+        public async Task TestAddressEdit_PostCodeRequired()
         {
-            var address = await AddressER.NewAddress();
+            var address = await AddressEdit.NewAddressEdit();
             BuildAddress(address);
             var isObjectValidInit = address.IsValid;
             address.PostCode = string.Empty;
@@ -152,9 +152,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
 
         [Fact]
-        public async Task TestAddressER_Address1ExceedsMaxLengthOf35()
+        public async Task TestAddressEdit_Address1ExceedsMaxLengthOf35()
         {
-            var address = await AddressER.NewAddress();
+            var address = await AddressEdit.NewAddressEdit();
             BuildAddress(address);
             address.Address1 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
                                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
@@ -167,9 +167,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestAddressER_Address2ExceedsMaxLengthOf35()
+        public async Task TestAddressEdit_Address2ExceedsMaxLengthOf35()
         {
-            var address = await AddressER.NewAddress();
+            var address = await AddressEdit.NewAddressEdit();
             BuildAddress(address);
             address.Address2 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
                                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
@@ -182,9 +182,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestAddressER_CityExceedsMaxLengthOf50()
+        public async Task TestAddressEdit_CityExceedsMaxLengthOf50()
         {
-            var address = await AddressER.NewAddress();
+            var address = await AddressEdit.NewAddressEdit();
             BuildAddress(address);
             address.City = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
                            "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
@@ -197,9 +197,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestAddressER_StateExceedsMaxLengthOf2()
+        public async Task TestAddressEdit_StateExceedsMaxLengthOf2()
         {
-            var address = await AddressER.NewAddress();
+            var address = await AddressEdit.NewAddressEdit();
             BuildAddress(address);
             address.State = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ";
 
@@ -209,9 +209,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestAddressER_PostCodeExceedsMaxLengthOf9()
+        public async Task TestAddressEdit_PostCodeExceedsMaxLengthOf9()
         {
-            var address = await AddressER.NewAddress();
+            var address = await AddressEdit.NewAddressEdit();
             BuildAddress(address);
             address.PostCode = "Lorem ipsum dolor sit amet";
 
@@ -221,17 +221,53 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestAddressER_TestInvalidSave()
+        public async Task TestAddressEdit_TestInvalidSave()
         {
-            var Address = await AddressER.NewAddress();
+            var Address = await AddressEdit.NewAddressEdit();
             Address.Address1 = String.Empty;
-            AddressER savedAddress = null;
+            AddressEdit savedAddress = null;
 
             Assert.False(Address.IsValid);
             Assert.Throws<Csla.Rules.ValidationException>(() => savedAddress = Address.Save());
         }
 
-        void BuildAddress(AddressER addressER)
+        [Fact]
+        public async Task AddressEdit_TestSaveOutOfOrder()
+        {
+            var address1 = await AddressEdit.GetAddressEdit(1);
+            var address2 = await AddressEdit.GetAddressEdit(1);
+            address1.Notes = "set up timestamp issue"; // turn on IsDirty
+            address2.Notes = "set up timestamp issue";
+
+            var address2_2 = await address2.SaveAsync();
+
+            Assert.NotEqual(address2_2.RowVersion, address1.RowVersion);
+            Assert.Equal("set up timestamp issue", address2_2.Notes);
+            await Assert.ThrowsAsync<DataPortalException>(() => address1.SaveAsync());
+        }
+
+        [Fact]
+        public async Task AddressEdit_TestSubsequentSaves()
+        {
+            var address = await AddressEdit.GetAddressEdit(1);
+            address.Notes = "set up timestamp issue"; // turn on IsDirty
+
+            var address2 = await address.SaveAsync();
+            var rowVersion1 = address2.RowVersion;
+            address2.Notes = "another timestamp trigger";
+
+            var address3 = await address2.SaveAsync();
+
+            Assert.NotEqual(address2.RowVersion, address3.RowVersion);
+        }
+
+        [Fact]
+        public async Task TestAddressEdit_InvalidGet()
+        {
+            await Assert.ThrowsAsync<DataPortalException>(() => AddressEdit.GetAddressEdit(999));
+        }
+
+        void BuildAddress(AddressEdit addressER)
         {
             addressER.Address1 = "Address line 1";
             addressER.Address2 = "Address line 2";

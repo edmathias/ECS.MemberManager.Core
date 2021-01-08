@@ -23,16 +23,16 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             return MockDb.CategoryOfOrganizations.ToList();
         }
 
-        public int Insert(CategoryOfOrganization categoryOfOrganization)
+        public CategoryOfOrganization Insert(CategoryOfOrganization categoryOfOrganization)
         {
             var lastCategory = MockDb.CategoryOfOrganizations.ToList().OrderByDescending( co => co.Id).First();
             categoryOfOrganization.Id = lastCategory.Id + 1;
             MockDb.CategoryOfOrganizations.Add(categoryOfOrganization);
             
-            return categoryOfOrganization.Id;
+            return categoryOfOrganization;
         }
 
-        public void Update(CategoryOfOrganization categoryOfOrganization)
+        public CategoryOfOrganization Update(CategoryOfOrganization categoryOfOrganization)
         {
             var categoryToUpdate = MockDb.CategoryOfOrganizations.FirstOrDefault(co => co.Id == categoryOfOrganization.Id);
 
@@ -41,6 +41,8 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
             categoryToUpdate.Category = categoryOfOrganization.Category;
             categoryToUpdate.DisplayOrder = categoryOfOrganization.DisplayOrder;
+
+            return categoryToUpdate;
         }
 
         public void Delete(int id)

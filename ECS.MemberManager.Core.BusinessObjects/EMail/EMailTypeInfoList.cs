@@ -16,6 +16,11 @@ namespace ECS.MemberManager.Core.BusinessObjects
             // TODO: add object-level authorization rules
         }
 
+        public static async Task<EMailTypeInfoList> NewEMailTypeInfoList()
+        {
+            return await DataPortal.CreateAsync<EMailTypeInfoList>();
+        }
+
         public static async Task<EMailTypeInfoList> GetEMailTypeInfoList()
         {
             return await DataPortal.FetchAsync<EMailTypeInfoList>();

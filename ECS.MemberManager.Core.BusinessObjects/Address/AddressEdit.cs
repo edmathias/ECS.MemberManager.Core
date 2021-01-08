@@ -1,8 +1,8 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Csla;
-using Csla.Data;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
@@ -10,7 +10,7 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class AddressER : BusinessBase<AddressER>
+    public class AddressEdit : BusinessBase<AddressEdit>
     {
         #region Business Methods
 
@@ -19,21 +19,19 @@ namespace ECS.MemberManager.Core.BusinessObjects
         public int Id
         {
             get => GetProperty(IdProperty);
-            private set => LoadProperty(IdProperty, value);
+            set => SetProperty(IdProperty, value);
         }
 
         public static readonly PropertyInfo<string> Address1Property = RegisterProperty<string>(p => p.Address1);
-
         [Required, MaxLength(35)]
         public string Address1
         {
             get => GetProperty(Address1Property);
             set => SetProperty(Address1Property, value);
         }
-
+        
         public static readonly PropertyInfo<string> Address2Property = RegisterProperty<string>(p => p.Address2);
-
-        [MaxLength(35)]
+        [Required, MaxLength(35)]
         public string Address2
         {
             get => GetProperty(Address2Property);
@@ -41,7 +39,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<string> CityProperty = RegisterProperty<string>(p => p.City);
-
         [Required, MaxLength(50)]
         public string City
         {
@@ -50,8 +47,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<string> StateProperty = RegisterProperty<string>(p => p.State);
-
-        [Required, MinLength(2), MaxLength(2)]
+        [Required, MaxLength(2)]
         public string State
         {
             get => GetProperty(StateProperty);
@@ -59,35 +55,29 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<string> PostCodeProperty = RegisterProperty<string>(p => p.PostCode);
-
         [Required, MaxLength(9)]
         public string PostCode
         {
             get => GetProperty(PostCodeProperty);
             set => SetProperty(PostCodeProperty, value);
         }
-
+        
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
-
         public string Notes
         {
             get => GetProperty(NotesProperty);
             set => SetProperty(NotesProperty, value);
         }
 
-        public static readonly PropertyInfo<string> LastUpdatedByProperty =
-            RegisterProperty<string>(p => p.LastUpdatedBy);
-
-        [Required, MaxLength(255)]
+        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(p => p.LastUpdatedBy);
+        [Required,MaxLength(255)]
         public string LastUpdatedBy
         {
             get => GetProperty(LastUpdatedByProperty);
             set => SetProperty(LastUpdatedByProperty, value);
         }
 
-        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty =
-            RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
-
+        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
         [Required]
         public SmartDate LastUpdatedDate
         {
@@ -96,41 +86,70 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
+
         public byte[] RowVersion
         {
             get => GetProperty(RowVersionProperty);
             private set => LoadProperty(RowVersionProperty, value);
         }
 
-        
+        protected override void AddBusinessRules()
+        {
+            base.AddBusinessRules();
+
+            // TODO: add business rules
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static void AddObjectAuthorizationRules()
+        {
+            // TODO: add object-level authorization rules
+        }
+
         #endregion
 
         #region Factory Methods
 
-        public static async Task<AddressER> NewAddress()
+        public static async Task<AddressEdit> NewAddressEdit()
         {
-            return await DataPortal.CreateAsync<AddressER>();
+            return await DataPortal.CreateAsync<AddressEdit>();
         }
 
-        public static async Task<AddressER> GetAddress(int id)
+        public static async Task<AddressEdit> GetAddressEdit(Address childData)
         {
-            return await DataPortal.FetchAsync<AddressER>(id);
+            return await DataPortal.FetchChildAsync<AddressEdit>(childData);
         }
 
-        public static async Task DeleteAddress(int id)
+        public static async Task<AddressEdit> GetAddressEdit(int id)
         {
-            await DataPortal.DeleteAsync<AddressER>(id);
+            return await DataPortal.FetchAsync<AddressEdit>(id);
+        }
+
+        public static async Task DeleteAddressEdit(int id)
+        {
+            await DataPortal.DeleteAsync<AddressEdit>(id);
         }
 
         #endregion
 
-        #region DataPortal Methods
+        #region Data Access Methods
 
-        [Create]
-        [RunLocal]
-        private void Create()
+        [FetchChild]
+        private void Fetch(Address childData)
         {
-            base.DataPortal_Create();
+            using (BypassPropertyChecks)
+            {
+                Id = childData.Id;
+                Address1 = childData.Address1;
+                Address2 = childData.Address2;
+                City = childData.City;
+                State = childData.State;
+                PostCode = childData.PostCode;
+                LastUpdatedBy = childData.LastUpdatedBy;
+                LastUpdatedDate = childData.LastUpdatedDate;
+                Notes = childData.Notes;
+                RowVersion = childData.RowVersion;
+            }
         }
 
         [Fetch]
@@ -139,66 +158,72 @@ namespace ECS.MemberManager.Core.BusinessObjects
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IAddressDal>();
             var data = dal.Fetch(id);
-            using (BypassPropertyChecks)
-            {
-                Id = data.Id;
-                Address1 = data.Address1;
-                Address2 = data.Address2;
-                City = data.City;
-                State = data.State;
-                PostCode = data.PostCode;
-                LastUpdatedBy = data.LastUpdatedBy;
-                LastUpdatedDate = data.LastUpdatedDate;
-                Notes = data.Notes;
-                RowVersion = data.RowVersion;
-            }
+
+            Fetch(data);
         }
 
         [Insert]
         private void Insert()
         {
+            InsertChild();
+        }
+
+        [InsertChild]
+        private void InsertChild()
+        {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IAddressDal>();
-            var addressToInsert = new ECS.MemberManager.Core.EF.Domain.Address()
+            var data = new Address()
             {
-                Address1 = this.Address1,
-                Address2 = this.Address2,
-                City = this.City,
-                State = this.State,
-                PostCode = this.PostCode,
-                LastUpdatedDate = this.LastUpdatedDate,
-                LastUpdatedBy = this.LastUpdatedBy,
-                Notes = this.Notes
+                Address1 = Address1,
+                Address2 = Address2,
+                City = City,
+                State = State,
+                PostCode = PostCode,
+                LastUpdatedBy = LastUpdatedBy,
+                LastUpdatedDate = LastUpdatedDate,
+                Notes = Notes
             };
 
-            Id = dal.Insert(addressToInsert).Id;
-            RowVersion = dal.Fetch(addressToInsert.Id).RowVersion;
+            var insertedAddress = dal.Insert(data);
+            Id = insertedAddress.Id;
+            RowVersion = insertedAddress.RowVersion;
         }
 
         [Update]
         private void Update()
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IAddressDal>();
-            
-            var addressToUpdate = dal.Fetch(Id);
-            addressToUpdate.Address1 = this.Address1;
-            addressToUpdate.Address2 = this.Address2;
-            addressToUpdate.City = this.City;
-            addressToUpdate.State = this.State;
-            addressToUpdate.PostCode = this.PostCode;
-            addressToUpdate.LastUpdatedDate = this.LastUpdatedDate;
-            addressToUpdate.LastUpdatedBy = this.LastUpdatedBy;
-            addressToUpdate.Notes = this.Notes;
-            addressToUpdate.RowVersion = this.RowVersion;
-
-            RowVersion = dal.Update(addressToUpdate).RowVersion;
+            ChildUpdate();
         }
 
-        [DeleteSelf]
+        [UpdateChild]
+        private void ChildUpdate()
+        {
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IAddressDal>();
+
+            var emailTypeToUpdate = new Address()
+            {
+                Id = Id,
+                Address1 = Address1,
+                Address2 = Address2,
+                City = City,
+                State = State,
+                PostCode = PostCode,
+                LastUpdatedBy = LastUpdatedBy,
+                LastUpdatedDate = LastUpdatedDate,
+                Notes = Notes,
+                RowVersion = RowVersion
+            };
+
+            var updatedEmail = dal.Update(emailTypeToUpdate);
+            RowVersion = updatedEmail.RowVersion;
+        }
+        
+        [DeleteSelfChild]
         private void DeleteSelf()
         {
-            Delete(this.Id);
+            Delete(Id);
         }
 
         [Delete]
@@ -206,7 +231,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IAddressDal>();
-
+           
             dal.Delete(id);
         }
 

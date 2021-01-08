@@ -8,8 +8,8 @@ namespace ECS.MemberManager.Core.DataAccess.Dal
     {
         CategoryOfOrganization Fetch(int id);
         List<CategoryOfOrganization> Fetch();
-        int Insert(CategoryOfOrganization categoryOfOrganization);
-        void Update(CategoryOfOrganization categoryOfOrganization );
+        CategoryOfOrganization Insert(CategoryOfOrganization categoryOfOrganization);
+        CategoryOfOrganization Update(CategoryOfOrganization categoryOfOrganization );
         void Delete(int id);
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
@@ -14,24 +13,32 @@ namespace ECS.MemberManager.Core.BusinessObjects
     public class EMailEdit : BusinessBase<EMailEdit>
     {
         #region Business Methods
-        
+
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
+
         public int Id
         {
             get => GetProperty(IdProperty);
-            private set => LoadProperty(IdProperty, value);
+            set => SetProperty(IdProperty, value);
         }
-       
+
+        public static readonly PropertyInfo<int> EMailTypeIdProperty = RegisterProperty<int>(p => p.EMailTypeId);
+        public int EMailTypeId
+        {
+            get => GetProperty(EMailTypeIdProperty);
+            set => SetProperty(EMailTypeIdProperty, value);
+        }
+
         public static readonly PropertyInfo<string> EMailAddressProperty = RegisterProperty<string>(p => p.EMailAddress);
-        [Required,MaxLength(255),EmailAddress()]
+        [Required,MaxLength(255)]
         public string EMailAddress
         {
             get => GetProperty(EMailAddressProperty);
             set => SetProperty(EMailAddressProperty, value);
         }
-
+        
         public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(p => p.LastUpdatedBy);
-        [Required]
+        [Required,MaxLength(255)]
         public string LastUpdatedBy
         {
             get => GetProperty(LastUpdatedByProperty);
@@ -47,27 +54,21 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
+
         public string Notes
         {
             get => GetProperty(NotesProperty);
             set => SetProperty(NotesProperty, value);
         }
-        
-        public static readonly PropertyInfo<EMailTypeEdit> EMailTypeProperty = RegisterProperty<EMailTypeEdit>(p => p.EMailType);
-        [Required]
-        public EMailTypeEdit EMailType
-        {
-            get => GetProperty(EMailTypeProperty);
-            set => SetProperty(EMailTypeProperty, value);
-        }
 
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
+
         public byte[] RowVersion
         {
             get => GetProperty(RowVersionProperty);
             private set => LoadProperty(RowVersionProperty, value);
         }
-        
+
         protected override void AddBusinessRules()
         {
             base.AddBusinessRules();
@@ -80,119 +81,115 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             // TODO: add object-level authorization rules
         }
-        
+
         #endregion
 
         #region Factory Methods
 
-        public static async Task<EMailEdit> NewEMail()
+        public static async Task<EMailEdit> NewEMailEdit()
         {
             return await DataPortal.CreateAsync<EMailEdit>();
         }
 
-        public static async Task<EMailEdit> GetEMail(int id)
+        public static async Task<EMailEdit> GetEMailEdit(EMail childData)
+        {
+            return await DataPortal.FetchChildAsync<EMailEdit>(childData);
+        }
+
+        public static async Task<EMailEdit> GetEMailEdit(int id)
         {
             return await DataPortal.FetchAsync<EMailEdit>(id);
         }
 
-        public static async Task DeleteEMail(int id)
+        public static async Task DeleteEMailEdit(int id)
         {
             await DataPortal.DeleteAsync<EMailEdit>(id);
         }
-        
+
         #endregion
 
-        #region Data Access
+        #region Data Access Methods
+
+        [FetchChild]
+        private void Fetch(EMail childData)
+        {
+            using (BypassPropertyChecks)
+            {
+                Id = childData.Id;
+                EMailAddress = childData.EMailAddress;
+                EMailTypeId = childData.EMailTypeId;
+                LastUpdatedBy = childData.LastUpdatedBy;
+                LastUpdatedDate = childData.LastUpdatedDate;
+                Notes = childData.Notes;
+                RowVersion = childData.RowVersion;
+            }
+        }
 
         [Fetch]
         private void Fetch(int id)
         {
             using var dalManager = DalFactory.GetManager();
-            var eMailDal = dalManager.GetProvider<IEMailDal>();
-            var eMail = eMailDal.Fetch(id);
-            var eMailTypeDal = dalManager.GetProvider<IEMailTypeDal>();
-            var eMailType = eMailTypeDal.Fetch(eMail.EMailTypeId); 
-            using (BypassPropertyChecks)
-            {
-                Id = eMail.Id;
-                EMailAddress = eMail.EMailAddress;
-                EMailType = DataPortal.FetchChild<EMailTypeEdit>(eMailType);
-                LastUpdatedBy = eMail.LastUpdatedBy;
-                LastUpdatedDate = eMail.LastUpdatedDate;
-                Notes = eMail.Notes;
-                RowVersion = eMail.RowVersion;
-            }
+            var dal = dalManager.GetProvider<IEMailDal>();
+            var data = dal.Fetch(id);
+
+            Fetch(data);
         }
 
-        [Fetch]
-        private void Fetch(EMail childData)
-        {
-            using var dalManager = DalFactory.GetManager();
-            var eMailDal = dalManager.GetProvider<IEMailDal>();
-            var eMail = eMailDal.Fetch(Id);
-            var eMailTypeDal = dalManager.GetProvider<IEMailTypeDal>();
-            var eMailType = eMailTypeDal.Fetch(eMail.EMailTypeId); 
-            using (BypassPropertyChecks)
-            {
-                Id = eMail.Id;
-                EMailAddress = eMail.EMailAddress;
-                EMailType = DataPortal.FetchChild<EMailTypeEdit>(eMailType);
-                LastUpdatedBy = eMail.LastUpdatedBy;
-                LastUpdatedDate = eMail.LastUpdatedDate;
-                Notes = eMail.Notes;
-                RowVersion = eMail.RowVersion;
-                // TODO: many-to-many
-            }
-        }
-        
         [Insert]
         private void Insert()
         {
+            InsertChild();
+        }
+
+        [InsertChild]
+        private void InsertChild()
+        {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEMailDal>();
-            using (BypassPropertyChecks)
+            var data = new EMail()
             {
-                var eMailToInsert = new EMail()
-                {
-                    EMailAddress = EMailAddress,
-                    EMailTypeId = EMailType.Id,
-                    LastUpdatedBy = LastUpdatedBy,
-                    LastUpdatedDate = LastUpdatedDate,
-                    Notes = Notes,
-                };
+                EMailTypeId = EMailTypeId,
+                EMailAddress = EMailAddress,
+                LastUpdatedBy = LastUpdatedBy,
+                LastUpdatedDate = LastUpdatedDate,
+                Notes = Notes
+            };
 
-                var insertedEMail = dal.Insert(eMailToInsert);
-                Id = insertedEMail.Id;
-                RowVersion = insertedEMail.RowVersion;
-            }
+            var insertedEMail = dal.Insert(data);
+            Id = insertedEMail.Id;
+            RowVersion = insertedEMail.RowVersion;
         }
 
         [Update]
         private void Update()
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEMailDal>();
-            using (BypassPropertyChecks)
-            {
-                var eMailToUpdate = new EMail()
-                {
-                    Id = this.Id,
-                    EMailAddress = this.EMailAddress,
-                    EMailTypeId = EMailType.Id,
-                    LastUpdatedBy = this.LastUpdatedBy,
-                    LastUpdatedDate = this.LastUpdatedDate,
-                    Notes = this.Notes,
-                    RowVersion = this.RowVersion,
-                };
-                
-                RowVersion = dal.Update(eMailToUpdate).RowVersion;
-            }
+            ChildUpdate();
         }
 
-        [DeleteSelf]
+        [UpdateChild]
+        private void ChildUpdate()
+        {
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IEMailDal>();
+
+            var emailTypeToUpdate = new EMail()
+            {
+                Id = Id,
+                EMailAddress = EMailAddress,
+                LastUpdatedBy = LastUpdatedBy,
+                LastUpdatedDate = LastUpdatedDate,
+                Notes = Notes,
+                RowVersion = RowVersion
+            };
+
+            var updatedEmail = dal.Update(emailTypeToUpdate);
+            RowVersion = updatedEmail.RowVersion;
+        }
+        
+        [DeleteSelfChild]
         private void DeleteSelf()
         {
-            Delete(this.Id);
+            Delete(Id);
         }
 
         [Delete]
@@ -200,12 +197,10 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEMailDal>();
-
+           
             dal.Delete(id);
         }
 
-
         #endregion
-       
     }
 }

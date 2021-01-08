@@ -14,4 +14,33 @@
       <ProjectReference Include="..\ECS.MemberManager.Core.DataAccess\ECS.MemberManager.Core.DataAccess.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="EMail\EMailTypeInfoList.cs" />
+      <Compile Remove="Person\PersonEC.cs" />
+      <Compile Remove="Person\PersonECL.cs" />
+      <Compile Remove="Person\PersonER.cs" />
+      <Compile Remove="Payment\PaymentER.cs" />
+      <Compile Remove="Sponsor\SponsorEC.cs" />
+      <Compile Remove="Sponsor\SponsorER.cs" />
+      <Compile Remove="ContactForSponsor\ContactForSponsorEC.cs" />
+      <Compile Remove="ContactForSponsor\ContactForSponsorECL.cs" />
+      <Compile Remove="ContactForSponsor\ContactForSponsorER.cs" />
+      <Compile Remove="ContactForSponsor\ContactForSponsorERL.cs" />
+      <Compile Remove="OrganizationType\OrganizationTypeEC.cs" />
+      <Compile Remove="OrganizationType\OrganizationTypeER.cs" />
+      <Compile Remove="OrganizationType\OrganizationTypeROC.cs" />
+      <Compile Remove="Organization\OrganizationEC.cs" />
+      <Compile Remove="Organization\OrganizationECL.cs" />
+      <Compile Remove="Organization\OrganizationER.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="ContactForSponsor" />
+      <Folder Include="Organization" />
+      <Folder Include="OrganizationType" />
+      <Folder Include="Payment" />
+      <Folder Include="Person" />
+      <Folder Include="Sponsor" />
+    </ItemGroup>
+
 </Project>

@@ -50,6 +50,9 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
 
             eMailToInsert.Id = _db.ExecuteScalar<int>(sql, eMailToInsert);
 
+            var insertedEmail = _db.Get<EMail>(eMailToInsert.Id);
+            eMailToInsert.RowVersion = insertedEmail.RowVersion;
+            
             return eMailToInsert;
         }
 
