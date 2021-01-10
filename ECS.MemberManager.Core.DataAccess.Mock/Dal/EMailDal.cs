@@ -14,7 +14,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             return MockDb.EMails.FirstOrDefault(ms => ms.Id == id);
         }
 
-        public List<EMail> Fetch()
+        public async Task<List<EMail>> Fetch()
         {
             return MockDb.EMails.ToList();
         }

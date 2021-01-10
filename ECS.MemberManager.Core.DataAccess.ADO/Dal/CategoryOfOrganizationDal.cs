@@ -47,7 +47,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
         public CategoryOfOrganization Insert(CategoryOfOrganization eMailTypeToInsert)
         {
             var sql = "INSERT INTO CategoryOfOrganizations (Category, DisplayOrder) " +
-                      "VALUES(@Category, @Notes);" +
+                      "VALUES(@Category, @DisplayOrder);" +
                       "SELECT SCOPE_IDENTITY()";
             eMailTypeToInsert.Id = _db.ExecuteScalar<int>(sql,eMailTypeToInsert);
 
