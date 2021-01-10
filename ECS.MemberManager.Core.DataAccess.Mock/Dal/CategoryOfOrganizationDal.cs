@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
@@ -18,7 +19,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             return MockDb.CategoryOfOrganizations.FirstOrDefault(co => co.Id == id);
         }
 
-        public List<CategoryOfOrganization> Fetch()
+        public async Task<List<CategoryOfOrganization>> Fetch()
         {
             return MockDb.CategoryOfOrganizations.ToList();
         }

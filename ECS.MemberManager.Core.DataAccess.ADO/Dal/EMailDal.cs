@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Transactions;
 using Dapper;
 using Dapper.Contrib.Extensions;
 using ECS.MemberManager.Core.DataAccess.Dal;
@@ -23,7 +26,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var cnxnString = _config.GetConnectionString("LocalDbConnection");
-            
+
             _db = new SqlConnection(cnxnString);
         }
 
@@ -32,57 +35,57 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             _db = cnxn;
         }
 
-        public List<EMail> Fetch()
+        public async Task<List<EMail>> Fetch()
         {
-            return _db.GetAll<EMail>().ToList();
+            var eMailTypes =await _db.GetAllAsync<EMail>();
+            return eMailTypes.ToList();
+        }
+        public async Task<EMail> Fetch(int id)
+        {
+            return await _db.GetAsync<EMail>(id);
         }
 
-        public EMail Fetch(int id)
-        {
-            return _db.Get<EMail>(id);
-        }
-
-        public EMail Insert(EMail eMailToInsert)
+        public async Task<EMail> Insert(EMail eMailToInsert)
         {
             var sql = "INSERT INTO EMails (EMailTypeId,EMailAddress,LastUpdatedBy,LastUpdatedDate,Notes) " +
                       "VALUES(@EMailTypeId,@EMailAddress,@LastUpdatedBy,@LastUpdatedDate,@Notes);" +
                       "SELECT SCOPE_IDENTITY()";
 
-            eMailToInsert.Id = _db.ExecuteScalar<int>(sql, eMailToInsert);
+            eMailToInsert.Id = await _db.ExecuteScalarAsync<int>(sql, eMailToInsert);
 
-            var insertedEmail = _db.Get<EMail>(eMailToInsert.Id);
+            var insertedEmail = await _db.GetAsync<EMail>(eMailToInsert.Id);
             eMailToInsert.RowVersion = insertedEmail.RowVersion;
-            
+
             return eMailToInsert;
         }
 
-        public EMail Update(EMail eMailToUpdate)
+        public async Task<EMail> Update(EMail eMailToUpdate)
         {
             var sql = "UPDATE EMails " +
                       "SET EMailTypeId=@EMailTypeId," +
                       "EMailAddress=@EMailAddress," +
                       "LastUpdatedBy=@LastUpdatedBy," +
                       "LastUpdatedDate=@LastUpdatedDate," +
-                      "Notes=@Notes "+
+                      "Notes=@Notes " +
                       "OUTPUT inserted.RowVersion " +
                       "WHERE Id = @Id AND RowVersion = @RowVersion ";
-            
-            var rowVersion = _db.ExecuteScalar<byte[]>(sql,eMailToUpdate);
+
+            var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql, eMailToUpdate);
             if (rowVersion == null)
                 throw new DBConcurrencyException("Entity has been updated since last read. Try again!");
             eMailToUpdate.RowVersion = rowVersion;
-            
+
             return eMailToUpdate;
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            _db.Delete<EMail>(new EMail() {Id = id});
+            await _db.DeleteAsync<EMail>(new EMail() {Id = id});
         }
-        
+
         public void Dispose()
         {
-            _db.Dispose(); 
+            _db.Dispose();
         }
     }
 }

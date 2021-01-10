@@ -37,7 +37,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEMailTypeDal>();
-            var childData = dal.Fetch();
+            var childData = await dal.Fetch();
 
             await Fetch(childData);
         }

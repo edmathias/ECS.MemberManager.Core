@@ -80,12 +80,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access Methods
 
         [Fetch]
-        private void Fetch(int id)
+        private async Task Fetch(int id)
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEMailTypeDal>();
             
-            var data = dal.Fetch(id);
+            var data = await dal.Fetch(id);
             
             Fetch(data);
         }

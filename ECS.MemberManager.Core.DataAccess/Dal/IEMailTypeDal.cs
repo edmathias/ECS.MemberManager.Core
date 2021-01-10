@@ -7,10 +7,10 @@ namespace ECS.MemberManager.Core.DataAccess.Dal
 {
     public interface IEMailTypeDal : IDisposable
     {
-        List<EMailType> Fetch();
-        EMailType Fetch(int id);
-        EMailType Insert(EMailType eMailTypeToInsert);
-        EMailType Update(EMailType eMailTypeToUpdate);
-        void Delete(int id);
+        Task<List<EMailType>> Fetch();
+        Task<EMailType> Fetch(int id);
+        Task<EMailType> Insert(EMailType eMailTypeToInsert);
+        Task<EMailType> Update(EMailType eMailTypeToUpdate);
+        Task Delete(int id);
     }
 }

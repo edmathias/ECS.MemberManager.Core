@@ -80,7 +80,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             sb.AppendLine("delete from CategoryOfOrganizationOrganization");
             sb.AppendLine("delete from CategoryOfPersonPerson");
             sb.AppendLine("delete from ContactForSponsors");
-            sb.AppendLine("delete from EMailOrganization");
+        //    sb.AppendLine("delete from EMailOrganization");
             sb.AppendLine("delete from EventDocuments");
             sb.AppendLine("delete from EventMembers");
             sb.AppendLine("delete from EventPerson");

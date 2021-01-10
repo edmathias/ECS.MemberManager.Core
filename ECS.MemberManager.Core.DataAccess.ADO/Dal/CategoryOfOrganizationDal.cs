@@ -3,6 +3,7 @@ using System.Data;
 using System.Data.Common;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Dapper;
 using Dapper.Contrib.Extensions;
 using ECS.MemberManager.Core.DataAccess.Dal;
@@ -32,9 +33,10 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
         {
             _db = cnxn;
         }
-        public List<CategoryOfOrganization> Fetch()
+        public async Task<List<CategoryOfOrganization>> Fetch()
         {
-            return _db.GetAll<CategoryOfOrganization>().ToList();
+            var list = await _db.GetAllAsync<CategoryOfOrganization>();
+            return list.ToList();
         }
 
         public CategoryOfOrganization Fetch(int id)

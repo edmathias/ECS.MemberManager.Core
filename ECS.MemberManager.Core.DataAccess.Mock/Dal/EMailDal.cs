@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
@@ -8,7 +9,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 {
     public class EMailDal : IEMailDal
     {
-        public EMail Fetch(int id)
+        public async Task<EMail> Fetch(int id)
         {
             return MockDb.EMails.FirstOrDefault(ms => ms.Id == id);
         }
@@ -18,7 +19,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             return MockDb.EMails.ToList();
         }
 
-        public EMail Insert( EMail eMail)
+        public async Task<EMail> Insert( EMail eMail)
         {
             var lastEMail = MockDb.EMails.ToList().OrderByDescending(ms => ms.Id).First();
             eMail.Id = lastEMail.Id+1;
@@ -27,13 +28,13 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             return eMail;
         }
 
-        public EMail Update(EMail eMail)
+        public async Task<EMail> Update(EMail eMail)
         {
             // mockdb in memory list reference already updated
             return eMail;
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
             var eMailToDelete = MockDb.EMails.FirstOrDefault(ms => ms.Id == id);
             var listIndex = MockDb.EMails.IndexOf(eMailToDelete);

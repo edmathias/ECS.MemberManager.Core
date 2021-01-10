@@ -102,23 +102,23 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         [Fetch]
-        private void Fetch(int id)
+        private async Task Fetch(int id)
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEMailTypeDal>();
-            var data = dal.Fetch(id);
+            var data = await dal.Fetch(id);
 
             Fetch(data);
         }
 
         [Insert]
-        private void Insert()
+        private async Task Insert()
         {
-            InsertChild();
+            await InsertChild();
         }
 
         [InsertChild]
-        private void InsertChild()
+        private async Task InsertChild()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEMailTypeDal>();
@@ -128,19 +128,19 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 Description = Description
             };
 
-            var insertedEMailType = dal.Insert(data);
+            var insertedEMailType = await dal.Insert(data);
             Id = insertedEMailType.Id;
             RowVersion = insertedEMailType.RowVersion;
         }
 
         [Update]
-        private void Update()
+        private async Task Update()
         {
-            ChildUpdate();
+            await ChildUpdate();
         }
 
         [UpdateChild]
-        private void ChildUpdate()
+        private async Task ChildUpdate()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEMailTypeDal>();
@@ -153,23 +153,23 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 RowVersion = RowVersion
             };
 
-            var updatedEmail = dal.Update(emailTypeToUpdate);
+            var updatedEmail = await dal.Update(emailTypeToUpdate);
             RowVersion = updatedEmail.RowVersion;
         }
         
         [DeleteSelfChild]
-        private void DeleteSelf()
+        private async Task DeleteSelf()
         {
-            Delete(Id);
+            await Delete(Id);
         }
 
         [Delete]
-        private void Delete(int id)
+        private async Task Delete(int id)
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEMailTypeDal>();
            
-            dal.Delete(id);
+            await dal.Delete(id);
         }
 
         #endregion

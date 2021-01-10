@@ -121,11 +121,11 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         [Fetch]
-        private void Fetch(int id)
+        private async Task Fetch(int id)
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEMailDal>();
-            var data = dal.Fetch(id);
+            var data = await dal.Fetch(id);
 
             Fetch(data);
         }

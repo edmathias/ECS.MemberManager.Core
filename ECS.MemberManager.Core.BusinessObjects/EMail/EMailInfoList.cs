@@ -17,6 +17,11 @@ namespace ECS.MemberManager.Core.BusinessObjects
             // TODO: add object-level authorization rules
         }
 
+        public static async Task<EMailInfoList> NewEMailInfoList()
+        {
+            return await DataPortal.CreateAsync<EMailInfoList>();
+        }
+
         public static async Task<EMailInfoList> GetEMailInfoList()
         {
             return await DataPortal.FetchAsync<EMailInfoList>();
@@ -26,15 +31,16 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             return await DataPortal.FetchAsync<EMailInfoList>(childData);
         }
-
+        
         [Fetch]
-        private async void Fetch()
+        private async Task Fetch()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEMailDal>();
-            var childData = dal.Fetch();
+            var childData = await dal.Fetch();
 
             await Fetch(childData);
+
         }
 
         [Fetch]
@@ -42,10 +48,10 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             using (LoadListMode)
             {
-                foreach (var eMailType in childData)
+                foreach (var eMail in childData)
                 {
-                    var eMailTypeToAdd = await EMailInfo.GetEMailInfo(eMailType);
-                    Add(eMailTypeToAdd);
+                    var eMailToAdd = await EMailInfo.GetEMailInfo(eMail);
+                    Add(eMailToAdd);
                 }
             }
         }

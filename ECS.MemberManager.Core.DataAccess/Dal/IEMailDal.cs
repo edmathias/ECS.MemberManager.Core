@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.DataAccess.Dal
 {
     public interface IEMailDal : IDisposable
     {
-        List<EMail> Fetch();
-        EMail Fetch(int id);
-        EMail Insert(EMail eMailToInsert);
-        EMail Update(EMail eMailToUpdate);
-        void Delete(int id);
+        Task<List<EMail>> Fetch();
+        Task<EMail> Fetch(int id);
+        Task<EMail> Insert(EMail eMailToInsert);
+        Task<EMail> Update(EMail eMailToUpdate);
+        Task Delete(int id);
     }
 }
