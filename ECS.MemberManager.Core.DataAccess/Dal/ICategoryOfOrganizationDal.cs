@@ -7,10 +7,10 @@ namespace ECS.MemberManager.Core.DataAccess.Dal
 {
     public interface ICategoryOfOrganizationDal : IDisposable
     {
-        CategoryOfOrganization Fetch(int id);
+        Task<CategoryOfOrganization> Fetch(int id);
         Task<List<CategoryOfOrganization>> Fetch();
-        CategoryOfOrganization Insert(CategoryOfOrganization categoryOfOrganization);
-        CategoryOfOrganization Update(CategoryOfOrganization categoryOfOrganization );
-        void Delete(int id);
+        Task<CategoryOfOrganization> Insert(CategoryOfOrganization categoryOfOrganization);
+        Task<CategoryOfOrganization> Update(CategoryOfOrganization categoryOfOrganization );
+        Task Delete(int id);
     }
 }

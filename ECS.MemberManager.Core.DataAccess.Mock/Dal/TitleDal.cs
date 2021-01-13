@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
@@ -8,34 +9,35 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 {
     public class TitleDal : ITitleDal
     {
-        public Title Fetch(int id)
+        public async Task<Title> Fetch(int id)
         {
             return MockDb.Titles.FirstOrDefault(dt => dt.Id == id);
         }
 
-        public List<Title> Fetch()
+        public async Task<List<Title>> Fetch()
         {
             return MockDb.Titles.ToList();
         }
 
-        public int Insert( Title documentType)
+        public async Task<Title> Insert( Title title)
         {
             var lastTitle = MockDb.Titles.ToList().OrderByDescending(dt => dt.Id).First();
-            documentType.Id = 1+lastTitle.Id;
-            MockDb.Titles.Add(documentType);
+            title.Id = 1+lastTitle.Id;
+            MockDb.Titles.Add(title);
             
-            return documentType.Id;
+            return title;
         }
 
-        public void Update(Title documentType)
+        public async Task<Title> Update(Title title)
         {
             // mockdb in memory list reference already updated 
+            return title;
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            var documentTypesToDelete = MockDb.Titles.FirstOrDefault(dt => dt.Id == id);
-            var listIndex = MockDb.Titles.IndexOf(documentTypesToDelete);
+            var titleToDelete = MockDb.Titles.FirstOrDefault(dt => dt.Id == id);
+            var listIndex = MockDb.Titles.IndexOf(titleToDelete);
             if(listIndex > -1)
                 MockDb.Titles.RemoveAt(listIndex);
         }

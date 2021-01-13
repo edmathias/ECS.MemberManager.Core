@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -10,10 +9,8 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class CategoryOfOrganizationEditList : BusinessListBase<CategoryOfOrganizationEditList, CategoryOfOrganizationEdit>
+    public class CategoryOfOrganizationEditList : BusinessListBase<CategoryOfOrganizationEditList,CategoryOfOrganizationEdit>
     {
-        
-        [EditorBrowsable(EditorBrowsableState.Never)]
         public static void AddObjectAuthorizationRules()
         {
             // TODO: add object-level authorization rules
@@ -24,15 +21,23 @@ namespace ECS.MemberManager.Core.BusinessObjects
             return await DataPortal.CreateAsync<CategoryOfOrganizationEditList>();
         }
 
-        public static async Task<CategoryOfOrganizationEditList> GetCategoryOfOrganizationEditList(IList<CategoryOfOrganization> listOfChildren)
-        {
-            return await DataPortal.FetchAsync<CategoryOfOrganizationEditList>(listOfChildren);
-        }
-        
         public static async Task<CategoryOfOrganizationEditList> GetCategoryOfOrganizationEditList()
         {
             return await DataPortal.FetchAsync<CategoryOfOrganizationEditList>();
-        }        
+        }
+
+        public static async Task<CategoryOfOrganizationEditList> GetCategoryOfOrganizationEditList(List<CategoryOfOrganization> childData)
+        {
+            return await DataPortal.FetchAsync<CategoryOfOrganizationEditList>(childData);
+        }
+        
+        
+        [RunLocal]
+        [Create]
+        private void Create()
+        {
+            base.DataPortal_Create();
+        }
         
         [Fetch]
         private async Task Fetch()
@@ -42,26 +47,27 @@ namespace ECS.MemberManager.Core.BusinessObjects
             var childData = await dal.Fetch();
 
             await Fetch(childData);
+
         }
 
         [Fetch]
-        private async Task Fetch(IList<CategoryOfOrganization> listOfChildren)
+        private async Task Fetch(List<CategoryOfOrganization> childData)
         {
-            RaiseListChangedEvents = false;
-            
-            foreach (var categoryOfOrganizationData in listOfChildren)
+            using (LoadListMode)
             {
-                this.Add(await CategoryOfOrganizationEdit.GetCategoryOfOrganizationEdit(categoryOfOrganizationData));
+                foreach (var categoryOfOrganization in childData)
+                {
+                    var categoryOfOrganizationToAdd = 
+                        await CategoryOfOrganizationEdit.GetCategoryOfOrganizationEdit(categoryOfOrganization);
+                    Add(categoryOfOrganizationToAdd);
+                }
             }
-            
-            RaiseListChangedEvents = true;
         }
-
+        
         [Update]
         private void Update()
         {
-            base.Child_Update();
+            Child_Update();
         }
-            
     }
 }

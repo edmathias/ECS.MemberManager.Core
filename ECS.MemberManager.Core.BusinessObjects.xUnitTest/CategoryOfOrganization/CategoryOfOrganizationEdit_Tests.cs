@@ -41,10 +41,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             var categoryOfOrganization = await CategoryOfOrganizationEdit.GetCategoryOfOrganizationEdit(1);
 
-            var compareCategory = MockDb.CategoryOfOrganizations.First(dt => dt.Id == 1);
+            Assert.Equal(1, categoryOfOrganization.Id);
             Assert.True(categoryOfOrganization.IsValid);
-            Assert.Equal(compareCategory.Category,categoryOfOrganization.Category);
-            Assert.Equal(compareCategory.DisplayOrder,categoryOfOrganization.DisplayOrder);
         }
 
         [Fact]
@@ -84,10 +82,12 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async Task TestCategoryOfOrganizationEdit_DeleteObjectFromDatabase()
         {
-            await CategoryOfOrganizationEdit.DeleteCategoryOfOrganizationEdit(99);
-
-            await Assert.ThrowsAsync<Csla.DataPortalException>
-                (() => CategoryOfOrganizationEdit.GetCategoryOfOrganizationEdit(99));
+            var categoryToDelete = await CategoryOfOrganizationEdit.GetCategoryOfOrganizationEdit(99);
+            
+            await CategoryOfOrganizationEdit.DeleteCategoryOfOrganizationEdit(categoryToDelete.Id);
+            
+            var categoryToCheck = await Assert.ThrowsAsync<Csla.DataPortalException>
+                (() => CategoryOfOrganizationEdit.GetCategoryOfOrganizationEdit(categoryToDelete.Id));        
         }
         
         // test invalid state 

@@ -10,30 +10,34 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class CategoryOfOrganizationEdit : BusinessBase<CategoryOfOrganizationEdit>
+    public class TitleEdit : BusinessBase<TitleEdit>
     {
-
         #region Business Methods
-
+        
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
-
         public int Id
         {
             get => GetProperty(IdProperty);
             private set => LoadProperty(IdProperty, value);
         }
 
-        public static readonly PropertyInfo<string> CategoryProperty = RegisterProperty<string>(p => p.Category);
-
-        [Required, MaxLength(35)]
-        public string Category
+        public static readonly PropertyInfo<string> AbbreviationProperty = RegisterProperty<string>(p => p.Abbreviation);
+        [Required, MaxLength(10)]
+        public string Abbreviation
         {
-            get => GetProperty(CategoryProperty);
-            set => SetProperty(CategoryProperty, value);
+            get => GetProperty(AbbreviationProperty);
+            set => SetProperty(AbbreviationProperty, value);
+        }
+
+        public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(p => p.Description);
+        [MaxLength(50)]
+        public string Description
+        {
+            get => GetProperty(DescriptionProperty);
+            set => SetProperty(DescriptionProperty, value);
         }
 
         public static readonly PropertyInfo<int> DisplayOrderProperty = RegisterProperty<int>(p => p.DisplayOrder);
-
         public int DisplayOrder
         {
             get => GetProperty(DisplayOrderProperty);
@@ -41,11 +45,10 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
-
         public byte[] RowVersion
         {
             get => GetProperty(RowVersionProperty);
-            set => SetProperty(RowVersionProperty, value);
+            private set => LoadProperty(RowVersionProperty, value);
         }
 
         protected override void AddBusinessRules()
@@ -65,46 +68,48 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        public static async Task<CategoryOfOrganizationEdit> NewCategoryOfOrganizationEdit()
+        public static async Task<TitleEdit> NewTitleEdit()
         {
-            return await DataPortal.CreateAsync<CategoryOfOrganizationEdit>();
+            return await DataPortal.CreateAsync<TitleEdit>();
         }
 
-        public static async Task<CategoryOfOrganizationEdit> GetCategoryOfOrganizationEdit(CategoryOfOrganization childData)
+        public static async Task<TitleEdit> GetTitleEdit(Title childData)
         {
-            return await DataPortal.FetchChildAsync<CategoryOfOrganizationEdit>(childData);
+            return await DataPortal.FetchChildAsync<TitleEdit>(childData);
         }
 
-        public static async Task<CategoryOfOrganizationEdit> GetCategoryOfOrganizationEdit(int id)
+        public static async Task<TitleEdit> GetTitleEdit(int id)
         {
-            return await DataPortal.FetchAsync<CategoryOfOrganizationEdit>(id);
+            return await DataPortal.FetchAsync<TitleEdit>(id);
         }
 
-        public static async Task DeleteCategoryOfOrganizationEdit(int id)
+        public static async Task DeleteTitleEdit(int id)
         {
-            await DataPortal.DeleteAsync<CategoryOfOrganizationEdit>(id);
+            await DataPortal.DeleteAsync<TitleEdit>(id);
         }
 
         #endregion
 
         #region Data Access Methods
-
+        
         [FetchChild]
-        private void Fetch(CategoryOfOrganization childData)
+        private void Fetch(Title childData)
         {
             using (BypassPropertyChecks)
             {
                 Id = childData.Id;
-                Category = childData.Category;
+                Description = childData.Description;
+                Abbreviation = childData.Abbreviation;
+                DisplayOrder = childData.DisplayOrder;
                 RowVersion = childData.RowVersion;
             }
         }
 
         [Fetch]
-        private async Task FetchAsync(int id)
+        private async Task Fetch(int id)
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ICategoryOfOrganizationDal>();
+            var dal = dalManager.GetProvider<ITitleDal>();
             var data = await dal.Fetch(id);
 
             Fetch(data);
@@ -120,16 +125,17 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private async Task InsertChild()
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ICategoryOfOrganizationDal>();
-            var data = new CategoryOfOrganization()
+            var dal = dalManager.GetProvider<ITitleDal>();
+            var data = new Title()
             {
-                Category = Category,
+                Abbreviation = Abbreviation,
+                Description = Description,
                 DisplayOrder = DisplayOrder
             };
 
-            var insertedCategoryOfOrganization = await dal.Insert(data);
-            Id = insertedCategoryOfOrganization.Id;
-            RowVersion = insertedCategoryOfOrganization.RowVersion;
+            var insertedTitle = await dal.Insert(data);
+            Id = insertedTitle.Id;
+            RowVersion = insertedTitle.RowVersion;
         }
 
         [Update]
@@ -142,17 +148,18 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private async Task ChildUpdate()
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ICategoryOfOrganizationDal>();
+            var dal = dalManager.GetProvider<ITitleDal>();
 
-            var categoryOfOrganizationTypeToUpdate = new CategoryOfOrganization()
+            var emailTypeToUpdate = new Title()
             {
                 Id = Id,
-                Category = Category,
+                Abbreviation = Abbreviation,
+                Description = Description,
                 DisplayOrder = DisplayOrder,
                 RowVersion = RowVersion
             };
 
-            var updatedEmail = await dal.Update(categoryOfOrganizationTypeToUpdate);
+            var updatedEmail = await dal.Update(emailTypeToUpdate);
             RowVersion = updatedEmail.RowVersion;
         }
         
@@ -166,7 +173,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private async Task Delete(int id)
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ICategoryOfOrganizationDal>();
+            var dal = dalManager.GetProvider<ITitleDal>();
            
             await dal.Delete(id);
         }

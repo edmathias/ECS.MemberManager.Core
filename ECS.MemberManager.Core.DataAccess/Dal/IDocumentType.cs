@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.DataAccess.Dal
 {
     public interface IDocumentTypeDal : IDisposable
     {
-        DocumentType Fetch(int id);
-        List<DocumentType> Fetch();
-        int Insert(DocumentType documentType);
-        void Update(DocumentType documentType );
-        void Delete(int id);
+        Task<DocumentType> Fetch(int id);
+        Task<List<DocumentType>> Fetch();
+        Task<DocumentType> Insert(DocumentType documentType);
+        Task<DocumentType> Update(DocumentType documentType );
+        Task Delete(int id);
     }
 }

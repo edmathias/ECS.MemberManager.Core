@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
@@ -11,34 +12,35 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
         }
 
-        public Sponsor Fetch(int id)
+        public async Task<Sponsor> Fetch(int id)
         {
             return MockDb.Sponsors.FirstOrDefault(p => p.Id == id);
         }
 
-        public List<Sponsor> Fetch()
+        public async Task<List<Sponsor>> Fetch()
         {
             return MockDb.Sponsors.ToList();
         }
 
-        public int Insert(Sponsor person)
+        public async Task<Sponsor> Insert(Sponsor sponsor)
         {
             var lastSponsor = MockDb.Sponsors.ToList().OrderByDescending(p => p.Id).First();
-            person.Id = 1+lastSponsor.Id;
-            MockDb.Sponsors.Add(person);
+            sponsor.Id = 1+lastSponsor.Id;
+            MockDb.Sponsors.Add(sponsor);
             
-            return person.Id;
+            return sponsor;
         }
 
-        public void Update(Sponsor person)
+        public async Task<Sponsor> Update(Sponsor sponsor)
         {
             // mockdb in memory list reference already updated 
+            return sponsor;
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            var personToDelete = MockDb.Sponsors.First(p => p.Id == id);
-            var listIndex = MockDb.Sponsors.IndexOf(personToDelete);
+            var sponsorToDelete = MockDb.Sponsors.First(p => p.Id == id);
+            var listIndex = MockDb.Sponsors.IndexOf(sponsorToDelete);
             if(listIndex > -1)
                 MockDb.Sponsors.RemoveAt(listIndex);
         }

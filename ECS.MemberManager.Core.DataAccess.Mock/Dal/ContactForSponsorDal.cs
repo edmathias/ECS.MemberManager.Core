@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
@@ -12,36 +13,37 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
         }
 
-        public ContactForSponsor Fetch(int id)
+        public async Task<ContactForSponsor> Fetch(int id)
         {
             return MockDb.ContactForSponsors.FirstOrDefault(co => co.Id == id);
         }
 
-        public List<ContactForSponsor> Fetch()
+        public async Task<List<ContactForSponsor>> Fetch()
         {
             return MockDb.ContactForSponsors.ToList();
         }
 
-        public int Insert(ContactForSponsor contactOfPerson)
+        public async Task<ContactForSponsor> Insert(ContactForSponsor contactOfPerson)
         {
             var lastCategory = MockDb.ContactForSponsors.ToList().OrderByDescending( co => co.Id).First();
             contactOfPerson.Id = lastCategory.Id + 1;
             MockDb.ContactForSponsors.Add(contactOfPerson);
             
-            return contactOfPerson.Id;
+            return contactOfPerson;
         }
 
-        public void Update(ContactForSponsor contactOfPerson)
+        public async Task<ContactForSponsor> Update(ContactForSponsor contactOfPerson)
         {
             var contactToUpdate = MockDb.ContactForSponsors.FirstOrDefault(co => co.Id == contactOfPerson.Id);
 
             if (contactToUpdate == null) 
                 throw new Exception("Record not found");
 
+            return contactToUpdate;
 
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
             var contactToDelete = MockDb.ContactForSponsors.FirstOrDefault(co => co.Id == id);
             var listIndex = MockDb.ContactForSponsors.IndexOf(contactToDelete);

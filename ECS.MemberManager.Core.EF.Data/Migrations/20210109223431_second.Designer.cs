@@ -4,14 +4,16 @@ using ECS.MemberManager.Core.EF.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ECS.MemberManager.Core.EF.Data.Migrations
 {
     [DbContext(typeof(MembershipManagerDataContext))]
-    partial class MembershipManagerDataContextModelSnapshot : ModelSnapshot
+    [Migration("20210109223431_second")]
+    partial class second
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -164,8 +166,8 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
 
                     b.Property<string>("Category")
                         .IsRequired()
-                        .HasMaxLength(35)
-                        .HasColumnType("nvarchar(35)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("DisplayOrder")
                         .HasColumnType("int");
@@ -267,7 +269,8 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                         .UseIdentityColumn();
 
                     b.Property<string>("EMailAddress")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int>("EMailTypeId")
                         .HasColumnType("int");
@@ -282,12 +285,17 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("OrganizationId")
+                        .HasColumnType("int");
+
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrganizationId");
 
                     b.ToTable("EMails");
                 });
@@ -793,9 +801,6 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                     b.Property<DateTime>("DateOfFirstContact")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("EMailId")
-                        .HasColumnType("int");
-
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -828,8 +833,6 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EMailId");
 
                     b.HasIndex("TitleId");
 
@@ -1126,21 +1129,6 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                     b.ToTable("Titles");
                 });
 
-            modelBuilder.Entity("EMailOrganization", b =>
-                {
-                    b.Property<int>("EMailsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrganizationsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("EMailsId", "OrganizationsId");
-
-                    b.HasIndex("OrganizationsId");
-
-                    b.ToTable("EMailOrganization");
-                });
-
             modelBuilder.Entity("EventPerson", b =>
                 {
                     b.Property<int>("EventsId")
@@ -1261,6 +1249,13 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                     b.Navigation("Sponsor");
                 });
 
+            modelBuilder.Entity("ECS.MemberManager.Core.EF.Domain.EMail", b =>
+                {
+                    b.HasOne("ECS.MemberManager.Core.EF.Domain.Organization", null)
+                        .WithMany("EMails")
+                        .HasForeignKey("OrganizationId");
+                });
+
             modelBuilder.Entity("ECS.MemberManager.Core.EF.Domain.EventDocument", b =>
                 {
                     b.HasOne("ECS.MemberManager.Core.EF.Domain.DocumentType", "DocumentType")
@@ -1359,10 +1354,6 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
 
             modelBuilder.Entity("ECS.MemberManager.Core.EF.Domain.Person", b =>
                 {
-                    b.HasOne("ECS.MemberManager.Core.EF.Domain.EMail", null)
-                        .WithMany("Persons")
-                        .HasForeignKey("EMailId");
-
                     b.HasOne("ECS.MemberManager.Core.EF.Domain.Title", "Title")
                         .WithMany()
                         .HasForeignKey("TitleId");
@@ -1418,21 +1409,6 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                     b.Navigation("Person");
                 });
 
-            modelBuilder.Entity("EMailOrganization", b =>
-                {
-                    b.HasOne("ECS.MemberManager.Core.EF.Domain.EMail", null)
-                        .WithMany()
-                        .HasForeignKey("EMailsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ECS.MemberManager.Core.EF.Domain.Organization", null)
-                        .WithMany()
-                        .HasForeignKey("OrganizationsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("EventPerson", b =>
                 {
                     b.HasOne("ECS.MemberManager.Core.EF.Domain.Event", null)
@@ -1478,9 +1454,9 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ECS.MemberManager.Core.EF.Domain.EMail", b =>
+            modelBuilder.Entity("ECS.MemberManager.Core.EF.Domain.Organization", b =>
                 {
-                    b.Navigation("Persons");
+                    b.Navigation("EMails");
                 });
 #pragma warning restore 612, 618
         }

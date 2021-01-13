@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.DataAccess.Dal
 {
     public interface ITitleDal : IDisposable
     {
-        Title Fetch(int id);
-        List<Title> Fetch();
-        int Insert(Title title);
-        void Update(Title title );
-        void Delete(int id);
+        Task<Title> Fetch(int id);
+        Task<List<Title>> Fetch();
+        Task<Title> Insert(Title title);
+        Task<Title> Update(Title title );
+        Task Delete(int id);
     }
 }

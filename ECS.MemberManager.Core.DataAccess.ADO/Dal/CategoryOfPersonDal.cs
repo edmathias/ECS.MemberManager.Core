@@ -13,12 +13,12 @@ using Microsoft.Extensions.Configuration;
 
 namespace ECS.MemberManager.Core.DataAccess.ADO
 {
-    public class CategoryOfOrganizationDal : ICategoryOfOrganizationDal
+    public class CategoryOfPersonDal : ICategoryOfPersonDal
     {
         private static IConfigurationRoot _config;
         private SqlConnection _db = null;
 
-        public CategoryOfOrganizationDal()
+        public CategoryOfPersonDal()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -29,37 +29,37 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             _db = new SqlConnection(cnxnString);
         }
 
-        public CategoryOfOrganizationDal(SqlConnection cnxn)
+        public CategoryOfPersonDal(SqlConnection cnxn)
         {
             _db = cnxn;
         }
-        public async Task<List<CategoryOfOrganization>> Fetch()
+        public async Task<List<CategoryOfPerson>> Fetch()
         {
-            var category =await _db.GetAllAsync<CategoryOfOrganization>();
+            var category =await _db.GetAllAsync<CategoryOfPerson>();
             return category.ToList();
         }
 
-        public async Task<CategoryOfOrganization> Fetch(int id)
+        public async Task<CategoryOfPerson> Fetch(int id)
         {
-            return await _db.GetAsync<CategoryOfOrganization>(id);
+            return await _db.GetAsync<CategoryOfPerson>(id);
         }
 
-        public async Task<CategoryOfOrganization> Insert(CategoryOfOrganization categoryToInsert)
+        public async Task<CategoryOfPerson> Insert(CategoryOfPerson categoryToInsert)
         {
-            var sql = "INSERT INTO CategoryOfOrganizations (Category, DisplayOrder) " +
+            var sql = "INSERT INTO CategoryOfPersons (Category, DisplayOrder) " +
                       "VALUES(@Category, @DisplayOrder);" +
                       "SELECT SCOPE_IDENTITY()";
             categoryToInsert.Id = await _db.ExecuteScalarAsync<int>(sql,categoryToInsert);
 
-            var insertedEmail = await _db.GetAsync<CategoryOfOrganization>(categoryToInsert.Id);
+            var insertedEmail = await _db.GetAsync<CategoryOfPerson>(categoryToInsert.Id);
             categoryToInsert.RowVersion = insertedEmail.RowVersion;
             
             return categoryToInsert;
         }
 
-        public async Task<CategoryOfOrganization> Update(CategoryOfOrganization categoryToUpdate)
+        public async Task<CategoryOfPerson> Update(CategoryOfPerson categoryToUpdate)
         {
-            var sql = "UPDATE CategoryOfOrganizations " +
+            var sql = "UPDATE CategoryOfPersons " +
                       "SET Category = @Category, " +
                       "DisplayOrder = @DisplayOrder " +
                       "OUTPUT inserted.RowVersion " +
@@ -75,7 +75,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
 
         public async Task Delete(int id)
         {
-            await _db.DeleteAsync<CategoryOfOrganization>(new CategoryOfOrganization() {Id = id});
+            await _db.DeleteAsync<CategoryOfPerson>(new CategoryOfPerson() {Id = id});
         }
         
         public void Dispose()

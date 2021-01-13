@@ -188,21 +188,21 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             {
                 new ContactForSponsor()
                 {
-                    Id = 1, Person = new Person(), Purpose = "purpose for contact", DateWhenContacted = DateTime.Now,
+                    Id = 1, PersonId = 1, Purpose = "purpose for contact", DateWhenContacted = DateTime.Now,
                     Notes = "Notes here", RecordOfDiscussion = "record of discussion here", LastUpdatedBy = "edm",
-                    LastUpdatedDate = DateTime.Now, Sponsor = new Sponsor()
+                    LastUpdatedDate = DateTime.Now, SponsorId = 1
                 },
                 new ContactForSponsor()
                 {
-                    Id = 2, Person = new Person(), Purpose = "purpose for contact 2", DateWhenContacted = DateTime.Now,
+                    Id = 2, PersonId = 2, Purpose = "purpose for contact 2", DateWhenContacted = DateTime.Now,
                     Notes = "Notes here", RecordOfDiscussion = "record of discussion here", LastUpdatedBy = "edm",
-                    LastUpdatedDate = DateTime.Now, Sponsor = new Sponsor()
+                    LastUpdatedDate = DateTime.Now, SponsorId=2
                 },
                 new ContactForSponsor()
                 {
-                    Id = 99, Person = new Person(), Purpose = "delete this contact", DateWhenContacted = DateTime.Now,
+                    Id = 99, PersonId=2, Purpose = "delete this contact", DateWhenContacted = DateTime.Now,
                     Notes = "Deleted Notes here", RecordOfDiscussion = "deleted record", LastUpdatedBy = "edm",
-                    LastUpdatedDate = DateTime.Now, Sponsor = new Sponsor()
+                    LastUpdatedDate = DateTime.Now, SponsorId=2
                 }
             };
         }
@@ -592,8 +592,29 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         private static IList<Title> GetTitles()
         {
-            return new List<Title>();
+            return new List<Title>()
+            {
+                new Title()
+                {
+                    Id = 1,
+                    Abbreviation = "Mr",
+                    Description = "Mister",
+                    DisplayOrder = 0 
+                },
+                new Title()
+                {
+                    Id = 2,
+                    Abbreviation = "Mrs.",
+                    Description = "Missus",
+                    DisplayOrder = 1
+                },
+                new Title()
+                {
+                    Id = 99,
+                    Abbreviation = "XX",
+                    Description = "delete me"
+                }
+            };
         }
-        
     }
 }

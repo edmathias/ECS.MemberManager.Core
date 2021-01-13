@@ -13,12 +13,12 @@ using Microsoft.Extensions.Configuration;
 
 namespace ECS.MemberManager.Core.DataAccess.ADO
 {
-    public class CategoryOfOrganizationDal : ICategoryOfOrganizationDal
+    public class TitleDal : ITitleDal
     {
         private static IConfigurationRoot _config;
         private SqlConnection _db = null;
 
-        public CategoryOfOrganizationDal()
+        public TitleDal()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -29,59 +29,62 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             _db = new SqlConnection(cnxnString);
         }
 
-        public CategoryOfOrganizationDal(SqlConnection cnxn)
+        public TitleDal(SqlConnection cnxn)
         {
             _db = cnxn;
         }
-        public async Task<List<CategoryOfOrganization>> Fetch()
+        public async Task<List<Title>> Fetch()
         {
-            var category =await _db.GetAllAsync<CategoryOfOrganization>();
-            return category.ToList();
+            var eMailTypes =await _db.GetAllAsync<Title>();
+            return eMailTypes.ToList();
         }
 
-        public async Task<CategoryOfOrganization> Fetch(int id)
+        public async Task<Title> Fetch(int id)
         {
-            return await _db.GetAsync<CategoryOfOrganization>(id);
+            return await _db.GetAsync<Title>(id);
         }
 
-        public async Task<CategoryOfOrganization> Insert(CategoryOfOrganization categoryToInsert)
+        public async Task<Title> Insert(Title eMailTypeToInsert)
         {
-            var sql = "INSERT INTO CategoryOfOrganizations (Category, DisplayOrder) " +
-                      "VALUES(@Category, @DisplayOrder);" +
+            var sql = "INSERT INTO Titles (Abbreviation,Description,DisplayOrder ) " +
+                      "VALUES(@Abbreviation, @Description, @DisplayOrder );" +
                       "SELECT SCOPE_IDENTITY()";
-            categoryToInsert.Id = await _db.ExecuteScalarAsync<int>(sql,categoryToInsert);
+            eMailTypeToInsert.Id = await _db.ExecuteScalarAsync<int>(sql,eMailTypeToInsert);
 
-            var insertedEmail = await _db.GetAsync<CategoryOfOrganization>(categoryToInsert.Id);
-            categoryToInsert.RowVersion = insertedEmail.RowVersion;
+            //reretrieve Title to get rowversion
+            var insertedEmail = await _db.GetAsync<Title>(eMailTypeToInsert.Id);
+            eMailTypeToInsert.RowVersion = insertedEmail.RowVersion;
             
-            return categoryToInsert;
+            return eMailTypeToInsert;
         }
 
-        public async Task<CategoryOfOrganization> Update(CategoryOfOrganization categoryToUpdate)
+        public async Task<Title> Update(Title eMailTypeToUpdate)
         {
-            var sql = "UPDATE CategoryOfOrganizations " +
-                      "SET Category = @Category, " +
+            var sql = "UPDATE Titles " +
+                      "SET Description = @Description, " +
+                      "Abbreviation = @Abbreviation, " +
                       "DisplayOrder = @DisplayOrder " +
                       "OUTPUT inserted.RowVersion " +
                       "WHERE Id = @Id AND RowVersion = @RowVersion ";
 
-            var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql,categoryToUpdate);
+            var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql,eMailTypeToUpdate);
             if (rowVersion == null)
                 throw new DBConcurrencyException("Entity has been updated since last read. Try again!");
-            categoryToUpdate.RowVersion = rowVersion;
+            eMailTypeToUpdate.RowVersion = rowVersion;
             
-            return categoryToUpdate;
+            return eMailTypeToUpdate;
         }
 
         public async Task Delete(int id)
         {
-            await _db.DeleteAsync<CategoryOfOrganization>(new CategoryOfOrganization() {Id = id});
+            await _db.DeleteAsync<Title>(new Title() {Id = id});
         }
         
         public void Dispose()
         {
             _db.Dispose(); 
         }
+
   
     }
 }

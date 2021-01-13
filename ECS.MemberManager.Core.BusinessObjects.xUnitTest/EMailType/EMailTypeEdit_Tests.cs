@@ -40,7 +40,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
   
 
         [Fact]
-        public async Task TestEMailTypeEdit_Get()
+        public async Task TestEMailTypeEdit_TestGetEMailTypeEdit()
         {
             var eMailType = await EMailTypeEdit.GetEMailTypeEdit(1);
 

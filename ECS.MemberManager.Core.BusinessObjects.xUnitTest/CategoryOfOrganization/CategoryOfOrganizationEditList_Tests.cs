@@ -36,7 +36,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        private async void CategoryOfOrganizationEditList_TestNewEMailList()
+        private async void CategoryOfOrganizationEditList_TestNewCategoryOfOrganizationEditList()
         {
             var categoryOfOrganizationEdit = await CategoryOfOrganizationEditList.NewCategoryOfOrganizationEditList();
 
@@ -54,7 +54,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
         
         [Fact]
-        private async void CategoryOfOrganizationEditList_TestDeleteEMailsEntry()
+        private async void CategoryOfOrganizationEditList_TestDeleteCategoryOfOrganizationEditEntry()
         {
             var categoryOfOrganizationEdit = await CategoryOfOrganizationEditList.GetCategoryOfOrganizationEditList();
             var listCount = categoryOfOrganizationEdit.Count;
@@ -72,7 +72,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        private async void CategoryOfOrganizationEditList_TestUpdateEMailsEntry()
+        private async void CategoryOfOrganizationEditList_TestUpdateCategoryOfOrganizationEditEntry()
         {
             const int idToUpdate = 1;
             
@@ -87,7 +87,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        private async void CategoryOfOrganizationEditList_TestAddEMailsEntry()
+        private async void CategoryOfOrganizationEditList_TestAddCategoryOfOrganizationEditEntry()
         {
             var categoryOfOrganizationEditList = await CategoryOfOrganizationEditList.GetCategoryOfOrganizationEditList();
             var countBeforeAdd = categoryOfOrganizationEditList.Count;
@@ -95,9 +95,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var categoryOfOrganizationToAdd = categoryOfOrganizationEditList.AddNew();
             BuildCategoryOfOrganization(categoryOfOrganizationToAdd);
 
-            var updatedEMailsList = await categoryOfOrganizationEditList.SaveAsync();
+            var updatedCategoryOfOrganizationEditList = await categoryOfOrganizationEditList.SaveAsync();
             
-            Assert.NotEqual(countBeforeAdd, updatedEMailsList.Count);
+            Assert.NotEqual(countBeforeAdd, updatedCategoryOfOrganizationEditList.Count);
         }
 
         private void BuildCategoryOfOrganization(CategoryOfOrganizationEdit categoryToBuild)

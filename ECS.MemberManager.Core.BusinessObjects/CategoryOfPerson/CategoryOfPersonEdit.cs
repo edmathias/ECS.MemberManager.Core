@@ -10,7 +10,7 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class CategoryOfOrganizationEdit : BusinessBase<CategoryOfOrganizationEdit>
+    public class CategoryOfPersonEdit : BusinessBase<CategoryOfPersonEdit>
     {
 
         #region Business Methods
@@ -39,9 +39,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
             get => GetProperty(DisplayOrderProperty);
             set => SetProperty(DisplayOrderProperty, value);
         }
-
+         
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
-
         public byte[] RowVersion
         {
             get => GetProperty(RowVersionProperty);
@@ -65,24 +64,24 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        public static async Task<CategoryOfOrganizationEdit> NewCategoryOfOrganizationEdit()
+        public static async Task<CategoryOfPersonEdit> NewCategoryOfPersonEdit()
         {
-            return await DataPortal.CreateAsync<CategoryOfOrganizationEdit>();
+            return await DataPortal.CreateAsync<CategoryOfPersonEdit>();
         }
 
-        public static async Task<CategoryOfOrganizationEdit> GetCategoryOfOrganizationEdit(CategoryOfOrganization childData)
+        public static async Task<CategoryOfPersonEdit> GetCategoryOfPersonEdit(CategoryOfPerson childData)
         {
-            return await DataPortal.FetchChildAsync<CategoryOfOrganizationEdit>(childData);
+            return await DataPortal.FetchChildAsync<CategoryOfPersonEdit>(childData);
         }
 
-        public static async Task<CategoryOfOrganizationEdit> GetCategoryOfOrganizationEdit(int id)
+        public static async Task<CategoryOfPersonEdit> GetCategoryOfPersonEdit(int id)
         {
-            return await DataPortal.FetchAsync<CategoryOfOrganizationEdit>(id);
+            return await DataPortal.FetchAsync<CategoryOfPersonEdit>(id);
         }
 
-        public static async Task DeleteCategoryOfOrganizationEdit(int id)
+        public static async Task DeleteCategoryOfPersonEdit(int id)
         {
-            await DataPortal.DeleteAsync<CategoryOfOrganizationEdit>(id);
+            await DataPortal.DeleteAsync<CategoryOfPersonEdit>(id);
         }
 
         #endregion
@@ -90,7 +89,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access Methods
 
         [FetchChild]
-        private void Fetch(CategoryOfOrganization childData)
+        private void Fetch(CategoryOfPerson childData)
         {
             using (BypassPropertyChecks)
             {
@@ -104,7 +103,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private async Task FetchAsync(int id)
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ICategoryOfOrganizationDal>();
+            var dal = dalManager.GetProvider<ICategoryOfPersonDal>();
             var data = await dal.Fetch(id);
 
             Fetch(data);
@@ -120,16 +119,16 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private async Task InsertChild()
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ICategoryOfOrganizationDal>();
-            var data = new CategoryOfOrganization()
+            var dal = dalManager.GetProvider<ICategoryOfPersonDal>();
+            var data = new CategoryOfPerson()
             {
                 Category = Category,
                 DisplayOrder = DisplayOrder
             };
 
-            var insertedCategoryOfOrganization = await dal.Insert(data);
-            Id = insertedCategoryOfOrganization.Id;
-            RowVersion = insertedCategoryOfOrganization.RowVersion;
+            var insertedCategoryOfPerson = await dal.Insert(data);
+            Id = insertedCategoryOfPerson.Id;
+            RowVersion = insertedCategoryOfPerson.RowVersion;
         }
 
         [Update]
@@ -142,9 +141,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private async Task ChildUpdate()
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ICategoryOfOrganizationDal>();
+            var dal = dalManager.GetProvider<ICategoryOfPersonDal>();
 
-            var categoryOfOrganizationTypeToUpdate = new CategoryOfOrganization()
+            var categoryOfPersonTypeToUpdate = new CategoryOfPerson()
             {
                 Id = Id,
                 Category = Category,
@@ -152,7 +151,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 RowVersion = RowVersion
             };
 
-            var updatedEmail = await dal.Update(categoryOfOrganizationTypeToUpdate);
+            var updatedEmail = await dal.Update(categoryOfPersonTypeToUpdate);
             RowVersion = updatedEmail.RowVersion;
         }
         
@@ -166,7 +165,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private async Task Delete(int id)
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ICategoryOfOrganizationDal>();
+            var dal = dalManager.GetProvider<ICategoryOfPersonDal>();
            
             await dal.Delete(id);
         }

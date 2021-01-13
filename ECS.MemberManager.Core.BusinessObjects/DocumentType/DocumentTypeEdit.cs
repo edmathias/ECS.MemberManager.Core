@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Csla;
@@ -9,7 +10,7 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class DocumentTypeEC : BusinessBase<DocumentTypeEC>
+    public class DocumentTypeEdit : BusinessBase<DocumentTypeEdit>
     {
         #region Business Methods
         
@@ -50,33 +51,42 @@ namespace ECS.MemberManager.Core.BusinessObjects
             get => GetProperty(NotesProperty);
             set => SetProperty(NotesProperty, value);
         }
+       
+        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
+        public byte[] RowVersion
+        {
+            get => GetProperty(RowVersionProperty);
+            private set => LoadProperty(RowVersionProperty, value);
+        }
         
         #endregion
-        
+
         #region Factory Methods
 
-        public static async Task<DocumentTypeEC> NewDocumentType()
+        public static async Task<DocumentTypeEdit> NewDocumentTypeEdit()
         {
-            return await DataPortal.CreateChildAsync<DocumentTypeEC>();
+            return await DataPortal.CreateAsync<DocumentTypeEdit>();
         }
 
-        public static async Task<DocumentTypeEC> GetDocumentType(DocumentType childData)
+        public static async Task<DocumentTypeEdit> GetDocumentTypeEdit(DocumentType childData)
         {
-            return await DataPortal.FetchChildAsync<DocumentTypeEC>(childData);
+            return await DataPortal.FetchChildAsync<DocumentTypeEdit>(childData);
+        }
+
+        public static async Task<DocumentTypeEdit> GetDocumentTypeEdit(int id)
+        {
+            return await DataPortal.FetchAsync<DocumentTypeEdit>(id);
+        }
+
+        public static async Task DeleteDocumentTypeEdit(int id)
+        {
+            await DataPortal.DeleteAsync<DocumentTypeEdit>(id);
         }
 
         #endregion
+
+        #region Data Access Methods
         
-        #region DataPortal Methods
-        
-        [CreateChild]
-        private void Create()
-        {
-            MarkAsChild();
-            
-            BusinessRules.CheckRules();
-        }         
-                
         [FetchChild]
         private void Fetch(DocumentType childData)
         {
@@ -84,58 +94,86 @@ namespace ECS.MemberManager.Core.BusinessObjects
             {
                 Id = childData.Id;
                 Description = childData.Description;
-                Notes = childData.Notes;
                 LastUpdatedBy = childData.LastUpdatedBy;
                 LastUpdatedDate = childData.LastUpdatedDate;
+                Notes = childData.Notes;
+                RowVersion = childData.RowVersion;
             }
+        }
 
-            BusinessRules.CheckRules();
+        [Fetch]
+        private async Task Fetch(int id)
+        {
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IDocumentTypeDal>();
+            var data = await dal.Fetch(id);
+
+            Fetch(data);
+        }
+
+        [Insert]
+        private async Task Insert()
+        {
+            await InsertChild();
         }
 
         [InsertChild]
-        private void Insert()
+        private async Task InsertChild()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IDocumentTypeDal>();
-            var documentTypeToInsert = new DocumentType
+            var data = new DocumentType()
             {
                 Description = Description,
-                Notes = Notes,
                 LastUpdatedBy = LastUpdatedBy,
-                LastUpdatedDate = LastUpdatedDate
+                LastUpdatedDate = LastUpdatedDate,
+                Notes = Notes
             };
-            dal.Insert(documentTypeToInsert);
-            Id = documentTypeToInsert.Id;
-        }
-        
-        [UpdateChild]
-        private void Update()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IDocumentTypeDal>();
-            
-            var documentTypeToUpdate = dal.Fetch(Id);
-            documentTypeToUpdate.Description = Description;
-            documentTypeToUpdate.LastUpdatedDate = LastUpdatedDate;
-            documentTypeToUpdate.LastUpdatedBy = LastUpdatedBy;
-            documentTypeToUpdate.Notes = Notes;
-            
-            dal.Update(documentTypeToUpdate);
+
+            var insertedDocumentType = await dal.Insert(data);
+            Id = insertedDocumentType.Id;
+            RowVersion = insertedDocumentType.RowVersion;
         }
 
-        [DeleteSelfChild]
-        private void DeleteSelf()
+        [Update]
+        private async Task Update()
         {
-            Delete(this.Id);
+            await ChildUpdate();
         }
-        
-        [Delete]
-        private void Delete(int id)
+
+        [UpdateChild]
+        private async Task ChildUpdate()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IDocumentTypeDal>();
- 
-            dal.Delete(id);
+
+            var emailTypeToUpdate = new DocumentType()
+            {
+                Id = Id,
+                Description = Description,
+                Notes = Notes,
+                RowVersion = RowVersion,
+                LastUpdatedBy = "edm",
+                LastUpdatedDate = DateTime.Now
+            };
+
+            var updatedEmail = await dal.Update(emailTypeToUpdate);
+            RowVersion = updatedEmail.RowVersion;
+        }
+        
+        [DeleteSelfChild]
+        private async Task DeleteSelf()
+        {
+            await Delete(Id);
+        }
+
+        [Delete]
+        private async Task Delete(int id)
+        {
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IDocumentTypeDal>();
+           
+            await dal.Delete(id);
         }
 
         #endregion
