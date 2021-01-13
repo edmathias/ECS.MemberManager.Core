@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
@@ -12,26 +13,26 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
         }
 
-        public Event Fetch(int id)
+        public async Task<Event> Fetch(int id)
         {
             return MockDb.Events.FirstOrDefault(ms => ms.Id == id);
         }
 
-        public List<Event> Fetch()
+        public async Task<List<Event>> Fetch()
         {
             return MockDb.Events.ToList();
         }
 
-        public int Insert(Event eventToInsert)
+        public async Task<Event> Insert(Event eventToInsert)
         {
             var lastEvent = MockDb.Events.ToList().OrderByDescending(e =>e.Id).First();
             eventToInsert.Id = 1+lastEvent.Id;
             
             MockDb.Events.Add(eventToInsert);
-            return eventToInsert.Id;        
+            return eventToInsert;        
         }
 
-        public void Update(Event eventUpdate)
+        public async Task<Event> Update(Event eventUpdate)
         {
             var eventToUpdate = MockDb.Events.FirstOrDefault(e => e.Id == eventUpdate.Id);
 
@@ -43,9 +44,11 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             eventToUpdate.LastUpdatedDate = DateTime.Now;
             eventToUpdate.NextDate = eventUpdate.NextDate;
             eventToUpdate.Persons = eventUpdate.Persons;
+
+            return eventUpdate;
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
             var eventToDelete = MockDb.Events.FirstOrDefault(e => e.Id == id);
             var listIndex = MockDb.Events.IndexOf(eventToDelete);

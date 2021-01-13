@@ -49,7 +49,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var addressEditList = await AddressEditList.GetAddressEditList();
 
             Assert.NotNull(addressEditList);
-            Assert.Equal(2, addressEditList.Count);
+            Assert.Equal(3, addressEditList.Count);
         }
         
         [Fact]

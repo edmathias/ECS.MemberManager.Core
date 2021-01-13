@@ -3,6 +3,7 @@ using System.Data;
 using System.Data.Common;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Dapper;
 using Dapper.Contrib.Extensions;
 using ECS.MemberManager.Core.DataAccess.Dal;
@@ -33,30 +34,32 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             _db = cnxn;
         }
         
-        public List<Address> Fetch()
+        public async Task<List<Address>> Fetch()
         {
-            return _db.GetAll<Address>().ToList();
+            var list = await _db.GetAllAsync<Address>();
+            
+            return list.ToList();
         }
 
-        public Address Fetch(int id)
+        public async Task<Address> Fetch(int id)
         {
-            return _db.Get<Address>(id);
+            return await _db.GetAsync<Address>(id);
         }
 
-        public Address Insert(Address addressToInsert)
+        public async Task<Address> Insert(Address addressToInsert)
         
         {
             var sql = "INSERT INTO Addresses (Address1, Address2, City,State,PostCode,Notes,LastUpdatedBy,LastUpdatedDate) " +
                       "VALUES(@Address1,@Address2,@City,@State,@PostCode,@Notes,@LastUpdatedBy,@LastUpdatedDate);" +
                       "SELECT SCOPE_IDENTITY()";
            
-            addressToInsert.Id = _db.ExecuteScalar<int>(sql, addressToInsert);
+            addressToInsert.Id = await _db.ExecuteScalarAsync<int>(sql, addressToInsert);
             addressToInsert.RowVersion = _db.Get<Address>(addressToInsert.Id).RowVersion;
 
             return addressToInsert;
         }
 
-        public Address Update(Address addressToUpdate)
+        public async Task<Address> Update(Address addressToUpdate)
         {
             var sql = "UPDATE Addresses " +
                       "SET Address1 = @Address1," +
@@ -70,7 +73,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                       "OUTPUT inserted.RowVersion " +
                       "WHERE Id = @Id AND RowVersion = @RowVersion ";
 
-            var rowVersion = _db.ExecuteScalar<byte[]>(sql, addressToUpdate);
+            var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql, addressToUpdate);
 
             if (rowVersion == null)
                 throw new DBConcurrencyException("Entity has been updated since last read. Try again!");
@@ -79,9 +82,9 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             return addressToUpdate;
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            _db.Delete<Address>(new Address() {Id = id});
+            await _db.DeleteAsync<Address>(new Address() {Id = id});
         }
         
         public void Dispose()

@@ -10,29 +10,29 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class AddressInfoList : ReadOnlyListBase<AddressInfoList,AddressInfo>
+    public class EventInfoList : ReadOnlyListBase<EventInfoList,EventInfo>
     {
         public static void AddObjectAuthorizationRules()
         {
             // TODO: add object-level authorization rules
         }
 
-        public static async Task<AddressInfoList> GetAddressInfoList()
+        public static async Task<EventInfoList> GetEventInfoList()
         {
-            return await DataPortal.FetchAsync<AddressInfoList>();
+            return await DataPortal.FetchAsync<EventInfoList>();
         }
 
-        public static async Task<AddressInfoList> GetAddressInfoList(List<AddressInfo> childData)
+        public static async Task<EventInfoList> GetEventInfoList(List<EventInfo> childData)
         {
-            return await DataPortal.FetchAsync<AddressInfoList>(childData);
+            return await DataPortal.FetchAsync<EventInfoList>(childData);
         }
         
         
         [Fetch]
-        private async void Fetch()
+        private async Task Fetch()
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IAddressDal>();
+            var dal = dalManager.GetProvider<IEventDal>();
             var childData = await dal.Fetch();
 
             await Fetch(childData);
@@ -40,14 +40,14 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         [Fetch]
-        private async Task Fetch(List<Address> childData)
+        private async Task Fetch(List<Event> childData)
         {
             using (LoadListMode)
             {
-                foreach (var eMailType in childData)
+                foreach (var eventType in childData)
                 {
-                    var eMailTypeToAdd = await AddressInfo.GetAddressInfo(eMailType);
-                    Add(eMailTypeToAdd);
+                    var eventToAdd = await EventInfo.GetEventInfo(eventType);
+                    Add(eventToAdd);
                 }
             }
         }

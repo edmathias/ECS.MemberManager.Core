@@ -6,12 +6,12 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class DocumentTypeInfoList_Tests
+    public class EventInfoList_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
 
-        public DocumentTypeInfoList_Tests()
+        public EventInfoList_Tests()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -33,13 +33,13 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
         
         [Fact]
-        private async void DocumentTypeInfoList_TestGetDocumentTypeInfoList()
+        private async void EventInfoList_TestGetEventInfoList()
         {
-            var eMailTypeInfoList = await DocumentTypeInfoList.GetDocumentTypeInfoList();
+            var eventInfoList = await EventInfoList.GetEventInfoList();
             
-            Assert.NotNull(eMailTypeInfoList);
-            Assert.True(eMailTypeInfoList.IsReadOnly);
-            Assert.Equal(3, eMailTypeInfoList.Count);
+            Assert.NotNull(eventInfoList);
+            Assert.True(eventInfoList.IsReadOnly);
+            Assert.Equal(3, eventInfoList.Count);
         }
       
     }

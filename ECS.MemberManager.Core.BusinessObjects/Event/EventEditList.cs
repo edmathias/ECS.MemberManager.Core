@@ -10,26 +10,26 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class AddressEditList : BusinessListBase<AddressEditList,AddressEdit>
+    public class EventEditList : BusinessListBase<EventEditList,EventEdit>
     {
         public static void AddObjectAuthorizationRules()
         {
             // TODO: add object-level authorization rules
         }
 
-        public static async Task<AddressEditList> NewAddressEditList()
+        public static async Task<EventEditList> NewEventEditList()
         {
-            return await DataPortal.CreateAsync<AddressEditList>();
+            return await DataPortal.CreateAsync<EventEditList>();
         }
 
-        public static async Task<AddressEditList> GetAddressEditList()
+        public static async Task<EventEditList> GetEventEditList()
         {
-            return await DataPortal.FetchAsync<AddressEditList>();
+            return await DataPortal.FetchAsync<EventEditList>();
         }
 
-        public static async Task<AddressEditList> GetAddressEditList(List<AddressEdit> childData)
+        public static async Task<EventEditList> GetEventEditList(List<EventEdit> childData)
         {
-            return await DataPortal.FetchAsync<AddressEditList>(childData);
+            return await DataPortal.FetchAsync<EventEditList>(childData);
         }
         
         
@@ -41,10 +41,10 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
         
         [Fetch]
-        private async void Fetch()
+        private async Task Fetch()
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IAddressDal>();
+            var dal = dalManager.GetProvider<IEventDal>();
             var childData = await dal.Fetch();
 
             await Fetch(childData);
@@ -52,14 +52,14 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         [Fetch]
-        private async Task Fetch(List<Address> childData)
+        private async Task Fetch(List<Event> childData)
         {
             using (LoadListMode)
             {
-                foreach (var eMailType in childData)
+                foreach (var eventType in childData)
                 {
-                    var eMailTypeToAdd = await AddressEdit.GetAddressEdit(eMailType);
-                    Add(eMailTypeToAdd);
+                    var eventTypeToAdd = await EventEdit.GetEventEdit(eventType);
+                    Add(eventTypeToAdd);
                 }
             }
         }

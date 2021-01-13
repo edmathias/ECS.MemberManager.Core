@@ -48,8 +48,32 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
 
             InsertDocumentTypes();
 
+            InsertEvents();
+
         }
 
+        private static void InsertEvents()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("SET IDENTITY_INSERT [dbo].[Events] ON;");
+
+            sb.AppendLine("INSERT INTO [dbo].[Events] ([Id],[EventName], [Description], [IsOneTime], [NextDate], ");
+            sb.AppendLine(" [LastUpdatedBy], [LastUpdatedDate], [Notes] )");
+            sb.AppendLine("VALUES(1,'Event 1','event description','True','2021-6-30','edm','2021-1-1','Notes for 1')");
+            
+            sb.AppendLine("INSERT INTO [dbo].[Events] ([Id],[EventName], [Description], [IsOneTime], [NextDate], ");
+            sb.AppendLine(" [LastUpdatedBy], [LastUpdatedDate], [Notes] )");
+            sb.AppendLine("VALUES(2,'Event 2','event description 2','False','2021-3-30','edm','2021-1-1','Notes for 2')");
+            
+            sb.AppendLine("INSERT INTO [dbo].[Events] ([Id],[EventName], [Description], [IsOneTime], [NextDate], ");
+            sb.AppendLine(" [LastUpdatedBy], [LastUpdatedDate], [Notes] )");
+            sb.AppendLine("VALUES(99,'Event to delete','delete event','False','2021-3-30','edm','2021-1-1','Notes for 2')");
+            
+            sb.AppendLine("SET IDENTITY_INSERT [dbo].[Events] OFF;");
+            _db.Execute(sb.ToString());
+        }
+            
+        
         private static void InsertDocumentTypes()
         {
             var sb = new StringBuilder();
@@ -138,9 +162,13 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                 $"VALUES(1,'8321 Oxford Drive','Apt 103','Greendale','WI','53129','edm','some notes','{DateTime.Now}')");
             sb.AppendLine(
                 "INSERT INTO Addresses(Id,Address1,Address2,City,State,PostCode,Notes,LastUpdatedBy,LastUpdatedDate)");
+            sb.AppendLine(
+                $"VALUES(2,'5514 Locust Drive','','Kirtland','OH','44094','edm','some notes','{DateTime.Now}')");
+            sb.AppendLine(
+                "INSERT INTO Addresses(Id,Address1,Address2,City,State,PostCode,Notes,LastUpdatedBy,LastUpdatedDate)");
             sb.AppendLine($"VALUES(99,'2221 Locust Drive','','Kirtland','OH','44094','edm','delete this','{DateTime.Now}')");
             sb.AppendLine("SET IDENTITY_INSERT [dbo].[Addresses] OFF;");
-            sb.AppendLine("DBCC CHECKIDENT ('Addresses', RESEED, 1)");
+            sb.AppendLine("DBCC CHECKIDENT ('Addresses', RESEED, 2)");
             _db.Execute(sb.ToString());
         }
 

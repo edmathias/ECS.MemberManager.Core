@@ -153,11 +153,11 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         [Fetch]
-        private void Fetch(int id)
+        private async void Fetch(int id)
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IAddressDal>();
-            var data = dal.Fetch(id);
+            var data = await dal.Fetch(id);
 
             Fetch(data);
         }
@@ -169,7 +169,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         [InsertChild]
-        private void InsertChild()
+        private async void InsertChild()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IAddressDal>();
@@ -185,7 +185,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 Notes = Notes
             };
 
-            var insertedAddress = dal.Insert(data);
+            var insertedAddress = await dal.Insert(data);
             Id = insertedAddress.Id;
             RowVersion = insertedAddress.RowVersion;
         }
@@ -197,7 +197,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         [UpdateChild]
-        private void ChildUpdate()
+        private async void ChildUpdate()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IAddressDal>();
@@ -216,7 +216,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 RowVersion = RowVersion
             };
 
-            var updatedEmail = dal.Update(emailTypeToUpdate);
+            var updatedEmail = await dal.Update(emailTypeToUpdate);
             RowVersion = updatedEmail.RowVersion;
         }
         
@@ -227,12 +227,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         [Delete]
-        private void Delete(int id)
+        private async void Delete(int id)
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IAddressDal>();
            
-            dal.Delete(id);
+            await dal.Delete(id);
         }
 
         #endregion
