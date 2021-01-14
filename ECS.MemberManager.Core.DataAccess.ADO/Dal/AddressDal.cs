@@ -53,8 +53,9 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                       "VALUES(@Address1,@Address2,@City,@State,@PostCode,@Notes,@LastUpdatedBy,@LastUpdatedDate);" +
                       "SELECT SCOPE_IDENTITY()";
            
-            addressToInsert.Id = await _db.ExecuteScalarAsync<int>(sql, addressToInsert);
-            addressToInsert.RowVersion = _db.Get<Address>(addressToInsert.Id).RowVersion;
+            addressToInsert.Id =  await _db.ExecuteScalarAsync<int>(sql, addressToInsert);
+            var refetchedAddress = await _db.GetAsync<Address>(addressToInsert.Id);
+            addressToInsert.RowVersion = refetchedAddress.RowVersion;
 
             return addressToInsert;
         }

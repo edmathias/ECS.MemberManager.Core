@@ -153,7 +153,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         [Fetch]
-        private async void Fetch(int id)
+        private async Task Fetch(int id)
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IAddressDal>();
@@ -163,13 +163,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         [Insert]
-        private void Insert()
+        private async Task Insert()
         {
-            InsertChild();
+            await InsertChild();
         }
 
         [InsertChild]
-        private async void InsertChild()
+        private async Task InsertChild()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IAddressDal>();
@@ -191,13 +191,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         [Update]
-        private void Update()
+        private async Task Update()
         {
-            ChildUpdate();
+            await ChildUpdate();
         }
 
         [UpdateChild]
-        private async void ChildUpdate()
+        private async Task ChildUpdate()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IAddressDal>();
@@ -221,13 +221,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
         
         [DeleteSelfChild]
-        private void DeleteSelf()
+        private async Task DeleteSelf()
         {
-            Delete(Id);
+            await Delete(Id);
         }
 
         [Delete]
-        private async void Delete(int id)
+        private async Task Delete(int id)
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IAddressDal>();

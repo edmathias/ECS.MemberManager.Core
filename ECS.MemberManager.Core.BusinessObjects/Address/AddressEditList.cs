@@ -41,7 +41,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
         
         [Fetch]
-        private async void Fetch()
+        private async Task Fetch()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IAddressDal>();

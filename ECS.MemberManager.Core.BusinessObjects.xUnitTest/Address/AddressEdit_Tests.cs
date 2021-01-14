@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ using ECS.MemberManager.Core.DataAccess.Mock;
 using ECS.MemberManager.Core.EF.Domain;
 using Microsoft.Extensions.Configuration;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
@@ -17,9 +19,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
-
-        public AddressEdit_Tests()
+        private readonly ITestOutputHelper _testOutputHelper;
+        public AddressEdit_Tests(ITestOutputHelper testOutputHelper)
         {
+            _testOutputHelper = testOutputHelper;
+            
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
@@ -60,7 +64,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async void TestAddressEdit_Update()
+        public async Task TestAddressEdit_Update()
         {
             var address = await AddressEdit.GetAddressEdit(1);
             address.Notes = "These are updated Notes";
@@ -240,9 +244,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             address2.Notes = "set up timestamp issue";
 
             var address2_2 = await address2.SaveAsync();
-
+            _testOutputHelper.WriteLine($"address 2 save first {address2_2.RowVersion}");
             Assert.NotEqual(address2_2.RowVersion, address1.RowVersion);
             Assert.Equal("set up timestamp issue", address2_2.Notes);
+ 
+            Assert.NotEqual(address2_2.RowVersion, address1.RowVersion);
             await Assert.ThrowsAsync<DataPortalException>(() => address1.SaveAsync());
         }
 
