@@ -27,18 +27,16 @@
       <Compile Remove="ContactForSponsor\ContactForSponsorER.cs" />
       <Compile Remove="ContactForSponsor\ContactForSponsorERL.cs" />
       <Compile Remove="OrganizationType\OrganizationTypeEC.cs" />
-      <Compile Remove="OrganizationType\OrganizationTypeER.cs" />
       <Compile Remove="OrganizationType\OrganizationTypeROC.cs" />
       <Compile Remove="Organization\OrganizationEC.cs" />
       <Compile Remove="Organization\OrganizationECL.cs" />
-      <Compile Remove="Organization\OrganizationER.cs" />
       <Compile Remove="CategoryOfPerson\CategoryOfPersonEC.cs" />
       <Compile Remove="CategoryOfPerson\CategoryOfPersonERL.cs" />
+      <Compile Remove="Organization\OrganizationER.cs" />
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Organization" />
-      <Folder Include="OrganizationType" />
       <Folder Include="Payment" />
       <Folder Include="Person" />
       <Folder Include="Sponsor" />

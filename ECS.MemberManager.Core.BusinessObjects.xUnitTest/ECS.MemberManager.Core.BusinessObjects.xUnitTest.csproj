@@ -33,7 +33,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="ContactForSponsor" />
       <Folder Include="MemberInfo" />
       <Folder Include="Organization" />
       <Folder Include="OrganizationType" />
@@ -46,7 +45,6 @@
       <Compile Remove="EMail\EMailER_Tests.cs" />
       <Compile Remove="Person\PersonER_Tests.cs" />
       <Compile Remove="Payment\PaymentER_Tests.cs" />
-      <Compile Remove="ContactForSponsor\ContactForSponsorER_Tests.cs" />
       <Compile Remove="ContactForSponsor\ContactForSponsorERL_Tests.cs" />
       <Compile Remove="Organization\OrganizationER_Tests.cs" />
       <Compile Remove="OrganizationType\OrganizationTypeER_Tests.cs" />

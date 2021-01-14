@@ -43,15 +43,102 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             InsertCategoryOfPersons();
 
             InsertCategoryOfOrganizations();
+            
+            InsertOrganizationTypes();
+
+            InsertOrganizations();
 
             InsertPersons();
+
+            InsertSponsors();
 
             InsertDocumentTypes();
 
             InsertEvents();
 
+            InsertContactForSponsors();
+
         }
 
+        private static void InsertSponsors()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("SET IDENTITY_INSERT [dbo].[Sponsors] ON;");
+            sb.AppendLine(
+                "INSERT INTO [dbo].[Sponsors]([Id], [PersonId], [OrganizationId], [Status], [DateOfFirstContact], [ReferredBy], [DateSponsorAccepted], [TypeName], [Details], [SponsorUntilDate], [Notes], [LastUpdatedBy], [LastUpdatedDate])");
+            sb.AppendLine(
+                "SELECT 1, 1, 1, N'Sponsor 1  status', '20200812 00:00:00.000', N'fred derf', '20201230 00:00:00.000', N'sponsor type name', N'details for 1', '20220101 00:00:00.000', N'Notes for 1', N'edm', '20201210 00:00:00.000' UNION ALL");
+            sb.AppendLine(
+                "SELECT 2, 2, 2, N'Sponsor 2 status', '20200918 00:00:00.000', N'joe blow', '20200922 00:00:00.000', N'sponsor 2 type', N'details for 2', '20210908 00:00:00.000', N'Notes for 2', N'joe', '20210112 00:00:00.000'");
+            sb.AppendLine(
+                "SELECT 99, 2, 2, N'Sponsor to delete', '20200918 00:00:00.000', N'joe blow', '20200922 00:00:00.000', N'delete', N'delete', '20210908 00:00:00.000', N'Notes for 2', N'joe', '20210112 00:00:00.000'");
+            sb.AppendLine("SET IDENTITY_INSERT [dbo].[Sponsors] OFF;");
+            sb.AppendLine("DBCC CHECKIDENT ('Sponsors', RESEED, 2)");
+            
+            _db.Execute(sb.ToString());            
+        }
+
+        private static void InsertOrganizations()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("SET IDENTITY_INSERT [dbo].[Organizations] ON;");
+            sb.AppendLine(
+                "INSERT INTO [dbo].[Organizations]([Id], [Name], [OrganizationTypeId], [DateOfFirstContact], [LastUpdatedBy], [LastUpdatedDate], [Notes])");
+            sb.AppendLine(
+                "SELECT 1, N'Organization 1', 1, '20200601 00:00:00.000', N'edm', '20210113 00:00:00.000', N'notes org 1' UNION ALL");
+            sb.AppendLine(
+                "SELECT 2, N'Organization 2', 2, '20200719 00:00:00.000', N'joe', '20210114 00:00:00.000', N'notes org 2'");
+            sb.AppendLine(
+                "SELECT 99, N'Organization to delete', 2, '20200719 00:00:00.000', N'joe', '20210114 00:00:00.000', N'notes to delete'");
+            sb.AppendLine("SET IDENTITY_INSERT [dbo].[Organizations] OFF;");
+            sb.AppendLine("DBCC CHECKIDENT ('Organizations', RESEED, 2)");
+            
+            _db.Execute(sb.ToString());            
+        }
+
+        private static void InsertOrganizationTypes()
+        {
+            var sb = new StringBuilder();
+
+            sb.AppendLine("SET IDENTITY_INSERT [dbo].[OrganizationTypes] ON;");
+            sb.AppendLine(
+                "INSERT INTO ECSMemberManager.dbo.OrganizationTypes (Id, CategoryOfOrganizationId, Name, Notes)"); 
+            sb.AppendLine("VALUES (1, 1, N'Org Type 1', N'notes for org 1')");
+            sb.AppendLine(
+                "INSERT INTO ECSMemberManager.dbo.OrganizationTypes (Id, CategoryOfOrganizationId, Name, Notes)");
+            sb.AppendLine("VALUES (2, 2, N'Org type 2', N'notes for org 2')");            
+            sb.AppendLine(
+                "INSERT INTO ECSMemberManager.dbo.OrganizationTypes (Id, CategoryOfOrganizationId, Name, Notes)");
+            sb.AppendLine("VALUES (99, 2, N'Org type to delete', N'notes to delete')");            
+     
+            sb.AppendLine("SET IDENTITY_INSERT [dbo].[OrganizationTypes] OFF;");
+            sb.AppendLine("DBCC CHECKIDENT ('OrganizationTypes', RESEED, 2)");
+            
+            _db.Execute(sb.ToString());            
+        }
+
+        private static void InsertContactForSponsors()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("SET IDENTITY_INSERT [dbo].[ContactForSponsors] ON;");
+
+            sb.AppendLine("INSERT INTO [dbo].[ContactForSponsors] ([Id], [SponsorId], [DateWhenContacted], [Purpose], ");
+            sb.AppendLine("[RecordOfDiscussion], [PersonId], [Notes], [LastUpdatedBy], [LastUpdatedDate]  )");
+            sb.AppendLine("VALUES(1,1,'2020-6-30','purpose for contact','discussion record',1,'notes','edm','2020-1-1')");
+  
+            sb.AppendLine("INSERT INTO [dbo].[ContactForSponsors] ([Id], [SponsorId], [DateWhenContacted], [Purpose], ");
+            sb.AppendLine("[RecordOfDiscussion], [PersonId], [Notes], [LastUpdatedBy], [LastUpdatedDate]  )");
+            sb.AppendLine("VALUES(2,2,'2020-6-30','purpose for contact 2','discussion record 2',1,'notes 2','edm','2020-1-1')");
+            
+            sb.AppendLine("INSERT INTO [dbo].[ContactForSponsors] ([Id], [SponsorId], [DateWhenContacted], [Purpose], ");
+            sb.AppendLine("[RecordOfDiscussion], [PersonId], [Notes], [LastUpdatedBy], [LastUpdatedDate]  )");
+            sb.AppendLine("VALUES(99,2,'2020-6-30','delete for contact ','discussion record 2',1,'delete me','edm','2020-1-1')");
+            
+            sb.AppendLine("SET IDENTITY_INSERT [dbo].[ContactForSponsors] OFF;");
+            sb.AppendLine("DBCC CHECKIDENT ('ContactForSponsors', RESEED, 2)");
+            _db.Execute(sb.ToString());            
+        }
+        
         private static void InsertEvents()
         {
             var sb = new StringBuilder();
@@ -70,6 +157,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             sb.AppendLine("VALUES(99,'Event to delete','delete event','False','2021-3-30','edm','2021-1-1','Notes for 2')");
             
             sb.AppendLine("SET IDENTITY_INSERT [dbo].[Events] OFF;");
+            sb.AppendLine("DBCC CHECKIDENT ('Events', RESEED, 2)");
             _db.Execute(sb.ToString());
         }
             
@@ -85,6 +173,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             sb.AppendLine("INSERT INTO [dbo].[DocumentTypes] ([Id],[Description],[LastUpdatedBy],[LastUpdatedDate],[Notes])");
             sb.AppendLine("VALUES(99,'Document to delete','edm','2021-1-1','delete this')");
             sb.AppendLine("SET IDENTITY_INSERT [dbo].[DocumentTypes] OFF;");
+            sb.AppendLine("DBCC CHECKIDENT ('DocumentTypes', RESEED, 2)");
             _db.Execute(sb.ToString());
         }
         
@@ -99,6 +188,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             sb.AppendLine("INSERT INTO Titles(Id,Abbreviation,Description,DisplayOrder)");
             sb.AppendLine("VALUES(99,'Mrs','Delete this',1)");
             sb.AppendLine("SET IDENTITY_INSERT [dbo].[Titles] OFF;");
+            sb.AppendLine("DBCC CHECKIDENT ('Titles', RESEED, 2)");
             _db.Execute(sb.ToString());
         }
 
@@ -119,6 +209,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             sb.AppendLine("VALUES(99,1,'Delete','','Me','2020-10-01','1965-01-28','edm','2021-01-11',");
             sb.AppendLine("'code','delete this record',2)");
             sb.AppendLine("SET IDENTITY_INSERT [dbo].[Persons] OFF;");
+            sb.AppendLine("DBCC CHECKIDENT ('Persons', RESEED, 2)");
             _db.Execute(sb.ToString());
         }
 

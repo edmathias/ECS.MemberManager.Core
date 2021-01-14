@@ -67,10 +67,10 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                       "DateWhenContacted = @DateWhenContacted,"+
                       "Purpose=@Purpose," +
                       "RecordOfDiscussion=@RecordOfDiscussion,"+
-                      "PurposeId= @PurposeId,"+
+                      "PersonId=@PersonId," +
                       "Notes=@Notes,"+
                       "LastUpdatedBy=@LastUpdatedBy," +
-                      "LastUpdatedDate=@LastUpdatedDate," +
+                      "LastUpdatedDate=@LastUpdatedDate " +
                       "OUTPUT inserted.RowVersion " +
                       "WHERE Id = @Id AND RowVersion = @RowVersion ";
 

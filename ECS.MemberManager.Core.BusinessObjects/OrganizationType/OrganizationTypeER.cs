@@ -10,7 +10,7 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class OrganizationTypeER :  BusinessBase<OrganizationTypeER>
+    public class OrganizationTypeEdit :  BusinessBase<OrganizationTypeEdit>
     {
         #region Business Methods
 
@@ -36,8 +36,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(NotesProperty, value);
         }
 
-        public static readonly PropertyInfo<CategoryOfOrganizationER> CategoryOfOrganizationProperty = RegisterProperty<CategoryOfOrganizationER>(p => p.CategoryOfOrganization);
-        public CategoryOfOrganizationER CategoryOfOrganization
+        public static readonly PropertyInfo<CategoryOfOrganizationEdit> CategoryOfOrganizationProperty = RegisterProperty<CategoryOfOrganizationEdit>(p => p.CategoryOfOrganization);
+        public CategoryOfOrganizationEdit CategoryOfOrganization
         {
             get => GetProperty(CategoryOfOrganizationProperty);
             set => SetProperty(CategoryOfOrganizationProperty, value);
@@ -60,19 +60,19 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        public static async Task<OrganizationTypeER> NewOrganizationType()
+        public static async Task<OrganizationTypeEdit> NewOrganizationType()
         {
-            return await DataPortal.CreateAsync<OrganizationTypeER>();
+            return await DataPortal.CreateAsync<OrganizationTypeEdit>();
         }
 
-        public static async Task<OrganizationTypeER> GetOrganizationType(int id)
+        public static async Task<OrganizationTypeEdit> GetOrganizationType(int id)
         {
-            return await DataPortal.FetchAsync<OrganizationTypeER>(id);
+            return await DataPortal.FetchAsync<OrganizationTypeEdit>(id);
         }
 
         public static async Task DeleteOrganizationType(int id)
         {
-            await DataPortal.DeleteAsync<OrganizationTypeER>(id);
+            await DataPortal.DeleteAsync<OrganizationTypeEdit>(id);
         }
 
         #endregion
@@ -145,8 +145,5 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
 
         #endregion
-
-
-        
     }
 }
