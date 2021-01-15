@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Csla;
+using Csla.Serialization.Mobile;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
@@ -9,7 +10,7 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class MembershipTypeEC : BusinessBase<MembershipTypeEC>
+    public class MembershipTypeEdit : BusinessBase<MembershipTypeEdit>
     {
         #region Business Methods
 
@@ -66,23 +67,37 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(NotesProperty, value);
         }
 
+        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
+
+        public byte[] RowVersion
+        {
+            get => GetProperty(RowVersionProperty);
+            private set => LoadProperty(RowVersionProperty, value);
+        }
+
         #endregion
 
         #region Factory Methods
 
-        public static async Task<MembershipTypeEC> NewMembershipType()
+        public static async Task<MembershipTypeEdit> NewMembershipTypeEdit()
         {
-            return await DataPortal.CreateChildAsync<MembershipTypeEC>();
+            return await DataPortal.CreateAsync<MembershipTypeEdit>();
         }
 
-        public static async Task<MembershipTypeEC> GetMembershipType(MembershipType childData)
+        public static async Task<MembershipTypeEdit> GetMembershipTypeEdit(int id)
         {
-            return await DataPortal.FetchChildAsync<MembershipTypeEC>(childData);
+            return await DataPortal.FetchAsync<MembershipTypeEdit>(id);
         }
 
-        public static async Task DeleteMembershipType(int id)
+        public static async Task<MembershipTypeEdit> GetMembershipTypeEdit(MembershipType childData)
         {
-            await DataPortal.DeleteAsync<MembershipTypeEC>(id);
+            return await DataPortal.FetchChildAsync<MembershipTypeEdit>(childData);
+        }
+        
+        
+        public static async Task DeleteMembershipTypeEdit(int id)
+        {
+            await DataPortal.DeleteAsync<MembershipTypeEdit>(id);
         }
 
         #endregion
@@ -100,16 +115,35 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 LastUpdatedBy = childData.LastUpdatedBy;
                 LastUpdatedDate = childData.LastUpdatedDate;
                 Notes = childData.Notes;
+                RowVersion = childData.RowVersion;
             }
         }
 
+        [Fetch]
+        private async Task Fetch(int id)
+        {
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IMembershipTypeDal>();
+            var childData = await dal.Fetch(id);
+
+            Fetch(childData);
+        }
+
+         
+        [Insert]
+        private async Task Insert()
+        {
+            await InsertChild();
+        }
+
+
         [InsertChild]
-        private void InsertChild()
+        private async Task InsertChild()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IMembershipTypeDal>();
 
-            var documentTypeToInsert = new MembershipType()
+            var data = new MembershipType()
             {
                 Description = Description,
                 LastUpdatedDate = LastUpdatedDate,
@@ -118,38 +152,51 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 Level = Level
             };
 
-            Id = dal.Insert(documentTypeToInsert);
+            var insertedMembership = await dal.Insert(data);
+            Id = insertedMembership.Id;
+            RowVersion = insertedMembership.RowVersion;
+        }
+
+        [Update]
+        private async Task Update()
+        {
+            await UpdateChild();
         }
 
         [UpdateChild]
-        private void UpdateChild()
+        private async Task UpdateChild()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IMembershipTypeDal>();
-            
-            var documentTypeToUpdate = dal.Fetch(Id);
-            documentTypeToUpdate.Description = Description;
-            documentTypeToUpdate.Level = Level;
-            documentTypeToUpdate.LastUpdatedDate = LastUpdatedDate;
-            documentTypeToUpdate.LastUpdatedBy = LastUpdatedBy;
-            documentTypeToUpdate.Notes = Notes;
 
-            dal.Update(documentTypeToUpdate);
+            var membershipTypeToUpdate = new MembershipType()
+            {
+                Id = Id,
+                Description = Description,
+                Level = Level,
+                LastUpdatedDate = LastUpdatedDate,
+                LastUpdatedBy = LastUpdatedBy,
+                Notes = this.Notes,
+                RowVersion = RowVersion
+            };
+
+            var updatedMembership = await dal.Update(membershipTypeToUpdate);
+            RowVersion = updatedMembership.RowVersion;
         }
 
         [DeleteSelfChild]
-        private void DeleteSelf()
+        private async Task DeleteSelf()
         {
-            Delete(Id);
+            await Delete(this.Id);
         }
 
         [Delete]
-        private void Delete(int id)
+        private async Task Delete(int id)
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IMembershipTypeDal>();
 
-            dal.Delete(id);
+            await dal.Delete(id);
         }
 
         #endregion

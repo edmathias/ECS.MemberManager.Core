@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
@@ -8,31 +9,31 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 {
     public class MembershipTypeDal : IMembershipTypeDal
     {
-        public MembershipType Fetch(int id)
+        public async Task<MembershipType> Fetch(int id)
         {
             return MockDb.MembershipTypes.FirstOrDefault(dt => dt.Id == id);
         }
 
-        public List<MembershipType> Fetch()
+        public async Task<List<MembershipType>> Fetch()
         {
             return MockDb.MembershipTypes.ToList();
         }
 
-        public int Insert( MembershipType membershipType)
+        public async Task<MembershipType> Insert( MembershipType membershipType)
         {
             var lastMembershipType = MockDb.MembershipTypes.ToList().OrderByDescending(dt => dt.Id).First();
             membershipType.Id = 1+lastMembershipType.Id;
             MockDb.MembershipTypes.Add(membershipType);
             
-            return membershipType.Id;
+            return membershipType;
         }
 
-        public void Update(MembershipType membershipType)
+        public async Task<MembershipType> Update(MembershipType membershipType)
         {
-            // mockdb in memory list reference already updated
+            return membershipType;
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
             var membershipTypesToDelete = MockDb.MembershipTypes.FirstOrDefault(dt => dt.Id == id);
             var listIndex = MockDb.MembershipTypes.IndexOf(membershipTypesToDelete);

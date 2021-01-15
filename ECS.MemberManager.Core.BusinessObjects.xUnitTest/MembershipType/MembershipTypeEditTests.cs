@@ -1,80 +1,95 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Csla;
 using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class MembershipTypeER_Tests 
+    public class MembershipTypeEditTests 
     {
-        public MembershipTypeER_Tests()
+        public MembershipTypeEditTests()
         {
             MockDb.ResetMockDb();
         }
         
         [Fact]
-        public async Task TestMembershipTypeER_Get()
+        public async Task TestMembershipTypeEdit_Get()
         {
-            var membershipType = await MembershipTypeER.GetMembershipType(1);
+            var membershipType = await MembershipTypeEdit.GetMembershipTypeEdit(1);
 
             Assert.Equal(1,membershipType.Id);
             Assert.True(membershipType.IsValid);
         }
 
         [Fact]
-        public async Task TestMembershipTypeER_GetNewObject()
+        public async Task TestMembershipTypeEdit_GetNewObject()
         {
-            var membershipType = await MembershipTypeER.NewMembershipType();
+            var membershipType = await MembershipTypeEdit.NewMembershipTypeEdit();
 
             Assert.NotNull(membershipType);
             Assert.False(membershipType.IsValid);
         }
 
         [Fact]
-        public async Task TestMembershipTypeER_UpdateExistingObjectInDatabase()
+        public async Task TestMembershipTypeEdit_UpdateExistingObjectInDatabase()
         {
-            var membershipType = await MembershipTypeER.GetMembershipType(1);
+            var membershipType = await MembershipTypeEdit.GetMembershipTypeEdit(1);
             membershipType.Notes = "These are updated Notes";
             
-            var result = membershipType.Save();
+            var result = await membershipType.SaveAsync();
 
             Assert.NotNull(result);
             Assert.Equal( "These are updated Notes",result.Notes);
         }
 
         [Fact]
-        public async Task TestMembershipTypeER_InsertNewObjectIntoDatabase()
+        public async Task TestMembershipTypeEdit_InsertNewObjectIntoDatabase()
         {
-            var membershipType = await MembershipTypeER.NewMembershipType();
+            var membershipType = await MembershipTypeEdit.NewMembershipTypeEdit();
             membershipType.Description = "Standby";
             membershipType.Notes = "This person is on standby";
             membershipType.LastUpdatedBy = "edm";
             membershipType.LastUpdatedDate = DateTime.Now;
 
-            var savedMembershipType = membershipType.Save();
+            var savedMembershipType = await membershipType.SaveAsync();
            
             Assert.NotNull(savedMembershipType);
-            Assert.IsType<MembershipTypeER>(savedMembershipType);
+            Assert.IsType<MembershipTypeEdit>(savedMembershipType);
             Assert.True( savedMembershipType.Id > 0 );
         }
 
         [Fact]
-        public async Task TestMembershipTypeER_DeleteObjectFromDatabase()
+        public async Task TestMembershipTypeEdit_DeleteObjectFromDatabase()
         {
-            int beforeCount = MockDb.MembershipTypes.Count();
-            
-            await MembershipTypeER.DeleteMembershipType(99);
-            
-            Assert.NotEqual(beforeCount,MockDb.MembershipTypes.Count());
+            const int ID_TO_DELETE = 99;
+            await MembershipTypeEdit.DeleteMembershipTypeEdit(ID_TO_DELETE);
+
+            await Assert.ThrowsAsync<DataPortalException>( () => MembershipTypeEdit.GetMembershipTypeEdit(ID_TO_DELETE));
         }
+        
+        [Fact]
+        public async Task MembershipTypeEdit_TestSaveOutOfOrder()
+        {
+            var membershipType1 = await MembershipTypeEdit.GetMembershipTypeEdit(1);
+            var membershipType2 = await MembershipTypeEdit.GetMembershipTypeEdit(1);
+            membershipType1.Notes = $"set up timestamp issue {DateTime.Now}";  // turn on IsDirty
+            membershipType2.Notes = $"set up timestamp issue {DateTime.Now}";
+
+            var savedMembershipType = await membershipType2.SaveAsync();
+            
+            Assert.NotEqual(savedMembershipType.RowVersion, membershipType1.RowVersion);
+            await Assert.ThrowsAsync<DataPortalException>(() => membershipType1.SaveAsync());
+        }
+        
         
         // test invalid state 
         [Fact]
-        public async Task TestMembershipTypeER_DescriptionRequired()
+        public async Task TestMembershipTypeEdit_DescriptionRequired()
         {
-            var membershipType = await MembershipTypeER.NewMembershipType();
+            var membershipType = await MembershipTypeEdit.NewMembershipTypeEdit();
             membershipType.Description = "make valid";
             membershipType.Level = 2;
             membershipType.LastUpdatedBy = "edm";
@@ -88,9 +103,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
        
         [Fact]
-        public async Task TestMembershipTypeER_DescriptionExceedsMaxLengthOf50()
+        public async Task TestMembershipTypeEdit_DescriptionExceedsMaxLengthOf50()
         {
-            var membershipType = await MembershipTypeER.NewMembershipType();
+            var membershipType = await MembershipTypeEdit.NewMembershipTypeEdit();
             membershipType.Level = 1;
             membershipType.LastUpdatedBy = "edm";
             membershipType.LastUpdatedDate = DateTime.Now;
@@ -110,9 +125,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         // test exception if attempt to save in invalid state
 
         [Fact]
-        public async Task TestMembershipTypeER_TestInvalidSave()
+        public async Task TestMembershipTypeEdit_TestInvalidSave()
         {
-            var membershipType = await MembershipTypeER.NewMembershipType();
+            var membershipType = await MembershipTypeEdit.NewMembershipTypeEdit();
             membershipType.Description = String.Empty;
             bool exceptionThrown = false;
             try
