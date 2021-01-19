@@ -10,7 +10,7 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class EMailTypeEdit : BusinessBase<EMailTypeEdit>
+    public class MemberStatusEdit : BusinessBase<MemberStatusEdit>
     {
         #region Business Methods
 
@@ -65,24 +65,24 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        public static async Task<EMailTypeEdit> NewEMailTypeEdit()
+        public static async Task<MemberStatusEdit> NewMemberStatusEdit()
         {
-            return await DataPortal.CreateAsync<EMailTypeEdit>();
+            return await DataPortal.CreateAsync<MemberStatusEdit>();
         }
 
-        public static async Task<EMailTypeEdit> GetEMailTypeEdit(EMailType childData)
+        public static async Task<MemberStatusEdit> GetMemberStatusEdit(MemberStatus childData)
         {
-            return await DataPortal.FetchChildAsync<EMailTypeEdit>(childData);
+            return await DataPortal.FetchChildAsync<MemberStatusEdit>(childData);
         }
 
-        public static async Task<EMailTypeEdit> GetEMailTypeEdit(int id)
+        public static async Task<MemberStatusEdit> GetMemberStatusEdit(int id)
         {
-            return await DataPortal.FetchAsync<EMailTypeEdit>(id);
+            return await DataPortal.FetchAsync<MemberStatusEdit>(id);
         }
 
-        public static async Task DeleteEMailTypeEdit(int id)
+        public static async Task DeleteMemberStatusEdit(int id)
         {
-            await DataPortal.DeleteAsync<EMailTypeEdit>(id);
+            await DataPortal.DeleteAsync<MemberStatusEdit>(id);
         }
 
         #endregion
@@ -93,14 +93,14 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private async Task Fetch(int id)
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEMailTypeDal>();
+            var dal = dalManager.GetProvider<IMemberStatusDal>();
             var data = await dal.Fetch(id);
 
             Fetch(data);
         }
 
         [FetchChild]
-        private void Fetch(EMailType childData)
+        private void Fetch(MemberStatus childData)
         {
             using (BypassPropertyChecks)
             {
@@ -121,16 +121,16 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private async Task InsertChild()
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEMailTypeDal>();
-            var data = new EMailType()
+            var dal = dalManager.GetProvider<IMemberStatusDal>();
+            var data = new MemberStatus()
             {
                 Notes = Notes,
                 Description = Description
             };
 
-            var insertedEMailType = await dal.Insert(data);
-            Id = insertedEMailType.Id;
-            RowVersion = insertedEMailType.RowVersion;
+            var insertedMemberStatus = await dal.Insert(data);
+            Id = insertedMemberStatus.Id;
+            RowVersion = insertedMemberStatus.RowVersion;
         }
 
         [Update]
@@ -143,9 +143,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private async Task ChildUpdate()
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEMailTypeDal>();
+            var dal = dalManager.GetProvider<IMemberStatusDal>();
 
-            var emailTypeToUpdate = new EMailType()
+            var emailTypeToUpdate = new MemberStatus()
             {
                 Id = Id,
                 Description = Description,
@@ -167,7 +167,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private async Task Delete(int id)
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEMailTypeDal>();
+            var dal = dalManager.GetProvider<IMemberStatusDal>();
            
             await dal.Delete(id);
         }

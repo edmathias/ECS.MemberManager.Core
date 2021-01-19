@@ -91,7 +91,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         public static async Task<MembershipTypeInfo> GetMembershipTypeInfo(MembershipType childData)
         {
-            return await DataPortal.FetchAsync<MembershipTypeInfo>(childData);
+            return await DataPortal.FetchChildAsync<MembershipTypeInfo>(childData);
         }
 
         public static async Task DeleteMembershipTypeInfo(int id)
@@ -119,8 +119,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
             RowVersion = childData.RowVersion;
         }
 
-        [Fetch]
-        private async Task Fetch(MembershipType childData)
+        [FetchChild]
+        private void Fetch(MembershipType childData)
         {
             Id = childData.Id;
             Description = childData.Description;
@@ -130,7 +130,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
             Notes = childData.Notes;
             RowVersion = childData.RowVersion;
         }
-
         
         #endregion
     }

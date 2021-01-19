@@ -10,7 +10,7 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class PrivacyLevelER : BusinessBase<PrivacyLevelER>
+    public class PrivacyLevelEdit : BusinessBase<PrivacyLevelEdit>
     {
         #region Business Methods
         
@@ -36,6 +36,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(NotesProperty, value);
         }
 
+        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
+        public byte[] RowVersion
+        {
+            get => GetProperty(RowVersionProperty);
+            private set => LoadProperty(RowVersionProperty, value);
+        }
+
         protected override void AddBusinessRules()
         {
             base.AddBusinessRules();
@@ -53,19 +60,24 @@ namespace ECS.MemberManager.Core.BusinessObjects
         
         #region Factory Methods
 
-        public static async Task<PrivacyLevelER> NewPrivacyLevel()
+        public static async Task<PrivacyLevelEdit> NewPrivacyLevelEdit()
         {
-            return await DataPortal.CreateAsync<PrivacyLevelER>();
+            return await DataPortal.CreateAsync<PrivacyLevelEdit>();
         }
 
-        public static async Task<PrivacyLevelER> GetPrivacyLevel(int id)
+        public static async Task<PrivacyLevelEdit> GetPrivacyLevelEdit(int id)
         {
-            return await DataPortal.FetchAsync<PrivacyLevelER>(id);
+            return await DataPortal.FetchAsync<PrivacyLevelEdit>(id);
         }
 
-        public static async Task DeletePrivacyLevel(int id)
+        public static async Task<PrivacyLevelEdit> GetPrivacyLevelEdit(PrivacyLevel childData)
         {
-            await DataPortal.DeleteAsync<PrivacyLevelER>(id);
+            return await DataPortal.FetchChildAsync<PrivacyLevelEdit>(childData);
+        }
+        
+        public static async Task DeletePrivacyLevelEdit(int id)
+        {
+            await DataPortal.DeleteAsync<PrivacyLevelEdit>(id);
         }
         
         #endregion
@@ -73,21 +85,35 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region DataPortal Methods
                 
         [Fetch]
-        private void Fetch(int id)
+        private async Task Fetch(int id)
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IPrivacyLevelDal>();
-            var data = dal.Fetch(id);
+            var data = await dal.Fetch(id);
+
+            Fetch(data);
+        }
+
+        [FetchChild]
+        private void Fetch(PrivacyLevel childData)
+        {
             using (BypassPropertyChecks)
             {
-                Id = data.Id;
-                Description = data.Description;
-                Notes = data.Notes;
+                Id = childData.Id;
+                Description = childData.Description;
+                Notes = childData.Notes;
+                RowVersion = childData.RowVersion;
             }
         }
 
         [Insert]
-        private void Insert()
+        private async Task Insert()
+        {
+            await InsertChild();
+        }
+        
+        [InsertChild]
+        private async Task InsertChild()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IPrivacyLevelDal>();
@@ -98,13 +124,21 @@ namespace ECS.MemberManager.Core.BusinessObjects
                     Description = this.Description,
                     Notes = this.Notes
                 };
-                dal.Insert(documentTypeToInsert);
-                Id = documentTypeToInsert.Id;
+                var insertedPrivacyLevel = await dal.Insert(documentTypeToInsert);
+                Id = insertedPrivacyLevel.Id;
+                RowVersion = insertedPrivacyLevel.RowVersion;
+
             }
         }
-        
+
         [Update]
-        private void Update()
+        private async Task Update()
+        {
+            await UpdateChild();
+        }
+        
+        [UpdateChild]
+        private async Task UpdateChild()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IPrivacyLevelDal>();
@@ -114,26 +148,27 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 {
                     Id = this.Id,
                     Description = this.Description,
-                    Notes = this.Notes
+                    Notes = this.Notes,
+                    RowVersion = RowVersion
                 };
-                dal.Update(documentTypeToUpdate);
+                var updatedPrivacyLevel = await dal.Update(documentTypeToUpdate);
+                RowVersion = updatedPrivacyLevel.RowVersion;
             }
-
         }
 
-        [DeleteSelf]
-        private void DeleteSelf()
+        [DeleteSelfChild]
+        private async Task DeleteSelf()
         {
-            Delete(this.Id);
+            await Delete(this.Id);
         }
         
         [Delete]
-        private void Delete(int id)
+        private async Task Delete(int id)
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IPrivacyLevelDal>();
  
-            dal.Delete(id);
+            await dal.Delete(id);
         }
 
         #endregion

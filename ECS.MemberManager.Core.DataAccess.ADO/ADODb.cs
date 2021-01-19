@@ -60,6 +60,55 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
 
             InsertMembershipTypes();
 
+            InsertMemberStatuses();
+
+            InsertPrivacyLevels();
+
+            InsertEventDocuments();
+
+        }
+
+        private static void InsertEventDocuments()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("SET IDENTITY_INSERT [dbo].[EventDocuments] ON;");
+            sb.AppendLine(
+                "INSERT INTO [dbo].[EventDocuments]([Id], [EventId], [DocumentName], [DocumentTypeId], [PathAndFileName], [LastUpdatedBy], [LastUpdatedDate], [Notes])");
+            sb.AppendLine("SELECT 1, 1, N'Event Document #1', 1, N'c:\\directory\\filename.doc', N'edm', '20210117 00:00:00.000', N'notes for #1' UNION ALL");
+            sb.AppendLine("SELECT 2, 2, N'Event document #2', 2, N'c:\\anotherdirectory\\test\\filename.doc', N'joe', '20210117 00:00:00.000', N'notes for 2' UNION ALL");
+            sb.AppendLine("SELECT 99, 1, N'Event doc to delete', 2, N'c:\\deleteme', N'edm', '20200630 00:00:00.000', N'notes to delete'");
+            sb.AppendLine("SET IDENTITY_INSERT [dbo].[EventDocuments] OFF;");
+            sb.AppendLine("DBCC CHECKIDENT ('EventDocuments', RESEED, 2)");
+            _db.Execute(sb.ToString());            
+        }
+
+        private static void InsertPrivacyLevels()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("SET IDENTITY_INSERT [dbo].[PrivacyLevels] ON;");
+            sb.AppendLine("INSERT INTO [dbo].[PrivacyLevels]([Id], [Description], [Notes])");
+            sb.AppendLine("SELECT 1, N'Privacy level #1', N'notes for #1' UNION ALL");
+            sb.AppendLine("SELECT 2, N'Privacy level #2', N'Notes for #2' UNION ALL");
+            sb.AppendLine("SELECT 99, N'Privacy level to delete', N'Notes to delete'");
+            sb.AppendLine("SET IDENTITY_INSERT [dbo].[PrivacyLevels] OFF;");
+            sb.AppendLine("DBCC CHECKIDENT ('PrivacyLevels', RESEED, 2)");
+            _db.Execute(sb.ToString());            
+        }
+
+        private static void InsertMemberStatuses()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("SET IDENTITY_INSERT [dbo].[MemberStatuses] ON;");
+
+            sb.AppendLine("INSERT INTO [dbo].[MemberStatuses]([Id], [Description], [Notes])");
+            sb.AppendLine("SELECT 1, N'Member status 1', N'notes for #1' UNION ALL");
+            sb.AppendLine("SELECT 2, N'Member status 2', N'notes for #2' UNION ALL");
+            sb.AppendLine("SELECT 99, N'Member status to delete', N'notes for delete'");
+            sb.AppendLine("SET IDENTITY_INSERT [dbo].[MemberStatuses] OFF;");
+            sb.AppendLine("DBCC CHECKIDENT ('MembershipTypes', RESEED, 2)");
+            
+            _db.Execute(sb.ToString());            
+            
         }
 
         private static void InsertMembershipTypes()

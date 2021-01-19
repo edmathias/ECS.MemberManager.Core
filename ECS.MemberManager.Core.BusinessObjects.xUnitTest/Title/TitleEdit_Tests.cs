@@ -37,10 +37,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             }
         }
 
-  
-
         [Fact]
-        public async Task TestTitleEdit_Get()
+        public async Task TitleEdit_Get()
         {
             var title = await TitleEdit.GetTitleEdit(1);
 
@@ -51,7 +49,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestTitleEdit_New()
+        public async Task TitleEdit_New()
         {
             var title = await TitleEdit.NewTitleEdit();
 
@@ -60,10 +58,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async void TestTitleEdit_Update()
+        public async void TitleEdit_Update()
         {
             var title = await TitleEdit.GetTitleEdit(1);
-            var notesUpdate = $"These are updated description {DateTime.Now}";
+            var notesUpdate = $"These are updated description.";
             title.Description = notesUpdate;
 
             var result = await title.SaveAsync();
@@ -73,7 +71,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async void TestTitleEdit_Insert()
+        public async void TitleEdit_Insert()
         {
             var title = await TitleEdit.NewTitleEdit();
             title.Abbreviation = "Lord";
@@ -88,7 +86,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestTitleEdit_Delete()
+        public async Task TitleEdit_Delete()
         {
             await TitleEdit.DeleteTitleEdit(99);
 
@@ -97,7 +95,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestTitleEdit_AbbreviationRequired()
+        public async Task TitleEdit_AbbreviationRequired()
         {
             var title = await TitleEdit.NewTitleEdit();
             title.Abbreviation = "Mrs";
@@ -110,7 +108,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestTitleEdit_DescriptionExceedsMaxLengthOf50()
+        public async Task TitleEdit_DescriptionExceedsMaxLengthOf50()
         {
             var title = await TitleEdit.NewTitleEdit();
             title.Abbreviation = "Mrs";
@@ -127,7 +125,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         // test exception if attempt to save in invalid state
 
         [Fact]
-        public async Task TestTitleEdit_TestInvalidSave()
+        public async Task TitleEdit_TestInvalidSave()
         {
             var title = await TitleEdit.NewTitleEdit();
             title.Description = String.Empty;
@@ -167,7 +165,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
         
         [Fact]
-        public async Task TestTitleEdit_InvalidGet()
+        public async Task TitleEdit_InvalidGet()
         {
             await Assert.ThrowsAsync<DataPortalException>(() => TitleEdit.GetTitleEdit(999));
         }

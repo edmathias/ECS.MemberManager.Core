@@ -6,10 +6,10 @@ namespace ECS.MemberManager.Core.EF.Domain
     public class EventDocument : EntityBase
     {
         [Required]
-        public Event Event { get; set; }
+        public int EventId { get; set; }
         [MaxLength(50)]
         public string DocumentName { get; set; }
-        public DocumentType DocumentType { get; set; }
+        public int DocumentTypeId { get; set; }
         [MaxLength(255)]
         public string PathAndFileName { get; set; }
         [MaxLength(255)] public string LastUpdatedBy { get; set; }
