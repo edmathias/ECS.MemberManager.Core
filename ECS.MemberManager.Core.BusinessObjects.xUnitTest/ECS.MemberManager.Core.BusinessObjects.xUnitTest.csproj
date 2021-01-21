@@ -34,7 +34,6 @@
 
     <ItemGroup>
       <Folder Include="MemberInfo" />
-      <Folder Include="Organization" />
       <Folder Include="OrganizationType" />
       <Folder Include="Payment" />
       <Folder Include="Person" />

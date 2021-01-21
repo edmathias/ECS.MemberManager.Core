@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using Microsoft.Extensions.Configuration;
@@ -7,12 +6,12 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class TitleInfoList_Tests
+    public class OrganizationInfoList_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
 
-        public TitleInfoList_Tests()
+        public OrganizationInfoList_Tests()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -35,16 +34,13 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
         
         [Fact]
-        private async void TitleInfoList_TestGetTitleInfoList()
+        private async void OrganizationInfoList_TestGetOrganizationInfoList()
         {
-            var eMailTypeInfoList = await TitleInfoList.GetTitleInfoList();
+            var eMailTypeInfoList = await OrganizationInfoList.GetOrganizationInfoList();
             
             Assert.NotNull(eMailTypeInfoList);
             Assert.True(eMailTypeInfoList.IsReadOnly);
             Assert.Equal(3, eMailTypeInfoList.Count);
         }
-        
-
-      
     }
 }

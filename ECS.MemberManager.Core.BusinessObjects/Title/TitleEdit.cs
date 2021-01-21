@@ -150,7 +150,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<ITitleDal>();
 
-            var emailTypeToUpdate = new Title()
+            var titleToUpdate = new Title()
             {
                 Id = Id,
                 Abbreviation = Abbreviation,
@@ -159,7 +159,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 RowVersion = RowVersion
             };
 
-            var updatedEmail = await dal.Update(emailTypeToUpdate);
+            var updatedEmail = await dal.Update(titleToUpdate);
             RowVersion = updatedEmail.RowVersion;
         }
         

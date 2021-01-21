@@ -35,8 +35,8 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
         }
         public async Task<List<Title>> Fetch()
         {
-            var offices =await _db.GetAllAsync<Title>();
-            return offices.ToList();
+            var titles =await _db.GetAllAsync<Title>();
+            return titles.ToList();
         }
 
         public async Task<Title> Fetch(int id)
@@ -44,21 +44,21 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             return await _db.GetAsync<Title>(id);
         }
 
-        public async Task<Title> Insert(Title officeToInsert)
+        public async Task<Title> Insert(Title titleToInsert)
         {
             var sql = "INSERT INTO Titles (Abbreviation,Description,DisplayOrder ) " +
                       "VALUES(@Abbreviation, @Description, @DisplayOrder );" +
                       "SELECT SCOPE_IDENTITY()";
-            officeToInsert.Id = await _db.ExecuteScalarAsync<int>(sql,officeToInsert);
+            titleToInsert.Id = await _db.ExecuteScalarAsync<int>(sql,titleToInsert);
 
             //reretrieve Title to get rowversion
-            var insertedOffice = await _db.GetAsync<Title>(officeToInsert.Id);
-            officeToInsert.RowVersion = insertedOffice.RowVersion;
+            var insertedOffice = await _db.GetAsync<Title>(titleToInsert.Id);
+            titleToInsert.RowVersion = insertedOffice.RowVersion;
             
-            return officeToInsert;
+            return titleToInsert;
         }
 
-        public async Task<Title> Update(Title officeToUpdate)
+        public async Task<Title> Update(Title titleToUpdate)
         {
             var sql = "UPDATE Titles " +
                       "SET Description = @Description, " +
@@ -67,12 +67,12 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                       "OUTPUT inserted.RowVersion " +
                       "WHERE Id = @Id AND RowVersion = @RowVersion ";
 
-            var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql,officeToUpdate);
+            var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql,titleToUpdate);
             if (rowVersion == null)
                 throw new DBConcurrencyException("Entity has been updated since last read. Try again!");
-            officeToUpdate.RowVersion = rowVersion;
+            titleToUpdate.RowVersion = rowVersion;
             
-            return officeToUpdate;
+            return titleToUpdate;
         }
 
         public async Task Delete(int id)

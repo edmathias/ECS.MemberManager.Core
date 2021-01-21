@@ -1,5 +1,9 @@
-﻿using System;
+using System;
+using System.Data;
 using System.IO;
+using System.Threading.Tasks;
+using Csla;
+using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using Microsoft.Extensions.Configuration;
@@ -7,12 +11,12 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class TitleInfoList_Tests
+    public class OfficeInfo_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
 
-        public TitleInfoList_Tests()
+        public OfficeInfo_Tests()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -21,7 +25,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var testLibrary = _config.GetValue<string>("TestLibrary");
             
             if(testLibrary == "Mock")
-                MockDb.ResetMockDb();
+                   MockDb.ResetMockDb();
             else
             {
                 if (!IsDatabaseBuilt)
@@ -31,20 +35,12 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                     IsDatabaseBuilt = true;
                 }
             }
-            
         }
-        
-        [Fact]
-        private async void TitleInfoList_TestGetTitleInfoList()
-        {
-            var eMailTypeInfoList = await TitleInfoList.GetTitleInfoList();
-            
-            Assert.NotNull(eMailTypeInfoList);
-            Assert.True(eMailTypeInfoList.IsReadOnly);
-            Assert.Equal(3, eMailTypeInfoList.Count);
-        }
-        
 
-      
+        [Fact]
+        public async Task OfficeInfoList_Get()
+        {
+            await Assert.ThrowsAsync<DataPortalException>(() => OfficeInfo.GetOfficeInfo(999));
+        }
     }
 }

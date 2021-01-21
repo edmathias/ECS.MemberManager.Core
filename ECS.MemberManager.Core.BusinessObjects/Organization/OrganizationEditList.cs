@@ -10,26 +10,26 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class TitleEditList : BusinessListBase<TitleEditList,TitleEdit>
+    public class OrganizationEditList : BusinessListBase<OrganizationEditList,OrganizationEdit>
     {
         public static void AddObjectAuthorizationRules()
         {
             // TODO: add object-level authorization rules
         }
 
-        public static async Task<TitleEditList> NewTitleEditList()
+        public static async Task<OrganizationEditList> NewOrganizationEditList()
         {
-            return await DataPortal.CreateAsync<TitleEditList>();
+            return await DataPortal.CreateAsync<OrganizationEditList>();
         }
 
-        public static async Task<TitleEditList> GetTitleEditList()
+        public static async Task<OrganizationEditList> GetOrganizationEditList()
         {
-            return await DataPortal.FetchAsync<TitleEditList>();
+            return await DataPortal.FetchAsync<OrganizationEditList>();
         }
 
-        public static async Task<TitleEditList> GetTitleEditList(List<TitleEdit> childData)
+        public static async Task<OrganizationEditList> GetOrganizationEditList(List<OrganizationEdit> childData)
         {
-            return await DataPortal.FetchAsync<TitleEditList>(childData);
+            return await DataPortal.FetchAsync<OrganizationEditList>(childData);
         }
         
         
@@ -44,7 +44,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private async Task Fetch()
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ITitleDal>();
+            var dal = dalManager.GetProvider<IOrganizationDal>();
             var childData = await dal.Fetch();
 
             await Fetch(childData);
@@ -52,14 +52,14 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         [Fetch]
-        private async Task Fetch(List<Title> childData)
+        private async Task Fetch(List<Organization> childData)
         {
             using (LoadListMode)
             {
-                foreach (var title in childData)
+                foreach (var eMailType in childData)
                 {
-                    var titleToAdd = await TitleEdit.GetTitleEdit(title);
-                    Add(titleToAdd);
+                    var eMailTypeToAdd = await OrganizationEdit.GetOrganizationEdit(eMailType);
+                    Add(eMailTypeToAdd);
                 }
             }
         }

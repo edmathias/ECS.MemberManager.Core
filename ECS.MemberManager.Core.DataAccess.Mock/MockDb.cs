@@ -89,14 +89,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                             DateOfFirstContact = DateTime.Now,
                             LastUpdatedBy = "edm",
                             LastUpdatedDate = DateTime.Now,
-                            OrganizationType = new OrganizationType()
-                            {
-                                Id = 1, Name = "org type",
-                                CategoryOfOrganization = new CategoryOfOrganization()
-                                {
-                                    Id = 1,Category = "cat org"
-                                }
-                            }
+                            OrganizationTypeId = 1
                         }
                     },
                 },
@@ -110,6 +103,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                         new Organization()
                         {
                             Id=1,
+                            OrganizationTypeId = 1,
                             Name = "test org",
                             DateOfFirstContact = DateTime.Now,
                             LastUpdatedBy = "edm",
@@ -361,13 +355,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                     Id = 1,
                     Addresses = new List<Address>(),
                     CategoryOfOrganizations = new List<CategoryOfOrganization>(),
-                    OrganizationType = new OrganizationType()
-                    {
-                        Id = 1,
-                        Name = "Organization type 1",
-                        CategoryOfOrganization = new CategoryOfOrganization(),
-                        Notes = "no notes here"
-                    },
+                    OrganizationTypeId = 1,
                     DateOfFirstContact = DateTime.Now,
                     EMails = new List<EMail>(),
                     LastUpdatedBy = "edm",
@@ -378,13 +366,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                     Id = 2,
                     Addresses = new List<Address>(),
                     CategoryOfOrganizations = new List<CategoryOfOrganization>(),
-                    OrganizationType = new OrganizationType()
-                    {
-                        Id = 2,
-                        Name = "Organization type 2",
-                        CategoryOfOrganization = new CategoryOfOrganization(),
-                        Notes = ""
-                    },
+                    OrganizationTypeId = 2, 
                     DateOfFirstContact = DateTime.Now,
                     EMails = new List<EMail>(),
                     LastUpdatedBy = "edm",
@@ -395,13 +377,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                     Id = 99,
                     Addresses = new List<Address>(),
                     CategoryOfOrganizations = new List<CategoryOfOrganization>(),
-                    OrganizationType = new OrganizationType()
-                    {
-                        Id = 2,
-                        Name = "Organization type 2",
-                        CategoryOfOrganization = new CategoryOfOrganization(),
-                        Notes = ""
-                    },
+                    OrganizationTypeId = 1, 
                     DateOfFirstContact = DateTime.Now,
                     EMails = new List<EMail>(),
                     LastUpdatedBy = "edm",

@@ -9,7 +9,7 @@ namespace ECS.MemberManager.Core.EF.Domain
         [Required,MaxLength(50)]
         public string Name { get; set; }
         [Required]
-        public OrganizationType OrganizationType { get; set; }
+        public int OrganizationTypeId { get; set; }
         [Required]
         public DateTime DateOfFirstContact { get; set; }
         [MaxLength(255)] public string LastUpdatedBy { get; set; }

@@ -1,40 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.DataAccess.Mock
 {
     public class OrganizationDal : IOrganizationDal
-    
     {
-        public Organization Fetch(int id)
+        public async Task<Organization> Fetch(int id)
         {
             return MockDb.Organizations.FirstOrDefault(ms => ms.Id == id);
         }
 
-        public List<Organization> Fetch()
+        public async Task<List<Organization>> Fetch()
         {
             return MockDb.Organizations.ToList();
         }
 
-        public int Insert( Organization organizationToInsert)
+        public async Task<Organization> Insert( Organization organizationToInsert)
         {
             var lastOrganization = MockDb.Organizations.ToList().OrderByDescending(ms => ms.Id).First();
             organizationToInsert.Id = 1+lastOrganization.Id;
             MockDb.Organizations.Add(organizationToInsert);
             
-            return organizationToInsert.Id;
+            return organizationToInsert;
         }
 
-        public int Update(Organization eMail)
+        public async Task<Organization> Update(Organization organization)
         {
-            // mockdb in memory list reference already updated 
-            return 1;
+            return organization;
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
             var eMailToDelete = MockDb.Organizations.FirstOrDefault(ms => ms.Id == id);
             var listIndex = MockDb.Organizations.IndexOf(eMailToDelete);
