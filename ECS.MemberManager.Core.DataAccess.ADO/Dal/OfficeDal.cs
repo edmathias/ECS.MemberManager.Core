@@ -13,12 +13,12 @@ using Microsoft.Extensions.Configuration;
 
 namespace ECS.MemberManager.Core.DataAccess.ADO
 {
-    public class TitleDal : ITitleDal
+    public class OfficeDal : IOfficeDal
     {
         private static IConfigurationRoot _config;
         private SqlConnection _db = null;
 
-        public TitleDal()
+        public OfficeDal()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -29,41 +29,46 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             _db = new SqlConnection(cnxnString);
         }
 
-        public TitleDal(SqlConnection cnxn)
+        public OfficeDal(SqlConnection cnxn)
         {
             _db = cnxn;
         }
-        public async Task<List<Title>> Fetch()
+        public async Task<List<Office>> Fetch()
         {
-            var offices =await _db.GetAllAsync<Title>();
+            var offices =await _db.GetAllAsync<Office>();
             return offices.ToList();
         }
 
-        public async Task<Title> Fetch(int id)
+        public async Task<Office> Fetch(int id)
         {
-            return await _db.GetAsync<Title>(id);
+            return await _db.GetAsync<Office>(id);
         }
 
-        public async Task<Title> Insert(Title officeToInsert)
+        public async Task<Office> Insert(Office officeToInsert)
         {
-            var sql = "INSERT INTO Titles (Abbreviation,Description,DisplayOrder ) " +
-                      "VALUES(@Abbreviation, @Description, @DisplayOrder );" +
-                      "SELECT SCOPE_IDENTITY()";
+            var sql = "INSERT INTO [dbo].[Offices] ([Name], [Term], [CalendarPeriod], [ChosenHow], [Appointer], [LastUpdatedBy], [LastUpdatedDate], [Notes]) "+
+                            "SELECT @Name, @Term, @CalendarPeriod, @ChosenHow, @Appointer, @LastUpdatedBy, @LastUpdatedDate, @Notes " +
+                            "SELECT SCOPE_IDENTITY()";
             officeToInsert.Id = await _db.ExecuteScalarAsync<int>(sql,officeToInsert);
 
-            //reretrieve Title to get rowversion
-            var insertedOffice = await _db.GetAsync<Title>(officeToInsert.Id);
+            //reretrieve Office to get rowversion
+            var insertedOffice = await _db.GetAsync<Office>(officeToInsert.Id);
             officeToInsert.RowVersion = insertedOffice.RowVersion;
             
             return officeToInsert;
         }
 
-        public async Task<Title> Update(Title officeToUpdate)
+        public async Task<Office> Update(Office officeToUpdate)
         {
-            var sql = "UPDATE Titles " +
-                      "SET Description = @Description, " +
-                      "Abbreviation = @Abbreviation, " +
-                      "DisplayOrder = @DisplayOrder " +
+            var sql = "UPDATE Offices " +
+                      "SET [Name] = @Name, "+
+                      "[Term] = @Term, "+
+                      "[CalendarPeriod] = @CalendarPeriod, "+
+                      "[ChosenHow] = @ChosenHow, "+
+                      "[Appointer] = @Appointer, "+
+                      "[LastUpdatedBy] = @LastUpdatedBy, "+
+                      "[LastUpdatedDate] = @LastUpdatedDate, "+
+                      "[Notes] = @Notes " +
                       "OUTPUT inserted.RowVersion " +
                       "WHERE Id = @Id AND RowVersion = @RowVersion ";
 
@@ -77,7 +82,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
 
         public async Task Delete(int id)
         {
-            await _db.DeleteAsync<Title>(new Title() {Id = id});
+            await _db.DeleteAsync<Office>(new Office() {Id = id});
         }
         
         public void Dispose()

@@ -66,6 +66,26 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
 
             InsertEventDocuments();
 
+            InsertOffices();
+
+        }
+
+        private static void InsertOffices()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("SET IDENTITY_INSERT [dbo].[Offices] ON;");
+            sb.AppendLine(
+                "INSERT INTO [dbo].[Offices]([Id], [Name], [Term], [CalendarPeriod], [ChosenHow], [Appointer], [LastUpdatedBy], [LastUpdatedDate], [Notes])");
+            sb.AppendLine(
+                "SELECT 1, N'Office #1', 1, N'Annual', 1, N'Joe Blow', N'edm', '20210119 00:00:00.000', N'notes for office #1' UNION ALL");
+            sb.AppendLine(
+                "SELECT 2, N'Office #2', 2, N'Decade', 2, N'Fred Derf', N'joe', '20200530 00:00:00.000', N'notes for office #2' UNION ALL");
+            sb.AppendLine(
+                "SELECT 99, N'Office to delete', 1, N'Annual', 1, N'mary', N'edm', '20200101 00:00:00.000', N'delete this office'");
+            sb.AppendLine("SET IDENTITY_INSERT [dbo].[Offices] OFF;");
+            sb.AppendLine("DBCC CHECKIDENT ('Offices', RESEED, 2)");
+
+            _db.Execute(sb.ToString());            
         }
 
         private static void InsertEventDocuments()
