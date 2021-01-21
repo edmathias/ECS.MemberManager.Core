@@ -94,7 +94,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
             return await DataPortal.FetchChildAsync<MembershipTypeEdit>(childData);
         }
         
-        
         public static async Task DeleteMembershipTypeEdit(int id)
         {
             await DataPortal.DeleteAsync<MembershipTypeEdit>(id);
@@ -104,6 +103,16 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region DataPortal Methods
 
+        [Fetch]
+        private async Task Fetch(int id)
+        {
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IMembershipTypeDal>();
+            var childData = await dal.Fetch(id);
+
+            Fetch(childData);
+        }
+        
         [FetchChild]
         private void Fetch(MembershipType childData)
         {
@@ -118,17 +127,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 RowVersion = childData.RowVersion;
             }
         }
-
-        [Fetch]
-        private async Task Fetch(int id)
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IMembershipTypeDal>();
-            var childData = await dal.Fetch(id);
-
-            Fetch(childData);
-        }
-
          
         [Insert]
         private async Task Insert()

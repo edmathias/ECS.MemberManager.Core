@@ -5,11 +5,12 @@ using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
+using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class OfficeER : BusinessBase<OfficeER>
+    public class OfficeEdit : BusinessBase<OfficeEdit>
     {
         #region Business Methods
         
@@ -21,13 +22,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
        
         public static readonly PropertyInfo<string> NameProperty = RegisterProperty<string>(p => p.Name);
-        [Required,MaxLength(50)]
+        [Required, MaxLength(50)]
         public string Name
         {
             get => GetProperty(NameProperty);
             set => SetProperty(NameProperty, value);
         }
-        
+
         public static readonly PropertyInfo<int> TermProperty = RegisterProperty<int>(p => p.Term);
         public int Term
         {
@@ -35,7 +36,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(TermProperty, value);
         }
 
-        [MaxLength(25)]
         public static readonly PropertyInfo<string> CalendarPeriodProperty = RegisterProperty<string>(p => p.CalendarPeriod);
         public string CalendarPeriod
         {
@@ -50,8 +50,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(ChosenHowProperty, value);
         }
 
-        public static readonly PropertyInfo<string> AppointerProperty = RegisterProperty<string>(p => p.Appointer);
         [MaxLength(50)]
+        public static readonly PropertyInfo<string> AppointerProperty = RegisterProperty<string>(p => p.Appointer);
         public string Appointer
         {
             get => GetProperty(AppointerProperty);
@@ -59,7 +59,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(p => p.LastUpdatedBy);
-        [Required,MaxLength(255)]
+        [Required, MaxLength(255)]
         public string LastUpdatedBy
         {
             get => GetProperty(LastUpdatedByProperty);
@@ -81,8 +81,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(NotesProperty, value);
         }
 
-        // TODO: add public properties and methods
-
+        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
+        public byte[] RowVersion
+        {
+            get => GetProperty(RowVersionProperty);
+            private set => LoadProperty(RowVersionProperty, value);
+        }
 
         protected override void AddBusinessRules()
         {
@@ -96,112 +100,136 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             // TODO: add object-level authorization rules
         }
-        
+
         #endregion
 
         #region Factory Methods
 
-        public static async Task<OfficeER> NewOffice()
+        public static async Task<OfficeEdit> NewOfficeEdit()
         {
-            return await DataPortal.CreateAsync<OfficeER>();
+            return await DataPortal.CreateAsync<OfficeEdit>();
         }
 
-        public static async Task<OfficeER> GetOffice(int id)
+        public static async Task<OfficeEdit> GetOfficeEdit(Office childData)
         {
-            return await DataPortal.FetchAsync<OfficeER>(id);
+            return await DataPortal.FetchChildAsync<OfficeEdit>(childData);
         }
 
-        public static async Task DeleteOffice(int id)
+        public static async Task<OfficeEdit> GetOfficeEdit(int id)
         {
-            await DataPortal.DeleteAsync<OfficeER>(id);
+            return await DataPortal.FetchAsync<OfficeEdit>(id);
+        }
+
+        public static async Task DeleteOfficeEdit(int id)
+        {
+            await DataPortal.DeleteAsync<OfficeEdit>(id);
         }
 
         #endregion
 
-        #region Data Access
-
+        #region Data Access Methods
+        
         [Fetch]
-        private void Fetch(int id)
+        private async Task Fetch(int id)
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IOfficeDal>();
-            var data = dal.Fetch(id);
+            var data = await dal.Fetch(id);
+
+            Fetch(data);
+        }
+
+        [FetchChild]
+        private void Fetch(Office childData)
+        {
             using (BypassPropertyChecks)
             {
-                Id = data.Id;
-                Name = data.Name;
-                Term = data.Term;
-                CalendarPeriod = data.CalendarPeriod;
-                ChosenHow = data.ChosenHow;
-                Appointer = data.Appointer;
-                LastUpdatedBy = data.LastUpdatedBy;
-                LastUpdatedDate = data.LastUpdatedDate;
-                Notes = data.Notes;
+                Id = childData.Id;
+                Name = childData.Name;
+                Term = childData.Term;
+                CalendarPeriod = childData.CalendarPeriod;
+                ChosenHow = childData.ChosenHow;
+                Appointer = childData.Appointer;
+                LastUpdatedBy = childData.LastUpdatedBy;
+                LastUpdatedDate = childData.LastUpdatedDate;
+                Notes = childData.Notes;
+                RowVersion = childData.RowVersion;
             }
         }
 
         [Insert]
-        private void Insert()
+        private async Task Insert()
+        {
+            await InsertChild();
+        }
+
+        [InsertChild]
+        private async Task InsertChild()
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider <IOfficeDal> ();
-            using (BypassPropertyChecks)
+            var dal = dalManager.GetProvider<IOfficeDal>();
+            var data = new Office()
             {
-                var officeToInsert = new EF.Domain.Office()
-                {
-                    Name = this.Name,
-                    Term = this.Term,
-                    CalendarPeriod = this.CalendarPeriod,
-                    ChosenHow = this.ChosenHow,
-                    Appointer = this.Appointer,
-                    LastUpdatedBy = this.LastUpdatedBy,
-                    LastUpdatedDate = this.LastUpdatedDate,
-                    Notes = this.Notes
-                };
-                
-                Id = dal.Insert(officeToInsert);
-            }
+                Name = Name,
+                Term = Term,
+                CalendarPeriod = CalendarPeriod,
+                ChosenHow = ChosenHow,
+                Appointer = Appointer,
+                LastUpdatedBy = LastUpdatedBy,
+                LastUpdatedDate = LastUpdatedDate,
+                Notes = Notes,
+            };
+
+            var insertedOffice = await dal.Insert(data);
+            Id = insertedOffice.Id;
+            RowVersion = insertedOffice.RowVersion;
         }
 
         [Update]
-        private void Update()
+        private async Task Update()
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider <IOfficeDal>();
-            var officeToUpdate = dal.Fetch(this.Id);
-            
-            using (BypassPropertyChecks)
-            {
-                officeToUpdate.Name = this.Name;
-                officeToUpdate.Term = this.Term;
-                officeToUpdate.CalendarPeriod = this.CalendarPeriod;
-                officeToUpdate.ChosenHow = this.ChosenHow;
-                officeToUpdate.Appointer = this.Appointer;
-                officeToUpdate.LastUpdatedBy = this.LastUpdatedBy;
-                officeToUpdate.LastUpdatedDate = this.LastUpdatedDate;
-                officeToUpdate.Notes = this.Notes;
-            }
-            dal.Update(officeToUpdate);
+            await ChildUpdate();
         }
 
-        [DeleteSelf]
-        private void DeleteSelf()
+        [UpdateChild]
+        private async Task ChildUpdate()
         {
-            Delete(this.Id);
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IOfficeDal>();
+
+            var emailTypeToUpdate = new Office()
+            {
+                Id = Id,
+                Name = Name,
+                Term = Term,
+                CalendarPeriod = CalendarPeriod,
+                ChosenHow = ChosenHow,
+                Appointer = Appointer,
+                LastUpdatedBy = LastUpdatedBy,
+                LastUpdatedDate = LastUpdatedDate,
+                Notes = Notes,
+                RowVersion = RowVersion
+            };
+
+            var updatedEmail = await dal.Update(emailTypeToUpdate);
+            RowVersion = updatedEmail.RowVersion;
+        }
+        
+        [DeleteSelfChild]
+        private async Task DeleteSelf()
+        {
+            await Delete(Id);
         }
 
         [Delete]
-        private void Delete(int id)
+        private async Task Delete(int id)
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider <IOfficeDal>();
-
-            dal.Delete(id);
+            var dal = dalManager.GetProvider<IOfficeDal>();
+           
+            await dal.Delete(id);
         }
 
-
-        
         #endregion
-
     }
 }

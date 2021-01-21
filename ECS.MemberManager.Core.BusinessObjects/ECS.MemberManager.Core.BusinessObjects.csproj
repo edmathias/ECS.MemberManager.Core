@@ -33,10 +33,12 @@
       <Compile Remove="CategoryOfPerson\CategoryOfPersonEC.cs" />
       <Compile Remove="CategoryOfPerson\CategoryOfPersonERL.cs" />
       <Compile Remove="Organization\OrganizationER.cs" />
+      <Compile Remove="OrganizationType\OrganizationTypeER.cs" />
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Organization" />
+      <Folder Include="OrganizationType" />
       <Folder Include="Payment" />
       <Folder Include="Person" />
       <Folder Include="Sponsor" />

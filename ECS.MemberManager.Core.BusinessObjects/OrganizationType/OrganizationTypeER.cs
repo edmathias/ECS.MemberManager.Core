@@ -70,10 +70,16 @@ namespace ECS.MemberManager.Core.BusinessObjects
             return await DataPortal.FetchAsync<OrganizationTypeEdit>(id);
         }
 
+        public static async Task<OfficeEdit> GetOrganizationTypeEdit(Office childData)
+        {
+            return await DataPortal.FetchChildAsync<OrganizationTypeEdit>(childData);
+        }
+        
         public static async Task DeleteOrganizationType(int id)
         {
             await DataPortal.DeleteAsync<OrganizationTypeEdit>(id);
         }
+
 
         #endregion
 
@@ -92,6 +98,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 Notes = data.Notes;
                 // TODO: get categoryoforganization
             }
+        }
+
+        [FetchChild]
+        private void Fetch(Office childData)
+        {
+            
         }
 
         [Insert]
