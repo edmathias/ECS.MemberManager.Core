@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Mock;
+using ECS.MemberManager.Core.EF.Domain;
 using Microsoft.Extensions.Configuration;
 using Xunit;
 
@@ -93,6 +94,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var countBeforeAdd = eMailEditList.Count;
             
             var eMailToAdd = eMailEditList.AddNew();
+            eMailToAdd.EMailAddress = "email address to test";
+            eMailToAdd.LastUpdatedBy = "edm";
+            eMailToAdd.LastUpdatedDate = DateTime.Now;
+            eMailToAdd.EMailType = await EMailTypeEdit.GetEMailTypeEdit(1);
 
             var updatedEMailsList = await eMailEditList.SaveAsync();
             

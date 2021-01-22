@@ -110,6 +110,16 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Data Access Methods
 
+        [Fetch]
+        private async Task FetchAsync(int id)
+        {
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IEMailDal>();
+            var data = await dal.Fetch(id);
+
+            await Fetch(data);
+        }
+        
         [FetchChild]
         private async Task Fetch(EMail childData)
         {
@@ -125,16 +135,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
             }
         }
 
-        [Fetch]
-        private async Task FetchAsync(int id)
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEMailDal>();
-            var data = await dal.Fetch(id);
-
-            await Fetch(data);
-        }
-
         [Insert]
         private async Task Insert()
         {
@@ -146,6 +146,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEMailDal>();
+
             var data = new EMail()
             {
                 EMailTypeId = EMailType.Id,
@@ -154,7 +155,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 LastUpdatedDate = LastUpdatedDate,
                 Notes = Notes
             };
-
+ 
             var insertedEMail = await dal.Insert(data);
             Id = insertedEMail.Id;
             RowVersion = insertedEMail.RowVersion;

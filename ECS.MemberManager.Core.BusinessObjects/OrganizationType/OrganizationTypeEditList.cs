@@ -49,7 +49,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             await FetchChild(childData);
         }
 
-        [Fetch]
+        [FetchChild]
         private async Task FetchChild(List<OrganizationType> childData)
         {
             using (LoadListMode)
