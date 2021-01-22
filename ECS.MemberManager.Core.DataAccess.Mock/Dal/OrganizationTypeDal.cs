@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
@@ -7,31 +8,31 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 {
     public class OrganizationTypeDal : IOrganizationTypeDal
     {
-        public OrganizationType Fetch(int id)
+        public async Task<OrganizationType> Fetch(int id)
         {
             return MockDb.OrganizationTypes.FirstOrDefault(ms => ms.Id == id);
         }
 
-        public List<OrganizationType> Fetch()
+        public async Task<List<OrganizationType>> Fetch()
         {
             return MockDb.OrganizationTypes.ToList();
         }
 
-        public int Insert(OrganizationType organizationType)
+        public async Task<OrganizationType> Insert(OrganizationType organizationType)
         {
             var lastOrganizationType = MockDb.OrganizationTypes.ToList().OrderByDescending(ms => ms.Id).First();
             organizationType.Id = 1+lastOrganizationType.Id;
             MockDb.OrganizationTypes.Add(organizationType);
             
-            return organizationType.Id;
+            return organizationType;
         }
 
-        public void Update(OrganizationType organizationType)
+        public async Task<OrganizationType> Update(OrganizationType organizationType)
         {
-            // mockdb in memory list reference already updated 
+            return organizationType;
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
             var organizationTypeToDelete = MockDb.OrganizationTypes.FirstOrDefault(ms => ms.Id == id);
             var listIndex = MockDb.OrganizationTypes.IndexOf(organizationTypeToDelete);

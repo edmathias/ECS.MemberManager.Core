@@ -37,7 +37,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="OrganizationType" />
       <Folder Include="Payment" />
       <Folder Include="Person" />
       <Folder Include="Sponsor" />

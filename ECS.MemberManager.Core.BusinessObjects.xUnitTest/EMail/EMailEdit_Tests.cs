@@ -43,6 +43,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             Assert.NotNull(eMail);
             Assert.IsType<EMailEdit>(eMail);
+            Assert.NotNull(eMail.EMailType);
             Assert.Equal(1, eMail.Id);
             Assert.True(eMail.IsValid);
         }
@@ -73,7 +74,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         public async void TestEMailEdit_Insert()
         {
             var eMail = await EMailEdit.NewEMailEdit();
-            BuildEMail(eMail);
+            await BuildEMail(eMail);
 
             var savedEMail = await eMail.SaveAsync();
 
@@ -99,7 +100,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         public async Task TestEMailEdit_TestInvalidSave()
         {
             var eMail = await EMailEdit.NewEMailEdit();
-            BuildEMail(eMail);
+            await BuildEMail(eMail);
             eMail.EMailAddress = string.Empty;
 
             Assert.False(eMail.IsValid);
@@ -146,7 +147,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         public async Task TestEMailEdit_EMailAddressRequired()
         {
             var eMailType = await EMailEdit.NewEMailEdit();
-            BuildEMail(eMailType);
+            await BuildEMail(eMailType);
             var isObjectValidInit = eMailType.IsValid;
             eMailType.EMailAddress = string.Empty;
 
@@ -160,7 +161,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         public async Task TestEMailEdit_EMailAddressMaxLengthLessThan255()
         {
             var eMailType = await EMailEdit.NewEMailEdit();
-            BuildEMail(eMailType);
+            await BuildEMail(eMailType);
             var isObjectValidInit = eMailType.IsValid;
             eMailType.EMailAddress =  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
                                       "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
@@ -177,7 +178,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         public async Task TestEMailEdit_LastUpdatedByRequired()
         {
             var eMailType = await EMailEdit.NewEMailEdit();
-            BuildEMail(eMailType);
+            await BuildEMail(eMailType);
             var isObjectValidInit = eMailType.IsValid;
             eMailType.LastUpdatedBy = string.Empty;
 
@@ -191,7 +192,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         public async Task TestEMailEdit_LastUpdatedByMaxLengthLessThan255()
         {
             var eMailType = await EMailEdit.NewEMailEdit();
-            BuildEMail(eMailType);
+            await BuildEMail(eMailType);
             var isObjectValidInit = eMailType.IsValid;
             eMailType.LastUpdatedBy =  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
                                       "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
@@ -204,13 +205,13 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.Equal("LastUpdatedBy",eMailType.BrokenRulesCollection[0].OriginProperty);
         }
         
-        private void BuildEMail(EMailEdit eMailToBuild)
+        private async Task BuildEMail(EMailEdit eMailToBuild)
         {
             eMailToBuild.Notes = "member type notes";
             eMailToBuild.EMailAddress = "edm@ecs.com";
             eMailToBuild.LastUpdatedBy = "edm";
             eMailToBuild.LastUpdatedDate = DateTime.Now;
-            eMailToBuild.EMailTypeId = 1;
+            eMailToBuild.EMailType = await EMailTypeEdit.GetEMailTypeEdit(1);
         }
         
     }

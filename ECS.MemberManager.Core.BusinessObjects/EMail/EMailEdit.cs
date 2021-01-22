@@ -22,11 +22,11 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(IdProperty, value);
         }
 
-        public static readonly PropertyInfo<int> EMailTypeIdProperty = RegisterProperty<int>(p => p.EMailTypeId);
-        public int EMailTypeId
+        public static readonly PropertyInfo<EMailTypeEdit> EMailTypeProperty = RegisterProperty<EMailTypeEdit>(p => p.EMailType);
+        public EMailTypeEdit EMailType
         {
-            get => GetProperty(EMailTypeIdProperty);
-            set => SetProperty(EMailTypeIdProperty, value);
+            get => GetProperty(EMailTypeProperty);
+            set => SetProperty(EMailTypeProperty, value);
         }
 
         public static readonly PropertyInfo<string> EMailAddressProperty = RegisterProperty<string>(p => p.EMailAddress);
@@ -111,13 +111,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access Methods
 
         [FetchChild]
-        private void Fetch(EMail childData)
+        private async Task Fetch(EMail childData)
         {
             using (BypassPropertyChecks)
             {
                 Id = childData.Id;
                 EMailAddress = childData.EMailAddress;
-                EMailTypeId = childData.EMailTypeId;
+                EMailType = await EMailTypeEdit.GetEMailTypeEdit(childData.EMailTypeId);
                 LastUpdatedBy = childData.LastUpdatedBy;
                 LastUpdatedDate = childData.LastUpdatedDate;
                 Notes = childData.Notes;
@@ -132,7 +132,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             var dal = dalManager.GetProvider<IEMailDal>();
             var data = await dal.Fetch(id);
 
-            Fetch(data);
+            await Fetch(data);
         }
 
         [Insert]
@@ -148,7 +148,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             var dal = dalManager.GetProvider<IEMailDal>();
             var data = new EMail()
             {
-                EMailTypeId = EMailTypeId,
+                EMailTypeId = EMailType.Id,
                 EMailAddress = EMailAddress,
                 LastUpdatedBy = LastUpdatedBy,
                 LastUpdatedDate = LastUpdatedDate,
@@ -175,6 +175,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             var emailTypeToUpdate = new EMail()
             {
                 Id = Id,
+                EMailTypeId = EMailType.Id,
                 EMailAddress = EMailAddress,
                 LastUpdatedBy = LastUpdatedBy,
                 LastUpdatedDate = LastUpdatedDate,

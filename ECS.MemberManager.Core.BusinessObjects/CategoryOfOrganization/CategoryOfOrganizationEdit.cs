@@ -77,7 +77,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         public static async Task<CategoryOfOrganizationEdit> GetCategoryOfOrganizationEdit(int id)
         {
-            return await DataPortal.FetchAsync<CategoryOfOrganizationEdit>(id);
+            var cat = await DataPortal.FetchAsync<CategoryOfOrganizationEdit>(id); 
+            return cat;
         }
 
         public static async Task DeleteCategoryOfOrganizationEdit(int id)
@@ -89,6 +90,16 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Data Access Methods
 
+        [Fetch]
+        private async Task FetchAsync(int id)
+        {
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<ICategoryOfOrganizationDal>();
+            var data = await dal.Fetch(id);
+
+            Fetch(data);
+        }
+
         [FetchChild]
         private void Fetch(CategoryOfOrganization childData)
         {
@@ -98,16 +109,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 Category = childData.Category;
                 RowVersion = childData.RowVersion;
             }
-        }
-
-        [Fetch]
-        private async Task FetchAsync(int id)
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ICategoryOfOrganizationDal>();
-            var data = await dal.Fetch(id);
-
-            Fetch(data);
         }
 
         [Insert]

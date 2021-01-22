@@ -40,7 +40,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         public async void TestCategoryOfOrganizationEdit_Get()
         {
             var categoryOfOrganization = await CategoryOfOrganizationEdit.GetCategoryOfOrganizationEdit(1);
-
+    
+            Assert.NotNull(categoryOfOrganization);
             Assert.Equal(1, categoryOfOrganization.Id);
             Assert.True(categoryOfOrganization.IsValid);
         }

@@ -93,21 +93,13 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var countBeforeAdd = eMailEditList.Count;
             
             var eMailToAdd = eMailEditList.AddNew();
-            BuildValidEMail(eMailToAdd);
 
             var updatedEMailsList = await eMailEditList.SaveAsync();
             
             Assert.NotEqual(countBeforeAdd, updatedEMailsList.Count);
         }
 
-        private void BuildValidEMail(EMailEdit eMail)
-        {
-            eMail.EMailAddress = "edm@ecs.com";
-            eMail.EMailTypeId = 1;
-            eMail.LastUpdatedBy = "edm";
-            eMail.LastUpdatedDate = DateTime.Now;
-        }
-        
+       
  
     }
 }
