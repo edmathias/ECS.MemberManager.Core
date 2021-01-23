@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -10,11 +11,12 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class PaymentSourceEC : BusinessBase<PaymentSourceEC>
+    public class PaymentSourceEdit : BusinessBase<PaymentSourceEdit>
     {
         #region Business Methods
-        
+
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
+
         public int Id
         {
             get => GetProperty(IdProperty);
@@ -22,7 +24,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(p => p.Description);
-        [Required,MaxLength(50)]
+
+        [Required, MaxLength(50)]
         public string Description
         {
             get => GetProperty(DescriptionProperty);
@@ -30,10 +33,18 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
+
         public string Notes
         {
             get => GetProperty(NotesProperty);
             set => SetProperty(NotesProperty, value);
+        }
+    
+        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
+        public byte[] RowVersion
+        {
+            get => GetProperty(RowVersionProperty);
+            set => SetProperty(RowVersionProperty, value);
         }
 
         protected override void AddBusinessRules()
@@ -50,56 +61,63 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         #endregion
-        
+
         #region Factory Methods
 
-        public static async Task<PaymentSourceEC> NewPaymentSource()
+        public static async Task<PaymentSourceEdit> NewPaymentSourceEdit()
         {
-            return await DataPortal.CreateAsync<PaymentSourceEC>();
+            return await DataPortal.CreateAsync<PaymentSourceEdit>();
         }
 
-        public static async Task<PaymentSourceEC> GetPaymentSource(PaymentSource childData)
+        public static async Task<PaymentSourceEdit> GetPaymentSourceEdit(int id)
         {
-            return await DataPortal.FetchAsync<PaymentSourceEC>(childData);
+            return await DataPortal.FetchAsync<PaymentSourceEdit>(id);
         }
 
-        public static async Task  DeletePaymentSource(int id)
+        public static async Task<PaymentSourceEdit> GetPaymentSourceEdit(PaymentSource childData)
         {
-            await DataPortal.DeleteAsync<PaymentSourceER>(id);
+            return await DataPortal.FetchChildAsync<PaymentSourceEdit>(childData);
         }
-        
+
+        public static async Task DeletePaymentSourceEdit(int id)
+        {
+            await DataPortal.DeleteAsync<PaymentSourceEdit>(id);
+        }
+
         #endregion
-        
+
         #region Data Access Methods
-        [FetchChild]       
-        private void Fetch(PaymentSource childData)
+
+        [Fetch]
+        private async Task Fetch(int id)
+        {
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IPaymentSourceDal>();
+            var data = await dal.Fetch(id);
+
+            await Fetch(data);
+        }
+
+        [FetchChild]
+        private async Task Fetch(PaymentSource childData)
         {
             using (BypassPropertyChecks)
             {
                 Id = childData.Id;
                 Description = childData.Description;
                 Notes = childData.Notes;
-            }
-        }
-
-        [InsertChild]
-        private void Insert()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPaymentSourceDal>();
-            using (BypassPropertyChecks)
-            {
-                var paymentSource = new EF.Domain.PaymentSource 
-                    { 
-                        Description = this.Description, 
-                        Notes = this.Notes 
-                    };
-                Id = dal.Insert(paymentSource);
+                RowVersion = childData.RowVersion;
             }
         }
         
-        [UpdateChild]
-        private void Update()
+        [Insert]
+        private async Task Insert()
+        {
+            await InsertChild();
+        }
+
+        [InsertChild]
+        private async Task InsertChild()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IPaymentSourceDal>();
@@ -107,31 +125,56 @@ namespace ECS.MemberManager.Core.BusinessObjects
             {
                 var paymentSource = new EF.Domain.PaymentSource
                 {
-                    Id = this.Id, 
-                    Description = this.Description, 
+                    Description = this.Description,
                     Notes = this.Notes
                 };
-                
-                dal.Update(paymentSource);
+                var insertedPaymentSource = await dal.Insert(paymentSource);
+                Id = insertedPaymentSource.Id;
+                RowVersion = insertedPaymentSource.RowVersion;
             }
         }
 
-        [DeleteSelf]
-        private void DeleteSelf()
+        [Update]
+        private async Task Update()
         {
-            Delete(this.Id);
+            await UpdateChild();
         }
-       
-        [Delete]
-        private void Delete(int id)
+        
+        [UpdateChild]
+        private async Task UpdateChild()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IPaymentSourceDal>();
- 
-            dal.Delete(id);
+            using (BypassPropertyChecks)
+            {
+                var paymentSource = new EF.Domain.PaymentSource
+                {
+                    Id = Id,
+                    Description = Description,
+                    Notes = Notes,
+                    RowVersion = RowVersion
+                };
+
+                var updatedPaymentSource = await dal.Update(paymentSource);
+                RowVersion = updatedPaymentSource.RowVersion;
+            }
         }
-        
+
+        [DeleteSelfChild]
+        private async Task DeleteSelf()
+        {
+            await Delete(Id);
+        }
+
+        [Delete]
+        private async Task Delete(int id)
+        {
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IPaymentSourceDal>();
+
+            await dal.Delete(id);
+        }
+
         #endregion
-       
     }
 }

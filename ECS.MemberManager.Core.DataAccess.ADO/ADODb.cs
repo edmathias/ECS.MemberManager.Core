@@ -68,6 +68,22 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
 
             InsertOffices();
 
+            InsertPaymentSources();
+
+        }
+
+        private static void InsertPaymentSources()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("SET IDENTITY_INSERT [dbo].[PaymentSources] ON;");
+            sb.AppendLine("INSERT INTO [dbo].[PaymentSources]([Id], [Description], [Notes])");
+            sb.AppendLine("SELECT 1, N'Payment source #1', N'notes for #1' UNION ALL");
+            sb.AppendLine("SELECT 2, N'Payment source #2', N'Notes for #2' UNION ALL");
+            sb.AppendLine("SELECT 99, N'Payment to delete', NULL");
+            sb.AppendLine("SET IDENTITY_INSERT [dbo].[PaymentSources] OFF;");
+            sb.AppendLine("DBCC CHECKIDENT ('PaymentSources', RESEED, 2)");
+            
+            _db.Execute(sb.ToString());            
         }
 
         private static void InsertOffices()

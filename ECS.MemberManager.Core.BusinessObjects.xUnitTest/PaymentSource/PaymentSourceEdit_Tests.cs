@@ -1,78 +1,79 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Csla;
 using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class PaymentSourceER_Tests 
+    public class PaymentSourceEdit_Tests 
     {
-        public PaymentSourceER_Tests()
+        public PaymentSourceEdit_Tests()
         {
             MockDb.ResetMockDb();
         }
         
         [Fact]
-        public async Task TestPaymentSourceER_Get()
+        public async Task TestPaymentSourceEdit_Get()
         {
-            var paymentSource = await PaymentSourceER.GetPaymentSource(1);
+            var paymentSource = await PaymentSourceEdit.GetPaymentSourceEdit(1);
 
             Assert.Equal(1, paymentSource.Id);
             Assert.True(paymentSource.IsValid);
         }
 
         [Fact]
-        public async Task TestPaymentSourceER_New()
+        public async Task TestPaymentSourceEdit_New()
         {
-            var paymentSource = await PaymentSourceER.NewPaymentSource();
+            var paymentSource = await PaymentSourceEdit.NewPaymentSourceEdit();
 
             Assert.NotNull(paymentSource);
             Assert.False(paymentSource.IsValid);
         }
 
         [Fact]
-        public async Task TestPaymentSourceER_Update()
+        public async Task TestPaymentSourceEdit_Update()
         {
-            var paymentSource = await PaymentSourceER.GetPaymentSource(1);
+            var paymentSource = await PaymentSourceEdit.GetPaymentSourceEdit(1);
             paymentSource.Notes = "These are updated Notes";
             
-            var result = paymentSource.Save();
+            var result = await paymentSource.SaveAsync();
 
             Assert.NotNull(result);
             Assert.Equal("These are updated Notes",result.Notes);
         }
 
         [Fact]
-        public async Task TestPaymentSourceER_Insert()
+        public async Task TestPaymentSourceEdit_Insert()
         {
-            var paymentSource = await PaymentSourceER.NewPaymentSource();
+            var paymentSource = await PaymentSourceEdit.NewPaymentSourceEdit();
             paymentSource.Description = "Standby";
             paymentSource.Notes = "This person is on standby";
 
-            var savedPaymentSource = paymentSource.Save();
+            var savedPaymentSource = await paymentSource.SaveAsync();
            
             Assert.NotNull(savedPaymentSource);
-            Assert.IsType<PaymentSourceER>(savedPaymentSource);
+            Assert.IsType<PaymentSourceEdit>(savedPaymentSource);
             Assert.True( savedPaymentSource.Id > 0 );
         }
 
         [Fact]
-        public async Task TestPaymentSourceER_Delete()
+        public async Task TestPaymentSourceEdit_Delete()
         {
-            int beforeCount = MockDb.PaymentSources.Count();
+            const int ID_TO_DELETE = 99;
             
-            await PaymentSourceER.DeletePaymentSource(99);
-            
-            Assert.NotEqual(beforeCount,MockDb.PaymentSources.Count());
+            await PaymentSourceEdit.DeletePaymentSourceEdit(ID_TO_DELETE);
+
+            await Assert.ThrowsAsync<DataPortalException>(() => PaymentSourceEdit.GetPaymentSourceEdit(ID_TO_DELETE));
         }
         
         // test invalid state 
         [Fact]
-        public async Task TestPaymentSourceER_DescriptionRequired()
+        public async Task TestPaymentSourceEdit_DescriptionRequired()
         {
-            var paymentSource = await PaymentSourceER.NewPaymentSource();
+            var paymentSource = await PaymentSourceEdit.NewPaymentSourceEdit();
             paymentSource.Description = "make valid";
             var isObjectValidInit = paymentSource.IsValid;
             paymentSource.Description = string.Empty;
@@ -84,9 +85,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
        
         [Fact]
-        public async Task TestPaymentSourceER_DescriptionExceedsMaxLengthOf50()
+        public async Task TestPaymentSourceEdit_DescriptionExceedsMaxLengthOf50()
         {
-            var paymentSource = await PaymentSourceER.NewPaymentSource();
+            var paymentSource = await PaymentSourceEdit.NewPaymentSourceEdit();
             paymentSource.Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor "+
                                        "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis "+
                                        "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "+
@@ -101,9 +102,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         // test exception if attempt to save in invalid state
 
         [Fact]
-        public async Task TestPaymentSourceER_TestInvalidSave()
+        public async Task TestPaymentSourceEdit_TestInvalidSave()
         {
-            var paymentSource = await PaymentSourceER.NewPaymentSource();
+            var paymentSource = await PaymentSourceEdit.NewPaymentSourceEdit();
             paymentSource.Description = String.Empty;
             
             Assert.False(paymentSource.IsValid);

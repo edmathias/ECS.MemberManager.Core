@@ -10,7 +10,7 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class MemberStatusInfo : ReadOnlyBase<MemberStatusInfo>
+    public class PaymentSourceInfo : ReadOnlyBase<PaymentSourceInfo>
     {
         #region Business Methods
 
@@ -64,25 +64,21 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        public static async Task<MemberStatusInfo> NewMemberStatusInfo()
+        public static async Task<PaymentSourceInfo> NewPaymentSourceInfo()
         {
-            return await DataPortal.CreateAsync<MemberStatusInfo>();
+            return await DataPortal.CreateAsync<PaymentSourceInfo>();
         }
 
-        public static async Task<MemberStatusInfo> GetMemberStatusInfo(MemberStatus childData)
+        public static async Task<PaymentSourceInfo> GetPaymentSourceInfo(int id)
         {
-            return await DataPortal.FetchChildAsync<MemberStatusInfo>(childData);
+            return await DataPortal.FetchAsync<PaymentSourceInfo>(id);
         }
 
-        public static async Task<MemberStatusInfo> GetMemberStatusInfo(int id)
+        public static async Task<PaymentSourceInfo> GetPaymentSourceInfo(PaymentSource childData)
         {
-            return await DataPortal.FetchAsync<MemberStatusInfo>(id);
+            return await DataPortal.FetchChildAsync<PaymentSourceInfo>(childData);
         }
 
-        public static async Task DeleteMemberStatusInfo(int id)
-        {
-            await DataPortal.DeleteAsync<MemberStatusInfo>(id);
-        }
 
         #endregion
 
@@ -92,14 +88,14 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private async Task Fetch(int id)
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IMemberStatusDal>();
+            var dal = dalManager.GetProvider<IPaymentSourceDal>();
             var data = await dal.Fetch(id);
 
-            Fetch(data);
+            await Fetch(data);
         }
 
         [FetchChild]
-        private void Fetch(MemberStatus childData)
+        private async Task Fetch(PaymentSource childData)
         {
             Id = childData.Id;
             Description = childData.Description;

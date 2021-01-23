@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
@@ -8,31 +9,31 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 {
     public class PaymentSourceDal : IPaymentSourceDal
     {
-        public PaymentSource Fetch(int id)
+        public async Task<PaymentSource> Fetch(int id)
         {
             return MockDb.PaymentSources.FirstOrDefault(ms => ms.Id == id);
         }
 
-        public List<PaymentSource> Fetch()
+        public async Task<List<PaymentSource>> Fetch()
         {
             return MockDb.PaymentSources.ToList();
         }
 
-        public int Insert( PaymentSource paymentSource)
+        public async Task<PaymentSource> Insert( PaymentSource paymentSource)
         {
             var lastPaymentSource = MockDb.PaymentSources.ToList().OrderByDescending(ms => ms.Id).First();
             paymentSource.Id = 1+lastPaymentSource.Id;
             MockDb.PaymentSources.Add(paymentSource);
             
-            return paymentSource.Id;
+            return paymentSource;
         }
 
-        public void Update(PaymentSource paymentSource)
+        public async Task<PaymentSource> Update(PaymentSource paymentSource)
         {
-            // mockdb in memory list reference already updated 
+            return paymentSource;
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
             var paymentSourceToDelete = MockDb.PaymentSources.FirstOrDefault(ms => ms.Id == id);
             var listIndex = MockDb.PaymentSources.IndexOf(paymentSourceToDelete);
