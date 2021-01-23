@@ -95,11 +95,11 @@ namespace ECS.MemberManager.Core.BusinessObjects
             var dal = dalManager.GetProvider<IPaymentSourceDal>();
             var data = await dal.Fetch(id);
 
-            await Fetch(data);
+            Fetch(data);
         }
 
         [FetchChild]
-        private async Task Fetch(PaymentSource childData)
+        private void Fetch(PaymentSource childData)
         {
             using (BypassPropertyChecks)
             {
