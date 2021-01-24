@@ -526,18 +526,18 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             {
                 new Phone
                 {
-                    Id = 1, AreaCode = "216", DisplayOrder = 0, Extension = "", LastUpdatedBy = "edm",
-                    LastUpdatedDate = DateTime.Now, Number = "256-8082", PhoneType = "Home"
+                    Id = 1, AreaCode = "303", DisplayOrder = 0, Extension = "111", LastUpdatedBy = "edm",
+                    LastUpdatedDate = DateTime.Now, Number = "333-2222", PhoneType = "mobile", Notes = "notes for phone #1"
                 },
                 new Phone
                 {
-                    Id = 2, AreaCode = "414", DisplayOrder = 0, Extension = "", LastUpdatedBy = "edm",
-                    LastUpdatedDate = DateTime.Now, Number = "421-1634", PhoneType = "Work"
+                    Id = 2, AreaCode = "216", DisplayOrder = 0, Extension = null, LastUpdatedBy = "edm",
+                    LastUpdatedDate = DateTime.Now, Number = "256-8888", Notes = null, PhoneType = "work"
                 },
                 new Phone
                 {
-                    Id = 99, AreaCode = "303", DisplayOrder = 0, Extension = "", LastUpdatedBy = "edm",
-                    LastUpdatedDate = DateTime.Now, Number = "555-2368", PhoneType = "Work"
+                    Id = 99, AreaCode = "414", DisplayOrder = 1, Extension = "12", LastUpdatedBy = "joe",
+                    LastUpdatedDate = DateTime.Now, Number = "421-7777", PhoneType = "delete"
                 },                
             };
         }

@@ -99,14 +99,14 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var countBeforeAdd = memberStatusEditList.Count;
             
             var memberStatusToAdd = memberStatusEditList.AddNew();
-            await BuildMemberStatus(memberStatusToAdd);
+            BuildMemberStatus(memberStatusToAdd);
 
             var updatedMemberStatussList = await memberStatusEditList.SaveAsync();
             
             Assert.NotEqual(countBeforeAdd, updatedMemberStatussList.Count);
         }
 
-        private async Task BuildMemberStatus(MemberStatusEdit memberStatusToBuild)
+        private void BuildMemberStatus(MemberStatusEdit memberStatusToBuild)
         {
             memberStatusToBuild.Description = "memberstatus description";
             memberStatusToBuild.Notes = "notes for memberstatus";

@@ -70,6 +70,27 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
 
             InsertPaymentSources();
 
+            InsertPhones();
+
+        }
+
+        private static void InsertPhones()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("SET IDENTITY_INSERT [dbo].[Phones] ON;");
+            sb.AppendLine(
+                "INSERT INTO [dbo].[Phones]([Id], [PhoneType], [AreaCode], [Number], [Extension], [DisplayOrder], [LastUpdatedBy], [LastUpdatedDate], [Notes])");
+            sb.AppendLine(
+                "SELECT 1, N'mobile', N'303', N'333-2222', N'111', 0, N'edm', '20210101 00:00:00.000', N'notes for phone #1' UNION ALL");
+            sb.AppendLine(
+                "SELECT 2, N'work', N'216', N'256-8888', NULL, 0, N'edm', '20200630 00:00:00.000', NULL UNION ALL");
+            sb.AppendLine(
+                "SELECT 99, N'delete', N'414', N'421-7777', N'12', 1, N'joe', '20200915 00:00:00.000', N'delete this'");
+            sb.AppendLine("SET IDENTITY_INSERT [dbo].[Phones] OFF;");
+            sb.AppendLine("DBCC CHECKIDENT ('Phones', RESEED, 2)");
+            
+            _db.Execute(sb.ToString());            
+            
         }
 
         private static void InsertPaymentSources()

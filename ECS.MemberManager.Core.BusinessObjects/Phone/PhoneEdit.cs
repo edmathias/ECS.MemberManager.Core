@@ -5,11 +5,12 @@ using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
+using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class PhoneER : BusinessBase<PhoneER>
+    public class PhoneEdit : BusinessBase<PhoneEdit>
     {
         #region Business Methods
         
@@ -45,7 +46,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<string> ExtensionProperty = RegisterProperty<string>(p => p.Extension);
-        [Required,MaxLength(25)]
+        [MaxLength(25)]
         public string Extension
         {
             get => GetProperty(ExtensionProperty);
@@ -82,6 +83,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(NotesProperty, value);
         }
 
+        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
+        public byte[] RowVersion
+        {
+            get => GetProperty(RowVersionProperty);
+            set => SetProperty(RowVersionProperty, value);
+        }
+
         protected override void AddBusinessRules()
         {
             base.AddBusinessRules();
@@ -94,91 +102,142 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             // TODO: add object-level authorization rules
         }
-
         
         #endregion
         
         #region Factory Methods
 
-        public static async Task<PhoneER> NewPhone()
+        public static async Task<PhoneEdit> NewPhoneEdit()
         {
-            return await DataPortal.CreateAsync<PhoneER>();
+            return await DataPortal.CreateAsync<PhoneEdit>();
         }
 
-        public static async Task<PhoneER> GetPhone(int id)
+        public static async Task<PhoneEdit> GetPhoneEdit(int id)
         {
-            return await DataPortal.FetchAsync<PhoneER>(id);
+            return await DataPortal.FetchAsync<PhoneEdit>(id);
         }
 
-        public static async Task DeletePhone(int id)
+        public static async Task<PhoneEdit> GetPhoneEdit(Phone childData)
         {
-            await DataPortal.DeleteAsync<PhoneER>(id);
+            return await DataPortal.FetchChildAsync<PhoneEdit>(childData);
+        }
+
+        public static async Task DeletePhoneEdit(int id)
+        {
+            await DataPortal.DeleteAsync<PhoneEdit>(id);
         }
         
         #endregion
         
         #region DataPortal Methods
         
-        
         [Fetch]
-        private void Fetch(int id)
+        private async Task Fetch(int id)
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IPhoneDal>();
-            var data = dal.Fetch(id);
+            var data = await dal.Fetch(id);
+            
+             await FetchChild(data);
+        }
+
+        [FetchChild]
+        private async Task FetchChild(Phone childData)
+        {
             using (BypassPropertyChecks)
             {
-                Id = data.Id;
-                LastUpdatedBy = data.LastUpdatedBy;
-                LastUpdatedDate = data.LastUpdatedDate;
-                Notes = data.Notes;
+                Id = childData.Id;
+                PhoneType = childData.PhoneType;
+                AreaCode = childData.AreaCode;
+                Number = childData.Number;
+                Extension = childData.Extension;
+                DisplayOrder = childData.DisplayOrder;
+                LastUpdatedDate = childData.LastUpdatedDate;
+                LastUpdatedBy = childData.LastUpdatedBy;
+                Notes = childData.Notes;
+                RowVersion = childData.RowVersion;
             }
+           
         }
 
         [Insert]
-        private void Insert()
+        private async Task Insert()
+        {
+            await InsertChild();
+        }        
+        
+        [InsertChild]
+        private async Task InsertChild()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IPhoneDal>();
-            var documentTypeToInsert = new ECS.MemberManager.Core.EF.Domain.Phone();
+            var phoneToUpdate = new ECS.MemberManager.Core.EF.Domain.Phone();
             using (BypassPropertyChecks)
             {
-                documentTypeToInsert.LastUpdatedDate = this.LastUpdatedDate;
-                documentTypeToInsert.LastUpdatedBy = this.LastUpdatedBy;
-                documentTypeToInsert.Notes = this.Notes; 
+                phoneToUpdate.PhoneType = PhoneType;
+                phoneToUpdate.AreaCode = AreaCode;
+                phoneToUpdate.Number = Number;
+                phoneToUpdate.Extension = Extension;
+                phoneToUpdate.DisplayOrder = DisplayOrder;
+                phoneToUpdate.LastUpdatedDate = LastUpdatedDate;
+                phoneToUpdate.LastUpdatedBy = LastUpdatedBy;
+                phoneToUpdate.Notes = Notes;
+                phoneToUpdate.RowVersion = RowVersion;
             }
-            Id = dal.Insert(documentTypeToInsert);
+            var insertedPhone = await dal.Insert(phoneToUpdate);
+            Id = insertedPhone.Id;
+            RowVersion = insertedPhone.RowVersion;
+        }
+
+        [Update]
+        private async void Update()
+        {
+            await UpdateChild();
         }
         
-        [Update]
-        private void Update()
+        [UpdateChild]
+        private async Task UpdateChild()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IPhoneDal>();
-            var documentTypeToUpdate = dal.Fetch(Id);
+            var phoneToUpdate = await dal.Fetch(Id);
             using (BypassPropertyChecks)
             {
-                documentTypeToUpdate.LastUpdatedDate = this.LastUpdatedDate;
-                documentTypeToUpdate.LastUpdatedBy = this.LastUpdatedBy;
-                documentTypeToUpdate.Notes = this.Notes; 
+                phoneToUpdate.PhoneType = PhoneType;
+                phoneToUpdate.AreaCode = AreaCode;
+                phoneToUpdate.Number = Number;
+                phoneToUpdate.Extension = Extension;
+                phoneToUpdate.DisplayOrder = DisplayOrder;
+                phoneToUpdate.LastUpdatedDate = LastUpdatedDate;
+                phoneToUpdate.LastUpdatedBy = LastUpdatedBy;
+                phoneToUpdate.Notes = Notes;
+                phoneToUpdate.RowVersion = RowVersion;
             }
 
-            dal.Update(documentTypeToUpdate);
+            var updatedPhone = await dal.Update(phoneToUpdate);
+            RowVersion = updatedPhone.RowVersion;
         }
 
         [DeleteSelf]
-        private void DeleteSelf()
+        private async Task DeleteSelf()
         {
-            Delete(this.Id);
+            await Delete(this.Id);
+        }
+       
+        [DeleteSelfChild]
+        private async Task DeleteSelfChild()
+        {
+            await Delete(this.Id);
         }
         
+        
         [Delete]
-        private void Delete(int id)
+        private async Task Delete(int id)
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IPhoneDal>();
  
-            dal.Delete(id);
+            await dal.Delete(id);
         }
 
         #endregion

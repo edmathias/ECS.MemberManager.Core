@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.DataAccess.Dal
 {
     public interface IPhoneDal : IDisposable
     {
-        Phone Fetch(int id);
-        List<Phone> Fetch();
-        int Insert(Phone documentType);
-        void Update(Phone documentType );
-        void Delete(int id);
+        Task<Phone> Fetch(int id);
+        Task<List<Phone>> Fetch();
+        Task<Phone> Insert(Phone documentType);
+        Task<Phone> Update(Phone documentType );
+        Task Delete(int id);
     }
 }

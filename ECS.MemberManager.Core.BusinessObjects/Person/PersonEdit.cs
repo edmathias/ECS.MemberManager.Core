@@ -11,7 +11,7 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class PersonER : BusinessBase<PersonER>
+    public class PersonEdit : BusinessBase<PersonEdit>
     {
         #region Business Methods
 
@@ -93,22 +93,22 @@ namespace ECS.MemberManager.Core.BusinessObjects
         
         
         // TODO : Relationships
-        public static readonly PropertyInfo<TitleER> TitleProperty = RegisterProperty<TitleER>(p => p.Title);
-        public TitleER Title
+        public static readonly PropertyInfo<TitleEdit> TitleProperty = RegisterProperty<TitleEdit>(p => p.Title);
+        public TitleEdit Title
         {
             get => GetProperty(TitleProperty);
             set => SetProperty(TitleProperty, value);
         }
 
-        public static readonly PropertyInfo<CategoryOfPersonECL> CategoryOfPersonListProperty = RegisterProperty<CategoryOfPersonECL>(p => p.CategoryOfPersonList);
-        public CategoryOfPersonECL CategoryOfPersonList
+        public static readonly PropertyInfo<CategoryOfPersonEditList> CategoryOfPersonListProperty = RegisterProperty<CategoryOfPersonEditList>(p => p.CategoryOfPersonList);
+        public CategoryOfPersonEditList CategoryOfPersonList
         {
             get => GetProperty(CategoryOfPersonListProperty);
             set => SetProperty(CategoryOfPersonListProperty, value);
         }
 
-        public static readonly PropertyInfo<EventECL> EventsProperty = RegisterProperty<EventECL>(p => p.EventList);
-        public EventECL EventList
+        public static readonly PropertyInfo<EventEditList> EventsProperty = RegisterProperty<EventEditList>(p => p.EventList);
+        public EventEditList EventList
         {
             get => GetProperty(EventsProperty);
             set => SetProperty(EventsProperty, value);
@@ -121,8 +121,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(PhoneListProperty, value);
         }
 
-        public static readonly PropertyInfo<AddressECL> AddressListProperty = RegisterProperty<AddressECL>(p => p.AddressList);
-        public AddressECL AddressList
+        public static readonly PropertyInfo<AddressEditList> AddressListProperty = RegisterProperty<AddressEditList>(p => p.AddressList);
+        public AddressEditList AddressList
         {
             get => GetProperty(AddressListProperty);
             set => SetProperty(AddressListProperty, value);
@@ -144,19 +144,19 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        public static async Task<PersonER> NewPerson()
+        public static async Task<PersonEdit> NewPerson()
         {
-            return await DataPortal.CreateAsync<PersonER>();
+            return await DataPortal.CreateAsync<PersonEdit>();
         }
 
-        public static async Task<PersonER> GetPerson(int id)
+        public static async Task<PersonEdit> GetPerson(int id)
         {
-            return await DataPortal.FetchAsync<PersonER>(id);
+            return await DataPortal.FetchAsync<PersonEdit>(id);
         }
 
         public static async Task DeletePerson(int id)
         {
-            await DataPortal.DeleteAsync<PersonER>(id);
+            await DataPortal.DeleteAsync<PersonEdit>(id);
         }
         
         #endregion
@@ -166,9 +166,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [Create]
         private async void Create()
         {
-            CategoryOfPersonList = await CategoryOfPersonECL.NewCategoryOfPersonList();
-            EventList= await EventECL.NewEventList();
-            AddressList = await AddressECL.NewAddressList();
+            CategoryOfPersonList = await CategoryOfPersonEditList.NewCategoryOfPersonEditList();
+            EventList= await EventEditList.NewEventEditList();
+            AddressList = await AddressEditList.NewAddressEditList();
             PhoneList = await PhoneECL.NewPhoneList();
             
             BusinessRules.CheckRules();
@@ -194,9 +194,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 LastUpdatedBy = data.LastUpdatedBy;
                 
                 // TODO : Relationships
-                CategoryOfPersonList = await CategoryOfPersonECL.GetCategoryOfPersonList(data.CategoryOfPersons);
-                EventList= await EventECL.GetEventList(data.Events);
-                AddressList = await AddressECL.GetAddressList(data.Addresses);
+                CategoryOfPersonList = await CategoryOfPersonEditList.GetCategoryOfPersonEditList(data.CategoryOfPersons);
+                EventList= await EventEditList.GetEventEditList(data.Events);
+                AddressList = await AddressEditList.GetAddressEditList(data.Addresses);
                 PhoneList = await PhoneECL.GetPhoneList(data.Phones);
                 //   Title = new Title();
 
