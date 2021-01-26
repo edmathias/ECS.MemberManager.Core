@@ -22,10 +22,10 @@ namespace ECS.MemberManager.Core.BusinessObjects
             private set => LoadProperty(IdProperty, value);
         }
 
-        public static readonly PropertyInfo<CategoryOfOrganizationEdit> CategoryOfOrganizationProperty =
-            RegisterProperty<CategoryOfOrganizationEdit>(p => p.CategoryOfOrganization);
+        public static readonly PropertyInfo<CategoryOfOrganizationER> CategoryOfOrganizationProperty =
+            RegisterProperty<CategoryOfOrganizationER>(p => p.CategoryOfOrganization);
 
-        public CategoryOfOrganizationEdit CategoryOfOrganization
+        public CategoryOfOrganizationER CategoryOfOrganization
         {
             get => GetProperty(CategoryOfOrganizationProperty);
             set => LoadProperty(CategoryOfOrganizationProperty, value);
@@ -91,7 +91,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             Id = childData.Id;
             Name = childData.Name;
             CategoryOfOrganization = await
-                CategoryOfOrganizationEdit.GetCategoryOfOrganizationEdit(childData.CategoryOfOrganizationId);
+                CategoryOfOrganizationER.GetCategoryOfOrganizationER(childData.CategoryOfOrganizationId);
             Notes = childData.Notes;
             RowVersion = childData.RowVersion;
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -14,10 +15,18 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Business Methods
 
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
+
         public int Id
         {
             get => GetProperty(IdProperty);
-            private set => LoadProperty(IdProperty, value);
+            set => SetProperty(IdProperty, value);
+        }
+        
+        public static readonly PropertyInfo<int> SponsorIdProperty = RegisterProperty<int>(p => p.SponsorId);
+        public int SponsorId
+        {
+            get => GetProperty(SponsorIdProperty);
+            set => SetProperty(SponsorIdProperty, value);
         }
 
         public static readonly PropertyInfo<SmartDate> DateWhenContactedProperty = RegisterProperty<SmartDate>(p => p.DateWhenContacted);
@@ -26,8 +35,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
             get => GetProperty(DateWhenContactedProperty);
             set => SetProperty(DateWhenContactedProperty, value);
         }
-        
+
         public static readonly PropertyInfo<string> PurposeProperty = RegisterProperty<string>(p => p.Purpose);
+        [MaxLength(255)]
         public string Purpose
         {
             get => GetProperty(PurposeProperty);
@@ -41,25 +51,44 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(RecordOfDiscussionProperty, value);
         }
 
+        public static readonly PropertyInfo<int> PersonIdProperty = RegisterProperty<int>(p => p.PersonId);
+        public int PersonId
+        {
+            get => GetProperty(PersonIdProperty);
+            set => SetProperty(PersonIdProperty, value);
+        }
+
+
+        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(p => p.LastUpdatedBy);
+        [Required,MaxLength(255)]
+        public string LastUpdatedBy
+        {
+            get => GetProperty(LastUpdatedByProperty);
+            set => SetProperty(LastUpdatedByProperty, value);
+        }
+
+        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
+        [Required]
+        public SmartDate LastUpdatedDate
+        {
+            get => GetProperty(LastUpdatedDateProperty);
+            set => SetProperty(LastUpdatedDateProperty, value);
+        }
+
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
+
         public string Notes
         {
             get => GetProperty(NotesProperty);
             set => SetProperty(NotesProperty, value);
         }
 
-        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(p => p.LastUpdatedBy);
-        public string LastUpdatedBy
+        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
+
+        public byte[] RowVersion
         {
-            get => GetProperty(LastUpdatedByProperty);
-            set => SetProperty(LastUpdatedByProperty, value);
-        }
-        
-        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
-        public SmartDate LastUpdatedDate
-        {
-            get => GetProperty(LastUpdatedDateProperty);
-            set => SetProperty(LastUpdatedDateProperty, value);
+            get => GetProperty(RowVersionProperty);
+            private set => LoadProperty(RowVersionProperty, value);
         }
 
         protected override void AddBusinessRules()
@@ -75,108 +104,100 @@ namespace ECS.MemberManager.Core.BusinessObjects
             // TODO: add object-level authorization rules
         }
 
-
         #endregion
 
         #region Factory Methods
 
-        public static async Task<ContactForSponsorEC> NewContactForSponsor()
-        {
-            return await DataPortal.CreateChildAsync<ContactForSponsorEC>();
-        }
-
-        public static async Task<ContactForSponsorEC> GetContactForSponsor(ContactForSponsor childData)
+        public static async Task<ContactForSponsorEC> GetContactForSponsorEditChild(ContactForSponsor childData)
         {
             return await DataPortal.FetchChildAsync<ContactForSponsorEC>(childData);
         }
 
-        public static async Task DeleteContactForSponsor(int id)
-        {
-            await DataPortal.DeleteAsync<ContactForSponsorEC>(id);
-        }
-        
         #endregion
 
-        #region Data Access
-        
-        [CreateChild]
-        private void Create()
-        {
-            MarkAsChild();
-            
-            BusinessRules.CheckRules();
-        } 
-        
+        #region Data Access Methods
+
         [FetchChild]
         private void Fetch(ContactForSponsor childData)
         {
             using (BypassPropertyChecks)
             {
                 Id = childData.Id;
-                Notes = childData.Notes;
-                Purpose = childData.Purpose;
+                SponsorId = childData.SponsorId;
                 DateWhenContacted = childData.DateWhenContacted;
-                LastUpdatedBy = childData.LastUpdatedBy;
+                Purpose = childData.Purpose;
                 RecordOfDiscussion = childData.RecordOfDiscussion;
+                PersonId = childData.PersonId;
+                LastUpdatedBy = childData.LastUpdatedBy;
+                LastUpdatedDate = childData.LastUpdatedDate;
+                Notes = childData.Notes;
+                RowVersion = childData.RowVersion;
             }
         }
 
         [InsertChild]
-        private void Insert()
+        private async Task InsertChild()
         {
-            using IDalManager dalManager = DalFactory.GetManager();
+            using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IContactForSponsorDal>();
-            var contactToInsert = new ContactForSponsor()
+            var data = new ContactForSponsor()
             {
-                Notes = Notes,
+                // TODO: provide sponsor & Person functionality
+                SponsorId = SponsorId,
                 DateWhenContacted = DateWhenContacted,
+                Purpose = Purpose,
+                RecordOfDiscussion = RecordOfDiscussion,
+                PersonId = PersonId,
                 LastUpdatedBy = LastUpdatedBy,
                 LastUpdatedDate = LastUpdatedDate,
-                Purpose = Purpose,
-                RecordOfDiscussion = RecordOfDiscussion
-                
-                //TODO: sponsor & person
+                Notes = Notes,
+                RowVersion = RowVersion
             };
 
-            Id = dal.Insert(contactToInsert);
-
+            var insertedContactForSponsor = await dal.Insert(data);
+            Id = insertedContactForSponsor.Id;
+            RowVersion = insertedContactForSponsor.RowVersion;
         }
 
         [UpdateChild]
-        private void Update()
+        private async Task ChildUpdate()
         {
-            using IDalManager dalManager = DalFactory.GetManager();
+            using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IContactForSponsorDal>();
 
-            var contactToUpdate = dal.Fetch(Id);
+            var emailTypeToUpdate = new ContactForSponsor()
+            {
+                Id = Id,
+                SponsorId = SponsorId,
+                DateWhenContacted = DateWhenContacted,
+                Purpose = Purpose,
+                RecordOfDiscussion = RecordOfDiscussion,
+                PersonId = PersonId,
+                LastUpdatedBy = LastUpdatedBy,
+                LastUpdatedDate = LastUpdatedDate,
+                Notes = Notes,
+                RowVersion = RowVersion
+            };
 
-            contactToUpdate.Notes = Notes;
-            contactToUpdate.Purpose = Purpose;
-            contactToUpdate.DateWhenContacted = DateWhenContacted;
-            contactToUpdate.LastUpdatedBy = LastUpdatedDate;
-            contactToUpdate.LastUpdatedBy = LastUpdatedBy;
-            contactToUpdate.RecordOfDiscussion = RecordOfDiscussion;
-
-            dal.Update(contactToUpdate);
+            var updatedEmail = await dal.Update(emailTypeToUpdate);
+            RowVersion = updatedEmail.RowVersion;
         }
-
+        
         [DeleteSelfChild]
-        private void DeleteSelf()
+        private async Task DeleteSelf()
         {
-            Delete(this.Id);
+            await Delete(Id);
         }
 
         [Delete]
-        private void Delete(int id)
+        private async Task Delete(int id)
         {
-            using IDalManager dalManager = DalFactory.GetManager();
+            using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IContactForSponsorDal>();
-
-            dal.Delete(id);
+           
+            await dal.Delete(id);
         }
 
         #endregion
-
- 
     }
 }

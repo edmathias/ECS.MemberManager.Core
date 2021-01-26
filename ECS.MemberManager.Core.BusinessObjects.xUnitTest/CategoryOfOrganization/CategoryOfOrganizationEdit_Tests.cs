@@ -10,12 +10,12 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class CategoryOfOrganizationEdit_Tests
+    public class CategoryOfOrganizationER_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
 
-        public CategoryOfOrganizationEdit_Tests()
+        public CategoryOfOrganizationER_Tests()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -37,9 +37,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
         
        [Fact]
-        public async void TestCategoryOfOrganizationEdit_Get()
+        public async void TestCategoryOfOrganizationER_Get()
         {
-            var categoryOfOrganization = await CategoryOfOrganizationEdit.GetCategoryOfOrganizationEdit(1);
+            var categoryOfOrganization = await CategoryOfOrganizationER.GetCategoryOfOrganizationER(1);
     
             Assert.NotNull(categoryOfOrganization);
             Assert.Equal(1, categoryOfOrganization.Id);
@@ -47,18 +47,18 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async void TestCategoryOfOrganizationEdit_GetNewObject()
+        public async void TestCategoryOfOrganizationER_GetNewObject()
         {
-            var categoryOfOrganization = await CategoryOfOrganizationEdit.NewCategoryOfOrganizationEdit();
+            var categoryOfOrganization = await CategoryOfOrganizationER.NewCategoryOfOrganizationER();
 
             Assert.NotNull(categoryOfOrganization);
             Assert.False(categoryOfOrganization.IsValid);
         }
 
         [Fact]
-        public async void TestCategoryOfOrganizationEdit_UpdateExistingObjectInDatabase()
+        public async void TestCategoryOfOrganizationER_UpdateExistingObjectInDatabase()
         {
-            var categoryOfOrganization = await CategoryOfOrganizationEdit.GetCategoryOfOrganizationEdit(1);
+            var categoryOfOrganization = await CategoryOfOrganizationER.GetCategoryOfOrganizationER(1);
             categoryOfOrganization.DisplayOrder = 2;
             
             var result = await categoryOfOrganization.SaveAsync();
@@ -68,34 +68,34 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestCategoryOfOrganizationEdit_InsertNewObjectIntoDatabase()
+        public async Task TestCategoryOfOrganizationER_InsertNewObjectIntoDatabase()
         {
-            var categoryOfOrganization = await CategoryOfOrganizationEdit.NewCategoryOfOrganizationEdit();
+            var categoryOfOrganization = await CategoryOfOrganizationER.NewCategoryOfOrganizationER();
             categoryOfOrganization.Category = "Category 1";
 
             var savedCategoryOfOrganization = await categoryOfOrganization.SaveAsync();
            
             Assert.NotNull(savedCategoryOfOrganization);
-            Assert.IsType<CategoryOfOrganizationEdit>(savedCategoryOfOrganization);
+            Assert.IsType<CategoryOfOrganizationER>(savedCategoryOfOrganization);
             Assert.True( savedCategoryOfOrganization.Id > 0 );
         }
 
         [Fact]
-        public async Task TestCategoryOfOrganizationEdit_DeleteObjectFromDatabase()
+        public async Task TestCategoryOfOrganizationER_DeleteObjectFromDatabase()
         {
-            var categoryToDelete = await CategoryOfOrganizationEdit.GetCategoryOfOrganizationEdit(99);
+            var categoryToDelete = await CategoryOfOrganizationER.GetCategoryOfOrganizationER(99);
             
-            await CategoryOfOrganizationEdit.DeleteCategoryOfOrganizationEdit(categoryToDelete.Id);
+            await CategoryOfOrganizationER.DeleteCategoryOfOrganizationER(categoryToDelete.Id);
             
             var categoryToCheck = await Assert.ThrowsAsync<Csla.DataPortalException>
-                (() => CategoryOfOrganizationEdit.GetCategoryOfOrganizationEdit(categoryToDelete.Id));        
+                (() => CategoryOfOrganizationER.GetCategoryOfOrganizationER(categoryToDelete.Id));        
         }
         
         // test invalid state 
         [Fact]
-        public async Task TestCategoryOfOrganizationEdit_CategoryRequired() 
+        public async Task TestCategoryOfOrganizationER_CategoryRequired() 
         {
-            var categoryOfOrganization = await CategoryOfOrganizationEdit.NewCategoryOfOrganizationEdit();
+            var categoryOfOrganization = await CategoryOfOrganizationER.NewCategoryOfOrganizationER();
             categoryOfOrganization.Category = "Valid category";
             categoryOfOrganization.DisplayOrder = 1;
             var isObjectValidInit = categoryOfOrganization.IsValid;
@@ -107,9 +107,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
        
         [Fact]
-        public async Task TestCategoryOfOrganizationEdit_CategoryExceedsMaxLengthOf35()
+        public async Task TestCategoryOfOrganizationER_CategoryExceedsMaxLengthOf35()
         {
-            var categoryOfOrganization = await CategoryOfOrganizationEdit.NewCategoryOfOrganizationEdit();
+            var categoryOfOrganization = await CategoryOfOrganizationER.NewCategoryOfOrganizationER();
             categoryOfOrganization.Category = "valid category";
             Assert.True(categoryOfOrganization.IsValid);
 
@@ -126,11 +126,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         // test exception if attempt to save in invalid state
 
         [Fact]
-        public async Task TestCategoryOfOrganizationEdit_TestInvalidSave()
+        public async Task TestCategoryOfOrganizationER_TestInvalidSave()
         {
-            var categoryOfOrganization = await CategoryOfOrganizationEdit.NewCategoryOfOrganizationEdit();
+            var categoryOfOrganization = await CategoryOfOrganizationER.NewCategoryOfOrganizationER();
             categoryOfOrganization.Category = String.Empty;
-            CategoryOfOrganizationEdit savedCategoryOfOrganization = null;
+            CategoryOfOrganizationER savedCategoryOfOrganization = null;
                 
             Assert.False(categoryOfOrganization.IsValid);
             Assert.Throws<Csla.Rules.ValidationException>(() => savedCategoryOfOrganization = categoryOfOrganization.Save());

@@ -44,7 +44,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             const int ID_TO_FETCH = 1;
             
-            var contactForSponsor = await ContactForSponsorEdit.GetContactForSponsorEdit(ID_TO_FETCH);
+            var contactForSponsor = await ContactForSponsorER.GetContactForSponsorER(ID_TO_FETCH);
 
             Assert.NotNull(contactForSponsor);
             Assert.Equal(ID_TO_FETCH,contactForSponsor.Id);
@@ -54,7 +54,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async Task ContactForSponsorEdit_TestNewContactForSponsorEdit()
         {
-            var contactForSponsor = await ContactForSponsorEdit.NewContactForSponsorEdit();
+            var contactForSponsor = await ContactForSponsorER.NewContactForSponsorER();
 
             Assert.NotNull(contactForSponsor);
             Assert.False(contactForSponsor.IsValid);
@@ -64,7 +64,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         public async void ContactForSponsorEdit_TestUpdateContactForSponsorEdit()
         {
             const int ID_TO_FETCH = 1;
-            var contactForSponsor = await ContactForSponsorEdit.GetContactForSponsorEdit(ID_TO_FETCH);
+            var contactForSponsor = await ContactForSponsorER.GetContactForSponsorER(ID_TO_FETCH);
             contactForSponsor.Notes = "These are updated Notes";
 
             var result = await contactForSponsor.SaveAsync();
@@ -76,13 +76,13 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async Task ContactForSponsorEdit_TestInsertContactForSponsorEdit()
         {
-            var contactForSponsor = await ContactForSponsorEdit.NewContactForSponsorEdit();
+            var contactForSponsor = await ContactForSponsorER.NewContactForSponsorER();
             BuildContactForSponsorEdit(contactForSponsor);
 
             var savedContactForSponsor = await contactForSponsor.SaveAsync();
 
             Assert.NotNull(savedContactForSponsor);
-            Assert.IsType<ContactForSponsorEdit>(savedContactForSponsor);
+            Assert.IsType<ContactForSponsorER>(savedContactForSponsor);
             Assert.True(savedContactForSponsor.Id > 0);
         }
 
@@ -91,13 +91,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             const int ID_TO_DELETE = 99;
 
-            var contactList = await ContactForSponsorInfoList.GetContactForSponsorInfoList();
+            await ContactForSponsorER.DeleteContactForSponsorER(ID_TO_DELETE);
 
-            await ContactForSponsorEdit.DeleteContactForSponsorEdit(ID_TO_DELETE);
-
-            var contactListAfterDelete = await ContactForSponsorInfoList.GetContactForSponsorInfoList();
-            
-            Assert.NotEqual(contactList.Count, contactListAfterDelete.Count );
+            await Assert.ThrowsAsync<DataPortalException>(
+                () => ContactForSponsorER.GetContactForSponsorER(ID_TO_DELETE));
         }
 
         // test invalid state 
@@ -105,15 +102,15 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async Task ContactForSponsorEdit_TestInvalidSaveContactForSponsorEdit()
         {
-            var contactForSponsor = await ContactForSponsorEdit.NewContactForSponsorEdit();
+            var contactForSponsor = await ContactForSponsorER.NewContactForSponsorER();
             
-            ContactForSponsorEdit savedContactForSponsor = null;
+            ContactForSponsorER savedContactForSponsor = null;
 
             Assert.False(contactForSponsor.IsValid);
             Assert.Throws<Csla.Rules.ValidationException>(() => savedContactForSponsor = contactForSponsor.Save());
         }
 
-        void BuildContactForSponsorEdit(ContactForSponsorEdit contactForSponsorER)
+        void BuildContactForSponsorEdit(ContactForSponsorER contactForSponsorER)
         {
             contactForSponsorER.Purpose = "purpose";
             contactForSponsorER.PersonId = 1;

@@ -9,12 +9,12 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class CategoryOfPersonEditList_Tests
+    public class CategoryOfPersonEditChildList_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
 
-        public CategoryOfPersonEditList_Tests()
+        public CategoryOfPersonEditChildList_Tests()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -38,16 +38,16 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         private async void CategoryOfPersonEditList_TestNewCategoryOfPersonEditList()
         {
-            var categoryOfPersonEdit = await CategoryOfPersonEditList.NewCategoryOfPersonEditList();
+            var categoryOfPersonEdit = await CategoryOfPersonECL.NewCategoryOfPersonECL();
 
             Assert.NotNull(categoryOfPersonEdit);
-            Assert.IsType<CategoryOfPersonEditList>(categoryOfPersonEdit);
+            Assert.IsType<CategoryOfPersonECL>(categoryOfPersonEdit);
         }
         
         [Fact]
         private async void CategoryOfPersonEditList_TestGetCategoryOfPersonEditList()
         {
-            var categoryOfPersonEdit = await CategoryOfPersonEditList.GetCategoryOfPersonEditList();
+            var categoryOfPersonEdit = await CategoryOfPersonECL.GetCategoryOfPersonECL();
 
             Assert.NotNull(categoryOfPersonEdit);
             Assert.Equal(3, categoryOfPersonEdit.Count);
@@ -56,7 +56,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         private async void CategoryOfPersonEditList_TestDeleteCategoryOfPersonEditEntry()
         {
-            var categoryOfPersonEdit = await CategoryOfPersonEditList.GetCategoryOfPersonEditList();
+            var categoryOfPersonEdit = await CategoryOfPersonECL.GetCategoryOfPersonECL();
             var listCount = categoryOfPersonEdit.Count;
             var categoryOfPersonToDelete = categoryOfPersonEdit.First(et => et.Id == 99);
 
@@ -66,7 +66,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var categoryOfPersonListAfterDelete = await categoryOfPersonEdit.SaveAsync();
 
             Assert.NotNull(categoryOfPersonListAfterDelete);
-            Assert.IsType<CategoryOfPersonEditList>(categoryOfPersonListAfterDelete);
+            Assert.IsType<CategoryOfPersonECL>(categoryOfPersonListAfterDelete);
             Assert.True(isDeleted);
             Assert.NotEqual(listCount,categoryOfPersonListAfterDelete.Count);
         }
@@ -76,7 +76,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             const int idToUpdate = 1;
             
-            var categoryOfPersonEditList = await CategoryOfPersonEditList.GetCategoryOfPersonEditList();
+            var categoryOfPersonEditList = await CategoryOfPersonECL.GetCategoryOfPersonECL();
             var countBeforeUpdate = categoryOfPersonEditList.Count;
             var categoryOfPersonToUpdate = categoryOfPersonEditList.First(a => a.Id == idToUpdate);
             categoryOfPersonToUpdate.Category = "Updated category";
@@ -89,7 +89,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         private async void CategoryOfPersonEditList_TestAddCategoryOfPersonEditEntry()
         {
-            var categoryOfPersonEditList = await CategoryOfPersonEditList.GetCategoryOfPersonEditList();
+            var categoryOfPersonEditList = await CategoryOfPersonECL.GetCategoryOfPersonECL();
             var countBeforeAdd = categoryOfPersonEditList.Count;
             
             var categoryOfPersonToAdd = categoryOfPersonEditList.AddNew();
@@ -100,7 +100,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotEqual(countBeforeAdd, updatedCategoryOfPersonEditList.Count);
         }
 
-        private void BuildCategoryOfPerson(CategoryOfPersonEdit categoryToBuild)
+        private void BuildCategoryOfPerson(CategoryOfPersonEC categoryToBuild)
         {
             categoryToBuild.Category = "test";
             categoryToBuild.DisplayOrder = 1;

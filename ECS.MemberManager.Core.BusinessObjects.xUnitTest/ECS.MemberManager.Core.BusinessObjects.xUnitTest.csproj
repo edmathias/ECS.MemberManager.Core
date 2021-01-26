@@ -47,6 +47,8 @@
       <Compile Remove="Organization\OrganizationER_Tests.cs" />
       <Compile Remove="OrganizationType\OrganizationTypeER_Tests.cs" />
       <Compile Remove="CategoryOfPerson\CategoryOfPersonER_Tests.cs" />
+      <Compile Remove="Address\AddressEditChild_Tests.cs" />
+      <Compile Remove="Address\AddressInfoChildTests.cs" />
     </ItemGroup>
     
 

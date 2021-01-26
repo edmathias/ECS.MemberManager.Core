@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
@@ -13,9 +12,11 @@ namespace ECS.MemberManager.Core.BusinessObjects
     [Serializable]
     public class CategoryOfPersonEC : BusinessBase<CategoryOfPersonEC>
     {
+
         #region Business Methods
-        
+
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
+
         public int Id
         {
             get => GetProperty(IdProperty);
@@ -23,6 +24,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<string> CategoryProperty = RegisterProperty<string>(p => p.Category);
+
         [Required, MaxLength(35)]
         public string Category
         {
@@ -31,10 +33,18 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<int> DisplayOrderProperty = RegisterProperty<int>(p => p.DisplayOrder);
+
         public int DisplayOrder
         {
             get => GetProperty(DisplayOrderProperty);
             set => SetProperty(DisplayOrderProperty, value);
+        }
+         
+        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
+        public byte[] RowVersion
+        {
+            get => GetProperty(RowVersionProperty);
+            set => SetProperty(RowVersionProperty, value);
         }
 
         protected override void AddBusinessRules()
@@ -54,98 +64,74 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        internal static async Task<CategoryOfPersonEC> NewCategoryOfPerson()
-        {
-            return await DataPortal.CreateAsync<CategoryOfPersonEC>();
-        }
-
-        internal static async Task<CategoryOfPersonEC> GetCategoryOfPerson(CategoryOfPerson childData)
+        internal static async Task<CategoryOfPersonEC> GetCategoryOfPersonEC(CategoryOfPerson childData)
         {
             return await DataPortal.FetchChildAsync<CategoryOfPersonEC>(childData);
         }
-        
-        internal static async Task DeleteCategoryOfPerson(int id)
-        {
-            await DataPortal.DeleteAsync<CategoryOfPersonEC>(id);
-        }
- 
+
         #endregion
 
-        #region Data Access
-        
-        [CreateChild]
-        private void Create()
-        {
-            MarkAsChild();
-            
-            BusinessRules.CheckRules();
-        }        
+        #region Data Access Methods
 
         [FetchChild]
-        private void Fetch(CategoryOfPerson categoryOfPerson)
+        private void Fetch(CategoryOfPerson childData)
         {
             using (BypassPropertyChecks)
             {
-                Id = categoryOfPerson.Id;
-                Category = categoryOfPerson.Category;
-                DisplayOrder = categoryOfPerson.DisplayOrder;
+                Id = childData.Id;
+                Category = childData.Category;
+                RowVersion = childData.RowVersion;
             }
-            
-            BusinessRules.CheckRules();
         }
 
         [InsertChild]
-        private void Insert()
+        private async Task InsertChild()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<ICategoryOfPersonDal>();
-            using (BypassPropertyChecks)
+            var data = new CategoryOfPerson()
             {
-                var categoryToInsert = new EF.Domain.CategoryOfPerson()
-                {
-                    Id = Id,
-                    DisplayOrder = DisplayOrder,
-                    Category = Category
-                };
-                dal.Insert(categoryToInsert);
-                Id = categoryToInsert.Id;
-            }
-        }
-        
-        [UpdateChild]
-        private void Update()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ICategoryOfPersonDal>();
-            using (BypassPropertyChecks)
-            {
-                var categoryToUpdate = new EF.Domain.CategoryOfPerson()
-                {
-                    Id = Id,
-                    Category = Category,
-                    DisplayOrder = DisplayOrder
-                };
-                dal.Update(categoryToUpdate);
-            }
+                Category = Category,
+                DisplayOrder = DisplayOrder
+            };
+
+            var insertedCategoryOfPerson = await dal.Insert(data);
+            Id = insertedCategoryOfPerson.Id;
+            RowVersion = insertedCategoryOfPerson.RowVersion;
         }
 
-        [DeleteSelfChild]
-        private void DeleteSelf()
-        {
-            Delete(this.Id);
-        }
-        
-        [Delete]
-        private void Delete(int id)
+        [UpdateChild]
+        private async Task ChildUpdate()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<ICategoryOfPersonDal>();
- 
-            dal.Delete(id);
+
+            var categoryOfPersonTypeToUpdate = new CategoryOfPerson()
+            {
+                Id = Id,
+                Category = Category,
+                DisplayOrder = DisplayOrder,
+                RowVersion = RowVersion
+            };
+
+            var updatedEmail = await dal.Update(categoryOfPersonTypeToUpdate);
+            RowVersion = updatedEmail.RowVersion;
+        }
+        
+        [DeleteSelfChild]
+        private async Task DeleteSelf()
+        {
+            await Delete(Id);
+        }
+
+        private async Task Delete(int id)
+        {
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<ICategoryOfPersonDal>();
+           
+            await dal.Delete(id);
         }
 
         #endregion
-
- 
     }
 }

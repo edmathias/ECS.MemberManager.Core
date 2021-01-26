@@ -9,12 +9,12 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class ContactForSponsorEditList_Tests
+    public class ContactForSponsorECL_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
 
-        public ContactForSponsorEditList_Tests()
+        public ContactForSponsorECL_Tests()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -36,27 +36,28 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        private async void ContactForSponsorEditList_TestNewContactForSponsorEditList()
+        private async void ContactForSponsorECL_TestNewContactForSponsorECL()
         {
-            var contactForSponsorEdit = await ContactForSponsorEditList.NewContactForSponsorEditList();
+            var contactForSponsorEdit = await ContactForSponsorECL.NewContactForSponsorECL();
 
             Assert.NotNull(contactForSponsorEdit);
-            Assert.IsType<ContactForSponsorEditList>(contactForSponsorEdit);
+            Assert.IsType<ContactForSponsorECL>(contactForSponsorEdit);
         }
         
         [Fact]
-        private async void ContactForSponsorEditList_TestGetContactForSponsorEditList()
+        private async void ContactForSponsorECL_TestGetContactForSponsorECL()
         {
-            var contactForSponsorEdit = await ContactForSponsorEditList.GetContactForSponsorEditList();
-
+            var contacts = MockDb.ContactForSponsors.ToList();
+            var contactForSponsorEdit = await ContactForSponsorECL.GetContactForSponsorECL(contacts); 
             Assert.NotNull(contactForSponsorEdit);
             Assert.Equal(3, contactForSponsorEdit.Count);
         }
         
         [Fact]
-        private async void ContactForSponsorEditList_TestDeleteContactForSponsorEditEntry()
+        private async void ContactForSponsorECL_TestDeleteContactForSponsorEditEntry()
         {
-            var contactForSponsorEdit = await ContactForSponsorEditList.GetContactForSponsorEditList();
+            var contacts = MockDb.ContactForSponsors.ToList();
+            var contactForSponsorEdit = await ContactForSponsorECL.GetContactForSponsorECL(contacts);
             var listCount = contactForSponsorEdit.Count;
             var contactForSponsorToDelete = contactForSponsorEdit.First(et => et.Id == 99);
 
@@ -66,17 +67,18 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var contactForSponsorListAfterDelete = await contactForSponsorEdit.SaveAsync();
 
             Assert.NotNull(contactForSponsorListAfterDelete);
-            Assert.IsType<ContactForSponsorEditList>(contactForSponsorListAfterDelete);
+            Assert.IsType<ContactForSponsorECL>(contactForSponsorListAfterDelete);
             Assert.True(isDeleted);
             Assert.NotEqual(listCount,contactForSponsorListAfterDelete.Count);
         }
 
         [Fact]
-        private async void ContactForSponsorEditList_TestUpdateContactForSponsorEditEntry()
+        private async void ContactForSponsorECL_TestUpdateContactForSponsorEditEntry()
         {
             const int idToUpdate = 1;
             
-            var contactForSponsorEditList = await ContactForSponsorEditList.GetContactForSponsorEditList();
+            var contacts = MockDb.ContactForSponsors.ToList();
+            var contactForSponsorEditList = await ContactForSponsorECL.GetContactForSponsorECL(contacts);
             var countBeforeUpdate = contactForSponsorEditList.Count;
             var contactForSponsorToUpdate = contactForSponsorEditList.First(a => a.Id == idToUpdate);
             contactForSponsorToUpdate.LastUpdatedBy= "edm";
@@ -87,20 +89,21 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        private async void ContactForSponsorEditList_TestAddContactForSponsorEditEntry()
+        private async void ContactForSponsorECL_TestAddContactForSponsorEditEntry()
         {
-            var contactForSponsorEditList = await ContactForSponsorEditList.GetContactForSponsorEditList();
+            var contacts = MockDb.ContactForSponsors.ToList();
+            var contactForSponsorEditList = await ContactForSponsorECL.GetContactForSponsorECL(contacts);
             var countBeforeAdd = contactForSponsorEditList.Count;
             
             var contactForSponsorToAdd = contactForSponsorEditList.AddNew();
             BuildContactForSponsor(contactForSponsorToAdd);
 
-            var updatedContactForSponsorEditList = await contactForSponsorEditList.SaveAsync();
+            var updatedContactForSponsorECL = await contactForSponsorEditList.SaveAsync();
             
-            Assert.NotEqual(countBeforeAdd, updatedContactForSponsorEditList.Count);
+            Assert.NotEqual(countBeforeAdd, updatedContactForSponsorECL.Count);
         }
 
-        private void BuildContactForSponsor(ContactForSponsorEdit categoryToBuild)
+        private void BuildContactForSponsor(ContactForSponsorEC categoryToBuild)
         {
             categoryToBuild.Id = 0;
             categoryToBuild.Notes = "contact notes";

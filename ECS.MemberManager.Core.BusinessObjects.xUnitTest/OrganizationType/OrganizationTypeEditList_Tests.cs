@@ -111,7 +111,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             organizationTypeToBuild.Name = "organization type description";
             organizationTypeToBuild.Notes = "notes for organization type";
             organizationTypeToBuild.CategoryOfOrganization =
-                await CategoryOfOrganizationEdit.GetCategoryOfOrganizationEdit(1);
+                await CategoryOfOrganizationER.GetCategoryOfOrganizationER(1);
         }
     }
 }

@@ -44,7 +44,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             const int ID_TO_FETCH = 1;
             
-            var contactForSponsor = await ContactForSponsorInfo.GetContactForSponsorInfo(ID_TO_FETCH);
+            var contactForSponsor = await ContactForSponsorROR.GetContactForSponsorROR(ID_TO_FETCH);
 
             Assert.NotNull(contactForSponsor);
             Assert.Equal(ID_TO_FETCH,contactForSponsor.Id);

@@ -138,36 +138,23 @@ namespace ECS.MemberManager.Core.BusinessObjects
             var dal = dalManager.GetProvider<IPhoneDal>();
             var data = await dal.Fetch(id);
             
-             await FetchChild(data);
-        }
-
-        [FetchChild]
-        private async Task FetchChild(Phone childData)
-        {
             using (BypassPropertyChecks)
             {
-                Id = childData.Id;
-                PhoneType = childData.PhoneType;
-                AreaCode = childData.AreaCode;
-                Number = childData.Number;
-                Extension = childData.Extension;
-                DisplayOrder = childData.DisplayOrder;
-                LastUpdatedDate = childData.LastUpdatedDate;
-                LastUpdatedBy = childData.LastUpdatedBy;
-                Notes = childData.Notes;
-                RowVersion = childData.RowVersion;
+                Id = data.Id;
+                PhoneType = data.PhoneType;
+                AreaCode = data.AreaCode;
+                Number = data.Number;
+                Extension = data.Extension;
+                DisplayOrder = data.DisplayOrder;
+                LastUpdatedDate = data.LastUpdatedDate;
+                LastUpdatedBy = data.LastUpdatedBy;
+                Notes = data.Notes;
+                RowVersion = data.RowVersion;
             }
-           
         }
 
         [Insert]
         private async Task Insert()
-        {
-            await InsertChild();
-        }        
-        
-        [InsertChild]
-        private async Task InsertChild()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IPhoneDal>();
@@ -190,13 +177,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         [Update]
-        private async void Update()
-        {
-            await UpdateChild();
-        }
-        
-        [UpdateChild]
-        private async Task UpdateChild()
+        private async Task Update()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IPhoneDal>();
@@ -224,13 +205,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
             await Delete(this.Id);
         }
        
-        [DeleteSelfChild]
-        private async Task DeleteSelfChild()
-        {
-            await Delete(this.Id);
-        }
-        
-        
         [Delete]
         private async Task Delete(int id)
         {

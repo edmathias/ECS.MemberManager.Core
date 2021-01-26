@@ -10,12 +10,12 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class CategoryOfPersonEdit_Tests
+    public class CategoryOfPersonER_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
 
-        public CategoryOfPersonEdit_Tests()
+        public CategoryOfPersonER_Tests()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -37,27 +37,27 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
         
        [Fact]
-        public async void TestCategoryOfPersonEdit_Get()
+        public async void TestCategoryOfPersonER_GetCategoryOfPersonER()
         {
-            var categoryOfPerson = await CategoryOfPersonEdit.GetCategoryOfPersonEdit(1);
+            var categoryOfPerson = await CategoryOfPersonER.GetCategoryOfPersonER(1);
 
             Assert.Equal(1, categoryOfPerson.Id);
             Assert.True(categoryOfPerson.IsValid);
         }
 
         [Fact]
-        public async void TestCategoryOfPersonEdit_GetNewObject()
+        public async void TestCategoryOfPersonER_GetNewObject()
         {
-            var categoryOfPerson = await CategoryOfPersonEdit.NewCategoryOfPersonEdit();
+            var categoryOfPerson = await CategoryOfPersonER.NewCategoryOfPersonER();
 
             Assert.NotNull(categoryOfPerson);
             Assert.False(categoryOfPerson.IsValid);
         }
 
         [Fact]
-        public async void TestCategoryOfPersonEdit_UpdateExistingObjectInDatabase()
+        public async void TestCategoryOfPersonER_UpdateExistingObjectInDatabase()
         {
-            var categoryOfPerson = await CategoryOfPersonEdit.GetCategoryOfPersonEdit(1);
+            var categoryOfPerson = await CategoryOfPersonER.GetCategoryOfPersonER(1);
             categoryOfPerson.DisplayOrder = 2;
             
             var result = await categoryOfPerson.SaveAsync();
@@ -67,34 +67,34 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestCategoryOfPersonEdit_InsertNewObjectIntoDatabase()
+        public async Task TestCategoryOfPersonER_InsertNewObjectIntoDatabase()
         {
-            var categoryOfPerson = await CategoryOfPersonEdit.NewCategoryOfPersonEdit();
+            var categoryOfPerson = await CategoryOfPersonER.NewCategoryOfPersonER();
             categoryOfPerson.Category = "Category 1";
 
             var savedCategoryOfPerson = await categoryOfPerson.SaveAsync();
            
             Assert.NotNull(savedCategoryOfPerson);
-            Assert.IsType<CategoryOfPersonEdit>(savedCategoryOfPerson);
+            Assert.IsType<CategoryOfPersonER>(savedCategoryOfPerson);
             Assert.True( savedCategoryOfPerson.Id > 0 );
         }
 
         [Fact]
-        public async Task TestCategoryOfPersonEdit_DeleteObjectFromDatabase()
+        public async Task TestCategoryOfPersonER_DeleteObjectFromDatabase()
         {
-            var categoryToDelete = await CategoryOfPersonEdit.GetCategoryOfPersonEdit(99);
+            var categoryToDelete = await CategoryOfPersonER.GetCategoryOfPersonER(99);
             
-            await CategoryOfPersonEdit.DeleteCategoryOfPersonEdit(categoryToDelete.Id);
+            await CategoryOfPersonER.DeleteCategoryOfPersonER(categoryToDelete.Id);
             
             var categoryToCheck = await Assert.ThrowsAsync<Csla.DataPortalException>
-                (() => CategoryOfPersonEdit.GetCategoryOfPersonEdit(categoryToDelete.Id));        
+                (() => CategoryOfPersonER.GetCategoryOfPersonER(categoryToDelete.Id));        
         }
         
         // test invalid state 
         [Fact]
-        public async Task TestCategoryOfPersonEdit_CategoryRequired() 
+        public async Task TestCategoryOfPersonER_CategoryRequired() 
         {
-            var categoryOfPerson = await CategoryOfPersonEdit.NewCategoryOfPersonEdit();
+            var categoryOfPerson = await CategoryOfPersonER.NewCategoryOfPersonER();
             categoryOfPerson.Category = "Valid category";
             categoryOfPerson.DisplayOrder = 1;
             var isObjectValidInit = categoryOfPerson.IsValid;
@@ -106,9 +106,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
        
         [Fact]
-        public async Task TestCategoryOfPersonEdit_CategoryExceedsMaxLengthOf35()
+        public async Task TestCategoryOfPersonER_CategoryExceedsMaxLengthOf35()
         {
-            var categoryOfPerson = await CategoryOfPersonEdit.NewCategoryOfPersonEdit();
+            var categoryOfPerson = await CategoryOfPersonER.NewCategoryOfPersonER();
             categoryOfPerson.Category = "valid category";
             Assert.True(categoryOfPerson.IsValid);
 
@@ -125,11 +125,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         // test exception if attempt to save in invalid state
 
         [Fact]
-        public async Task TestCategoryOfPersonEdit_TestInvalidSave()
+        public async Task TestCategoryOfPersonER_TestInvalidSave()
         {
-            var categoryOfPerson = await CategoryOfPersonEdit.NewCategoryOfPersonEdit();
+            var categoryOfPerson = await CategoryOfPersonER.NewCategoryOfPersonER();
             categoryOfPerson.Category = String.Empty;
-            CategoryOfPersonEdit savedCategoryOfPerson = null;
+            CategoryOfPersonER savedCategoryOfPerson = null;
                 
             Assert.False(categoryOfPerson.IsValid);
             Assert.Throws<Csla.Rules.ValidationException>(() => savedCategoryOfPerson = categoryOfPerson.Save());

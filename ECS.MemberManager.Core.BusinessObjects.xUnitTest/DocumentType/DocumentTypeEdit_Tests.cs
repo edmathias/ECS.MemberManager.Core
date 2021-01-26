@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Csla;
 using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Mock;
@@ -10,12 +11,12 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class DocumentTypeEdit_Tests 
+    public class DocumentTypeER_Tests 
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
 
-        public DocumentTypeEdit_Tests()
+        public DocumentTypeER_Tests()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -39,27 +40,27 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
 
         [Fact]
-        public async Task DocumentTypeEdit_TestGetDocumentType()
+        public async Task DocumentTypeER_TestGetDocumentType()
         {
-            var documentType = await DocumentTypeEdit.GetDocumentTypeEdit(1);
+            var documentType = await DocumentTypeER.GetDocumentTypeER(1);
 
             Assert.NotNull(documentType);
-            Assert.IsType<DocumentTypeEdit>(documentType);
+            Assert.IsType<DocumentTypeER>(documentType);
         }
 
         [Fact]
-        public async Task DocumentTypeEdit_TestGetNewDocumentTypeEdit()
+        public async Task DocumentTypeER_TestGetNewDocumentTypeER()
         {
-            var documentType = await DocumentTypeEdit.NewDocumentTypeEdit();
+            var documentType = await DocumentTypeER.NewDocumentTypeER();
 
             Assert.NotNull(documentType);
             Assert.False(documentType.IsValid);
         }
 
         [Fact]
-        public async Task DocumentTypeEdit_TestUpdateExistingDocumentTypeEdit()
+        public async Task DocumentTypeER_TestUpdateExistingDocumentTypeER()
         {
-            var documentType = await DocumentTypeEdit.GetDocumentTypeEdit(1);
+            var documentType = await DocumentTypeER.GetDocumentTypeER(1);
             documentType.Notes = "These are updated Notes";
             
             var result =  await documentType.SaveAsync();
@@ -69,9 +70,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task DocumentTypeEdit_TestInsertNewDocumentTypeEdit()
+        public async Task DocumentTypeER_TestInsertNewDocumentTypeER()
         {
-            var documentType = await DocumentTypeEdit.NewDocumentTypeEdit();
+            var documentType = await DocumentTypeER.NewDocumentTypeER();
             documentType.Description = "Standby";
             documentType.Notes = "This person is on standby";
             documentType.LastUpdatedBy = "edm";
@@ -80,28 +81,25 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var savedDocumentType = await documentType.SaveAsync();
            
             Assert.NotNull(savedDocumentType);
-            Assert.IsType<DocumentTypeEdit>(savedDocumentType);
+            Assert.IsType<DocumentTypeER>(savedDocumentType);
             Assert.True( savedDocumentType.Id > 0 );
         }
 
         [Fact]
-        public async Task DocumentTypeEdit_TestDeleteObjectFromDatabase()
+        public async Task DocumentTypeER_TestDeleteObjectFromDatabase()
         {
-            var deleteId = MockDb.DocumentTypes.Max(dt => dt.Id);
-            int beforeCount = MockDb.DocumentTypes.Count();
-
-            await DocumentTypeEdit.DeleteDocumentTypeEdit(deleteId);
-
-            var listAfterDelete = await DocumentTypeEditList.GetDocumentTypeEditList();
+            const int ID_TO_DELETE = 99;
             
-            Assert.NotEqual(beforeCount,listAfterDelete.Count());
+            await DocumentTypeER.DeleteDocumentTypeER(ID_TO_DELETE);
+
+            await Assert.ThrowsAsync<DataPortalException>(() => DocumentTypeER.GetDocumentTypeER(ID_TO_DELETE));
         }
         
         // test invalid state 
         [Fact]
-        public async Task DocumentTypeEdit_TestDescriptionRequired() 
+        public async Task DocumentTypeER_TestDescriptionRequired() 
         {
-            var documentType = await DocumentTypeEdit.NewDocumentTypeEdit();
+            var documentType = await DocumentTypeER.NewDocumentTypeER();
             documentType.Description = "make valid";
             documentType.LastUpdatedBy = "edm";
             documentType.LastUpdatedDate = DateTime.Now;
@@ -114,9 +112,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
        
         [Fact]
-        public async Task DocumentTypeEdit_TestDescriptionExceedsMaxLengthOf50()
+        public async Task DocumentTypeER_TestDescriptionExceedsMaxLengthOf50()
         {
-            var documentType = await DocumentTypeEdit.NewDocumentTypeEdit();
+            var documentType = await DocumentTypeER.NewDocumentTypeER();
             documentType.LastUpdatedBy = "edm";
             documentType.LastUpdatedDate = DateTime.Now;
             documentType.Description = "valid length";
@@ -136,11 +134,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         // test exception if attempt to save in invalid state
 
         [Fact]
-        public async Task DocumentTypeEdit_TestInvalidSaveDocumentTypeEdit()
+        public async Task DocumentTypeER_TestInvalidSaveDocumentTypeER()
         {
-            var documentType = await DocumentTypeEdit.NewDocumentTypeEdit();
+            var documentType = await DocumentTypeER.NewDocumentTypeER();
             documentType.Description = String.Empty;
-            DocumentTypeEdit savedDocumentType = null;
+            DocumentTypeER savedDocumentType = null;
                 
             Assert.False(documentType.IsValid);
             Assert.Throws<Csla.Rules.ValidationException>(() => savedDocumentType =  documentType.Save() );

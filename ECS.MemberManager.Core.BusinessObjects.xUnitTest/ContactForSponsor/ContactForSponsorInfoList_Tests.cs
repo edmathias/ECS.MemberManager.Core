@@ -38,7 +38,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         private async void ContactForSponsorInfoList_TestGetContactForSponsorInfoList()
         {
-            var contactForSponsorEdit = await ContactForSponsorInfoList.GetContactForSponsorInfoList();
+            var contactForSponsorEdit = await ContactForSponsorROCL.GetContactForSponsorROCL();
 
             Assert.NotNull(contactForSponsorEdit);
             Assert.Equal(3, contactForSponsorEdit.Count);

@@ -1,7 +1,9 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
+using ECS.MemberManager.Core.DataAccess;
+using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
@@ -14,28 +16,45 @@ namespace ECS.MemberManager.Core.BusinessObjects
             // TODO: add object-level authorization rules
         }
 
-        internal static async Task<ContactForSponsorECL> NewContactForSponsorList()
+        public static async Task<ContactForSponsorECL> NewContactForSponsorECL()
         {
-            return await DataPortal.CreateChildAsync<ContactForSponsorECL>();
+            return await DataPortal.CreateAsync<ContactForSponsorECL>();
         }
 
-        internal static async Task<ContactForSponsorECL> GetContactForSponsorList(IList<ContactForSponsor> listOfChildren)
+        public static async Task<ContactForSponsorECL> GetContactForSponsorECL(List<ContactForSponsor> childData)
         {
-            return await DataPortal.FetchChildAsync<ContactForSponsorECL>(listOfChildren);
+            return await DataPortal.FetchAsync<ContactForSponsorECL>(childData);
         }
-
+        
+        [RunLocal]
+        [Create]
+        private void Create()
+        {
+            base.DataPortal_Create();
+        }
+        
         [FetchChild]
-        private async void Fetch(IList<ContactForSponsor> listOfChildren)
+        private async Task FetchChild()
         {
-            RaiseListChangedEvents = false;
-            
-            foreach (var childData in listOfChildren)
-            {
-                this.Add( await ContactForSponsorEC.GetContactForSponsor(childData)  );
-            }
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IContactForSponsorDal>();
+            var childData = await dal.Fetch();
 
-            RaiseListChangedEvents = true;
+            using (LoadListMode)
+            {
+                foreach (var categoryOfPerson in childData)
+                {
+                    var categoryOfPersonToAdd = 
+                        await ContactForSponsorEC.GetContactForSponsorEditChild(categoryOfPerson);
+                    Add(categoryOfPersonToAdd);
+                }
+            }
         }
-  
+        
+        [Update]
+        private void Update()
+        {
+            Child_Update();
+        }
     }
 }

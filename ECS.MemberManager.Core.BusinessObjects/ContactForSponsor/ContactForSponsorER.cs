@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Csla;
-using ECS.MemberManager.Core.BusinessObjects.Sponsor;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
@@ -20,13 +19,17 @@ namespace ECS.MemberManager.Core.BusinessObjects
         public int Id
         {
             get => GetProperty(IdProperty);
-            private set => LoadProperty(IdProperty, value);
+            set => SetProperty(IdProperty, value);
+        }
+        
+        public static readonly PropertyInfo<int> SponsorIdProperty = RegisterProperty<int>(p => p.SponsorId);
+        public int SponsorId
+        {
+            get => GetProperty(SponsorIdProperty);
+            set => SetProperty(SponsorIdProperty, value);
         }
 
-        public static readonly PropertyInfo<SmartDate> DateWhenContactedProperty =
-            RegisterProperty<SmartDate>(p => p.DateWhenContacted);
-
-        [Required]
+        public static readonly PropertyInfo<SmartDate> DateWhenContactedProperty = RegisterProperty<SmartDate>(p => p.DateWhenContacted);
         public SmartDate DateWhenContacted
         {
             get => GetProperty(DateWhenContactedProperty);
@@ -34,21 +37,42 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<string> PurposeProperty = RegisterProperty<string>(p => p.Purpose);
-
-        [Required, MaxLength(255)]
+        [MaxLength(255)]
         public string Purpose
         {
             get => GetProperty(PurposeProperty);
             set => SetProperty(PurposeProperty, value);
         }
 
-        public static readonly PropertyInfo<string> RecordOfDiscussionProperty =
-            RegisterProperty<string>(p => p.RecordOfDiscussion);
-
+        public static readonly PropertyInfo<string> RecordOfDiscussionProperty = RegisterProperty<string>(p => p.RecordOfDiscussion);
         public string RecordOfDiscussion
         {
             get => GetProperty(RecordOfDiscussionProperty);
             set => SetProperty(RecordOfDiscussionProperty, value);
+        }
+
+        public static readonly PropertyInfo<int> PersonIdProperty = RegisterProperty<int>(p => p.PersonId);
+        public int PersonId
+        {
+            get => GetProperty(PersonIdProperty);
+            set => SetProperty(PersonIdProperty, value);
+        }
+
+
+        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(p => p.LastUpdatedBy);
+        [Required,MaxLength(255)]
+        public string LastUpdatedBy
+        {
+            get => GetProperty(LastUpdatedByProperty);
+            set => SetProperty(LastUpdatedByProperty, value);
+        }
+
+        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
+        [Required]
+        public SmartDate LastUpdatedDate
+        {
+            get => GetProperty(LastUpdatedDateProperty);
+            set => SetProperty(LastUpdatedDateProperty, value);
         }
 
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
@@ -59,34 +83,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(NotesProperty, value);
         }
 
-        public static readonly PropertyInfo<string> LastUpdatedByProperty =
-            RegisterProperty<string>(p => p.LastUpdatedBy);
+        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
 
-        [Required, MaxLength(255)]
-        public string LastUpdatedBy
+        public byte[] RowVersion
         {
-            get => GetProperty(LastUpdatedByProperty);
-            set => SetProperty(LastUpdatedByProperty, value);
+            get => GetProperty(RowVersionProperty);
+            private set => LoadProperty(RowVersionProperty, value);
         }
-
-        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty =
-            RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
-
-        [Required]
-        public SmartDate LastUpdatedDate
-        {
-            get => GetProperty(LastUpdatedDateProperty);
-            set => SetProperty(LastUpdatedDateProperty, value);
-        }
-        
-        public static readonly PropertyInfo<SponsorEC> SponsorProperty = RegisterProperty<SponsorEC>(p => p.Sponsor);
-        public SponsorEC Sponsor
-        {
-            get => GetProperty(SponsorProperty);
-            set => SetProperty(SponsorProperty, value);
-        }
-
-        // TODO: add public properties and methods
 
         protected override void AddBusinessRules()
         {
@@ -105,12 +108,17 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        public static async Task<ContactForSponsorER> NewContactForSponsor()
+        public static async Task<ContactForSponsorER> NewContactForSponsorER()
         {
             return await DataPortal.CreateAsync<ContactForSponsorER>();
         }
 
-        public static async Task<ContactForSponsorER> GetContactForSponsor(int id)
+        public static async Task<ContactForSponsorER> GetContactForSponsorER(ContactForSponsor childData)
+        {
+            return await DataPortal.FetchChildAsync<ContactForSponsorER>(childData);
+        }
+
+        public static async Task<ContactForSponsorER> GetContactForSponsorER(int id)
         {
             return await DataPortal.FetchAsync<ContactForSponsorER>(id);
         }
@@ -122,85 +130,109 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #endregion
 
-        #region Data Access
+        #region Data Access Methods
 
-        [Create]
-        private async void Create()
+        [FetchChild]
+        private void Fetch(ContactForSponsor childData)
         {
-            Sponsor = await SponsorEC.NewSponsor();
-            
-            BusinessRules.CheckRules();
-        }
-
-        [Fetch]
-        private async void Fetch(int id)
-        {
-            using IDalManager dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IContactForSponsorDal>();
-            var data = dal.Fetch(id);
             using (BypassPropertyChecks)
             {
-                Id = data.Id;
-                Notes = data.Notes;
-                Purpose = data.Purpose;
-                DateWhenContacted = data.DateWhenContacted;
-                LastUpdatedBy = data.LastUpdatedBy;
-                LastUpdatedDate = data.LastUpdatedDate;
-                RecordOfDiscussion = data.RecordOfDiscussion;
-                Sponsor = await SponsorEC.GetSponsor(data.Sponsor);
+                Id = childData.Id;
+                SponsorId = childData.SponsorId;
+                DateWhenContacted = childData.DateWhenContacted;
+                Purpose = childData.Purpose;
+                RecordOfDiscussion = childData.RecordOfDiscussion;
+                PersonId = childData.PersonId;
+                LastUpdatedBy = childData.LastUpdatedBy;
+                LastUpdatedDate = childData.LastUpdatedDate;
+                Notes = childData.Notes;
+                RowVersion = childData.RowVersion;
             }
         }
 
-        [Insert]
-        private void Insert()
+        [Fetch]
+        private async Task FetchAsync(int id)
         {
-            using IDalManager dalManager = DalFactory.GetManager();
+            using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IContactForSponsorDal>();
-            var contactToInsert = new ContactForSponsor()
+            var data = await dal.Fetch(id);
+
+            Fetch(data);
+        }
+
+        [Insert]
+        private async Task Insert()
+        {
+            await InsertChild();
+        }
+
+        [InsertChild]
+        private async Task InsertChild()
+        {
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IContactForSponsorDal>();
+            var data = new ContactForSponsor()
             {
-                Id = Id,
-                Notes = Notes,
-                Purpose = Purpose,
+                // TODO: provide sponsor & Person functionality
+                SponsorId = SponsorId,
                 DateWhenContacted = DateWhenContacted,
+                Purpose = Purpose,
+                RecordOfDiscussion = RecordOfDiscussion,
+                PersonId = PersonId,
                 LastUpdatedBy = LastUpdatedBy,
                 LastUpdatedDate = LastUpdatedDate,
-                RecordOfDiscussion = RecordOfDiscussion,
-                Sponsor = new EF.Domain.Sponsor()
+                Notes = Notes,
+                RowVersion = RowVersion
             };
-            
-            Id = dal.Insert(contactToInsert);
+
+            var insertedContactForSponsor = await dal.Insert(data);
+            Id = insertedContactForSponsor.Id;
+            RowVersion = insertedContactForSponsor.RowVersion;
         }
 
         [Update]
-        private void Update()
+        private async Task Update()
         {
-            using IDalManager dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IContactForSponsorDal>();
-            var contactToUpdate = dal.Fetch(Id);
-
-            contactToUpdate.Id = Id;
-            contactToUpdate.Notes = Notes;
-            contactToUpdate.Purpose = Purpose;
-            contactToUpdate.DateWhenContacted = DateWhenContacted;
-            contactToUpdate.LastUpdatedBy = LastUpdatedBy;
-            contactToUpdate.LastUpdatedDate = LastUpdatedDate;
-            contactToUpdate.RecordOfDiscussion = RecordOfDiscussion;
-
-            dal.Update(contactToUpdate);
+            await ChildUpdate();
         }
 
-        [DeleteSelf]
-        private void DeleteSelf()
+        [UpdateChild]
+        private async Task ChildUpdate()
         {
-            Delete(this.Id);
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IContactForSponsorDal>();
+
+            var emailTypeToUpdate = new ContactForSponsor()
+            {
+                Id = Id,
+                SponsorId = SponsorId,
+                DateWhenContacted = DateWhenContacted,
+                Purpose = Purpose,
+                RecordOfDiscussion = RecordOfDiscussion,
+                PersonId = PersonId,
+                LastUpdatedBy = LastUpdatedBy,
+                LastUpdatedDate = LastUpdatedDate,
+                Notes = Notes,
+                RowVersion = RowVersion
+            };
+
+            var updatedEmail = await dal.Update(emailTypeToUpdate);
+            RowVersion = updatedEmail.RowVersion;
+        }
+        
+        [DeleteSelfChild]
+        private async Task DeleteSelf()
+        {
+            await Delete(Id);
         }
 
         [Delete]
-        private void Delete(int id)
+        private async Task Delete(int id)
         {
-            using IDalManager dalManager = DalFactory.GetManager();
+            using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IContactForSponsorDal>();
-            dal.Delete(id);
+           
+            await dal.Delete(id);
         }
 
         #endregion

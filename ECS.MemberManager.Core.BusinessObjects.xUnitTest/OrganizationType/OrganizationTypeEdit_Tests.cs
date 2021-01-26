@@ -73,7 +73,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             var organizationType = await OrganizationTypeEdit.NewOrganizationTypeEdit();
             organizationType.Name = "inserted name";
-            organizationType.CategoryOfOrganization = await CategoryOfOrganizationEdit.GetCategoryOfOrganizationEdit(1);
+            organizationType.CategoryOfOrganization = await CategoryOfOrganizationER.GetCategoryOfOrganizationER(1);
 
             var savedOrganizationType = await organizationType.SaveAsync();
            
