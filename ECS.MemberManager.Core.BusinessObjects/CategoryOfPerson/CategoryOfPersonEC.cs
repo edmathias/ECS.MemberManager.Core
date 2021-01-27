@@ -64,6 +64,11 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
+        internal static async Task<CategoryOfPersonEC> NewCategoryOfPersonEC()
+        {
+            return await DataPortal.CreateChildAsync<CategoryOfPersonEC>();
+        }
+
         internal static async Task<CategoryOfPersonEC> GetCategoryOfPersonEC(CategoryOfPerson childData)
         {
             return await DataPortal.FetchChildAsync<CategoryOfPersonEC>(childData);
@@ -80,6 +85,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             {
                 Id = childData.Id;
                 Category = childData.Category;
+                DisplayOrder = childData.DisplayOrder;
                 RowVersion = childData.RowVersion;
             }
         }
@@ -121,15 +127,10 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [DeleteSelfChild]
         private async Task DeleteSelf()
         {
-            await Delete(Id);
-        }
-
-        private async Task Delete(int id)
-        {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<ICategoryOfPersonDal>();
            
-            await dal.Delete(id);
+            await dal.Delete(Id);
         }
 
         #endregion

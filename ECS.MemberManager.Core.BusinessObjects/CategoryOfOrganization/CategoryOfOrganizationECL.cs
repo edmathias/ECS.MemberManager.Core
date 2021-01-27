@@ -9,39 +9,36 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class CategoryOfOrganizationERL : BusinessListBase<CategoryOfOrganizationERL,CategoryOfOrganizationEC>
+    public class CategoryOfOrganizationECL : BusinessListBase<CategoryOfOrganizationECL,CategoryOfOrganizationEC>
     {
-        #region Authorization Rules
+        #region Business Methods
+        
         public static void AddObjectAuthorizationRules()
         {
             // TODO: add object-level authorization rules
         }
 
         #endregion
-       
-        #region Factory Methods
         
-        public static async Task<CategoryOfOrganizationERL> NewCategoryOfOrganizationERL()
+        #region Factory Methods
+ 
+        public static async Task<CategoryOfOrganizationECL> NewCategoryOfOrganizationECL()
         {
-            return await DataPortal.CreateAsync<CategoryOfOrganizationERL>();
+            return await DataPortal.CreateAsync<CategoryOfOrganizationECL>();
         }
 
-        public static async Task<CategoryOfOrganizationERL> GetCategoryOfOrganizationERL()
+        public static async Task<CategoryOfOrganizationECL> GetCategoryOfOrganizationECL(List<CategoryOfOrganization> childData)
         {
-            return await DataPortal.FetchAsync<CategoryOfOrganizationERL>();
+            return await DataPortal.FetchAsync<CategoryOfOrganizationECL>(childData);
         }
-       
+        
         #endregion
         
         #region Data Access
         
         [Fetch]
-        private async Task Fetch()
+        private async Task Fetch(List<CategoryOfOrganization> childData)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ICategoryOfOrganizationDal>();
-            var childData = await dal.Fetch();
-
             using (LoadListMode)
             {
                 foreach (var categoryOfOrganization in childData)

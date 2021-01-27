@@ -47,7 +47,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
             private set => LoadProperty(RowVersionProperty, value);
         }
 
-
         protected override void AddBusinessRules()
         {
             base.AddBusinessRules();
@@ -69,7 +68,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             return await DataPortal.FetchAsync<CategoryOfPersonROR>(id);
         }
-
 
         #endregion
 

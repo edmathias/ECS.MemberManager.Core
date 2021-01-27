@@ -6,11 +6,11 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class CategoryOfPersonInfoChild_Tests
+    public class CategoryOfPersonROC_Tests
     {
 
         [Fact]
-        public async void CategoryOfPersonInfoChild_TestGetChild()
+        public async void CategoryOfPersonROC_TestGetChild()
         {
             const int ID_VALUE = 999;
             

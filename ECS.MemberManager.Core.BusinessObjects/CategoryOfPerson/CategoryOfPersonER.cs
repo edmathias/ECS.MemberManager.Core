@@ -16,7 +16,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Business Methods
 
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
-
         public int Id
         {
             get => GetProperty(IdProperty);
@@ -24,7 +23,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<string> CategoryProperty = RegisterProperty<string>(p => p.Category);
-
         [Required, MaxLength(35)]
         public string Category
         {
@@ -33,7 +31,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<int> DisplayOrderProperty = RegisterProperty<int>(p => p.DisplayOrder);
-
         public int DisplayOrder
         {
             get => GetProperty(DisplayOrderProperty);
@@ -84,7 +81,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access Methods
 
         [Fetch]
-        private async Task FetchAsync(int id)
+        private async Task Fetch(int id)
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<ICategoryOfPersonDal>();
@@ -130,6 +127,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
             var updatedEmail = await dal.Update(categoryOfPersonTypeToUpdate);
             RowVersion = updatedEmail.RowVersion;
+        }
+        
+        [DeleteSelf]
+        private async Task DeleteSelf()
+        {
+            await Delete(Id);
         }
 
         [Delete]

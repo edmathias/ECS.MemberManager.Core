@@ -44,7 +44,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
         
         [Fact]
-        public async Task TestAddressEC_Get()
+        public async Task TestAddressEC_GetNewAddressEC()
         {
             var addressToLoad = BuildAddress();
             var address = await AddressEC.GetAddressEC(addressToLoad);
@@ -64,7 +64,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestAddressEC_New()
+        public async Task TestAddressEC_NewAddressEC()
         {
             var Address = await AddressEC.NewAddressEC();
 

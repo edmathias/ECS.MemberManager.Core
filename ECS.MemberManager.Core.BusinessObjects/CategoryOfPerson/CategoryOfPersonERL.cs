@@ -9,7 +9,7 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class CategoryOfOrganizationERL : BusinessListBase<CategoryOfOrganizationERL,CategoryOfOrganizationEC>
+    public class CategoryOfPersonERL : BusinessListBase<CategoryOfPersonERL,CategoryOfPersonEC>
     {
         #region Authorization Rules
         public static void AddObjectAuthorizationRules()
@@ -21,14 +21,14 @@ namespace ECS.MemberManager.Core.BusinessObjects
        
         #region Factory Methods
         
-        public static async Task<CategoryOfOrganizationERL> NewCategoryOfOrganizationERL()
+        public static async Task<CategoryOfPersonERL> NewCategoryOfPersonERL()
         {
-            return await DataPortal.CreateAsync<CategoryOfOrganizationERL>();
+            return await DataPortal.CreateAsync<CategoryOfPersonERL>();
         }
 
-        public static async Task<CategoryOfOrganizationERL> GetCategoryOfOrganizationERL()
+        public static async Task<CategoryOfPersonERL> GetCategoryOfPersonERL()
         {
-            return await DataPortal.FetchAsync<CategoryOfOrganizationERL>();
+            return await DataPortal.FetchAsync<CategoryOfPersonERL>();
         }
        
         #endregion
@@ -39,16 +39,16 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private async Task Fetch()
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ICategoryOfOrganizationDal>();
+            var dal = dalManager.GetProvider<ICategoryOfPersonDal>();
             var childData = await dal.Fetch();
 
             using (LoadListMode)
             {
-                foreach (var categoryOfOrganization in childData)
+                foreach (var categoryOfPerson in childData)
                 {
-                    var categoryOfOrganizationToAdd = 
-                        await CategoryOfOrganizationEC.GetCategoryOfOrganizationEC(categoryOfOrganization);
-                    Add(categoryOfOrganizationToAdd);
+                    var categoryOfPersonToAdd = 
+                        await CategoryOfPersonEC.GetCategoryOfPersonEC(categoryOfPerson);
+                    Add(categoryOfPersonToAdd);
                 }
             }
         }

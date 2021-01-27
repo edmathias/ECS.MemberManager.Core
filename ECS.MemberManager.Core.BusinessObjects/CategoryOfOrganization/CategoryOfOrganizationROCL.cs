@@ -13,33 +13,41 @@ namespace ECS.MemberManager.Core.BusinessObjects
     public class CategoryOfOrganizationROCL : ReadOnlyListBase<CategoryOfOrganizationROCL, CategoryOfOrganizationROC>
     {
         
+        #region Business Rules
+        
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static void AddObjectAuthorizationRules()
         {
             // TODO: add object-level authorization rules
         }
 
-        public static async Task<CategoryOfOrganizationROCL> GetCategoryOfOrganizationInfoChildList()
+        #endregion
+        
+        #region Factory Methods
+        
+        public static async Task<CategoryOfOrganizationROCL> GetCategoryOfOrganizationROCL(List<CategoryOfOrganization> childData)
         {
-            return await DataPortal.FetchAsync<CategoryOfOrganizationROCL>();
+            return await DataPortal.FetchChildAsync<CategoryOfOrganizationROCL>(childData);
         }
+        
+        #endregion
+        
+        #region Data Access
 
-        [Fetch]
-        private async Task Fetch()
+        [FetchChild]
+        private async Task Fetch(List<CategoryOfOrganization> childData)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ICategoryOfOrganizationDal>();
-            var childData = await dal.Fetch();
-
             using (LoadListMode)
             {
-                foreach (var categoryOfOrganizationData in childData)
+                foreach (var category in childData)
                 {
-                    var category = await
-                        CategoryOfOrganizationROC.GetCategoryOfOrganizationROC(categoryOfOrganizationData); 
-                    this.Add(category);
+                    var categoryToAdd = await
+                        CategoryOfOrganizationROC.GetCategoryOfOrganizationROC(category); 
+                    Add(categoryToAdd);
                 }
             }
         }
+        
+        #endregion
     }
 }

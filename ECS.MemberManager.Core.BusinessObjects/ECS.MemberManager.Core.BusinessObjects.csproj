@@ -26,7 +26,6 @@
       <Compile Remove="OrganizationType\OrganizationTypeROC.cs" />
       <Compile Remove="Organization\OrganizationEC.cs" />
       <Compile Remove="Organization\OrganizationECL.cs" />
-      <Compile Remove="CategoryOfPerson\CategoryOfPersonERL.cs" />
       <Compile Remove="Organization\OrganizationER.cs" />
       <Compile Remove="OrganizationType\OrganizationTypeER.cs" />
       <Compile Remove="Person\PersonEdit.cs" />

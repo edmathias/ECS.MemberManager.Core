@@ -1,8 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Csla.Rules;
+﻿using System.IO;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using ECS.MemberManager.Core.EF.Domain;
@@ -11,20 +7,20 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class CategoryOfOrganizationEditChild_Tests
+    public class CategoryOfPersonROCL_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
 
-        public CategoryOfOrganizationEditChild_Tests()
+        public CategoryOfPersonROCL_Tests()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var testLibrary = _config.GetValue<string>("TestLibrary");
-
-            if (testLibrary == "Mock")
+            
+            if(testLibrary == "Mock")
                 MockDb.ResetMockDb();
             else
             {
@@ -37,15 +33,24 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             }
         }
 
-        private CategoryOfOrganization BuildCategoryOfOrganization()
+        [Fact]
+        private async void CategoryOfPersonROCL_TestGetCategoryOfPersonROCL()
         {
-            var category = new CategoryOfOrganization()
-            {
-                Category = "category name 1",
-                DisplayOrder = 0
-            };
-
-            return category;
+            var categoryOfPersonInfoList = await CategoryOfPersonROCL.GetCategoryOfPersonROCL();
+            
+            Assert.NotNull(categoryOfPersonInfoList);
+            Assert.True(categoryOfPersonInfoList.IsReadOnly);
+            Assert.Equal(3, categoryOfPersonInfoList.Count);
         }
+        
+        private CategoryOfPerson BuildCategoryOfPerson()
+        {
+            var categoryToBuild = new CategoryOfPerson();
+            categoryToBuild.Category = "test";
+            categoryToBuild.DisplayOrder = 1;
+
+            return categoryToBuild;
+        }
+      
     }
 }

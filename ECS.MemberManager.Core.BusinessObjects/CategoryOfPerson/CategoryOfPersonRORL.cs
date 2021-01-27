@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.Data.Common;
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -10,30 +10,29 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class CategoryOfPersonROCL : ReadOnlyListBase<CategoryOfPersonROCL, CategoryOfPersonROC>
+    public class CategoryOfPersonRORL : ReadOnlyListBase<CategoryOfPersonRORL,CategoryOfPersonROC>
     {
-        #region Business Rules
+        #region Business Methods
         
-        [EditorBrowsable(EditorBrowsableState.Never)]
         public static void AddObjectAuthorizationRules()
         {
             // TODO: add object-level authorization rules
         }
         
         #endregion
+        
+        #region Factory Methods
 
-        #region Data Access
-        
-        public static async Task<CategoryOfPersonROCL> GetCategoryOfPersonROCL()
+        public static async Task<CategoryOfPersonRORL> GetCategoryOfPersonRORL()
         {
-            return await DataPortal.FetchChildAsync<CategoryOfPersonROCL>();
-        }        
-       
-        #endregion 
+            return await DataPortal.FetchAsync<CategoryOfPersonRORL>();
+        }
+        
+        #endregion
         
         #region Data Access
-        
-        [FetchChild]
+
+        [Fetch]
         private async Task Fetch()
         {
             using var dalManager = DalFactory.GetManager();
@@ -42,11 +41,10 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
             using (LoadListMode)
             {
-                foreach (var categoryOfPersonData in childData)
+                foreach (var address in childData)
                 {
-                    var category = await
-                        CategoryOfPersonROC.GetCategoryOfPersonROC(categoryOfPersonData); 
-                    this.Add(category);
+                    var addressToAdd = await CategoryOfPersonROC.GetCategoryOfPersonROC(address);
+                    Add(addressToAdd);
                 }
             }
         }

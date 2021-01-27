@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using Microsoft.Extensions.Configuration;
@@ -6,12 +7,12 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class CategoryOfOrganizationInfoChildList_Tests
+    public class CategoryOfPersonRORL_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
 
-        public CategoryOfOrganizationInfoChildList_Tests()
+        public CategoryOfPersonRORL_Tests()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -33,15 +34,13 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        private async void CategoryOfOrganizationInfoChildList_TestGetCategoryOfOrganizationInfoChildList()
+        private async void AddressRORL_TestGetAddressRORL()
         {
-            var categoryOfOrganizationInfoList = 
-                await CategoryOfOrganizationROCL.GetCategoryOfOrganizationInfoChildList();
+            var categoryOfPersonTypeInfoList = await AddressRORL.GetAddressRORL();
             
-            Assert.NotNull(categoryOfOrganizationInfoList);
-            Assert.True(categoryOfOrganizationInfoList.IsReadOnly);
-            Assert.Equal(3, categoryOfOrganizationInfoList.Count);
+            Assert.NotNull(categoryOfPersonTypeInfoList);
+            Assert.True(categoryOfPersonTypeInfoList.IsReadOnly);
+            Assert.Equal(3, categoryOfPersonTypeInfoList.Count);
         }
-      
     }
 }

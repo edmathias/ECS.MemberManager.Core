@@ -67,7 +67,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         internal static async Task<CategoryOfOrganizationEC> NewCategoryOfOrganizationEC()
         {
-            return await DataPortal.CreateAsync<CategoryOfOrganizationEC>();
+            return await DataPortal.CreateChildAsync<CategoryOfOrganizationEC>();
         }
 
         internal static async Task<CategoryOfOrganizationEC> GetCategoryOfOrganizationEC(CategoryOfOrganization childData)
@@ -128,16 +128,10 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [DeleteSelfChild]
         private async Task DeleteSelf()
         {
-            await Delete(Id);
-        }
-
-        [Delete]
-        private async Task Delete(int id)
-        {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<ICategoryOfOrganizationDal>();
            
-            await dal.Delete(id);
+            await dal.Delete(Id);
         }
 
         #endregion

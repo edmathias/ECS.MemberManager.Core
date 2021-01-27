@@ -11,35 +11,34 @@ namespace ECS.MemberManager.Core.BusinessObjects
     [Serializable]
     public class CategoryOfPersonECL : BusinessListBase<CategoryOfPersonECL,CategoryOfPersonEC>
     {
+        #region Business Methods
+        
         public static void AddObjectAuthorizationRules()
         {
             // TODO: add object-level authorization rules
         }
 
+        #endregion
+        
+        #region Factory Methods
+        
         public static async Task<CategoryOfPersonECL> NewCategoryOfPersonECL()
         {
             return await DataPortal.CreateAsync<CategoryOfPersonECL>();
         }
 
-        public static async Task<CategoryOfPersonECL> GetCategoryOfPersonECL()
+        public static async Task<CategoryOfPersonECL> GetCategoryOfPersonECL(List<CategoryOfPerson> childData)
         {
-            return await DataPortal.FetchAsync<CategoryOfPersonECL>();
-        }
-
-        [RunLocal]
-        [Create]
-        private void Create()
-        {
-            base.DataPortal_Create();
+            return await DataPortal.FetchAsync<CategoryOfPersonECL>(childData);
         }
         
-        [Fetch]
-        private async Task Fetch()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ICategoryOfPersonDal>();
-            var childData = await dal.Fetch();
+        #endregion
 
+        #region Data Access
+        
+        [Fetch]
+        private async Task Fetch(List<CategoryOfPerson> childData)
+        {
             using (LoadListMode)
             {
                 foreach (var categoryOfPerson in childData)
@@ -56,5 +55,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             Child_Update();
         }
+        
+        #endregion
     }
 }
