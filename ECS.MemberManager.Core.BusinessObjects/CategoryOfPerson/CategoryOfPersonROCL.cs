@@ -22,11 +22,11 @@ namespace ECS.MemberManager.Core.BusinessObjects
         
         #endregion
 
-        #region Data Access
+        #region Factory Methods 
         
-        public static async Task<CategoryOfPersonROCL> GetCategoryOfPersonROCL()
+        internal static async Task<CategoryOfPersonROCL> GetCategoryOfPersonROCL(IList<CategoryOfPerson> childData)
         {
-            return await DataPortal.FetchChildAsync<CategoryOfPersonROCL>();
+            return await DataPortal.FetchChildAsync<CategoryOfPersonROCL>(childData);
         }        
        
         #endregion 
@@ -34,19 +34,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access
         
         [FetchChild]
-        private async Task Fetch()
+        private async Task FetchChild(IList<CategoryOfPerson> childData)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ICategoryOfPersonDal>();
-            var childData = await dal.Fetch();
-
             using (LoadListMode)
             {
                 foreach (var categoryOfPersonData in childData)
                 {
                     var category = await
                         CategoryOfPersonROC.GetCategoryOfPersonROC(categoryOfPersonData); 
-                    this.Add(category);
+                    Add(category);
                 }
             }
         }

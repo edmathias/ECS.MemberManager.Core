@@ -97,7 +97,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             eMailToAdd.EMailAddress = "email address to test";
             eMailToAdd.LastUpdatedBy = "edm";
             eMailToAdd.LastUpdatedDate = DateTime.Now;
-            eMailToAdd.EMailType = await EMailTypeEdit.GetEMailTypeEdit(1);
+            eMailToAdd.EMailType = await EMailEdit.GetEMailEdit(1);
 
             var updatedEMailsList = await eMailEditList.SaveAsync();
             

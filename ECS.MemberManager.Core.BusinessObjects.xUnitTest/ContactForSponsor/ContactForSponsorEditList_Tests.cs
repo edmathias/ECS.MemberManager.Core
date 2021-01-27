@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.ADO;
+using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using ECS.MemberManager.Core.EF.Domain;
 using Microsoft.Extensions.Configuration;
@@ -91,7 +93,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         private async void ContactForSponsorECL_TestAddContactForSponsorEditEntry()
         {
-            var contacts = MockDb.ContactForSponsors.ToList();
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IContactForSponsorDal>();
+            var contacts = await dal.Fetch();
+
             var contactForSponsorEditList = await ContactForSponsorECL.GetContactForSponsorECL(contacts);
             var countBeforeAdd = contactForSponsorEditList.Count;
             

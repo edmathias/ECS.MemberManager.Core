@@ -1,5 +1,7 @@
 ﻿using System.IO;
+using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.ADO;
+using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using ECS.MemberManager.Core.EF.Domain;
 using Microsoft.Extensions.Configuration;
@@ -36,7 +38,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         private async void CategoryOfPersonROCL_TestGetCategoryOfPersonROCL()
         {
-            var categoryOfPersonInfoList = await CategoryOfPersonROCL.GetCategoryOfPersonROCL();
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<ICategoryOfPersonDal>();
+            var categoryList = await dal.Fetch();
+           
+            var categoryOfPersonInfoList = await CategoryOfPersonROCL.GetCategoryOfPersonROCL(categoryList);
             
             Assert.NotNull(categoryOfPersonInfoList);
             Assert.True(categoryOfPersonInfoList.IsReadOnly);

@@ -6,12 +6,11 @@ using Csla;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
-using Microsoft.VisualBasic;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class DocumentTypeEC : BusinessBase<DocumentTypeEC>
+    public class EMailTypeER : BusinessBase<EMailTypeER>
     {
         #region Business Methods
         
@@ -30,22 +29,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(DescriptionProperty, value);
         }
        
-        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(p => p.LastUpdatedBy);
-        [Required,MaxLength(255)]
-        public string LastUpdatedBy
-        {
-            get => GetProperty(LastUpdatedByProperty);
-            set => SetProperty(LastUpdatedByProperty, value);
-        }
-
-        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
-        [Required]
-        public SmartDate LastUpdatedDate
-        {
-            get => GetProperty(LastUpdatedDateProperty);
-            set => SetProperty(LastUpdatedDateProperty, value);
-        }
-
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
         public string Notes
         {
@@ -59,84 +42,106 @@ namespace ECS.MemberManager.Core.BusinessObjects
             get => GetProperty(RowVersionProperty);
             private set => LoadProperty(RowVersionProperty, value);
         }
-        
+
+        protected override void AddBusinessRules()
+        {
+            base.AddBusinessRules();
+
+            // TODO: add business rules
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static void AddObjectAuthorizationRules()
+        {
+            // TODO: add object-level authorization rules
+        }
+
         #endregion
 
         #region Factory Methods
 
-        internal static async Task<DocumentTypeEC> NewDocumentTypeEC()
+        public static async Task<EMailTypeER> NewEMailTypeER()
         {
-            return await DataPortal.CreateChildAsync<DocumentTypeEC>();
-        }        
-        
-        internal static async Task<DocumentTypeEC> GetDocumentTypeEC(DocumentType data)
+            return await DataPortal.CreateAsync<EMailTypeER>();
+        }
+
+        public static async Task<EMailTypeER> GetEMailTypeER(int id)
         {
-            return await DataPortal.FetchChildAsync<DocumentTypeEC>(data);
+            return await DataPortal.FetchAsync<EMailTypeER>(id);
+        }
+
+        public static async Task DeleteEMailTypeER(int id)
+        {
+            await DataPortal.DeleteAsync<EMailTypeER>(id);
         }
 
         #endregion
 
         #region Data Access Methods
  
-        [FetchChild]
-        private void FetchChild(DocumentType childData)
+        [Fetch]
+        private async Task Fetch(int id)
         {
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IEMailTypeDal>();
+            var data = await dal.Fetch(id);
+
             using (BypassPropertyChecks)
             {
-                Id = childData.Id;
-                Description = childData.Description;
-                LastUpdatedBy = childData.LastUpdatedBy;
-                LastUpdatedDate = childData.LastUpdatedDate;
-                Notes = childData.Notes;
-                RowVersion = childData.RowVersion;
+                Id = data.Id;
+                Description = data.Description;
+                Notes = data.Notes;
+                RowVersion = data.RowVersion;
             }
         }
 
-        [InsertChild]
-        private async Task InsertChild()
+        [Insert]
+        private async Task Insert()
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IDocumentTypeDal>();
-            var data = new DocumentType()
+            var dal = dalManager.GetProvider<IEMailTypeDal>();
+            var data = new EMailType()
             {
                 Description = Description,
-                LastUpdatedBy = LastUpdatedBy,
-                LastUpdatedDate = LastUpdatedDate,
                 Notes = Notes
             };
 
-            var insertedDocumentType = await dal.Insert(data);
-            Id = insertedDocumentType.Id;
-            RowVersion = insertedDocumentType.RowVersion;
+            var insertedEMailType = await dal.Insert(data);
+            Id = insertedEMailType.Id;
+            RowVersion = insertedEMailType.RowVersion;
         }
 
-        [UpdateChild]
-        private async Task UpdateChild()
+        [Update]
+        private async Task Update()
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IDocumentTypeDal>();
+            var dal = dalManager.GetProvider<IEMailTypeDal>();
 
-            var emailTypeToUpdate = new DocumentType()
+            var emailTypeToUpdate = new EMailType()
             {
                 Id = Id,
                 Description = Description,
                 Notes = Notes,
                 RowVersion = RowVersion,
-                LastUpdatedBy = "edm",
-                LastUpdatedDate = DateTime.Now
             };
 
             var updatedEmail = await dal.Update(emailTypeToUpdate);
             RowVersion = updatedEmail.RowVersion;
         }
 
-        [DeleteSelfChild]
-        private async Task DeleteSelfChild()
+        [DeleteSelf]
+        private async Task DeleteSelf()
+        {
+            await Delete(Id);
+        }
+        
+        [Delete]
+        private async Task Delete(int id)
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IDocumentTypeDal>();
+            var dal = dalManager.GetProvider<IEMailTypeDal>();
            
-            await dal.Delete(Id);
+            await dal.Delete(id);
         }
 
         #endregion

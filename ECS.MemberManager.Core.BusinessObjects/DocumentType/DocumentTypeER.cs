@@ -58,7 +58,20 @@ namespace ECS.MemberManager.Core.BusinessObjects
             get => GetProperty(RowVersionProperty);
             private set => LoadProperty(RowVersionProperty, value);
         }
-        
+
+        protected override void AddBusinessRules()
+        {
+            base.AddBusinessRules();
+
+            // TODO: add business rules
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static void AddObjectAuthorizationRules()
+        {
+            // TODO: add object-level authorization rules
+        }
+
         #endregion
 
         #region Factory Methods
@@ -66,11 +79,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
         public static async Task<DocumentTypeER> NewDocumentTypeER()
         {
             return await DataPortal.CreateAsync<DocumentTypeER>();
-        }
-
-        public static async Task<DocumentTypeER> GetDocumentTypeER(DocumentType data)
-        {
-            return await DataPortal.FetchChildAsync<DocumentTypeER>(data);
         }
 
         public static async Task<DocumentTypeER> GetDocumentTypeER(int id)
@@ -141,6 +149,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
             var updatedEmail = await dal.Update(emailTypeToUpdate);
             RowVersion = updatedEmail.RowVersion;
+        }
+
+        [DeleteSelf]
+        private async Task DeleteSelf()
+        {
+            await Delete(Id);
         }
         
         [Delete]

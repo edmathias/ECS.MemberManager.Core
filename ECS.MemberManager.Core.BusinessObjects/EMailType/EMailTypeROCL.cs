@@ -9,7 +9,7 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class DocumentTypeROCL : ReadOnlyListBase<DocumentTypeROCL,DocumentTypeROC>
+    public class EMailTypeROCL : ReadOnlyListBase<EMailTypeROCL,EMailTypeROC>
     {
         #region Business Rules
         
@@ -22,9 +22,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
         
         #region Factory Methods
         
-        internal static async Task<DocumentTypeROCL> GetDocumentTypeROCL(IList<DocumentType> childData)
+        internal static async Task<EMailTypeROCL> GetEMailTypeROCL(IList<EMailType> childData)
         {
-            return await DataPortal.FetchChildAsync<DocumentTypeROCL>(childData);
+            return await DataPortal.FetchChildAsync<EMailTypeROCL>(childData);
         }
 
         #endregion 
@@ -32,13 +32,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access
         
         [FetchChild]
-        private async Task FetchChild(List<DocumentType> childData)
+        private async Task FetchChild(List<EMailType> childData)
         {
             using (LoadListMode)
             {
-                foreach (var documentType in childData)
+                foreach (var eMailType in childData)
                 {
-                    var docTypeToAdd = await DocumentTypeROC.GetDocumentTypeROC(documentType);
+                    var docTypeToAdd = await EMailTypeROC.GetEMailTypeROC(eMailType);
                     Add(docTypeToAdd);             
                 }
             }

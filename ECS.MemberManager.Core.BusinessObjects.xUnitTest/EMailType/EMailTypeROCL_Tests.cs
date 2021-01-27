@@ -1,18 +1,19 @@
 ﻿using System.IO;
-using System.Threading.Tasks;
+using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.ADO;
+using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using Microsoft.Extensions.Configuration;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class CategoryOfPersonRORL_Tests
+    public class EMailTypeROCL_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
 
-        public CategoryOfPersonRORL_Tests()
+        public EMailTypeROCL_Tests()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -32,15 +33,20 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 }
             }
         }
-
+        
         [Fact]
-        private async void CategoryOfPersonRORL_TestGetCategoryOfPersonRORL()
+        private async void EMailTypeInfoList_TestGetEMailTypeInfoList()
         {
-            var categoryOfPersonTypeInfoList = await CategoryOfPersonRORL.GetCategoryOfPersonRORL();
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IEMailTypeDal>();
+            var childData = await dal.Fetch();
+
+            var eMailTypeInfoList = await EMailTypeROCL.GetEMailTypeROCL(childData);
             
-            Assert.NotNull(categoryOfPersonTypeInfoList);
-            Assert.True(categoryOfPersonTypeInfoList.IsReadOnly);
-            Assert.Equal(3, categoryOfPersonTypeInfoList.Count);
+            Assert.NotNull(eMailTypeInfoList);
+            Assert.True(eMailTypeInfoList.IsReadOnly);
+            Assert.Equal(3, eMailTypeInfoList.Count);
         }
+      
     }
 }

@@ -10,12 +10,11 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class DocumentTypeROC : ReadOnlyBase<DocumentTypeROC>
+    public class EMailTypeROR : BusinessBase<EMailTypeROR>
     {
         #region Business Methods
-
+        
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
-
         public int Id
         {
             get => GetProperty(IdProperty);
@@ -23,28 +22,20 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(p => p.Description);
-
-        [Required, MaxLength(50)]
         public string Description
         {
             get => GetProperty(DescriptionProperty);
             private set => LoadProperty(DescriptionProperty, value);
         }
-
-        public static readonly PropertyInfo<string> LastUpdatedByProperty =
-            RegisterProperty<string>(p => p.LastUpdatedBy);
-
-        [Required, MaxLength(255)]
+       
+        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(p => p.LastUpdatedBy);
         public string LastUpdatedBy
         {
             get => GetProperty(LastUpdatedByProperty);
             private set => LoadProperty(LastUpdatedByProperty, value);
         }
 
-        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty =
-            RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
-
-        [Required]
+        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
         public SmartDate LastUpdatedDate
         {
             get => GetProperty(LastUpdatedDateProperty);
@@ -52,22 +43,19 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
-
         public string Notes
         {
             get => GetProperty(NotesProperty);
             private set => LoadProperty(NotesProperty, value);
         }
-
+       
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
-
         public byte[] RowVersion
         {
             get => GetProperty(RowVersionProperty);
             private set => LoadProperty(RowVersionProperty, value);
         }
 
-        
         protected override void AddBusinessRules()
         {
             base.AddBusinessRules();
@@ -85,26 +73,41 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        internal static async Task<DocumentTypeROC> GetDocumentTypeROC(DocumentType childData)
+        public static async Task<EMailTypeROR> NewEMailTypeROR()
         {
-            return await DataPortal.FetchChildAsync<DocumentTypeROC>(childData);
+            return await DataPortal.CreateAsync<EMailTypeROR>();
+        }
+
+        public static async Task<EMailTypeROR> GetEMailTypeROR(int id)
+        {
+            return await DataPortal.FetchAsync<EMailTypeROR>(id);
+        }
+
+        public static async Task DeleteEMailTypeROR(int id)
+        {
+            await DataPortal.DeleteAsync<EMailTypeROR>(id);
         }
 
         #endregion
 
         #region Data Access Methods
-
-        [FetchChild]
-        private void Fetch(DocumentType childData)
+ 
+        [Fetch]
+        private async Task Fetch(int id)
         {
-            Id = childData.Id;
-            Description = childData.Description;
-            LastUpdatedBy = childData.LastUpdatedBy;
-            LastUpdatedDate = childData.LastUpdatedDate;
-            Notes = childData.Notes;
-            RowVersion = childData.RowVersion;
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IEMailTypeDal>();
+            var data = await dal.Fetch(id);
+
+            using (BypassPropertyChecks)
+            {
+                Id = data.Id;
+                Description = data.Description;
+                Notes = data.Notes;
+                RowVersion = data.RowVersion;
+            }
         }
 
-         #endregion
+        #endregion
     }
 }

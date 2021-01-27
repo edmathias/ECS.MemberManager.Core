@@ -14,12 +14,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
             // TODO: add object-level authorization rules
         }
 
-        public static async Task<DocumentTypeECL> NewDocumentTypeECL()
+        internal static async Task<DocumentTypeECL> NewDocumentTypeECL()
         {
             return await DataPortal.CreateAsync<DocumentTypeECL>();
         }
 
-        public static async Task<DocumentTypeECL> GetDocumentTypeECL(List<DocumentType> childData)
+        internal static async Task<DocumentTypeECL> GetDocumentTypeECL(List<DocumentType> childData)
         {
             return await DataPortal.FetchAsync<DocumentTypeECL>(childData);
         }

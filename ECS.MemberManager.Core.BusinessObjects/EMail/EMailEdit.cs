@@ -22,8 +22,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(IdProperty, value);
         }
 
-        public static readonly PropertyInfo<EMailTypeEdit> EMailTypeProperty = RegisterProperty<EMailTypeEdit>(p => p.EMailType);
-        public EMailTypeEdit EMailType
+        public static readonly PropertyInfo<EMailEdit> EMailTypeProperty = RegisterProperty<EMailEdit>(p => p.EMailType);
+        public EMailEdit EMailType
         {
             get => GetProperty(EMailTypeProperty);
             set => SetProperty(EMailTypeProperty, value);
@@ -127,7 +127,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             {
                 Id = childData.Id;
                 EMailAddress = childData.EMailAddress;
-                EMailType = await EMailTypeEdit.GetEMailTypeEdit(childData.EMailTypeId);
+                EMailType = await EMailEdit.GetEMailEdit(childData.EMailTypeId);
                 LastUpdatedBy = childData.LastUpdatedBy;
                 LastUpdatedDate = childData.LastUpdatedDate;
                 Notes = childData.Notes;

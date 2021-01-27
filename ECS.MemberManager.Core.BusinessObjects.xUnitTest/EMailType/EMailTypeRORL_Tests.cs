@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using Microsoft.Extensions.Configuration;
@@ -6,12 +7,12 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class EMailTypeInfoList_Tests
+    public class EMailTypeRORL_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
 
-        public EMailTypeInfoList_Tests()
+        public EMailTypeRORL_Tests()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -30,18 +31,16 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                     IsDatabaseBuilt = true;
                 }
             }
-            
         }
-        
+
         [Fact]
-        private async void EMailTypeInfoList_TestGetEMailTypeInfoList()
+        private async void EMailTypeRORL_TestGetEMailTypeRORL()
         {
-            var eMailTypeInfoList = await EMailTypeInfoList.GetEMailTypeInfoList();
+            var categoryOfPersonTypeInfoList = await EMailTypeRORL.GetEMailTypeRORL();
             
-            Assert.NotNull(eMailTypeInfoList);
-            Assert.True(eMailTypeInfoList.IsReadOnly);
-            Assert.Equal(3, eMailTypeInfoList.Count);
+            Assert.NotNull(categoryOfPersonTypeInfoList);
+            Assert.True(categoryOfPersonTypeInfoList.IsReadOnly);
+            Assert.Equal(3, categoryOfPersonTypeInfoList.Count);
         }
-      
     }
 }

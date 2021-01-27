@@ -10,7 +10,7 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class DocumentTypeROC : ReadOnlyBase<DocumentTypeROC>
+    public class EMailTypeROC : ReadOnlyBase<EMailTypeROC>
     {
         #region Business Methods
 
@@ -85,9 +85,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        internal static async Task<DocumentTypeROC> GetDocumentTypeROC(DocumentType childData)
+        internal static async Task<EMailTypeROC> GetEMailTypeROC(EMailType childData)
         {
-            return await DataPortal.FetchChildAsync<DocumentTypeROC>(childData);
+            return await DataPortal.FetchChildAsync<EMailTypeROC>(childData);
         }
 
         #endregion
@@ -95,12 +95,10 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access Methods
 
         [FetchChild]
-        private void Fetch(DocumentType childData)
+        private void Fetch(EMailType childData)
         {
             Id = childData.Id;
             Description = childData.Description;
-            LastUpdatedBy = childData.LastUpdatedBy;
-            LastUpdatedDate = childData.LastUpdatedDate;
             Notes = childData.Notes;
             RowVersion = childData.RowVersion;
         }

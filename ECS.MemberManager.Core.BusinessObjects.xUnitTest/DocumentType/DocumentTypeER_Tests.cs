@@ -112,7 +112,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
        
         [Fact]
-        public async Task DocumentTypeER_TestDescriptionExceedsMaxLengthOf50()
+        public async Task DocumentTypeER_TestDescriptionExceedsMaxLengthOf255()
         {
             var documentType = await DocumentTypeER.NewDocumentTypeER();
             documentType.LastUpdatedBy = "edm";

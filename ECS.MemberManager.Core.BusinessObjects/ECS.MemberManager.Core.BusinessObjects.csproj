@@ -29,6 +29,10 @@
       <Compile Remove="Organization\OrganizationER.cs" />
       <Compile Remove="OrganizationType\OrganizationTypeER.cs" />
       <Compile Remove="Person\PersonEdit.cs" />
+      <Compile Remove="EMailType\EMailTypeEdit.cs" />
+      <Compile Remove="EMailType\EMailTypeEditList.cs" />
+      <Compile Remove="EMailType\EMailTypeInfo.cs" />
+      <Compile Remove="EMailType\EMailTypeInfoList.cs" />
     </ItemGroup>
 
     <ItemGroup>

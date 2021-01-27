@@ -9,43 +9,46 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class CategoryOfPersonECL : BusinessListBase<CategoryOfPersonECL,CategoryOfPersonEC>
+    public class DocumentTypeERL : BusinessListBase<DocumentTypeERL,DocumentTypeEC>
     {
-        #region Business Methods
-        
+        #region Authorization Rules
         public static void AddObjectAuthorizationRules()
         {
             // TODO: add object-level authorization rules
         }
 
         #endregion
-        
+       
         #region Factory Methods
         
-        internal static async Task<CategoryOfPersonECL> NewCategoryOfPersonECL()
+        public static async Task<DocumentTypeERL> NewDocumentTypeERL()
         {
-            return await DataPortal.CreateAsync<CategoryOfPersonECL>();
+            return await DataPortal.CreateAsync<DocumentTypeERL>();
         }
 
-        internal static async Task<CategoryOfPersonECL> GetCategoryOfPersonECL(List<CategoryOfPerson> childData)
+        public static async Task<DocumentTypeERL> GetDocumentTypeERL()
         {
-            return await DataPortal.FetchAsync<CategoryOfPersonECL>(childData);
+            return await DataPortal.FetchAsync<DocumentTypeERL>();
         }
-        
+       
         #endregion
-
+        
         #region Data Access
         
         [Fetch]
-        private async Task Fetch(List<CategoryOfPerson> childData)
+        private async Task Fetch()
         {
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IDocumentTypeDal>();
+            var childData = await dal.Fetch();
+
             using (LoadListMode)
             {
-                foreach (var categoryOfPerson in childData)
+                foreach (var documentType in childData)
                 {
-                    var categoryOfPersonToAdd = 
-                        await CategoryOfPersonEC.GetCategoryOfPersonEC(categoryOfPerson);
-                    Add(categoryOfPersonToAdd);
+                    var documentTypeToAdd = 
+                        await DocumentTypeEC.GetDocumentTypeEC(documentType);
+                    Add(documentTypeToAdd);
                 }
             }
         }

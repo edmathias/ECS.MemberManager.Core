@@ -48,6 +48,10 @@
       <Compile Remove="OrganizationType\OrganizationTypeER_Tests.cs" />
       <Compile Remove="Address\AddressEditChild_Tests.cs" />
       <Compile Remove="Address\AddressInfoChildTests.cs" />
+      <Compile Remove="EMailType\EMailTypeEdit_Tests.cs" />
+      <Compile Remove="EMailType\EMailTypeEditList_Tests.cs" />
+      <Compile Remove="EMailType\EMailTypeInfo_Tests.cs" />
+      <Compile Remove="EMailType\EMailTypeInfoList_Tests.cs" />
     </ItemGroup>
     
 

@@ -39,7 +39,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
         
         [Fact]
-        private async void DocumentTypeECL_TestDocumentTypeList()
+        private async void DocumentTypeECL_TestDocumentTypeECL()
         {
             var documentTypeEdit = await DocumentTypeECL.NewDocumentTypeECL();
 
@@ -51,15 +51,18 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         private async void DocumentTypeECL_TestGetDocumentTypeECL()
         {
-            var docTypes = MockDb.DocumentTypes.ToList();
-            var listToTest = await DocumentTypeECL.GetDocumentTypeECL(docTypes);
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IDocumentTypeDal>();
+            var childData = await dal.Fetch();
+            
+            var listToTest = await DocumentTypeECL.GetDocumentTypeECL(childData);
             
             Assert.NotNull(listToTest);
             Assert.Equal(3, listToTest.Count);
         }
         
         [Fact]
-        private async void DocumentTypeECL_TestDeleteDocumentTypesEntry()
+        private async void DocumentTypeECL_TestDeleteDocumentTypeEntry()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IDocumentTypeDal>();
@@ -78,7 +81,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        private async void DocumentTypeECL_TestUpdateDocumentTypesEntry()
+        private async void DocumentTypeECL_TestUpdateDocumentTypeEntry()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IDocumentTypeDal>();
@@ -100,7 +103,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        private async void DocumentTypeECL_TestAddDocumentTypesEntry()
+        private async void DocumentTypeECL_TestAddDocumentTypeEntry()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IDocumentTypeDal>();
