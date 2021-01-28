@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Csla;
@@ -22,116 +21,100 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(p => p.Description);
-        [Required,MaxLength(50)]
+        [Required, MaxLength(50)]
         public string Description
         {
             get => GetProperty(DescriptionProperty);
             set => SetProperty(DescriptionProperty, value);
         }
-
-        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
+       
+            public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
         public string Notes
         {
             get => GetProperty(NotesProperty);
             set => SetProperty(NotesProperty, value);
         }
-
-        protected override void AddBusinessRules()
+       
+        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
+        public byte[] RowVersion
         {
-            base.AddBusinessRules();
-
-            // TODO: add business rules
+            get => GetProperty(RowVersionProperty);
+            private set => LoadProperty(RowVersionProperty, value);
         }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
-
-        #endregion
         
+        #endregion
+
         #region Factory Methods
 
-        public static async Task<PaymentTypeEC> NewPaymentType()
+        internal static async Task<PaymentTypeEC> NewPaymentTypeEC()
         {
-            return await DataPortal.CreateAsync<PaymentTypeEC>();
-        }
-
-        public static async Task<PaymentTypeEC> GetPaymentType(PaymentType childData)
-        {
-            return await DataPortal.FetchAsync<PaymentTypeEC>(childData);
-        }
-
-        public static async Task  DeletePaymentType(int id)
-        {
-            await DataPortal.DeleteAsync<PaymentTypeEC>(id);
-        }
+            return await DataPortal.CreateChildAsync<PaymentTypeEC>();
+        }        
         
+        internal static async Task<PaymentTypeEC> GetPaymentTypeEC(PaymentType data)
+        {
+            return await DataPortal.FetchChildAsync<PaymentTypeEC>(data);
+        }
+
         #endregion
-        
+
         #region Data Access Methods
-        [FetchChild]       
-        private void Fetch(PaymentType childData)
+ 
+        [FetchChild]
+        private void FetchChild(PaymentType childData)
         {
             using (BypassPropertyChecks)
             {
                 Id = childData.Id;
                 Description = childData.Description;
                 Notes = childData.Notes;
+                RowVersion = childData.RowVersion;
             }
         }
 
         [InsertChild]
-        private void Insert()
+        private async Task InsertChild()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IPaymentTypeDal>();
-            using (BypassPropertyChecks)
+            var data = new PaymentType()
             {
-                var paymentSource = new EF.Domain.PaymentType 
-                    { 
-                        Description = this.Description, 
-                        Notes = this.Notes 
-                    };
-                Id = dal.Insert(paymentSource);
-            }
+                Description = Description,
+                Notes = Notes
+            };
+
+            var insertedPaymentType = await dal.Insert(data);
+            Id = insertedPaymentType.Id;
+            RowVersion = insertedPaymentType.RowVersion;
         }
-        
+
         [UpdateChild]
-        private void Update()
+        private async Task UpdateChild()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IPaymentTypeDal>();
-            using (BypassPropertyChecks)
+
+            var paymentTypeToUpdate = new PaymentType()
             {
-                var paymentSource = new EF.Domain.PaymentType
-                {
-                    Id = this.Id, 
-                    Description = this.Description, 
-                    Notes = this.Notes
-                };
-                
-                dal.Update(paymentSource);
-            }
+                Id = Id,
+                Description = Description,
+                Notes = Notes,
+                RowVersion = RowVersion
+            };
+
+            var updatedStatus = await dal.Update(paymentTypeToUpdate);
+            RowVersion = updatedStatus.RowVersion;
         }
 
         [DeleteSelfChild]
-        private void DeleteSelf()
-        {
-            Delete(this.Id);
-        }
-       
-        [Delete]
-        private void Delete(int id)
+        private async Task DeleteSelfChild()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IPaymentTypeDal>();
- 
-            dal.Delete(id);
+           
+            await dal.Delete(Id);
         }
-        
+
         #endregion
-       
     }
 }

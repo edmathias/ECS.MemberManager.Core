@@ -72,6 +72,22 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
 
             InsertPhones();
 
+            InsertPaymentTypes();
+
+        }
+
+        private static void InsertPaymentTypes()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("SET IDENTITY_INSERT [dbo].[PaymentTypes] ON;");
+            sb.AppendLine("INSERT INTO [dbo].[PaymentTypes]([Id], [Description], [Notes])");
+            sb.AppendLine("SELECT 1, N'Payment type #1', N'notes for #1' UNION ALL");
+            sb.AppendLine("SELECT 2, N'Payment type #2', N'Notes for #2' UNION ALL");
+            sb.AppendLine("SELECT 99, N'Payment type to delete', NULL");
+            sb.AppendLine("SET IDENTITY_INSERT [dbo].[PaymentTypes] OFF;");
+            sb.AppendLine("DBCC CHECKIDENT ('PaymentTypes', RESEED, 2)");
+            
+            _db.Execute(sb.ToString());            
         }
 
         private static void InsertPhones()

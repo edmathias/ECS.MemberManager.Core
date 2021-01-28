@@ -1,16 +1,14 @@
 ﻿using System;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
-using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class PaymentTypeER : BusinessBase<PaymentTypeER>
+    public class PaymentTypeROR : BusinessBase<PaymentTypeROR>
     {
         #region Business Methods
         
@@ -22,18 +20,17 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(p => p.Description);
-        [Required, MaxLength(50)]
         public string Description
         {
             get => GetProperty(DescriptionProperty);
-            set => SetProperty(DescriptionProperty, value);
+            private set => LoadProperty(DescriptionProperty, value);
         }
        
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
         public string Notes
         {
             get => GetProperty(NotesProperty);
-            set => SetProperty(NotesProperty, value);
+            private set => LoadProperty(NotesProperty, value);
         }
        
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
@@ -60,19 +57,19 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        public static async Task<PaymentTypeER> NewPaymentTypeER()
+        public static async Task<PaymentTypeROR> NewPaymentTypeROR()
         {
-            return await DataPortal.CreateAsync<PaymentTypeER>();
+            return await DataPortal.CreateAsync<PaymentTypeROR>();
         }
 
-        public static async Task<PaymentTypeER> GetPaymentTypeER(int id)
+        public static async Task<PaymentTypeROR> GetPaymentTypeROR(int id)
         {
-            return await DataPortal.FetchAsync<PaymentTypeER>(id);
+            return await DataPortal.FetchAsync<PaymentTypeROR>(id);
         }
 
-        public static async Task DeletePaymentTypeER(int id)
+        public static async Task DeletePaymentTypeROR(int id)
         {
-            await DataPortal.DeleteAsync<PaymentTypeER>(id);
+            await DataPortal.DeleteAsync<PaymentTypeROR>(id);
         }
 
         #endregion
@@ -93,55 +90,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 Notes = data.Notes;
                 RowVersion = data.RowVersion;
             }
-        }
-
-        [Insert]
-        private async Task Insert()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPaymentTypeDal>();
-            var data = new PaymentType()
-            {
-                Description = Description,
-                Notes = Notes
-            };
-
-            var insertedPaymentType = await dal.Insert(data);
-            Id = insertedPaymentType.Id;
-            RowVersion = insertedPaymentType.RowVersion;
-        }
-
-        [Update]
-        private async Task Update()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPaymentTypeDal>();
-
-            var paymentSourceToUpdate = new PaymentType()
-            {
-                Id = Id,
-                Description = Description,
-                Notes = Notes,
-                RowVersion = RowVersion,
-            };
-
-            var updatedStatus = await dal.Update(paymentSourceToUpdate);
-            RowVersion = updatedStatus.RowVersion;
-        }
-
-        [DeleteSelf]
-        private async Task DeleteSelf()
-        {
-            await Delete(Id);
-        }
-        
-        [Delete]
-        private async Task Delete(int id)
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPaymentTypeDal>();
-           
-            await dal.Delete(id);
         }
 
         #endregion

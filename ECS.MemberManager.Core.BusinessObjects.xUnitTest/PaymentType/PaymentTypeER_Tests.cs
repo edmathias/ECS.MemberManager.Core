@@ -1,57 +1,78 @@
-using System;
-using System.Linq;
+﻿using System;
+using System.IO;
 using System.Threading.Tasks;
-using Csla.Rules;
+using Csla;
+using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Mock;
+using Microsoft.Extensions.Configuration;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
     public class PaymentTypeER_Tests 
     {
+        private IConfigurationRoot _config = null;
+        private bool IsDatabaseBuilt = false;
+
         public PaymentTypeER_Tests()
         {
-            MockDb.ResetMockDb();
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            _config = builder.Build();
+            var testLibrary = _config.GetValue<string>("TestLibrary");
+            
+            if(testLibrary == "Mock")
+                MockDb.ResetMockDb();
+            else
+            {
+                if (!IsDatabaseBuilt)
+                {
+                    var adoDb = new ADODb();
+                    adoDb.BuildMemberManagerADODb();
+                    IsDatabaseBuilt = true;
+                }
+            }
         }
-        
-        [Fact]
-        public async Task TestPaymentTypeER_Get()
-        {
-            var paymentType = await PaymentTypeER.GetPaymentType(1);
 
-            Assert.Equal(1, paymentType.Id);
-            Assert.True(paymentType.IsValid);
+        [Fact]
+        public async Task PaymentTypeER_TestGetPaymentType()
+        {
+            var paymentType = await PaymentTypeER.GetPaymentTypeER(1);
+
+            Assert.NotNull(paymentType);
+            Assert.IsType<PaymentTypeER>(paymentType);
         }
 
         [Fact]
-        public async Task TestPaymentTypeER_New()
+        public async Task PaymentTypeER_TestGetNewPaymentTypeER()
         {
-            var paymentType = await PaymentTypeER.NewPaymentType();
+            var paymentType = await PaymentTypeER.NewPaymentTypeER();
 
             Assert.NotNull(paymentType);
             Assert.False(paymentType.IsValid);
         }
 
         [Fact]
-        public async Task TestPaymentTypeER_Update()
+        public async Task PaymentTypeER_TestUpdateExistingPaymentTypeER()
         {
-            var paymentType = await PaymentTypeER.GetPaymentType(1);
+            var paymentType = await PaymentTypeER.GetPaymentTypeER(1);
             paymentType.Notes = "These are updated Notes";
             
-            var result = paymentType.Save();
+            var result =  await paymentType.SaveAsync();
 
             Assert.NotNull(result);
-            Assert.Equal( "These are updated Notes",result.Notes);
+            Assert.Equal("These are updated Notes",result.Notes );
         }
 
         [Fact]
-        public async Task TestPaymentTypeER_Insert()
+        public async Task PaymentTypeER_TestInsertNewPaymentTypeER()
         {
-            var paymentType = await PaymentTypeER.NewPaymentType();
+            var paymentType = await PaymentTypeER.NewPaymentTypeER();
             paymentType.Description = "Standby";
             paymentType.Notes = "This person is on standby";
 
-            var savedPaymentType = paymentType.Save();
+            var savedPaymentType = await paymentType.SaveAsync();
            
             Assert.NotNull(savedPaymentType);
             Assert.IsType<PaymentTypeER>(savedPaymentType);
@@ -59,20 +80,20 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestPaymentTypeER_Delete()
+        public async Task PaymentTypeER_TestDeleteObjectFromDatabase()
         {
-            int beforeCount = MockDb.PaymentTypes.Count();
+            const int ID_TO_DELETE = 99;
             
-            await PaymentTypeER.DeletePaymentType(99);
-            
-            Assert.NotEqual(beforeCount,MockDb.PaymentTypes.Count());
+            await PaymentTypeER.DeletePaymentTypeER(ID_TO_DELETE);
+
+            await Assert.ThrowsAsync<DataPortalException>(() => PaymentTypeER.GetPaymentTypeER(ID_TO_DELETE));
         }
         
         // test invalid state 
         [Fact]
-        public async Task TestPaymentTypeER_DescriptionRequired()
+        public async Task PaymentTypeER_TestDescriptionRequired() 
         {
-            var paymentType = await PaymentTypeER.NewPaymentType();
+            var paymentType = await PaymentTypeER.NewPaymentTypeER();
             paymentType.Description = "make valid";
             var isObjectValidInit = paymentType.IsValid;
             paymentType.Description = string.Empty;
@@ -80,13 +101,15 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(paymentType);
             Assert.True(isObjectValidInit);
             Assert.False(paymentType.IsValid);
- 
         }
        
         [Fact]
-        public async Task TestPaymentTypeER_DescriptionExceedsMaxLengthOf50()
+        public async Task PaymentTypeER_TestDescriptionExceedsMaxLengthOf50()
         {
-            var paymentType = await PaymentTypeER.NewPaymentType();
+            var paymentType = await PaymentTypeER.NewPaymentTypeER();
+            paymentType.Description = "valid length";
+            Assert.True(paymentType.IsValid);
+            
             paymentType.Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor "+
                                        "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis "+
                                        "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "+
@@ -101,13 +124,16 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         // test exception if attempt to save in invalid state
 
         [Fact]
-        public async Task TestPaymentTypeER_TestInvalidSave()
+        public async Task PaymentTypeER_TestInvalidSavePaymentTypeER()
         {
-            var paymentType = await PaymentTypeER.NewPaymentType();
+            var paymentType = await PaymentTypeER.NewPaymentTypeER();
             paymentType.Description = String.Empty;
-            
+            PaymentTypeER savedPaymentType = null;
+                
             Assert.False(paymentType.IsValid);
-            Assert.Throws<ValidationException>(() => paymentType.Save() );
+            Assert.Throws<Csla.Rules.ValidationException>(() => savedPaymentType =  paymentType.Save() );
         }
+        
+        
     }
 }
