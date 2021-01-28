@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using Microsoft.Extensions.Configuration;
@@ -6,12 +7,12 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class PaymentSourceInfoList_Tests
+    public class MemberStatusRORL_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
 
-        public PaymentSourceInfoList_Tests()
+        public MemberStatusRORL_Tests()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -31,15 +32,15 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 }
             }
         }
-        
+
         [Fact]
-        private async void PaymentSourceInfoList_TestGetPaymentSourceInfoList()
+        private async void MemberStatusRORL_TestGetMemberStatusRORL()
         {
-            var membershipTypeEditList = await PaymentSourceInfoList.GetPaymentSourceInfoList();
-
-            Assert.NotNull(membershipTypeEditList);
-            Assert.Equal(3, membershipTypeEditList.Count);
+            var memberStatusTypeInfoList = await MemberStatusRORL.GetMemberStatusRORL();
+            
+            Assert.NotNull(memberStatusTypeInfoList);
+            Assert.True(memberStatusTypeInfoList.IsReadOnly);
+            Assert.Equal(3, memberStatusTypeInfoList.Count);
         }
-
     }
 }

@@ -3,14 +3,12 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Csla;
-using ECS.MemberManager.Core.DataAccess;
-using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class MemberStatusInfo : ReadOnlyBase<MemberStatusInfo>
+    public class MemberStatusROC : ReadOnlyBase<MemberStatusROC>
     {
         #region Business Methods
 
@@ -47,6 +45,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             private set => LoadProperty(RowVersionProperty, value);
         }
 
+        
         protected override void AddBusinessRules()
         {
             base.AddBusinessRules();
@@ -64,39 +63,14 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        public static async Task<MemberStatusInfo> NewMemberStatusInfo()
+        internal static async Task<MemberStatusROC> GetMemberStatusROC(MemberStatus childData)
         {
-            return await DataPortal.CreateAsync<MemberStatusInfo>();
-        }
-
-        public static async Task<MemberStatusInfo> GetMemberStatusInfo(MemberStatus childData)
-        {
-            return await DataPortal.FetchChildAsync<MemberStatusInfo>(childData);
-        }
-
-        public static async Task<MemberStatusInfo> GetMemberStatusInfo(int id)
-        {
-            return await DataPortal.FetchAsync<MemberStatusInfo>(id);
-        }
-
-        public static async Task DeleteMemberStatusInfo(int id)
-        {
-            await DataPortal.DeleteAsync<MemberStatusInfo>(id);
+            return await DataPortal.FetchChildAsync<MemberStatusROC>(childData);
         }
 
         #endregion
 
         #region Data Access Methods
-
-        [Fetch]
-        private async Task Fetch(int id)
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IMemberStatusDal>();
-            var data = await dal.Fetch(id);
-
-            Fetch(data);
-        }
 
         [FetchChild]
         private void Fetch(MemberStatus childData)
@@ -107,6 +81,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
             RowVersion = childData.RowVersion;
         }
 
-        #endregion
+         #endregion
     }
 }

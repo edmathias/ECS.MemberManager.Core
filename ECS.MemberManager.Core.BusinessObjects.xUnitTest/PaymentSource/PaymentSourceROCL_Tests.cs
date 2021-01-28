@@ -1,17 +1,19 @@
 ﻿using System.IO;
+using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.ADO;
+using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using Microsoft.Extensions.Configuration;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class MemberStatusInfoList_Tests
+    public class PaymentSourceROCL_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
 
-        public MemberStatusInfoList_Tests()
+        public PaymentSourceROCL_Tests()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -33,13 +35,18 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
         
         [Fact]
-        private async void MemberStatusInfoList_TestGetMemberStatusInfoList()
+        private async void PaymentSourceInfoList_TestGetPaymentSourceInfoList()
         {
-            var membershipTypeEditList = await MemberStatusInfoList.GetMemberStatusInfoList();
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IPaymentSourceDal>();
+            var childData = await dal.Fetch();
 
-            Assert.NotNull(membershipTypeEditList);
-            Assert.Equal(3, membershipTypeEditList.Count);
+            var paymentSourceInfoList = await PaymentSourceROCL.GetPaymentSourceROCL(childData);
+            
+            Assert.NotNull(paymentSourceInfoList);
+            Assert.True(paymentSourceInfoList.IsReadOnly);
+            Assert.Equal(3, paymentSourceInfoList.Count);
         }
-
+      
     }
 }

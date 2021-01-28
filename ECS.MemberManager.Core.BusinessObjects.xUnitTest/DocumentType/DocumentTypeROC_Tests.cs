@@ -14,6 +14,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             const int ID_VALUE = 999;
 
             var docType = BuildDocumentType();
+            docType.Id = ID_VALUE;
 
             var documentType = await DocumentTypeROC.GetDocumentTypeROC(docType);
             

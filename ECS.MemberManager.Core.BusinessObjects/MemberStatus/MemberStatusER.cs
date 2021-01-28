@@ -10,7 +10,7 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class EMailTypeROR : BusinessBase<EMailTypeROR>
+    public class MemberStatusER : BusinessBase<MemberStatusER>
     {
         #region Business Methods
         
@@ -22,17 +22,18 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(p => p.Description);
+        [Required, MaxLength(50)]
         public string Description
         {
             get => GetProperty(DescriptionProperty);
-            private set => LoadProperty(DescriptionProperty, value);
+            set => SetProperty(DescriptionProperty, value);
         }
        
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
         public string Notes
         {
             get => GetProperty(NotesProperty);
-            private set => LoadProperty(NotesProperty, value);
+            set => SetProperty(NotesProperty, value);
         }
        
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
@@ -59,19 +60,19 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        public static async Task<EMailTypeROR> NewEMailTypeROR()
+        public static async Task<MemberStatusER> NewMemberStatusER()
         {
-            return await DataPortal.CreateAsync<EMailTypeROR>();
+            return await DataPortal.CreateAsync<MemberStatusER>();
         }
 
-        public static async Task<EMailTypeROR> GetEMailTypeROR(int id)
+        public static async Task<MemberStatusER> GetMemberStatusER(int id)
         {
-            return await DataPortal.FetchAsync<EMailTypeROR>(id);
+            return await DataPortal.FetchAsync<MemberStatusER>(id);
         }
 
-        public static async Task DeleteEMailTypeROR(int id)
+        public static async Task DeleteMemberStatusER(int id)
         {
-            await DataPortal.DeleteAsync<EMailTypeROR>(id);
+            await DataPortal.DeleteAsync<MemberStatusER>(id);
         }
 
         #endregion
@@ -82,7 +83,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private async Task Fetch(int id)
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEMailTypeDal>();
+            var dal = dalManager.GetProvider<IMemberStatusDal>();
             var data = await dal.Fetch(id);
 
             using (BypassPropertyChecks)
@@ -92,6 +93,55 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 Notes = data.Notes;
                 RowVersion = data.RowVersion;
             }
+        }
+
+        [Insert]
+        private async Task Insert()
+        {
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IMemberStatusDal>();
+            var data = new MemberStatus()
+            {
+                Description = Description,
+                Notes = Notes
+            };
+
+            var insertedMemberStatus = await dal.Insert(data);
+            Id = insertedMemberStatus.Id;
+            RowVersion = insertedMemberStatus.RowVersion;
+        }
+
+        [Update]
+        private async Task Update()
+        {
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IMemberStatusDal>();
+
+            var memberStatusToUpdate = new MemberStatus()
+            {
+                Id = Id,
+                Description = Description,
+                Notes = Notes,
+                RowVersion = RowVersion,
+            };
+
+            var updatedStatus = await dal.Update(memberStatusToUpdate);
+            RowVersion = updatedStatus.RowVersion;
+        }
+
+        [DeleteSelf]
+        private async Task DeleteSelf()
+        {
+            await Delete(Id);
+        }
+        
+        [Delete]
+        private async Task Delete(int id)
+        {
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IMemberStatusDal>();
+           
+            await dal.Delete(id);
         }
 
         #endregion

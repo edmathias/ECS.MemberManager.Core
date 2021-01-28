@@ -14,6 +14,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             const int ID_VALUE = 999;
 
             var email = BuildEMailType();
+            email.Id = ID_VALUE;
 
             var eMailType = await EMailTypeROC.GetEMailTypeROC(email);
             

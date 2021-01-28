@@ -9,12 +9,12 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class EMailTypeERL_Tests
+    public class MemberStatusERL_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
 
-        public EMailTypeERL_Tests()
+        public MemberStatusERL_Tests()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -36,78 +36,78 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        private async void EMailTypeERL_TestNewEMailTypeERL()
+        private async void MemberStatusERL_TestNewMemberStatusERL()
         {
-            var categoryOfPersonEdit = await EMailTypeERL.NewEMailTypeERL();
+            var memberStatusEdit = await MemberStatusERL.NewMemberStatusERL();
 
-            Assert.NotNull(categoryOfPersonEdit);
-            Assert.IsType<EMailTypeERL>(categoryOfPersonEdit);
+            Assert.NotNull(memberStatusEdit);
+            Assert.IsType<MemberStatusERL>(memberStatusEdit);
         }
         
         [Fact]
-        private async void EMailTypeERL_TestGetEMailTypeERL()
+        private async void MemberStatusERL_TestGetMemberStatusERL()
         {
-            var categoryOfPersonEdit = 
-                await EMailTypeERL.GetEMailTypeERL();
+            var memberStatusEdit = 
+                await MemberStatusERL.GetMemberStatusERL();
 
-            Assert.NotNull(categoryOfPersonEdit);
-            Assert.Equal(3, categoryOfPersonEdit.Count);
+            Assert.NotNull(memberStatusEdit);
+            Assert.Equal(3, memberStatusEdit.Count);
         }
         
         [Fact]
-        private async void EMailTypeERL_TestDeleteEMailTypeERL()
+        private async void MemberStatusERL_TestDeleteMemberStatusERL()
         {
             const int ID_TO_DELETE = 99;
             var categoryList = 
-                await EMailTypeERL.GetEMailTypeERL();
+                await MemberStatusERL.GetMemberStatusERL();
             var listCount = categoryList.Count;
             var categoryToDelete = categoryList.First(cl => cl.Id == ID_TO_DELETE);
             // remove is deferred delete
             var isDeleted = categoryList.Remove(categoryToDelete); 
 
-            var categoryOfPersonListAfterDelete = await categoryList.SaveAsync();
+            var memberStatusListAfterDelete = await categoryList.SaveAsync();
 
-            Assert.NotNull(categoryOfPersonListAfterDelete);
-            Assert.IsType<EMailTypeERL>(categoryOfPersonListAfterDelete);
+            Assert.NotNull(memberStatusListAfterDelete);
+            Assert.IsType<MemberStatusERL>(memberStatusListAfterDelete);
             Assert.True(isDeleted);
-            Assert.NotEqual(listCount,categoryOfPersonListAfterDelete.Count);
+            Assert.NotEqual(listCount,memberStatusListAfterDelete.Count);
         }
 
         [Fact]
-        private async void EMailTypeERL_TestUpdateEMailTypeERL()
+        private async void MemberStatusERL_TestUpdateMemberStatusERL()
         {
             const int ID_TO_UPDATE = 1;
             const string NOTES_UPDATE = "Updated Notes";
             
             var categoryList = 
-                await EMailTypeERL.GetEMailTypeERL();
-            var categoryOfPersonToUpdate = categoryList.First(cl => cl.Id == ID_TO_UPDATE);
-            categoryOfPersonToUpdate.Notes = NOTES_UPDATE;
+                await MemberStatusERL.GetMemberStatusERL();
+            var memberStatusToUpdate = categoryList.First(cl => cl.Id == ID_TO_UPDATE);
+            memberStatusToUpdate.Notes = NOTES_UPDATE;
             
             var updatedList = await categoryList.SaveAsync();
-            var updatedEMail = updatedList.First(el => el.Id == ID_TO_UPDATE);
+            var updatedMemberStatus = updatedList.First(el => el.Id == ID_TO_UPDATE);
 
             Assert.NotNull(updatedList);
-            Assert.NotNull(updatedEMail);
-            Assert.Equal(NOTES_UPDATE, updatedEMail.Notes);
+            Assert.NotNull(updatedMemberStatus);
+            Assert.Equal(NOTES_UPDATE, updatedMemberStatus.Notes);
         }
-
+        
         [Fact]
-        private async void EMailTypeERL_TestAddEMailTypeERL()
+        private async void MemberStatusERL_TestAddMemberStatusERL()
         {
             var categoryList = 
-                await EMailTypeERL.GetEMailTypeERL();
+                await MemberStatusERL.GetMemberStatusERL();
             var countBeforeAdd = categoryList.Count;
             
-            var categoryOfPersonToAdd = categoryList.AddNew();
-            BuildEMailType(categoryOfPersonToAdd);
+            var memberStatusToAdd = categoryList.AddNew();
+            BuildMemberStatus(memberStatusToAdd);
 
             var updatedCategoryList = await categoryList.SaveAsync();
             
             Assert.NotEqual(countBeforeAdd, updatedCategoryList.Count);
         }
 
-        private void BuildEMailType(EMailTypeEC categoryToBuild)
+        private void BuildMemberStatus(MemberStatusEC categoryToBuild)
         {
             categoryToBuild.Description = "description for doctype";
             categoryToBuild.Notes = "notes for doctype";

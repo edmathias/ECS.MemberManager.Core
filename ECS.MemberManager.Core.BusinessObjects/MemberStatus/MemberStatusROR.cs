@@ -1,16 +1,14 @@
 ﻿using System;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
-using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class EMailTypeROR : BusinessBase<EMailTypeROR>
+    public class MemberStatusROR : BusinessBase<MemberStatusROR>
     {
         #region Business Methods
         
@@ -59,19 +57,19 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        public static async Task<EMailTypeROR> NewEMailTypeROR()
+        public static async Task<MemberStatusROR> NewMemberStatusROR()
         {
-            return await DataPortal.CreateAsync<EMailTypeROR>();
+            return await DataPortal.CreateAsync<MemberStatusROR>();
         }
 
-        public static async Task<EMailTypeROR> GetEMailTypeROR(int id)
+        public static async Task<MemberStatusROR> GetMemberStatusROR(int id)
         {
-            return await DataPortal.FetchAsync<EMailTypeROR>(id);
+            return await DataPortal.FetchAsync<MemberStatusROR>(id);
         }
 
-        public static async Task DeleteEMailTypeROR(int id)
+        public static async Task DeleteMemberStatusROR(int id)
         {
-            await DataPortal.DeleteAsync<EMailTypeROR>(id);
+            await DataPortal.DeleteAsync<MemberStatusROR>(id);
         }
 
         #endregion
@@ -82,7 +80,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private async Task Fetch(int id)
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEMailTypeDal>();
+            var dal = dalManager.GetProvider<IMemberStatusDal>();
             var data = await dal.Fetch(id);
 
             using (BypassPropertyChecks)

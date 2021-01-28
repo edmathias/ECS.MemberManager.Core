@@ -52,6 +52,14 @@
       <Compile Remove="EMailType\EMailTypeEditList_Tests.cs" />
       <Compile Remove="EMailType\EMailTypeInfo_Tests.cs" />
       <Compile Remove="EMailType\EMailTypeInfoList_Tests.cs" />
+      <Compile Remove="MemberStatus\MemberStatusEdit_Tests.cs" />
+      <Compile Remove="MemberStatus\MemberStatusEditList_Tests.cs" />
+      <Compile Remove="MemberStatus\MemberStatusInfo_Tests.cs" />
+      <Compile Remove="MemberStatus\MemberStatusInfoList_Tests.cs" />
+      <Compile Remove="PaymentSource\PaymentSourceEdit_Tests.cs" />
+      <Compile Remove="PaymentSource\PaymentSourceEditList_Tests.cs" />
+      <Compile Remove="PaymentSource\PaymentSourceInfo_Tests.cs" />
+      <Compile Remove="PaymentSource\PaymentSourceInfoList_Tests.cs" />
     </ItemGroup>
     
 

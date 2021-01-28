@@ -33,6 +33,14 @@
       <Compile Remove="EMailType\EMailTypeEditList.cs" />
       <Compile Remove="EMailType\EMailTypeInfo.cs" />
       <Compile Remove="EMailType\EMailTypeInfoList.cs" />
+      <Compile Remove="MemberStatus\MemberStatusEdit.cs" />
+      <Compile Remove="MemberStatus\MemberStatusEditList.cs" />
+      <Compile Remove="MemberStatus\MemberStatusInfo.cs" />
+      <Compile Remove="MemberStatus\MemberStatusInfoList.cs" />
+      <Compile Remove="PaymentSource\PaymentSourceEdit.cs" />
+      <Compile Remove="PaymentSource\PaymentSourceEditList.cs" />
+      <Compile Remove="PaymentSource\PaymentSourceInfo.cs" />
+      <Compile Remove="PaymentSource\PaymentSourceInfoList.cs" />
     </ItemGroup>
 
     <ItemGroup>
