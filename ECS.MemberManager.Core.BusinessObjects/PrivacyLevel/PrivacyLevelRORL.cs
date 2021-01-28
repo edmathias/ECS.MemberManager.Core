@@ -1,32 +1,34 @@
 using System;
-using System.Collections.Generic;
-using System.Data.Common;
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
-using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class PrivacyLevelInfoList : ReadOnlyListBase<PrivacyLevelInfoList,PrivacyLevelInfo>
+    public class PrivacyLevelRORL : ReadOnlyListBase<PrivacyLevelRORL,PrivacyLevelROC>
     {
+        #region Business Methods
+        
         public static void AddObjectAuthorizationRules()
         {
             // TODO: add object-level authorization rules
         }
+        
+        #endregion
+        
+        #region Factory Methods
 
-        public static async Task<PrivacyLevelInfoList> GetPrivacyLevelInfoList()
+        public static async Task<PrivacyLevelRORL> GetPrivacyLevelRORL()
         {
-            return await DataPortal.FetchAsync<PrivacyLevelInfoList>();
-        }
-
-        public static async Task<PrivacyLevelInfoList> GetPrivacyLevelInfoList(List<PrivacyLevelInfo> childData)
-        {
-            return await DataPortal.FetchChildAsync<PrivacyLevelInfoList>(childData);
+            return await DataPortal.FetchAsync<PrivacyLevelRORL>();
         }
         
+        #endregion
+        
+        #region Data Access
+
         [Fetch]
         private async Task Fetch()
         {
@@ -34,21 +36,16 @@ namespace ECS.MemberManager.Core.BusinessObjects
             var dal = dalManager.GetProvider<IPrivacyLevelDal>();
             var childData = await dal.Fetch();
 
-            await Fetch(childData);
-
-        }
-
-        [FetchChild]
-        private async Task Fetch(List<PrivacyLevel> childData)
-        {
             using (LoadListMode)
             {
                 foreach (var privacyLevel in childData)
                 {
-                    var privacyLevelToAdd = await PrivacyLevelInfo.GetPrivacyLevelInfo(privacyLevel);
+                    var privacyLevelToAdd = await PrivacyLevelROC.GetPrivacyLevelROC(privacyLevel);
                     Add(privacyLevelToAdd);
                 }
             }
         }
+        
+        #endregion
     }
 }

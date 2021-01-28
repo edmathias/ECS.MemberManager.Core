@@ -1,21 +1,18 @@
 ﻿using System;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
-using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class PrivacyLevelInfo : ReadOnlyBase<PrivacyLevelInfo>
+    public class PrivacyLevelROR : BusinessBase<PrivacyLevelROR>
     {
         #region Business Methods
-
+        
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
-
         public int Id
         {
             get => GetProperty(IdProperty);
@@ -23,24 +20,20 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(p => p.Description);
-
-        [Required, MaxLength(50)]
         public string Description
         {
             get => GetProperty(DescriptionProperty);
             private set => LoadProperty(DescriptionProperty, value);
         }
-
+       
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
-
         public string Notes
         {
             get => GetProperty(NotesProperty);
             private set => LoadProperty(NotesProperty, value);
         }
-
+       
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
-
         public byte[] RowVersion
         {
             get => GetProperty(RowVersionProperty);
@@ -64,30 +57,25 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        public static async Task<PrivacyLevelInfo> NewPrivacyLevelInfo()
+        public static async Task<PrivacyLevelROR> NewPrivacyLevelROR()
         {
-            return await DataPortal.CreateAsync<PrivacyLevelInfo>();
+            return await DataPortal.CreateAsync<PrivacyLevelROR>();
         }
 
-        public static async Task<PrivacyLevelInfo> GetPrivacyLevelInfo(int id)
+        public static async Task<PrivacyLevelROR> GetPrivacyLevelROR(int id)
         {
-            return await DataPortal.FetchAsync<PrivacyLevelInfo>(id);
+            return await DataPortal.FetchAsync<PrivacyLevelROR>(id);
         }
 
-        public static async Task<PrivacyLevelInfo> GetPrivacyLevelInfo(PrivacyLevel childData)
+        public static async Task DeletePrivacyLevelROR(int id)
         {
-            return await DataPortal.FetchChildAsync<PrivacyLevelInfo>(childData);
-        }
-
-        public static async Task DeletePrivacyLevelInfo(int id)
-        {
-            await DataPortal.DeleteAsync<PrivacyLevelInfo>(id);
+            await DataPortal.DeleteAsync<PrivacyLevelROR>(id);
         }
 
         #endregion
 
-        #region DataPortal Methods
-
+        #region Data Access Methods
+ 
         [Fetch]
         private async Task Fetch(int id)
         {
@@ -95,16 +83,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
             var dal = dalManager.GetProvider<IPrivacyLevelDal>();
             var data = await dal.Fetch(id);
 
-            Fetch(data);
-        }
-
-        [FetchChild]
-        private void Fetch(PrivacyLevel childData)
-        {
-            Id = childData.Id;
-            Description = childData.Description;
-            Notes = childData.Notes;
-            RowVersion = childData.RowVersion;
+            using (BypassPropertyChecks)
+            {
+                Id = data.Id;
+                Description = data.Description;
+                Notes = data.Notes;
+                RowVersion = data.RowVersion;
+            }
         }
 
         #endregion

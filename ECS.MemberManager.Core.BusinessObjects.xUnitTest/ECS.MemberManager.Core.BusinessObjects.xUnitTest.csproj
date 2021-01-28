@@ -60,6 +60,10 @@
       <Compile Remove="PaymentSource\PaymentSourceEditList_Tests.cs" />
       <Compile Remove="PaymentSource\PaymentSourceInfo_Tests.cs" />
       <Compile Remove="PaymentSource\PaymentSourceInfoList_Tests.cs" />
+      <Compile Remove="PrivacyLevel\PrivacyLevelEditList_Tests.cs" />
+      <Compile Remove="PrivacyLevel\PrivacyLevelEditTests.cs" />
+      <Compile Remove="PrivacyLevel\PrivacyLevelInfo_Tests.cs" />
+      <Compile Remove="PrivacyLevel\PrivacyLevelInfoListTests.cs" />
     </ItemGroup>
     
 
