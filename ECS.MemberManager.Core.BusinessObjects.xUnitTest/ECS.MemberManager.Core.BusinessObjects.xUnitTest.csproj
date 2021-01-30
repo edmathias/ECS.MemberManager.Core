@@ -33,6 +33,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="ContactForSponsor" />
       <Folder Include="MemberInfo" />
       <Folder Include="Payment" />
       <Folder Include="Person" />
@@ -64,6 +65,14 @@
       <Compile Remove="PrivacyLevel\PrivacyLevelEditTests.cs" />
       <Compile Remove="PrivacyLevel\PrivacyLevelInfo_Tests.cs" />
       <Compile Remove="PrivacyLevel\PrivacyLevelInfoListTests.cs" />
+      <Compile Remove="ContactForSponsor\ContactForSponsorEdit_Tests.cs" />
+      <Compile Remove="ContactForSponsor\ContactForSponsorEditList_Tests.cs" />
+      <Compile Remove="ContactForSponsor\ContactForSponsorInfo_Tests.cs" />
+      <Compile Remove="ContactForSponsor\ContactForSponsorInfoList_Tests.cs" />
+      <Compile Remove="Title\TitleEdit_Tests.cs" />
+      <Compile Remove="Title\TitleEditList_Tests.cs" />
+      <Compile Remove="Title\TitleInfo_Tests.cs" />
+      <Compile Remove="Title\TitleInfoList_Tests.cs" />
     </ItemGroup>
     
 

@@ -57,19 +57,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        public static async Task<PaymentTypeROR> NewPaymentTypeROR()
-        {
-            return await DataPortal.CreateAsync<PaymentTypeROR>();
-        }
-
         public static async Task<PaymentTypeROR> GetPaymentTypeROR(int id)
         {
             return await DataPortal.FetchAsync<PaymentTypeROR>(id);
-        }
-
-        public static async Task DeletePaymentTypeROR(int id)
-        {
-            await DataPortal.DeleteAsync<PaymentTypeROR>(id);
         }
 
         #endregion

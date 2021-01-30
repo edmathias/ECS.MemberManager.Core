@@ -9,32 +9,34 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class ContactForSponsorECL : BusinessListBase<ContactForSponsorECL,ContactForSponsorEC>
+    public class ContactForSponsorERL : BusinessListBase<ContactForSponsorERL,ContactForSponsorEC>
     {
+        #region Authorization Rules
         public static void AddObjectAuthorizationRules()
         {
             // TODO: add object-level authorization rules
         }
 
-        public static async Task<ContactForSponsorECL> NewContactForSponsorECL()
+        #endregion
+       
+        #region Factory Methods
+        
+        public static async Task<ContactForSponsorERL> NewContactForSponsorERL()
         {
-            return await DataPortal.CreateAsync<ContactForSponsorECL>();
+            return await DataPortal.CreateAsync<ContactForSponsorERL>();
         }
 
-        public static async Task<ContactForSponsorECL> GetContactForSponsorECL(List<ContactForSponsor> childData)
+        public static async Task<ContactForSponsorERL> GetContactForSponsorERL()
         {
-            return await DataPortal.FetchAsync<ContactForSponsorECL>(childData);
+            return await DataPortal.FetchAsync<ContactForSponsorERL>();
         }
+       
+        #endregion
         
-        [RunLocal]
-        [Create]
-        private void Create()
-        {
-            base.DataPortal_Create();
-        }
+        #region Data Access
         
-        [FetchChild]
-        private async Task FetchChild()
+        [Fetch]
+        private async Task Fetch()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IContactForSponsorDal>();
@@ -42,11 +44,11 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
             using (LoadListMode)
             {
-                foreach (var categoryOfPerson in childData)
+                foreach (var contactForSponsor in childData)
                 {
-                    var categoryOfPersonToAdd = 
-                        await ContactForSponsorEC.GetContactForSponsorEC(categoryOfPerson);
-                    Add(categoryOfPersonToAdd);
+                    var contactForSponsorToAdd = 
+                        await ContactForSponsorEC.GetContactForSponsorEC(contactForSponsor);
+                    Add(contactForSponsorToAdd);
                 }
             }
         }
@@ -56,5 +58,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             Child_Update();
         }
+        
+        #endregion
     }
 }

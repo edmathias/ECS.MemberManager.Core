@@ -127,24 +127,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        public static async Task<ContactForSponsorROR> NewContactForSponsorROR()
-        {
-            return await DataPortal.CreateAsync<ContactForSponsorROR>();
-        }
-
-        public static async Task<ContactForSponsorROR> GetContactForSponsorROR(ContactForSponsor childData)
-        {
-            return await DataPortal.FetchChildAsync<ContactForSponsorROR>(childData);
-        }
-
         public static async Task<ContactForSponsorROR> GetContactForSponsorROR(int id)
         {
             return await DataPortal.FetchAsync<ContactForSponsorROR>(id);
-        }
-
-        public static async Task DeleteContactForSponsorROR(int id)
-        {
-            await DataPortal.DeleteAsync<ContactForSponsorROR>(id);
         }
 
         #endregion

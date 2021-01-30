@@ -57,19 +57,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        public static async Task<PrivacyLevelROR> NewPrivacyLevelROR()
-        {
-            return await DataPortal.CreateAsync<PrivacyLevelROR>();
-        }
-
         public static async Task<PrivacyLevelROR> GetPrivacyLevelROR(int id)
         {
             return await DataPortal.FetchAsync<PrivacyLevelROR>(id);
-        }
-
-        public static async Task DeletePrivacyLevelROR(int id)
-        {
-            await DataPortal.DeleteAsync<PrivacyLevelROR>(id);
         }
 
         #endregion

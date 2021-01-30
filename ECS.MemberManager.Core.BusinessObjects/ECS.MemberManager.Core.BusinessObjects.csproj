@@ -21,7 +21,6 @@
       <Compile Remove="Payment\PaymentER.cs" />
       <Compile Remove="Sponsor\SponsorEC.cs" />
       <Compile Remove="Sponsor\SponsorER.cs" />
-      <Compile Remove="ContactForSponsor\ContactForSponsorERL.cs" />
       <Compile Remove="OrganizationType\OrganizationTypeEC.cs" />
       <Compile Remove="OrganizationType\OrganizationTypeROC.cs" />
       <Compile Remove="Organization\OrganizationEC.cs" />
@@ -41,12 +40,18 @@
       <Compile Remove="PaymentSource\PaymentSourceEditList.cs" />
       <Compile Remove="PaymentSource\PaymentSourceInfo.cs" />
       <Compile Remove="PaymentSource\PaymentSourceInfoList.cs" />
+      <Compile Remove="Title\TitleEdit.cs" />
+      <Compile Remove="Title\TitleEditList.cs" />
+      <Compile Remove="Title\TitleInfo.cs" />
+      <Compile Remove="Title\TitleInfoList.cs" />
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Payment" />
       <Folder Include="Person" />
       <Folder Include="Sponsor" />
+      <Folder Include="TaskForEvent" />
+      <Folder Include="TermInOffice" />
     </ItemGroup>
 
 </Project>

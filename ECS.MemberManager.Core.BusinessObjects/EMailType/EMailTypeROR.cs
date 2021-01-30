@@ -59,19 +59,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        public static async Task<EMailTypeROR> NewEMailTypeROR()
-        {
-            return await DataPortal.CreateAsync<EMailTypeROR>();
-        }
-
         public static async Task<EMailTypeROR> GetEMailTypeROR(int id)
         {
             return await DataPortal.FetchAsync<EMailTypeROR>(id);
-        }
-
-        public static async Task DeleteEMailTypeROR(int id)
-        {
-            await DataPortal.DeleteAsync<EMailTypeROR>(id);
         }
 
         #endregion

@@ -1,18 +1,19 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
+using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.ADO;
+using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using Microsoft.Extensions.Configuration;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class TitleInfoList_Tests
+    public class TitleROCL_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
 
-        public TitleInfoList_Tests()
+        public TitleROCL_Tests()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -31,20 +32,21 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                     IsDatabaseBuilt = true;
                 }
             }
-            
         }
         
         [Fact]
         private async void TitleInfoList_TestGetTitleInfoList()
         {
-            var eMailTypeInfoList = await TitleInfoList.GetTitleInfoList();
-            
-            Assert.NotNull(eMailTypeInfoList);
-            Assert.True(eMailTypeInfoList.IsReadOnly);
-            Assert.Equal(3, eMailTypeInfoList.Count);
-        }
-        
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<ITitleDal>();
+            var childData = await dal.Fetch();
 
+            var titleTypeInfoList = await TitleROCL.GetTitleROCL(childData);
+            
+            Assert.NotNull(titleTypeInfoList);
+            Assert.True(titleTypeInfoList.IsReadOnly);
+            Assert.Equal(3, titleTypeInfoList.Count);
+        }
       
     }
 }

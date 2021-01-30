@@ -108,7 +108,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        public static async Task<ContactForSponsorEC> GetContactForSponsorEditChild(ContactForSponsor childData)
+        public static async Task<ContactForSponsorEC> GetContactForSponsorEC(ContactForSponsor childData)
         {
             return await DataPortal.FetchChildAsync<ContactForSponsorEC>(childData);
         }

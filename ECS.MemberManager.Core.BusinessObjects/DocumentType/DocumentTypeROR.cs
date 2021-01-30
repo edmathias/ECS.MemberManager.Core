@@ -73,19 +73,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        public static async Task<DocumentTypeROR> NewDocumentTypeROR()
-        {
-            return await DataPortal.CreateAsync<DocumentTypeROR>();
-        }
-
         public static async Task<DocumentTypeROR> GetDocumentTypeROR(int id)
         {
             return await DataPortal.FetchAsync<DocumentTypeROR>(id);
-        }
-
-        public static async Task DeleteDocumentTypeROR(int id)
-        {
-            await DataPortal.DeleteAsync<DocumentTypeROR>(id);
         }
 
         #endregion
