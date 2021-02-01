@@ -9,12 +9,12 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class EMailEditList_Tests
+    public class EMailERL_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
 
-        public EMailEditList_Tests()
+        public EMailERL_Tests()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -36,27 +36,27 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        private async void EMailEditList_TestNewEMailList()
+        private async void EMailERL_TestNewEMailList()
         {
-            var eMailErl = await EMailEditList.NewEMailEditList();
+            var eMailErl = await EMailERL.NewEMailERL();
 
             Assert.NotNull(eMailErl);
-            Assert.IsType<EMailEditList>(eMailErl);
+            Assert.IsType<EMailERL>(eMailErl);
         }
         
         [Fact]
-        private async void EMailEditList_TestGetEMailEditList()
+        private async void EMailERL_TestGetEMailERL()
         {
-            var eMailEditList = await EMailEditList.GetEMailEditList();
+            var eMailEditList = await EMailERL.GetEMailERL();
 
             Assert.NotNull(eMailEditList);
             Assert.Equal(3, eMailEditList.Count);
         }
         
         [Fact]
-        private async void EMailEditList_TestDeleteEMailsEntry()
+        private async void EMailERL_TestDeleteEMailsEntry()
         {
-            var eMailErl = await EMailEditList.GetEMailEditList();
+            var eMailErl = await EMailERL.GetEMailERL();
             var listCount = eMailErl.Count;
             var eMailToDelete = eMailErl.First(et => et.Id == 99);
 
@@ -66,17 +66,17 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var eMailListAfterDelete = await eMailErl.SaveAsync();
 
             Assert.NotNull(eMailListAfterDelete);
-            Assert.IsType<EMailEditList>(eMailListAfterDelete);
+            Assert.IsType<EMailERL>(eMailListAfterDelete);
             Assert.True(isDeleted);
             Assert.NotEqual(listCount,eMailListAfterDelete.Count);
         }
 
         [Fact]
-        private async void EMailEditList_TestUpdateEMailsEntry()
+        private async void EMailERL_TestUpdateEMailsEntry()
         {
             const int idToUpdate = 1;
             
-            var eMailEditList = await EMailEditList.GetEMailEditList();
+            var eMailEditList = await EMailERL.GetEMailERL();
             var countBeforeUpdate = eMailEditList.Count;
             var eMailToUpdate = eMailEditList.First(a => a.Id == idToUpdate);
             eMailToUpdate.Notes = "This was updated";
@@ -88,23 +88,20 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        private async void EMailEditList_TestAddEMailsEntry()
+        private async void EMailERL_TestAddEMailsEntry()
         {
-            var eMailEditList = await EMailEditList.GetEMailEditList();
+            var eMailEditList = await EMailERL.GetEMailERL();
             var countBeforeAdd = eMailEditList.Count;
             
             var eMailToAdd = eMailEditList.AddNew();
             eMailToAdd.EMailAddress = "email address to test";
             eMailToAdd.LastUpdatedBy = "edm";
             eMailToAdd.LastUpdatedDate = DateTime.Now;
-            eMailToAdd.EMailType = await EMailEdit.GetEMailEdit(1);
+            eMailToAdd.EMailType = await EMailTypeER.GetEMailTypeER(1);
 
             var updatedEMailsList = await eMailEditList.SaveAsync();
             
             Assert.NotEqual(countBeforeAdd, updatedEMailsList.Count);
         }
-
-       
- 
     }
 }

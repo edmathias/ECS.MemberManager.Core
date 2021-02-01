@@ -44,6 +44,9 @@
       <Compile Remove="Title\TitleEditList.cs" />
       <Compile Remove="Title\TitleInfo.cs" />
       <Compile Remove="Title\TitleInfoList.cs" />
+      <Compile Remove="EMail\EMailEditList.cs" />
+      <Compile Remove="EMail\EMailInfo.cs" />
+      <Compile Remove="EMail\EMailInfoList.cs" />
     </ItemGroup>
 
     <ItemGroup>

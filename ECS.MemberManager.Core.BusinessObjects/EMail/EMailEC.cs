@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
@@ -10,20 +11,19 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class EMailEdit : BusinessBase<EMailEdit>
+    public class EMailEC : BusinessBase<EMailEC>
     {
         #region Business Methods
 
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
-
         public int Id
         {
             get => GetProperty(IdProperty);
-            set => SetProperty(IdProperty, value);
+            private set => LoadProperty(IdProperty, value);
         }
 
-        public static readonly PropertyInfo<EMailEdit> EMailTypeProperty = RegisterProperty<EMailEdit>(p => p.EMailType);
-        public EMailEdit EMailType
+        public static readonly PropertyInfo<EMailTypeER> EMailTypeProperty = RegisterProperty<EMailTypeER>(p => p.EMailType);
+        public EMailTypeER EMailType
         {
             get => GetProperty(EMailTypeProperty);
             set => SetProperty(EMailTypeProperty, value);
@@ -86,48 +86,33 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        public static async Task<EMailEdit> NewEMailEdit()
+        public static async Task<EMailEC> NewEMailEC()
         {
-            return await DataPortal.CreateAsync<EMailEdit>();
+            return await DataPortal.CreateAsync<EMailEC>();
         }
 
-        public static async Task<EMailEdit> GetEMailEdit(EMail childData)
+        public static async Task<EMailEC> GetEMailEC(EMail childData)
         {
-            return await DataPortal.FetchChildAsync<EMailEdit>(childData);
-        }
-
-        public static async Task<EMailEdit> GetEMailEdit(int id)
-        {
-            return await DataPortal.FetchAsync<EMailEdit>(id);
-        }
-
-        public static async Task DeleteEMailEdit(int id)
-        {
-            await DataPortal.DeleteAsync<EMailEdit>(id);
+            return await DataPortal.FetchChildAsync<EMailEC>(childData);
         }
 
         #endregion
 
         #region Data Access Methods
 
-        [Fetch]
-        private async Task FetchAsync(int id)
+        [FetchChild]
+        private async Task FetchAsync(EMail childData)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEMailDal>();
-            var data = await dal.Fetch(id);
-
-            await Fetch(data);
+            await Fetch(childData);
         }
         
-        [FetchChild]
         private async Task Fetch(EMail childData)
         {
             using (BypassPropertyChecks)
             {
                 Id = childData.Id;
                 EMailAddress = childData.EMailAddress;
-                EMailType = await EMailEdit.GetEMailEdit(childData.EMailTypeId);
+                EMailType = await EMailTypeER.GetEMailTypeER(childData.EMailTypeId);
                 LastUpdatedBy = childData.LastUpdatedBy;
                 LastUpdatedDate = childData.LastUpdatedDate;
                 Notes = childData.Notes;
@@ -135,13 +120,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
             }
         }
 
-        [Insert]
+        [InsertChild]
         private async Task Insert()
         {
             await InsertChild();
         }
 
-        [InsertChild]
         private async Task InsertChild()
         {
             using var dalManager = DalFactory.GetManager();
@@ -161,21 +145,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
             RowVersion = insertedEMail.RowVersion;
         }
 
-        [Update]
-        private async Task Update()
-        {
-            await ChildUpdate();
-        }
-
         [UpdateChild]
-        private async Task ChildUpdate()
+        private async Task Update()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEMailDal>();
 
-            var emailTypeToUpdate = new EMail()
+            var data = new EMail()
             {
-                Id = Id,
+                Id = Id, 
                 EMailTypeId = EMailType.Id,
                 EMailAddress = EMailAddress,
                 LastUpdatedBy = LastUpdatedBy,
@@ -183,10 +161,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 Notes = Notes,
                 RowVersion = RowVersion
             };
-
-            var updatedEmail = await dal.Update(emailTypeToUpdate);
-            RowVersion = updatedEmail.RowVersion;
+ 
+            var insertedEMail = await dal.Update(data);
+            RowVersion = insertedEMail.RowVersion;
         }
+
+        
         
         [DeleteSelfChild]
         private async Task DeleteSelf()

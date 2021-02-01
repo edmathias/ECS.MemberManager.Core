@@ -41,7 +41,6 @@
 
     <ItemGroup>
       <Compile Remove="MembershipType\MembershipTypeERL_Tests.cs" />
-      <Compile Remove="EMail\EMailER_Tests.cs" />
       <Compile Remove="Person\PersonER_Tests.cs" />
       <Compile Remove="Payment\PaymentER_Tests.cs" />
       <Compile Remove="ContactForSponsor\ContactForSponsorERL_Tests.cs" />

@@ -6,12 +6,12 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class EMailInfoList_Tests
+    public class EMailRORL_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
 
-        public EMailInfoList_Tests()
+        public EMailRORL_Tests()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -33,9 +33,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        private async void EMailInfoList_TestGetEMailInfoList()
+        private async void EMailRORL_TestGetEMailRORL()
         {
-            var eMailTypeInfoList = await EMailInfoList.GetEMailInfoList();
+            var eMailTypeInfoList = await EMailRORL.GetEMailRORL();
             
             Assert.NotNull(eMailTypeInfoList);
             Assert.True(eMailTypeInfoList.IsReadOnly);
