@@ -16,36 +16,45 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Business Methods
 
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
+
         public int Id
         {
             get => GetProperty(IdProperty);
             private set => LoadProperty(IdProperty, value);
         }
 
-        public static readonly PropertyInfo<EMailTypeER> EMailTypeProperty = RegisterProperty<EMailTypeER>(p => p.EMailType);
-        public EMailTypeER EMailType
+        public static readonly PropertyInfo<EMailTypeEC> EMailTypeProperty =
+            RegisterProperty<EMailTypeEC>(p => p.EMailType);
+
+        public EMailTypeEC EMailType
         {
             get => GetProperty(EMailTypeProperty);
             set => SetProperty(EMailTypeProperty, value);
         }
 
-        public static readonly PropertyInfo<string> EMailAddressProperty = RegisterProperty<string>(p => p.EMailAddress);
-        [Required,MaxLength(255)]
+        public static readonly PropertyInfo<string>
+            EMailAddressProperty = RegisterProperty<string>(p => p.EMailAddress);
+
+        [Required, MaxLength(255)]
         public string EMailAddress
         {
             get => GetProperty(EMailAddressProperty);
             set => SetProperty(EMailAddressProperty, value);
         }
-        
-        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(p => p.LastUpdatedBy);
-        [Required,MaxLength(255)]
+
+        public static readonly PropertyInfo<string> LastUpdatedByProperty =
+            RegisterProperty<string>(p => p.LastUpdatedBy);
+
+        [Required, MaxLength(255)]
         public string LastUpdatedBy
         {
             get => GetProperty(LastUpdatedByProperty);
             set => SetProperty(LastUpdatedByProperty, value);
         }
 
-        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
+        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty =
+            RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
+
         [Required]
         public SmartDate LastUpdatedDate
         {
@@ -105,14 +114,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             await Fetch(childData);
         }
-        
+
         private async Task Fetch(EMail childData)
         {
             using (BypassPropertyChecks)
             {
                 Id = childData.Id;
                 EMailAddress = childData.EMailAddress;
-                EMailType = await EMailTypeER.GetEMailTypeER(childData.EMailTypeId);
+                if (childData.EMailType != null )
+                    EMailType = await EMailTypeEC.GetEMailTypeEC(childData.EMailType);
                 LastUpdatedBy = childData.LastUpdatedBy;
                 LastUpdatedDate = childData.LastUpdatedDate;
                 Notes = childData.Notes;
@@ -133,13 +143,19 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
             var data = new EMail()
             {
-                EMailTypeId = EMailType.Id,
+                EMailType = new EMailType()
+                {
+                    Id = EMailType.Id,
+                    Description = EMailType.Description,
+                    Notes = EMailType.Notes,
+                    RowVersion = EMailType.RowVersion
+                },
                 EMailAddress = EMailAddress,
                 LastUpdatedBy = LastUpdatedBy,
                 LastUpdatedDate = LastUpdatedDate,
                 Notes = Notes
             };
- 
+
             var insertedEMail = await dal.Insert(data);
             Id = insertedEMail.Id;
             RowVersion = insertedEMail.RowVersion;
@@ -153,21 +169,25 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
             var data = new EMail()
             {
-                Id = Id, 
-                EMailTypeId = EMailType.Id,
+                Id = Id,
+                EMailType = new EMailType()
+                {
+                    Id = EMailType.Id,
+                    Description = EMailType.Description,
+                    Notes = EMailType.Notes,
+                    RowVersion = EMailType.RowVersion
+                },
                 EMailAddress = EMailAddress,
                 LastUpdatedBy = LastUpdatedBy,
                 LastUpdatedDate = LastUpdatedDate,
                 Notes = Notes,
                 RowVersion = RowVersion
             };
- 
+
             var insertedEMail = await dal.Update(data);
             RowVersion = insertedEMail.RowVersion;
         }
 
-        
-        
         [DeleteSelfChild]
         private async Task DeleteSelf()
         {
@@ -179,7 +199,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEMailDal>();
-           
+
             await dal.Delete(id);
         }
 

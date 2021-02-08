@@ -15,24 +15,21 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Business Methods
 
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
-
         public int Id
         {
             get => GetProperty(IdProperty);
             private set => LoadProperty(IdProperty, value);
         }
 
-        public static readonly PropertyInfo<int> SponsorIdProperty = RegisterProperty<int>(p => p.SponsorId);
-
-        public int SponsorId
+        public static readonly PropertyInfo<Sponsor> SponsorProperty = RegisterProperty<Sponsor>(p => p.Sponsor);
+        public Sponsor Sponsor
         {
-            get => GetProperty(SponsorIdProperty);
-            private set => LoadProperty(SponsorIdProperty, value);
+            get => GetProperty(SponsorProperty);
+            private set => LoadProperty(SponsorProperty, value);
         }
 
         public static readonly PropertyInfo<SmartDate> DateWhenContactedProperty =
             RegisterProperty<SmartDate>(p => p.DateWhenContacted);
-
         public SmartDate DateWhenContacted
         {
             get => GetProperty(DateWhenContactedProperty);
@@ -40,7 +37,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<string> PurposeProperty = RegisterProperty<string>(p => p.Purpose);
-
         [MaxLength(255)]
         public string Purpose
         {
@@ -50,24 +46,21 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         public static readonly PropertyInfo<string> RecordOfDiscussionProperty =
             RegisterProperty<string>(p => p.RecordOfDiscussion);
-
         public string RecordOfDiscussion
         {
             get => GetProperty(RecordOfDiscussionProperty);
             private set => LoadProperty(RecordOfDiscussionProperty, value);
         }
 
-        public static readonly PropertyInfo<int> PersonIdProperty = RegisterProperty<int>(p => p.PersonId);
-
-        public int PersonId
+        public static readonly PropertyInfo<Person> PersonProperty = RegisterProperty<Person>(p => p.Person);
+        public Person Person
         {
-            get => GetProperty(PersonIdProperty);
-            private set => LoadProperty(PersonIdProperty, value);
+            get => GetProperty(PersonProperty);
+            private set => LoadProperty(PersonProperty, value);
         }
 
         public static readonly PropertyInfo<int> ContactForSponsorTypeIdProperty =
             RegisterProperty<int>(p => p.ContactForSponsorTypeId);
-
         public int ContactForSponsorTypeId
         {
             get => GetProperty(ContactForSponsorTypeIdProperty);
@@ -140,11 +133,11 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private void Fetch(ContactForSponsor childData)
         {
             Id = childData.Id;
-            SponsorId = childData.SponsorId;
+            Sponsor = childData.Sponsor;
             DateWhenContacted = childData.DateWhenContacted;
             Purpose = childData.Purpose;
             RecordOfDiscussion = childData.RecordOfDiscussion;
-            PersonId = childData.PersonId;
+            Person = childData.Person;
             LastUpdatedBy = childData.LastUpdatedBy;
             LastUpdatedDate = childData.LastUpdatedDate;
             Notes = childData.Notes;
@@ -175,11 +168,11 @@ namespace ECS.MemberManager.Core.BusinessObjects
             var data = new ContactForSponsor()
             {
                 // TODO: provide sponsor & Person functionality
-                SponsorId = 0,
+                Sponsor = Sponsor,
                 DateWhenContacted = DateWhenContacted,
                 Purpose = Purpose,
                 RecordOfDiscussion = RecordOfDiscussion,
-                PersonId = 0,
+                Person = Person,
                 LastUpdatedBy = LastUpdatedBy,
                 LastUpdatedDate = LastUpdatedDate,
                 Notes = Notes,
@@ -206,11 +199,11 @@ namespace ECS.MemberManager.Core.BusinessObjects
             var emailTypeToUpdate = new ContactForSponsor()
             {
                 Id = Id,
-                SponsorId = SponsorId,
+                Sponsor = Sponsor,
                 DateWhenContacted = DateWhenContacted,
                 Purpose = Purpose,
                 RecordOfDiscussion = RecordOfDiscussion,
-                PersonId = 0,
+                Person = Person,
                 LastUpdatedBy = LastUpdatedBy,
                 LastUpdatedDate = LastUpdatedDate,
                 Notes = Notes,

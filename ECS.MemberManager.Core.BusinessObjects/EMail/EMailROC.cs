@@ -20,15 +20,14 @@ namespace ECS.MemberManager.Core.BusinessObjects
             private set => LoadProperty(IdProperty, value);
         }
 
-        public static readonly PropertyInfo<EMailTypeER> EMailTypeProperty = RegisterProperty<EMailTypeER>(p => p.EMailType);
-        public EMailTypeER EMailType
+        public static readonly PropertyInfo<EMailTypeEC> EMailTypeProperty = RegisterProperty<EMailTypeEC>(p => p.EMailType);
+        public EMailTypeEC EMailType
         {
             get => GetProperty(EMailTypeProperty);
             private set => LoadProperty(EMailTypeProperty, value);
         }
 
         public static readonly PropertyInfo<string> EMailAddressProperty = RegisterProperty<string>(p => p.EMailAddress);
-        [Required,MaxLength(255)]
         public string EMailAddress
         {
             get => GetProperty(EMailAddressProperty);
@@ -36,7 +35,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
         
         public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(p => p.LastUpdatedBy);
-        [Required,MaxLength(255)]
         public string LastUpdatedBy
         {
             get => GetProperty(LastUpdatedByProperty);
@@ -44,7 +42,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
-        [Required]
         public SmartDate LastUpdatedDate
         {
             get => GetProperty(LastUpdatedDateProperty);
@@ -86,7 +83,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             using (BypassPropertyChecks)
             {
                 Id = childData.Id;
-                EMailType = await EMailTypeER.GetEMailTypeER(childData.EMailTypeId);
+                EMailType = await EMailTypeEC.GetEMailTypeEC(childData.EMailType);
                 EMailAddress = childData.EMailAddress;
                 LastUpdatedBy = childData.LastUpdatedBy;
                 LastUpdatedDate = childData.LastUpdatedDate;

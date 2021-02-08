@@ -23,6 +23,8 @@ namespace ECS.MemberManager.Core.EF.Domain
         [MaxLength(5)]
         public string Code { get; set; }
         public string Notes { get; set; }
+
+        public EMail EMail { get; set; }
         
         public IList<Address> Addresses { get; set; }
         public IList<CategoryOfPerson> CategoryOfPersons { get; set; }

@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.DataAccess.Dal
 {
     public interface IPersonDal : IDisposable
     {
-        Person Fetch(int id);
-        List<Person> Fetch();
-        int Insert(Person person);
-        void Update(Person person );
-        void Delete(int id);
+        Task<Person> Fetch(int id);
+        Task<List<Person>> Fetch();
+        Task<Person> Insert(Person person);
+        Task<Person> Update(Person personToUpdate );
+        Task Delete(int id);
     }
 }

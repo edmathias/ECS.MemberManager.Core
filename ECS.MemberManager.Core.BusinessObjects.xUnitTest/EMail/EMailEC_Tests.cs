@@ -112,7 +112,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             var eMail = new EMail();
             eMail.Id = 1;
-            eMail.EMailTypeId = 1;
+            eMail.EMailType = new EMailType();
             eMail.EMailAddress = "email@email.com";
             eMail.LastUpdatedBy = "edm";
             eMail.LastUpdatedDate = DateTime.Now;

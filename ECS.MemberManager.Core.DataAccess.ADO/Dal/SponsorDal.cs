@@ -46,7 +46,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             return await _db.GetAsync<Sponsor>(id);
         }
 
-        public async Task<Sponsor> Insert(Sponsor contactForSponsorToInsert)
+        public async Task<Sponsor> Insert(Sponsor sponsorToInsert)
         {
             var sql = new StringBuilder();
             sql.AppendLine(
@@ -58,15 +58,30 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             sql.AppendLine(" @TypeName, @Details, @SponsorUntilDate, @Notes, @LastUpdatedBy, @LastUpdatedDate");
             sql.AppendLine("SELECT SCOPE_IDENTITY()");
 
-            contactForSponsorToInsert.Id = await _db.ExecuteScalarAsync<int>(sql.ToString(), contactForSponsorToInsert);
+            sponsorToInsert.Id = await _db.ExecuteScalarAsync<int>(sql.ToString(), new
+            {
+                PersonId = sponsorToInsert.Person.Id,
+                OrganizationId = sponsorToInsert.Organization.Id,
+                Status = sponsorToInsert.Status,
+                DateOfFirstContact = sponsorToInsert.DateOfFirstContact,
+                ReferredBy = sponsorToInsert.ReferredBy,
+                DateSponsorAccepted = sponsorToInsert.DateSponsorAccepted,
+                TypeName = sponsorToInsert.TypeName,
+                Details = sponsorToInsert.Details,
+                SponsorUntilDate = sponsorToInsert.SponsorUntilDate,
+                Notes = sponsorToInsert.Notes,
+                LastUpdatedBy = sponsorToInsert.LastUpdatedBy,
+                LastUpdatedDate = sponsorToInsert.LastUpdatedDate
+                
+            });
 
-            var insertedEmail = await _db.GetAsync<Sponsor>(contactForSponsorToInsert.Id);
-            contactForSponsorToInsert.RowVersion = insertedEmail.RowVersion;
+            var insertedEmail = await _db.GetAsync<Sponsor>(sponsorToInsert.Id);
+            sponsorToInsert.RowVersion = insertedEmail.RowVersion;
 
-            return contactForSponsorToInsert;
+            return sponsorToInsert;
         }
 
-        public async Task<Sponsor> Update(Sponsor contactForSponsorToUpdate)
+        public async Task<Sponsor> Update(Sponsor sponsorToUpdate)
         {
             var sql = new StringBuilder();
 
@@ -86,12 +101,29 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             sql.AppendLine("OUTPUT inserted.RowVersion");
             sql.AppendLine("WHERE Id = @Id AND RowVersion = @RowVersion ");
 
-            var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql.ToString(), contactForSponsorToUpdate);
+            var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql.ToString(), new
+            {
+                Id = sponsorToUpdate.Id,
+                PersonId = sponsorToUpdate.Person.Id,
+                OrganizationId = sponsorToUpdate.Organization.Id,
+                Status = sponsorToUpdate.Status,
+                DateOfFirstContact = sponsorToUpdate.DateOfFirstContact,
+                ReferredBy = sponsorToUpdate.ReferredBy,
+                DateSponsorAccepted = sponsorToUpdate.DateSponsorAccepted,
+                TypeName = sponsorToUpdate.TypeName,
+                Details = sponsorToUpdate.Details,
+                SponsorUntilDate = sponsorToUpdate.SponsorUntilDate,
+                Notes = sponsorToUpdate.Notes,
+                LastUpdatedBy = sponsorToUpdate.LastUpdatedBy,
+                LastUpdatedDate = sponsorToUpdate.LastUpdatedDate,
+                RowVersion = sponsorToUpdate.RowVersion
+            });
+            
             if (rowVersion == null)
                 throw new DBConcurrencyException("Entity has been updated since last read. Try again!");
-            contactForSponsorToUpdate.RowVersion = rowVersion;
+            sponsorToUpdate.RowVersion = rowVersion;
 
-            return contactForSponsorToUpdate;
+            return sponsorToUpdate;
         }
 
         public async Task Delete(int id)

@@ -37,12 +37,30 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
 
         public async Task<List<EMail>> Fetch()
         {
-            var eMailTypes =await _db.GetAllAsync<EMail>();
-            return eMailTypes.ToList();
+            var sql = "select * from EMails inner join EMailTypes on EMails.EMailTypeId = EMailTypes.Id";
+            var result = await _db.QueryAsync<EMail,EMailType,EMail>(sql,
+                (eMail, eMailType) =>
+                {
+                    eMail.EMailType = eMailType;
+                    return eMail;
+                }
+            );
+
+            return result.ToList();
         }
         public async Task<EMail> Fetch(int id)
         {
-            return await _db.GetAsync<EMail>(id);
+            var sql = "select * from EMails inner join EMailTypes on EMails.EMailTypeId = EMailTypes.Id "+
+                            $"where EMails.Id = {id}";
+            var result = await _db.QueryAsync<EMail,EMailType,EMail>(sql,
+                (eMail, eMailType) =>
+                {
+                    eMail.EMailType = eMailType;
+                    return eMail;
+                }
+            );
+
+            return result.First();
         }
 
         public async Task<EMail> Insert(EMail eMailToInsert)
@@ -50,8 +68,15 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             var sql = "INSERT INTO EMails (EMailTypeId,EMailAddress,LastUpdatedBy,LastUpdatedDate,Notes) " +
                       "VALUES(@EMailTypeId,@EMailAddress,@LastUpdatedBy,@LastUpdatedDate,@Notes);" +
                       "SELECT SCOPE_IDENTITY()";
-
-            eMailToInsert.Id = await _db.ExecuteScalarAsync<int>(sql, eMailToInsert);
+            
+            eMailToInsert.Id = await _db.ExecuteScalarAsync<int>(sql, 
+                new {
+                    EMailTypeId = eMailToInsert.EMailType.Id,
+                    EMailAddress =  eMailToInsert.EMailAddress,
+                    LastUpdatedBy = eMailToInsert.LastUpdatedBy,
+                    LastUpdatedDate = eMailToInsert.LastUpdatedDate,
+                    Notes = eMailToInsert.Notes
+                });
 
             var insertedEmail = await _db.GetAsync<EMail>(eMailToInsert.Id);
             eMailToInsert.RowVersion = insertedEmail.RowVersion;
@@ -70,7 +95,17 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                       "OUTPUT inserted.RowVersion " +
                       "WHERE Id = @Id AND RowVersion = @RowVersion ";
 
-            var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql, eMailToUpdate);
+            var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql, 
+                new {
+                    Id = eMailToUpdate.Id,
+                    EMailTypeId = eMailToUpdate.EMailType.Id,
+                    EMailAddress =  eMailToUpdate.EMailAddress,
+                    LastUpdatedBy = eMailToUpdate.LastUpdatedBy,
+                    LastUpdatedDate = eMailToUpdate.LastUpdatedDate,
+                    Notes = eMailToUpdate.Notes,
+                    RowVersion = eMailToUpdate.RowVersion
+                });
+   
             if (rowVersion == null)
                 throw new DBConcurrencyException("Entity has been updated since last read. Try again!");
             eMailToUpdate.RowVersion = rowVersion;
@@ -82,6 +117,8 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
         {
             await _db.DeleteAsync<EMail>(new EMail() {Id = id});
         }
+        
+        
 
         public void Dispose()
         {

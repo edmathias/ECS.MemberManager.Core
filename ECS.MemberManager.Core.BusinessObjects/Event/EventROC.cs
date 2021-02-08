@@ -10,41 +10,26 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class EMailInfo : ReadOnlyBase<EMailInfo>
+    public class EventROC : ReadOnlyBase<EventROC>
     {
         #region Business Methods
 
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
-
         public int Id
         {
             get => GetProperty(IdProperty);
             private set => LoadProperty(IdProperty, value);
         }
 
-        public static readonly PropertyInfo<int> EMailTypeIdProperty = RegisterProperty<int>(p => p.EMailTypeId);
-
-        [Required]
-        public int EMailTypeId
+        public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(p => p.Description);
+        public string Description
         {
-            get => GetProperty(EMailTypeIdProperty);
-            private set => LoadProperty(EMailTypeIdProperty, value);
-        }
-
-        public static readonly PropertyInfo<string>
-            EMailAddressProperty = RegisterProperty<string>(p => p.EMailAddress);
-
-        [Required]
-        public string EMailAddress
-        {
-            get => GetProperty(EMailAddressProperty);
-            private set => LoadProperty(EMailAddressProperty, value);
+            get => GetProperty(DescriptionProperty);
+            private set => LoadProperty(DescriptionProperty, value);
         }
 
         public static readonly PropertyInfo<string> LastUpdatedByProperty =
             RegisterProperty<string>(p => p.LastUpdatedBy);
-
-        [Required]
         public string LastUpdatedBy
         {
             get => GetProperty(LastUpdatedByProperty);
@@ -53,8 +38,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty =
             RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
-
-        [Required]
         public SmartDate LastUpdatedDate
         {
             get => GetProperty(LastUpdatedDateProperty);
@@ -62,7 +45,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
-
         public string Notes
         {
             get => GetProperty(NotesProperty);
@@ -70,13 +52,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
-
         public byte[] RowVersion
         {
             get => GetProperty(RowVersionProperty);
             private set => LoadProperty(RowVersionProperty, value);
         }
-
+        
         protected override void AddBusinessRules()
         {
             base.AddBusinessRules();
@@ -94,14 +75,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        public static async Task<EMailInfo> GetEMailInfo(EMail childData)
+        internal static async Task<EventROC> GetEventROC(Event childData)
         {
-            return await DataPortal.FetchChildAsync<EMailInfo>(childData);
-        }
-
-        public static async Task<EMailInfo> GetEMailInfo(int id)
-        {
-            return await DataPortal.FetchAsync<EMailInfo>(id);
+            return await DataPortal.FetchChildAsync<EventROC>(childData);
         }
 
         #endregion
@@ -109,27 +85,14 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access Methods
 
         [FetchChild]
-        private void Fetch(EMail childData)
+        private void Fetch(Event childData)
         {
             Id = childData.Id;
-            EMailAddress = childData.EMailAddress;
-            EMailTypeId = childData.EMailTypeId;
-            LastUpdatedBy = childData.LastUpdatedBy;
-            LastUpdatedDate = childData.LastUpdatedDate;
+            Description = childData.Description;
             Notes = childData.Notes;
             RowVersion = childData.RowVersion;
         }
 
-        [Fetch]
-        private async Task Fetch(int id)
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEMailDal>();
-            var data = await dal.Fetch(id);
-
-            Fetch(data);
-        }
-
-        #endregion
+         #endregion
     }
 }

@@ -7,12 +7,13 @@ using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.DataAccess.Mock;
+using ECS.MemberManager.Core.EF.Domain;
 using Microsoft.Extensions.Configuration;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class EMailECL_Tests 
+    public class EMailECL_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
@@ -24,8 +25,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
+
+            if (testLibrary == "Mock")
                 MockDb.ResetMockDb();
             else
             {
@@ -37,7 +38,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 }
             }
         }
-        
+
         [Fact]
         private async void EMailECL_TestEMailECL()
         {
@@ -47,37 +48,37 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.IsType<EMailECL>(eMailEdit);
         }
 
-        
+
         [Fact]
         private async void EMailECL_TestGetEMailECL()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEMailDal>();
             var childData = await dal.Fetch();
-            
+
             var listToTest = await EMailECL.GetEMailECL(childData);
-            
+
             Assert.NotNull(listToTest);
             Assert.Equal(3, listToTest.Count);
         }
-        
+
         [Fact]
         private async void EMailECL_TestDeleteEMailEntry()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEMailDal>();
             var childData = await dal.Fetch();
-            
+
             var eMailEditList = await EMailECL.GetEMailECL(childData);
 
             var eMail = eMailEditList.First(a => a.Id == 99);
 
             // remove is deferred delete
-            eMailEditList.Remove(eMail); 
+            eMailEditList.Remove(eMail);
 
             var eMailListAfterDelete = await eMailEditList.SaveAsync();
-            
-            Assert.NotEqual(childData.Count,eMailListAfterDelete.Count);
+
+            Assert.NotEqual(childData.Count, eMailListAfterDelete.Count);
         }
 
         [Fact]
@@ -86,7 +87,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEMailDal>();
             var childData = await dal.Fetch();
-            
+
             var eMailList = await EMailECL.GetEMailECL(childData);
             var countBeforeUpdate = eMailList.Count;
             var idToUpdate = eMailList.Min(a => a.Id);
@@ -97,8 +98,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             var updatedList = await dal.Fetch();
             var updatedEMailsList = await EMailECL.GetEMailECL(updatedList);
-            
-            Assert.Equal("This was updated",updatedEMailsList.First(a => a.Id == idToUpdate).Notes);
+
+            Assert.Equal("This was updated", updatedEMailsList.First(a => a.Id == idToUpdate).Notes);
             Assert.Equal(countBeforeUpdate, updatedEMailsList.Count);
         }
 
@@ -111,23 +112,29 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             var eMailList = await EMailECL.GetEMailECL(childData);
             var countBeforeAdd = eMailList.Count;
-            
+
             var eMailToAdd = eMailList.AddNew();
-            await BuildEMail(eMailToAdd); 
+            await BuildEMail(eMailToAdd);
 
             var eMailEditList = await eMailList.SaveAsync();
-            
+
             Assert.NotEqual(countBeforeAdd, eMailEditList.Count);
         }
 
         private async Task BuildEMail(EMailEC eMail)
         {
             eMail.EMailAddress = "email@email.com";
-            eMail.EMailType = await EMailTypeER.GetEMailTypeER(1);
+            eMail.EMailType = await EMailTypeEC.GetEMailTypeEC(
+                new EMailType()
+                {
+                    Id = 1,
+                    Notes = "EMailType notes",
+                    Description = "Email description"
+                }
+            );
             eMail.Notes = "document type notes";
             eMail.LastUpdatedBy = "edm";
             eMail.LastUpdatedDate = DateTime.Now;
         }
-        
     }
 }

@@ -10,7 +10,7 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class ContactForSponsorER : BusinessBase<ContactForSponsorER>
+    public class EventDocumentER : BusinessBase<EventDocumentER>
     {
         #region Business Methods
 
@@ -21,41 +21,35 @@ namespace ECS.MemberManager.Core.BusinessObjects
             get => GetProperty(IdProperty);
             set => SetProperty(IdProperty, value);
         }
-        
-        public static readonly PropertyInfo<Sponsor> SponsorProperty = RegisterProperty<Sponsor>(p => p.Sponsor);
-        public Sponsor Sponsor
+
+        public static readonly PropertyInfo<int> EventIdProperty = RegisterProperty<int>(p => p.EventId);
+        public int EventId
         {
-            get => GetProperty(SponsorProperty);
-            set => SetProperty(SponsorProperty, value);
+            get => GetProperty(EventIdProperty);
+            set => SetProperty(EventIdProperty, value);
         }
 
-        public static readonly PropertyInfo<SmartDate> DateWhenContactedProperty = RegisterProperty<SmartDate>(p => p.DateWhenContacted);
-        public SmartDate DateWhenContacted
+        public static readonly PropertyInfo<string> DocumentNameProperty = RegisterProperty<string>(p => p.DocumentName);
+        [Required(),MaxLength(50)]
+        public string DocumentName
         {
-            get => GetProperty(DateWhenContactedProperty);
-            set => SetProperty(DateWhenContactedProperty, value);
+            get => GetProperty(DocumentNameProperty);
+            set => SetProperty(DocumentNameProperty, value);
         }
 
-        public static readonly PropertyInfo<string> PurposeProperty = RegisterProperty<string>(p => p.Purpose);
-        [MaxLength(255)]
-        public string Purpose
+        public static readonly PropertyInfo<int> DocumentTypeIdProperty = RegisterProperty<int>(p => p.DocumentTypeId);
+        public int DocumentTypeId
         {
-            get => GetProperty(PurposeProperty);
-            set => SetProperty(PurposeProperty, value);
+            get => GetProperty(DocumentTypeIdProperty);
+            set => SetProperty(DocumentTypeIdProperty, value);
         }
 
-        public static readonly PropertyInfo<string> RecordOfDiscussionProperty = RegisterProperty<string>(p => p.RecordOfDiscussion);
-        public string RecordOfDiscussion
+        public static readonly PropertyInfo<string> PathAndFileNameProperty = RegisterProperty<string>(p => p.PathAndFileName);
+        [Required(), MaxLength(255)]
+        public string PathAndFileName
         {
-            get => GetProperty(RecordOfDiscussionProperty);
-            set => SetProperty(RecordOfDiscussionProperty, value);
-        }
-        
-        public static readonly PropertyInfo<Person> PersonProperty = RegisterProperty<Person>(p => p.Person);
-        public Person Person
-        {
-            get => GetProperty(PersonProperty);
-            set => SetProperty(PersonProperty, value);
+            get => GetProperty(PathAndFileNameProperty);
+            set => SetProperty(PathAndFileNameProperty, value);
         }
 
         public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(p => p.LastUpdatedBy);
@@ -67,7 +61,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
-        [Required]
+        [Required] 
         public SmartDate LastUpdatedDate
         {
             get => GetProperty(LastUpdatedDateProperty);
@@ -75,7 +69,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
-
         public string Notes
         {
             get => GetProperty(NotesProperty);
@@ -107,56 +100,55 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        public static async Task<ContactForSponsorER> NewContactForSponsorER()
+        public static async Task<EventDocumentER> NewEventDocumentER()
         {
-            return await DataPortal.CreateAsync<ContactForSponsorER>();
+            return await DataPortal.CreateAsync<EventDocumentER>();
         }
 
-        public static async Task<ContactForSponsorER> GetContactForSponsorER(ContactForSponsor childData)
+        public static async Task<EventDocumentER> GetEventDocumentER(EventDocument childData)
         {
-            return await DataPortal.FetchChildAsync<ContactForSponsorER>(childData);
+            return await DataPortal.FetchChildAsync<EventDocumentER>(childData);
         }
 
-        public static async Task<ContactForSponsorER> GetContactForSponsorER(int id)
+        public static async Task<EventDocumentER> GetEventDocumentER(int id)
         {
-            return await DataPortal.FetchAsync<ContactForSponsorER>(id);
+            return await DataPortal.FetchAsync<EventDocumentER>(id);
         }
 
-        public static async Task DeleteContactForSponsorER(int id)
+        public static async Task DeleteEventDocumentER(int id)
         {
-            await DataPortal.DeleteAsync<ContactForSponsorER>(id);
+            await DataPortal.DeleteAsync<EventDocumentER>(id);
         }
 
         #endregion
 
         #region Data Access Methods
+        
+        [Fetch]
+        private async Task Fetch(int id)
+        {
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IEventDocumentDal>();
+            var data = await dal.Fetch(id);
+
+            Fetch(data);
+        }
 
         [FetchChild]
-        private void Fetch(ContactForSponsor childData)
+        private void Fetch(EventDocument childData)
         {
             using (BypassPropertyChecks)
             {
                 Id = childData.Id;
-                Sponsor = childData.Sponsor;
-                DateWhenContacted = childData.DateWhenContacted;
-                Purpose = childData.Purpose;
-                RecordOfDiscussion = childData.RecordOfDiscussion;
-                Person = childData.Person;
+                EventId = childData.EventId;
+                DocumentName = childData.DocumentName;
+                DocumentTypeId = childData.DocumentTypeId;
+                PathAndFileName = childData.PathAndFileName;
                 LastUpdatedBy = childData.LastUpdatedBy;
                 LastUpdatedDate = childData.LastUpdatedDate;
                 Notes = childData.Notes;
                 RowVersion = childData.RowVersion;
             }
-        }
-
-        [Fetch]
-        private async Task FetchAsync(int id)
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IContactForSponsorDal>();
-            var data = await dal.Fetch(id);
-
-            Fetch(data);
         }
 
         [Insert]
@@ -169,24 +161,22 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private async Task InsertChild()
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IContactForSponsorDal>();
-            var data = new ContactForSponsor()
+            var dal = dalManager.GetProvider<IEventDocumentDal>();
+            var data = new EventDocument()
             {
-                // TODO: provide sponsor & Person functionality
-                Sponsor = Sponsor,
-                DateWhenContacted = DateWhenContacted,
-                Purpose = Purpose,
-                RecordOfDiscussion = RecordOfDiscussion,
-                Person = Person,
+                EventId = EventId,
+                DocumentName = DocumentName,
+                DocumentTypeId = DocumentTypeId,
+                PathAndFileName = PathAndFileName,
                 LastUpdatedBy = LastUpdatedBy,
                 LastUpdatedDate = LastUpdatedDate,
                 Notes = Notes,
                 RowVersion = RowVersion
             };
 
-            var insertedContactForSponsor = await dal.Insert(data);
-            Id = insertedContactForSponsor.Id;
-            RowVersion = insertedContactForSponsor.RowVersion;
+            var insertedEventDocument = await dal.Insert(data);
+            Id = insertedEventDocument.Id;
+            RowVersion = insertedEventDocument.RowVersion;
         }
 
         [Update]
@@ -199,16 +189,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private async Task ChildUpdate()
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IContactForSponsorDal>();
+            var dal = dalManager.GetProvider<IEventDocumentDal>();
 
-            var emailTypeToUpdate = new ContactForSponsor()
+            var emailTypeToUpdate = new EventDocument()
             {
                 Id = Id,
-                Sponsor = Sponsor,
-                DateWhenContacted = DateWhenContacted,
-                Purpose = Purpose,
-                RecordOfDiscussion = RecordOfDiscussion,
-                Person = Person,
+                EventId = EventId,
+                DocumentName = DocumentName,
+                DocumentTypeId = DocumentTypeId,
+                PathAndFileName = PathAndFileName,
                 LastUpdatedBy = LastUpdatedBy,
                 LastUpdatedDate = LastUpdatedDate,
                 Notes = Notes,
@@ -229,7 +218,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private async Task Delete(int id)
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IContactForSponsorDal>();
+            var dal = dalManager.GetProvider<IEventDocumentDal>();
            
             await dal.Delete(id);
         }

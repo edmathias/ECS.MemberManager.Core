@@ -21,12 +21,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
             get => GetProperty(IdProperty);
             set => SetProperty(IdProperty, value);
         }
-        
-        public static readonly PropertyInfo<int> SponsorIdProperty = RegisterProperty<int>(p => p.SponsorId);
-        public int SponsorId
+     
+        public static readonly PropertyInfo<Sponsor> SponsorProperty = RegisterProperty<Sponsor>(p => p.Sponsor);
+        public Sponsor Sponsor
         {
-            get => GetProperty(SponsorIdProperty);
-            set => SetProperty(SponsorIdProperty, value);
+            get => GetProperty(SponsorProperty);
+            set => SetProperty(SponsorProperty, value);
         }
 
         public static readonly PropertyInfo<SmartDate> DateWhenContactedProperty = RegisterProperty<SmartDate>(p => p.DateWhenContacted);
@@ -51,13 +51,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(RecordOfDiscussionProperty, value);
         }
 
-        public static readonly PropertyInfo<int> PersonIdProperty = RegisterProperty<int>(p => p.PersonId);
-        public int PersonId
+        public static readonly PropertyInfo<Person> PersonProperty = RegisterProperty<Person>(p => p.Person);
+        public Person Person
         {
-            get => GetProperty(PersonIdProperty);
-            set => SetProperty(PersonIdProperty, value);
+            get => GetProperty(PersonProperty);
+            set => SetProperty(PersonProperty, value);
         }
-
 
         public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(p => p.LastUpdatedBy);
         [Required,MaxLength(255)]
@@ -107,6 +106,11 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #endregion
 
         #region Factory Methods
+        
+        internal static async Task<ContactForSponsorEC> NewContactForSponsorEC()
+        {
+            return await DataPortal.CreateChildAsync<ContactForSponsorEC>();
+        }        
 
         public static async Task<ContactForSponsorEC> GetContactForSponsorEC(ContactForSponsor childData)
         {
@@ -123,11 +127,11 @@ namespace ECS.MemberManager.Core.BusinessObjects
             using (BypassPropertyChecks)
             {
                 Id = childData.Id;
-                SponsorId = childData.SponsorId;
+                Sponsor = childData.Sponsor;
                 DateWhenContacted = childData.DateWhenContacted;
                 Purpose = childData.Purpose;
                 RecordOfDiscussion = childData.RecordOfDiscussion;
-                PersonId = childData.PersonId;
+                Person = childData.Person;
                 LastUpdatedBy = childData.LastUpdatedBy;
                 LastUpdatedDate = childData.LastUpdatedDate;
                 Notes = childData.Notes;
@@ -143,11 +147,11 @@ namespace ECS.MemberManager.Core.BusinessObjects
             var data = new ContactForSponsor()
             {
                 // TODO: provide sponsor & Person functionality
-                SponsorId = SponsorId,
+                Sponsor = Sponsor,
                 DateWhenContacted = DateWhenContacted,
                 Purpose = Purpose,
                 RecordOfDiscussion = RecordOfDiscussion,
-                PersonId = PersonId,
+                Person = Person,
                 LastUpdatedBy = LastUpdatedBy,
                 LastUpdatedDate = LastUpdatedDate,
                 Notes = Notes,
@@ -168,11 +172,11 @@ namespace ECS.MemberManager.Core.BusinessObjects
             var emailTypeToUpdate = new ContactForSponsor()
             {
                 Id = Id,
-                SponsorId = SponsorId,
+                Sponsor = Sponsor,
                 DateWhenContacted = DateWhenContacted,
                 Purpose = Purpose,
                 RecordOfDiscussion = RecordOfDiscussion,
-                PersonId = PersonId,
+                Person = Person,
                 LastUpdatedBy = LastUpdatedBy,
                 LastUpdatedDate = LastUpdatedDate,
                 Notes = Notes,

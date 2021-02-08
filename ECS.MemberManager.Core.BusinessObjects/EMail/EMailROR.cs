@@ -10,41 +10,50 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class EMailROR : BusinessBase<EMailROR>
+    public class EMailROR : ReadOnlyBase<EMailROR>
     {
         #region Business Methods
 
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
+
         public int Id
         {
             get => GetProperty(IdProperty);
             private set => LoadProperty(IdProperty, value);
         }
 
-        public static readonly PropertyInfo<EMailTypeER> EMailTypeProperty = RegisterProperty<EMailTypeER>(p => p.EMailType);
-        public EMailTypeER EMailType
+        public static readonly PropertyInfo<EMailTypeEC> EMailTypeProperty =
+            RegisterProperty<EMailTypeEC>(p => p.EMailType);
+
+        public EMailTypeEC EMailType
         {
             get => GetProperty(EMailTypeProperty);
             private set => LoadProperty(EMailTypeProperty, value);
         }
 
-        public static readonly PropertyInfo<string> EMailAddressProperty = RegisterProperty<string>(p => p.EMailAddress);
-        [Required,MaxLength(255)]
+        public static readonly PropertyInfo<string>
+            EMailAddressProperty = RegisterProperty<string>(p => p.EMailAddress);
+
+        [Required, MaxLength(255)]
         public string EMailAddress
         {
             get => GetProperty(EMailAddressProperty);
             private set => LoadProperty(EMailAddressProperty, value);
         }
-        
-        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(p => p.LastUpdatedBy);
-        [Required,MaxLength(255)]
+
+        public static readonly PropertyInfo<string> LastUpdatedByProperty =
+            RegisterProperty<string>(p => p.LastUpdatedBy);
+
+        [Required, MaxLength(255)]
         public string LastUpdatedBy
         {
             get => GetProperty(LastUpdatedByProperty);
             private set => LoadProperty(LastUpdatedByProperty, value);
         }
 
-        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
+        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty =
+            RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
+
         [Required]
         public SmartDate LastUpdatedDate
         {
@@ -103,19 +112,16 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
             await Fetch(data);
         }
-        
+
         private async Task Fetch(EMail childData)
         {
-            using (BypassPropertyChecks)
-            {
-                Id = childData.Id;
-                EMailAddress = childData.EMailAddress;
-                EMailType = await EMailTypeER.GetEMailTypeER(childData.EMailTypeId);
-                LastUpdatedBy = childData.LastUpdatedBy;
-                LastUpdatedDate = childData.LastUpdatedDate;
-                Notes = childData.Notes;
-                RowVersion = childData.RowVersion;
-            }
+            Id = childData.Id;
+            EMailAddress = childData.EMailAddress;
+            EMailType = await EMailTypeEC.GetEMailTypeEC(childData.EMailType);
+            LastUpdatedBy = childData.LastUpdatedBy;
+            LastUpdatedDate = childData.LastUpdatedDate;
+            Notes = childData.Notes;
+            RowVersion = childData.RowVersion;
         }
 
         #endregion

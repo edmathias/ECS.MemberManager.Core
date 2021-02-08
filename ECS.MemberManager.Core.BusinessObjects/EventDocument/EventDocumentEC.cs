@@ -10,7 +10,7 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class EventDocumentEdit : BusinessBase<EventDocumentEdit>
+    public class EventDocumentEC : BusinessBase<EventDocumentEC>
     {
         #region Business Methods
 
@@ -100,39 +100,19 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        public static async Task<EventDocumentEdit> NewEventDocumentEdit()
+        public static async Task<EventDocumentEC> NewEventDocumentEC()
         {
-            return await DataPortal.CreateAsync<EventDocumentEdit>();
+            return await DataPortal.CreateAsync<EventDocumentEC>();
         }
 
-        public static async Task<EventDocumentEdit> GetEventDocumentEdit(EventDocument childData)
+        public static async Task<EventDocumentEC> GetEventDocumentEC(EventDocument childData)
         {
-            return await DataPortal.FetchChildAsync<EventDocumentEdit>(childData);
-        }
-
-        public static async Task<EventDocumentEdit> GetEventDocumentEdit(int id)
-        {
-            return await DataPortal.FetchAsync<EventDocumentEdit>(id);
-        }
-
-        public static async Task DeleteEventDocumentEdit(int id)
-        {
-            await DataPortal.DeleteAsync<EventDocumentEdit>(id);
+            return await DataPortal.FetchChildAsync<EventDocumentEC>(childData);
         }
 
         #endregion
 
         #region Data Access Methods
-        
-        [Fetch]
-        private async Task Fetch(int id)
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEventDocumentDal>();
-            var data = await dal.Fetch(id);
-
-            Fetch(data);
-        }
 
         [FetchChild]
         private void Fetch(EventDocument childData)
@@ -149,12 +129,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 Notes = childData.Notes;
                 RowVersion = childData.RowVersion;
             }
-        }
-
-        [Insert]
-        private async Task Insert()
-        {
-            await InsertChild();
         }
 
         [InsertChild]
@@ -177,12 +151,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
             var insertedEventDocument = await dal.Insert(data);
             Id = insertedEventDocument.Id;
             RowVersion = insertedEventDocument.RowVersion;
-        }
-
-        [Update]
-        private async Task Update()
-        {
-            await ChildUpdate();
         }
 
         [UpdateChild]

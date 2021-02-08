@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -10,28 +9,22 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class EventDocumentEditList : BusinessListBase<EventDocumentEditList,EventDocumentEdit>
+    public class EventDocumentERL : BusinessListBase<EventDocumentERL,EventDocumentEC>
     {
         public static void AddObjectAuthorizationRules()
         {
             // TODO: add object-level authorization rules
         }
 
-        public static async Task<EventDocumentEditList> NewEventDocumentEditList()
+        public static async Task<EventDocumentERL> NewEventDocumentERL()
         {
-            return await DataPortal.CreateAsync<EventDocumentEditList>();
+            return await DataPortal.CreateAsync<EventDocumentERL>();
         }
 
-        public static async Task<EventDocumentEditList> GetEventDocumentEditList()
+        public static async Task<EventDocumentERL> GetEventDocumentERL()
         {
-            return await DataPortal.FetchAsync<EventDocumentEditList>();
+            return await DataPortal.FetchAsync<EventDocumentERL>();
         }
-
-        public static async Task<EventDocumentEditList> GetEventDocumentEditList(List<EventDocumentEdit> childData)
-        {
-            return await DataPortal.FetchAsync<EventDocumentEditList>(childData);
-        }
-        
         
         [RunLocal]
         [Create]
@@ -48,17 +41,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
             var childData = await dal.Fetch();
 
             await Fetch(childData);
-
         }
 
-        [Fetch]
         private async Task Fetch(List<EventDocument> childData)
         {
             using (LoadListMode)
             {
                 foreach (var eventDocument in childData)
                 {
-                    var eventDocumentToAdd = await EventDocumentEdit.GetEventDocumentEdit(eventDocument);
+                    var eventDocumentToAdd = await EventDocumentEC.GetEventDocumentEC(eventDocument);
                     Add(eventDocumentToAdd);
                 }
             }

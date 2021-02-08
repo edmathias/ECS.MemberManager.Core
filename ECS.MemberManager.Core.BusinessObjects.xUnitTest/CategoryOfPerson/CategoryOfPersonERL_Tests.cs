@@ -77,7 +77,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         private async void CategoryOfPersonERL_TestUpdateCategoryOfPersonERL()
         {
             const int ID_TO_UPDATE = 1;
-            var categoryOfPersons = MockDb.CategoryOfPersons.ToList();
             
             var categoryList = 
                 await CategoryOfPersonERL.GetCategoryOfPersonERL();

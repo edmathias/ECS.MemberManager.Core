@@ -5,6 +5,7 @@ using Csla;
 using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Mock;
+using ECS.MemberManager.Core.EF.Domain;
 using Microsoft.Extensions.Configuration;
 using Xunit;
 
@@ -211,7 +212,14 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             eMailToBuild.EMailAddress = "edm@ecs.com";
             eMailToBuild.LastUpdatedBy = "edm";
             eMailToBuild.LastUpdatedDate = DateTime.Now;
-            eMailToBuild.EMailType = await EMailTypeER.GetEMailTypeER(1);
+            eMailToBuild.EMailType = await EMailTypeROC.GetEMailTypeROC(
+                new EMailType()
+                {
+                    Id = 1,
+                    Notes = "EMailType notes",
+                    Description = "Email description"
+                }
+            );
         }
         
     }

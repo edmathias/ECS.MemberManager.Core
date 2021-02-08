@@ -182,21 +182,27 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             {
                 new ContactForSponsor()
                 {
-                    Id = 1, PersonId = 1, Purpose = "purpose for contact", DateWhenContacted = DateTime.Now,
+                    Id = 1, Purpose = "purpose for contact", DateWhenContacted = DateTime.Now,
                     Notes = "Notes here", RecordOfDiscussion = "record of discussion here", LastUpdatedBy = "edm",
-                    LastUpdatedDate = DateTime.Now, SponsorId = 1
+                    LastUpdatedDate = DateTime.Now, 
+                    Person = MockDb.Persons.First(),
+                    Sponsor = MockDb.Sponsors.Single( s => s.Id == 2) 
                 },
                 new ContactForSponsor()
                 {
-                    Id = 2, PersonId = 2, Purpose = "purpose for contact 2", DateWhenContacted = DateTime.Now,
+                    Id = 2,  Purpose = "purpose for contact 2", DateWhenContacted = DateTime.Now,
                     Notes = "Notes here", RecordOfDiscussion = "record of discussion here", LastUpdatedBy = "edm",
-                    LastUpdatedDate = DateTime.Now, SponsorId=2
+                    LastUpdatedDate = DateTime.Now,
+                    Person = MockDb.Persons.Single(p => p.Id == 2),
+                    Sponsor = MockDb.Sponsors.Single( s => s.Id == 2)
                 },
                 new ContactForSponsor()
                 {
-                    Id = 99, PersonId=2, Purpose = "delete this contact", DateWhenContacted = DateTime.Now,
+                    Id = 99, Purpose = "delete this contact", DateWhenContacted = DateTime.Now,
                     Notes = "Deleted Notes here", RecordOfDiscussion = "deleted record", LastUpdatedBy = "edm",
-                    LastUpdatedDate = DateTime.Now, SponsorId=2
+                    LastUpdatedDate = DateTime.Now,
+                    Person = MockDb.Persons.Single(p => p.Id == 1),
+                    Sponsor = MockDb.Sponsors.Single( s => s.Id == 2)
                 }
             };
         }
@@ -223,19 +229,19 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             {
                 new EMail()
                 {
-                    Id = 1, EMailTypeId = 1,
+                    Id = 1, EMailType = EMailTypes.First(),
                     EMailAddress = "edm@ecs.com", LastUpdatedBy = "edm", LastUpdatedDate = DateTime.Now,
                     Notes = "some notes", Organizations = GetOrganizations(), Persons = GetPersons() 
                 },
                 new EMail()
                 {
-                    Id = 2, EMailTypeId = 2,
+                    Id = 2, EMailType = EMailTypes.First(),
                     EMailAddress = "edm@ecs.com", LastUpdatedBy = "edm", LastUpdatedDate = DateTime.Now,
                     Notes = "some notes", Organizations = GetOrganizations(), Persons = GetPersons()
                 },
                 new EMail()
                 {
-                Id = 99, EMailTypeId = 2,
+                Id = 99, EMailType = EMailTypes.First(),
                 EMailAddress = "edm@ecs.com", LastUpdatedBy = "edm", LastUpdatedDate = DateTime.Now,
                 Notes = "test the delete", Organizations = GetOrganizations(), Persons = GetPersons()
                 }

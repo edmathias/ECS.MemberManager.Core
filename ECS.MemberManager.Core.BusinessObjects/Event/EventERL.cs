@@ -1,6 +1,5 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -10,23 +9,31 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class EventInfoList : ReadOnlyListBase<EventInfoList,EventInfo>
+    public class EventERL : BusinessListBase<EventERL,EventEC>
     {
+        #region Authorization Rules
         public static void AddObjectAuthorizationRules()
         {
             // TODO: add object-level authorization rules
         }
 
-        public static async Task<EventInfoList> GetEventInfoList()
+        #endregion
+       
+        #region Factory Methods
+        
+        public static async Task<EventERL> NewEventERL()
         {
-            return await DataPortal.FetchAsync<EventInfoList>();
+            return await DataPortal.CreateAsync<EventERL>();
         }
 
-        public static async Task<EventInfoList> GetEventInfoList(List<EventInfo> childData)
+        public static async Task<EventERL> GetEventERL()
         {
-            return await DataPortal.FetchAsync<EventInfoList>(childData);
+            return await DataPortal.FetchAsync<EventERL>();
         }
+       
+        #endregion
         
+        #region Data Access
         
         [Fetch]
         private async Task Fetch()
@@ -35,21 +42,23 @@ namespace ECS.MemberManager.Core.BusinessObjects
             var dal = dalManager.GetProvider<IEventDal>();
             var childData = await dal.Fetch();
 
-            await Fetch(childData);
-
-        }
-
-        [Fetch]
-        private async Task Fetch(List<Event> childData)
-        {
             using (LoadListMode)
             {
-                foreach (var eventType in childData)
+                foreach (var eventObj in childData)
                 {
-                    var eventToAdd = await EventInfo.GetEventInfo(eventType);
+                    var eventToAdd = 
+                        await EventEC.GetEventEC(eventObj);
                     Add(eventToAdd);
                 }
             }
         }
+        
+        [Update]
+        private void Update()
+        {
+            Child_Update();
+        }
+        
+        #endregion
     }
 }

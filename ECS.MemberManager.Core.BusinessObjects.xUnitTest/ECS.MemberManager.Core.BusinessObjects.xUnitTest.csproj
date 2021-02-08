@@ -33,15 +33,12 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="ContactForSponsor" />
       <Folder Include="MemberInfo" />
       <Folder Include="Payment" />
-      <Folder Include="Person" />
     </ItemGroup>
 
     <ItemGroup>
       <Compile Remove="MembershipType\MembershipTypeERL_Tests.cs" />
-      <Compile Remove="Person\PersonER_Tests.cs" />
       <Compile Remove="Payment\PaymentER_Tests.cs" />
       <Compile Remove="ContactForSponsor\ContactForSponsorERL_Tests.cs" />
       <Compile Remove="Organization\OrganizationER_Tests.cs" />
@@ -72,6 +69,15 @@
       <Compile Remove="Title\TitleEditList_Tests.cs" />
       <Compile Remove="Title\TitleInfo_Tests.cs" />
       <Compile Remove="Title\TitleInfoList_Tests.cs" />
+      <Compile Remove="Event\EventEdit_Tests.cs" />
+      <Compile Remove="Event\EventEditList_Tests.cs" />
+      <Compile Remove="Event\EventInfo_Tests.cs" />
+      <Compile Remove="Event\EventInfoList_Tests.cs" />
+      <Compile Remove="ContactForSponsor\DocumentTypeERL_Tests.cs" />
+      <Compile Remove="ContactForSponsor\DocumentTypeROC_Tests.cs" />
+      <Compile Remove="ContactForSponsor\DocumentTypeROCL_Tests.cs" />
+      <Compile Remove="ContactForSponsor\DocumentTypeROR_Tests.cs" />
+      <Compile Remove="ContactForSponsor\DocumentTypeRORL_Tests.cs" />
     </ItemGroup>
     
 

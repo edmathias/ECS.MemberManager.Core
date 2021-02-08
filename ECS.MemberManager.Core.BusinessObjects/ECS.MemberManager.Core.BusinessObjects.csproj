@@ -16,7 +16,6 @@
 
     <ItemGroup>
       <Compile Remove="EMail\EMailTypeInfoList.cs" />
-      <Compile Remove="Person\PersonEC.cs" />
       <Compile Remove="Person\PersonECL.cs" />
       <Compile Remove="Payment\PaymentER.cs" />
       <Compile Remove="Sponsor\SponsorEC.cs" />
@@ -47,11 +46,11 @@
       <Compile Remove="EMail\EMailEditList.cs" />
       <Compile Remove="EMail\EMailInfo.cs" />
       <Compile Remove="EMail\EMailInfoList.cs" />
+      <Compile Remove="Event\EventEdit.cs" />
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Payment" />
-      <Folder Include="Person" />
       <Folder Include="Sponsor" />
       <Folder Include="TaskForEvent" />
       <Folder Include="TermInOffice" />

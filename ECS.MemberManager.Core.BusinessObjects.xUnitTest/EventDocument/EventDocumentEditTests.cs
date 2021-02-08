@@ -10,12 +10,12 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class EventDocumentEditTests
+    public class EventDocumentER_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
 
-        public EventDocumentEditTests()
+        public EventDocumentER_Tests()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -37,29 +37,29 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestEventDocumentEdit_TestGetEventDocumentEdit()
+        public async Task TestEventDocumentER_TestGetEventDocumentER()
         {
-            var eventDocument = await EventDocumentEdit.GetEventDocumentEdit(1);
+            var eventDocument = await EventDocumentER.GetEventDocumentER(1);
 
             Assert.NotNull(eventDocument);
-            Assert.IsType<EventDocumentEdit>(eventDocument);
+            Assert.IsType<EventDocumentER>(eventDocument);
             Assert.Equal(1, eventDocument.Id);
             Assert.True(eventDocument.IsValid);
         }
 
         [Fact]
-        public async Task TestEventDocumentEdit_New()
+        public async Task TestEventDocumentER_New()
         {
-            var eventDocument = await EventDocumentEdit.NewEventDocumentEdit();
+            var eventDocument = await EventDocumentER.NewEventDocumentER();
 
             Assert.NotNull(eventDocument);
             Assert.False(eventDocument.IsValid);
         }
 
         [Fact]
-        public async void TestEventDocumentEdit_Update()
+        public async void TestEventDocumentER_Update()
         {
-            var eventDocument = await EventDocumentEdit.GetEventDocumentEdit(1);
+            var eventDocument = await EventDocumentER.GetEventDocumentER(1);
             var notesUpdate = $"These are updated Notes {DateTime.Now}";
             eventDocument.Notes = notesUpdate;
 
@@ -70,37 +70,37 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async void TestEventDocumentEdit_Insert()
+        public async void TestEventDocumentER_Insert()
         {
-            var eventDocument = await EventDocumentEdit.NewEventDocumentEdit();
+            var eventDocument = await EventDocumentER.NewEventDocumentER();
             BuildValidEventDocument(eventDocument);
             eventDocument.Notes = "This person is inserted";
 
             var savedEventDocument = await eventDocument.SaveAsync();
 
             Assert.NotNull(savedEventDocument);
-            Assert.IsType<EventDocumentEdit>(savedEventDocument);
+            Assert.IsType<EventDocumentER>(savedEventDocument);
             Assert.True(savedEventDocument.Id > 0);
             Assert.NotNull(savedEventDocument.RowVersion);
         }
 
         [Fact]
-        public async Task TestEventDocumentEdit_Delete()
+        public async Task TestEventDocumentER_Delete()
         {
-            await EventDocumentEdit.DeleteEventDocumentEdit(99);
+            await EventDocumentER.DeleteEventDocumentER(99);
 
             var emailTypeToCheck = await Assert.ThrowsAsync<Csla.DataPortalException>
-                (() => EventDocumentEdit.GetEventDocumentEdit(99));
+                (() => EventDocumentER.GetEventDocumentER(99));
         }
 
         [Fact]
         public async Task TestEventDocumentNameRequired()
         {
-            var eventDocument = await EventDocumentEdit.NewEventDocumentEdit();
+            var eventDocument = await EventDocumentER.NewEventDocumentER();
             BuildValidEventDocument(eventDocument);
             var isObjectValidInit = eventDocument.IsValid;
             
-            var newEventDocument = await EventDocumentEdit.NewEventDocumentEdit();
+            var newEventDocument = await EventDocumentER.NewEventDocumentER();
             newEventDocument.DocumentName = string.Empty;
 
             Assert.NotNull(newEventDocument);
@@ -109,9 +109,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestEventDocumentEdit_DocumentNameExceedsMaxLengthOf50()
+        public async Task TestEventDocumentER_DocumentNameExceedsMaxLengthOf50()
         {
-            var eventDocument = await EventDocumentEdit.NewEventDocumentEdit();
+            var eventDocument = await EventDocumentER.NewEventDocumentER();
             BuildValidEventDocument(eventDocument);
             eventDocument.DocumentName = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
                                     "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
@@ -126,9 +126,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         // test exception if attempt to save in invalid state
 
         [Fact]
-        public async Task TestEventDocumentEdit_TestInvalidSave()
+        public async Task TestEventDocumentER_TestInvalidSave()
         {
-            var eventDocument = await EventDocumentEdit.NewEventDocumentEdit();
+            var eventDocument = await EventDocumentER.NewEventDocumentER();
             eventDocument.DocumentName = String.Empty;
 
             Assert.False(eventDocument.IsValid);
@@ -136,10 +136,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
     
         [Fact]
-        public async Task EventDocumentEdit_TestSaveOutOfOrder()
+        public async Task EventDocumentER_TestSaveOutOfOrder()
         {
-            var emailType1 = await EventDocumentEdit.GetEventDocumentEdit(1);
-            var emailType2 = await EventDocumentEdit.GetEventDocumentEdit(1);
+            var emailType1 = await EventDocumentER.GetEventDocumentER(1);
+            var emailType2 = await EventDocumentER.GetEventDocumentER(1);
             emailType1.Notes = "set up timestamp issue";  // turn on IsDirty
             emailType2.Notes = "set up timestamp issue";
 
@@ -151,9 +151,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task EventDocumentEdit_TestSubsequentSaves()
+        public async Task EventDocumentER_TestSubsequentSaves()
         {
-            var emailType = await EventDocumentEdit.GetEventDocumentEdit(1);
+            var emailType = await EventDocumentER.GetEventDocumentER(1);
             emailType.Notes = "set up timestamp issue";  // turn on IsDirty
 
             var emailType2 = await emailType.SaveAsync();
@@ -166,12 +166,12 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
         
         [Fact]
-        public async Task TestEventDocumentEdit_InvalidGet()
+        public async Task TestEventDocumentER_InvalidGet()
         {
-            await Assert.ThrowsAsync<DataPortalException>(() => EventDocumentEdit.GetEventDocumentEdit(999));
+            await Assert.ThrowsAsync<DataPortalException>(() => EventDocumentER.GetEventDocumentER(999));
         }
 
-        private void BuildValidEventDocument(EventDocumentEdit eventDocument)
+        private void BuildValidEventDocument(EventDocumentER eventDocument)
         {
             eventDocument.Notes = "notes 1";
             eventDocument.DocumentName = "name of document";

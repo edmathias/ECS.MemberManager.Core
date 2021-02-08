@@ -8,12 +8,12 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class EventDocumentEditList_Tests
+    public class EventDocumentERL_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
 
-        public EventDocumentEditList_Tests()
+        public EventDocumentERL_Tests()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -35,27 +35,27 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        private async void EventDocumentEditList_TestNewEventDocumentList()
+        private async void EventDocumentERL_TestNewEventDocumentList()
         {
-            var eventDocumentEditList = await EventDocumentEditList.NewEventDocumentEditList();
+            var eventDocumentEditList = await EventDocumentERL.NewEventDocumentERL();
 
             Assert.NotNull(eventDocumentEditList);
-            Assert.IsType<EventDocumentEditList>(eventDocumentEditList);
+            Assert.IsType<EventDocumentERL>(eventDocumentEditList);
         }
         
         [Fact]
-        private async void EventDocumentEditList_TestGetEventDocumentEditList()
+        private async void EventDocumentERL_TestGetEventDocumentERL()
         {
-            var eventDocumentEditList = await EventDocumentEditList.GetEventDocumentEditList();
+            var eventDocumentEditList = await EventDocumentERL.GetEventDocumentERL();
 
             Assert.NotNull(eventDocumentEditList);
             Assert.Equal(3, eventDocumentEditList.Count);
         }
         
         [Fact]
-        private async void EventDocumentEditList_TestDeleteEventDocumentsEntry()
+        private async void EventDocumentERL_TestDeleteEventDocumentsEntry()
         {
-            var eventDocumentEditList = await EventDocumentEditList.GetEventDocumentEditList();
+            var eventDocumentEditList = await EventDocumentERL.GetEventDocumentERL();
             var listCount = eventDocumentEditList.Count;
             var eventDocumentToDelete = eventDocumentEditList.First(et => et.Id == 99);
 
@@ -65,17 +65,17 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var eventDocumentListAfterDelete = await eventDocumentEditList.SaveAsync();
 
             Assert.NotNull(eventDocumentListAfterDelete);
-            Assert.IsType<EventDocumentEditList>(eventDocumentListAfterDelete);
+            Assert.IsType<EventDocumentERL>(eventDocumentListAfterDelete);
             Assert.True(isDeleted);
             Assert.NotEqual(listCount,eventDocumentListAfterDelete.Count);
         }
 
         [Fact]
-        private async void EventDocumentEditList_TestUpdateEventDocumentsEntry()
+        private async void EventDocumentERL_TestUpdateEventDocumentsEntry()
         {
             const int idToUpdate = 1;
             
-            var eventDocumentEditList = await EventDocumentEditList.GetEventDocumentEditList();
+            var eventDocumentEditList = await EventDocumentERL.GetEventDocumentERL();
             var countBeforeUpdate = eventDocumentEditList.Count;
             var eventDocumentToUpdate = eventDocumentEditList.First(a => a.Id == idToUpdate);
             var notesUpdate = $"This was updated {DateTime.Now}";
@@ -88,9 +88,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        private async void EventDocumentEditList_TestAddEventDocumentsEntry()
+        private async void EventDocumentERL_TestAddEventDocumentsEntry()
         {
-            var eventDocumentEditList = await EventDocumentEditList.GetEventDocumentEditList();
+            var eventDocumentEditList = await EventDocumentERL.GetEventDocumentERL();
             var countBeforeAdd = eventDocumentEditList.Count;
             
             var eventDocumentToAdd = eventDocumentEditList.AddNew();
@@ -101,7 +101,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotEqual(countBeforeAdd, updatedEventDocumentsList.Count);
         }
 
-        private void BuildValidEventDocument(EventDocumentEdit eventDocument)
+        private void BuildValidEventDocument(EventDocumentEC eventDocument)
         {
             eventDocument.Notes = "notes 1";
             eventDocument.DocumentName = "name of document";

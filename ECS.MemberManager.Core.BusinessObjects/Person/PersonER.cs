@@ -10,7 +10,7 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class PersonEC : BusinessBase<PersonEC>
+    public class PersonER : BusinessBase<PersonER>
     {
         #region Business Methods
         
@@ -128,48 +128,51 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        public static async Task<PersonEC> NewPersonEC()
+        public static async Task<PersonER> NewPersonER()
         {
-            return await DataPortal.CreateChildAsync<PersonEC>();
+            return await DataPortal.CreateAsync<PersonER>();
         }
 
-        public static async Task<PersonEC> GetPersonEC(Person childData)
+        public static async Task<PersonER> GetPersonER(int id)
         {
-            return await DataPortal.FetchChildAsync<PersonEC>(childData);
+            return await DataPortal.FetchAsync<PersonER>(id);
         }
 
-        public static async Task DeletePersonEC()
+        public static async Task DeletePersonER(int id)
         {
-            await DataPortal.DeleteAsync<PersonEC>();
+            await DataPortal.DeleteAsync<PersonER>(id);
         }
 
         #endregion
 
         #region Data Access Methods
  
-        [FetchChild]
-        private async Task Fetch(Person childData) 
+        [Fetch]
+        private async Task Fetch(int id)
         {
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IPersonDal>();
+            var data = await dal.Fetch(id);
 
             using (BypassPropertyChecks)
             {
-                Id = childData.Id;
-                Title = await TitleEC.GetTitleEC(childData.Title);
-                EMail = await EMailEC.GetEMailEC(childData.EMail);
-                LastName = childData.LastName;
-                MiddleName = childData.MiddleName;
-                FirstName = childData.FirstName;
-                DateOfFirstContact = childData.DateOfFirstContact;
-                BirthDate = childData.BirthDate;                
-                LastUpdatedBy = childData.LastUpdatedBy;
-                LastUpdatedDate = childData.LastUpdatedDate;
-                Code = childData.Code;
-                Notes = childData.Notes;
-                RowVersion = childData.RowVersion;
+                Id = data.Id;
+                Title = await TitleEC.GetTitleEC(data.Title);
+                EMail = await EMailEC.GetEMailEC(data.EMail);
+                LastName = data.LastName;
+                MiddleName = data.MiddleName;
+                FirstName = data.FirstName;
+                DateOfFirstContact = data.DateOfFirstContact;
+                BirthDate = data.BirthDate;                
+                LastUpdatedBy = data.LastUpdatedBy;
+                LastUpdatedDate = data.LastUpdatedDate;
+                Code = data.Code;
+                Notes = data.Notes;
+                RowVersion = data.RowVersion;
             }
         }
 
-        [InsertChild]
+        [Insert]
         private async Task Insert()
         {
             using var dalManager = DalFactory.GetManager();
@@ -194,7 +197,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             RowVersion = insertedPerson.RowVersion;
         }
 
-        [UpdateChild]
+        [Update]
         private async Task Update()
         {
             using var dalManager = DalFactory.GetManager();
@@ -221,7 +224,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             RowVersion = updatedEmail.RowVersion;
         }
 
-        [DeleteSelfChild]
+        [DeleteSelf]
         private async Task DeleteSelf()
         {
             await Delete(Id);

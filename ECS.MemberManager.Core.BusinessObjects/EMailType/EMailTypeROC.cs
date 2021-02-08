@@ -24,7 +24,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(p => p.Description);
 
-        [Required, MaxLength(50)]
         public string Description
         {
             get => GetProperty(DescriptionProperty);
@@ -34,7 +33,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
         public static readonly PropertyInfo<string> LastUpdatedByProperty =
             RegisterProperty<string>(p => p.LastUpdatedBy);
 
-        [Required, MaxLength(255)]
         public string LastUpdatedBy
         {
             get => GetProperty(LastUpdatedByProperty);
@@ -44,7 +42,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
         public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty =
             RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
 
-        [Required]
         public SmartDate LastUpdatedDate
         {
             get => GetProperty(LastUpdatedDateProperty);
@@ -95,6 +92,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access Methods
 
         [FetchChild]
+        
         private void Fetch(EMailType childData)
         {
             Id = childData.Id;

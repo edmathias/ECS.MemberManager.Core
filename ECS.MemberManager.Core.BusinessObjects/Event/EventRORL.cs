@@ -1,16 +1,13 @@
 using System;
-using System.Collections.Generic;
-using System.Data.Common;
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
-using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class EMailTypeRORL : ReadOnlyListBase<EMailTypeRORL,EMailTypeROC>
+    public class EventRORL : ReadOnlyListBase<EventRORL,EventROC>
     {
         #region Business Methods
         
@@ -23,9 +20,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
         
         #region Factory Methods
 
-        public static async Task<EMailTypeRORL> GetEMailTypeRORL()
+        public static async Task<EventRORL> GetEventRORL()
         {
-            return await DataPortal.FetchAsync<EMailTypeRORL>();
+            return await DataPortal.FetchAsync<EventRORL>();
         }
         
         #endregion
@@ -36,15 +33,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private async Task Fetch()
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEMailTypeDal>();
+            var dal = dalManager.GetProvider<IEventDal>();
             var childData = await dal.Fetch();
 
             using (LoadListMode)
             {
-                foreach (var eventObj in childData)
+                foreach (var eMailType in childData)
                 {
-                    var eventObjToAdd = await EMailTypeROC.GetEMailTypeROC(eventObj);
-                    Add(eventObjToAdd);
+                    var eMailTypeToAdd = await EventROC.GetEventROC(eMailType);
+                    Add(eMailTypeToAdd);
                 }
             }
         }

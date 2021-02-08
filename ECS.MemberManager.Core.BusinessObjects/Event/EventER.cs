@@ -10,32 +10,46 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class EMailER : BusinessBase<EMailER>
+    public class EventER : BusinessBase<EventER>
     {
         #region Business Methods
-
+        
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
         public int Id
         {
             get => GetProperty(IdProperty);
-            private set => LoadProperty(IdProperty, value);
-        }
-
-        public static readonly PropertyInfo<EMailTypeROC> EMailTypeProperty = RegisterProperty<EMailTypeROC>(p => p.EMailType);
-        public EMailTypeROC EMailType
-        {
-            get => GetProperty(EMailTypeProperty);
-            set => SetProperty(EMailTypeProperty, value);
-        }
-
-        public static readonly PropertyInfo<string> EMailAddressProperty = RegisterProperty<string>(p => p.EMailAddress);
-        [Required,MaxLength(255)]
-        public string EMailAddress
-        {
-            get => GetProperty(EMailAddressProperty);
-            set => SetProperty(EMailAddressProperty, value);
+            set => SetProperty(IdProperty, value);
         }
         
+        public static readonly PropertyInfo<string> EventNameProperty = RegisterProperty<string>(p => p.EventName);
+        [Required, MaxLength(255)]
+        public string EventName
+        {
+            get => GetProperty(EventNameProperty);
+            set => SetProperty(EventNameProperty, value);
+        }
+
+        public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(p => p.Description);
+        public string Description
+        {
+            get => GetProperty(DescriptionProperty);
+            set => SetProperty(DescriptionProperty, value);
+        }
+
+        public static readonly PropertyInfo<bool> IsOneTimeProperty = RegisterProperty<bool>(p => p.IsOneTime);
+        public bool IsOneTime
+        {
+            get => GetProperty(IsOneTimeProperty);
+            set => SetProperty(IsOneTimeProperty, value);
+        }
+
+        public static readonly PropertyInfo<SmartDate> NextDateProperty = RegisterProperty<SmartDate>(p => p.NextDate);
+        public SmartDate NextDate
+        {
+            get => GetProperty(NextDateProperty);
+            set => SetProperty(NextDateProperty, value);
+        }
+
         public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(p => p.LastUpdatedBy);
         [Required,MaxLength(255)]
         public string LastUpdatedBy
@@ -51,9 +65,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
             get => GetProperty(LastUpdatedDateProperty);
             set => SetProperty(LastUpdatedDateProperty, value);
         }
-
+        
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
-
         public string Notes
         {
             get => GetProperty(NotesProperty);
@@ -61,7 +74,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
-
         public byte[] RowVersion
         {
             get => GetProperty(RowVersionProperty);
@@ -85,122 +97,105 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        public static async Task<EMailER> NewEMailER()
+        public static async Task<EventER> NewEventER()
         {
-            return await DataPortal.CreateAsync<EMailER>();
+            return await DataPortal.CreateAsync<EventER>();
         }
 
-        public static async Task<EMailER> GetEMailER(int id)
+        public static async Task<EventER> GetEventER(int id)
         {
-            return await DataPortal.FetchAsync<EMailER>(id);
+            return await DataPortal.FetchAsync<EventER>(id);
         }
 
-        public static async Task DeleteEMailER(int id)
+        public static async Task DeleteEventER(int id)
         {
-            await DataPortal.DeleteAsync<EMailER>(id);
+            await DataPortal.DeleteAsync<EventER>(id);
         }
 
         #endregion
 
         #region Data Access Methods
-
+ 
         [Fetch]
-        private async Task FetchAsync(int id)
+        private async Task Fetch(int id)
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEMailDal>();
+            var dal = dalManager.GetProvider<IEventDal>();
             var data = await dal.Fetch(id);
 
-            await Fetch(data);
-        }
-        
-        private async Task Fetch(EMail childData)
-        {
             using (BypassPropertyChecks)
             {
-                Id = childData.Id;
-                EMailAddress = childData.EMailAddress;
-                EMailType = await EMailTypeROC.GetEMailTypeROC(childData.EMailType);
-                LastUpdatedBy = childData.LastUpdatedBy;
-                LastUpdatedDate = childData.LastUpdatedDate;
-                Notes = childData.Notes;
-                RowVersion = childData.RowVersion;
+                Id = data.Id;
+                EventName = data.EventName;
+                Description = data.Description;
+                IsOneTime = data.IsOneTime;
+                NextDate = data.NextDate;
+                LastUpdatedBy = data.LastUpdatedBy;
+                LastUpdatedDate = data.LastUpdatedDate;
+                Notes = data.Notes;
+                RowVersion = data.RowVersion;
             }
         }
 
         [Insert]
         private async Task Insert()
         {
-            await InsertChild();
-        }
-
-        private async Task InsertChild()
-        {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEMailDal>();
-
-            var data = new EMail()
+            var dal = dalManager.GetProvider<IEventDal>();
+            var data = new Event()
             {
-                EMailType = new EMailType()
-                {
-                    Id = EMailType.Id,
-                    Description = EMailType.Description,
-                    Notes = EMailType.Notes,
-                    RowVersion = EMailType.RowVersion
-                }, 
-                EMailAddress = EMailAddress,
+                EventName = EventName,
+                Description = Description,
+                IsOneTime = IsOneTime,
+                NextDate = NextDate,
                 LastUpdatedBy = LastUpdatedBy,
                 LastUpdatedDate = LastUpdatedDate,
                 Notes = Notes
             };
- 
-            var insertedEMail = await dal.Insert(data);
-            Id = insertedEMail.Id;
-            RowVersion = insertedEMail.RowVersion;
+
+            var insertedEvent = await dal.Insert(data);
+            Id = insertedEvent.Id;
+            RowVersion = insertedEvent.RowVersion;
         }
 
         [Update]
         private async Task Update()
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEMailDal>();
+            var dal = dalManager.GetProvider<IEventDal>();
 
-            var data = new EMail()
+            var eventTypeToUpdate = new Event()
             {
-                Id = Id, 
-                EMailType = new EMailType()
-                {
-                    Id = EMailType.Id,
-                    Description = EMailType.Description,
-                    Notes = EMailType.Notes,
-                    RowVersion = EMailType.RowVersion
-                }, 
-                EMailAddress = EMailAddress,
+                Id = Id,
+                EventName = EventName,
+                Description = Description,
+                IsOneTime = IsOneTime,
+                NextDate = NextDate,
                 LastUpdatedBy = LastUpdatedBy,
                 LastUpdatedDate = LastUpdatedDate,
                 Notes = Notes,
                 RowVersion = RowVersion
             };
- 
-            var insertedEMail = await dal.Update(data);
-            RowVersion = insertedEMail.RowVersion;
+
+            var updatedEmail = await dal.Update(eventTypeToUpdate);
+            RowVersion = updatedEmail.RowVersion;
         }
-        
+
         [DeleteSelf]
         private async Task DeleteSelf()
         {
             await Delete(Id);
         }
-
+        
         [Delete]
         private async Task Delete(int id)
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEMailDal>();
+            var dal = dalManager.GetProvider<IEventDal>();
            
             await dal.Delete(id);
         }
-        
+
         #endregion
     }
 }

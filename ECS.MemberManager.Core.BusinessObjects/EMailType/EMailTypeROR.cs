@@ -10,11 +10,12 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class EMailTypeROR : BusinessBase<EMailTypeROR>
+    public class EMailTypeROR : ReadOnlyBase<EMailTypeROR>
     {
         #region Business Methods
-        
+
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
+
         public int Id
         {
             get => GetProperty(IdProperty);
@@ -22,20 +23,23 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(p => p.Description);
+
         public string Description
         {
             get => GetProperty(DescriptionProperty);
             private set => LoadProperty(DescriptionProperty, value);
         }
-       
+
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
+
         public string Notes
         {
             get => GetProperty(NotesProperty);
             private set => LoadProperty(NotesProperty, value);
         }
-       
+
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
+
         public byte[] RowVersion
         {
             get => GetProperty(RowVersionProperty);
@@ -67,7 +71,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #endregion
 
         #region Data Access Methods
- 
+
         [Fetch]
         private async Task Fetch(int id)
         {
@@ -75,13 +79,10 @@ namespace ECS.MemberManager.Core.BusinessObjects
             var dal = dalManager.GetProvider<IEMailTypeDal>();
             var data = await dal.Fetch(id);
 
-            using (BypassPropertyChecks)
-            {
-                Id = data.Id;
-                Description = data.Description;
-                Notes = data.Notes;
-                RowVersion = data.RowVersion;
-            }
+            Id = data.Id;
+            Description = data.Description;
+            Notes = data.Notes;
+            RowVersion = data.RowVersion;
         }
 
         #endregion

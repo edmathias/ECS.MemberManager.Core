@@ -30,13 +30,15 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
         private EMail BuildEMail()
         {
-            var eMail = new EMail();
-            eMail.Id = 1;
-            eMail.EMailTypeId = 1;
-            eMail.EMailAddress = "email@email.com";
-            eMail.LastUpdatedBy = "edm";
-            eMail.LastUpdatedDate = DateTime.Now;
-            eMail.Notes = "notes for doctype";
+            var eMail = new EMail()
+            {
+                Id = 1,
+                EMailType = new EMailType(),
+                EMailAddress = "email@email.com",
+                LastUpdatedBy = "edm",
+                LastUpdatedDate = DateTime.Now,
+                Notes = "notes for doctype"
+            };
 
             return eMail;
         }        
