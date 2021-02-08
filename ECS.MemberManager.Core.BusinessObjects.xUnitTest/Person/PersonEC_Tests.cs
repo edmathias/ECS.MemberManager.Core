@@ -62,7 +62,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         public async Task TestPersonEC_LastNameRequired()
         {
             var person = await PersonEC.NewPersonEC();
-            BuildPersonEC(person);
+            await BuildPersonEC(person);
             var isObjectValidInit = person.IsValid;
             person.LastName = string.Empty;
             
@@ -76,7 +76,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         public async Task TestPersonEC_PersonAddressMaxLengthLessThan50()
         {
             var personType = await PersonEC.NewPersonEC();
-            BuildPersonEC(personType);
+            await BuildPersonEC(personType);
             var isObjectValidInit = personType.IsValid;
             personType.LastName =  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
                                       "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
@@ -93,7 +93,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         public async Task TestPersonEC_LastUpdatedByRequired()
         {
             var personType = await PersonEC.NewPersonEC();
-            BuildPersonEC(personType);
+            await BuildPersonEC(personType);
             var isObjectValidInit = personType.IsValid;
             personType.LastUpdatedBy = string.Empty;
 
@@ -107,7 +107,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         public async Task TestPersonEC_LastUpdatedByMaxLengthLessThan255()
         {
             var personType = await PersonEC.NewPersonEC();
-            BuildPersonEC(personType);
+            await BuildPersonEC(personType);
             var isObjectValidInit = personType.IsValid;
             personType.LastUpdatedBy =  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
                                       "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +

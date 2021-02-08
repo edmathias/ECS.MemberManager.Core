@@ -16,7 +16,6 @@
 
     <ItemGroup>
       <Compile Remove="EMail\EMailTypeInfoList.cs" />
-      <Compile Remove="Person\PersonECL.cs" />
       <Compile Remove="Payment\PaymentER.cs" />
       <Compile Remove="Sponsor\SponsorEC.cs" />
       <Compile Remove="Sponsor\SponsorER.cs" />

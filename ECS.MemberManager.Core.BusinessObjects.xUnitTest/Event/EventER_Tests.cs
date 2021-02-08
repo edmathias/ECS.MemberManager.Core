@@ -99,11 +99,12 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         public async Task EventER_TestDescriptionRequired() 
         {
             var eventObj = await EventER.NewEventER();
+            eventObj.EventName = "event name";
             eventObj.Description = "make valid";
             eventObj.LastUpdatedBy = "edm";
             eventObj.LastUpdatedDate = DateTime.Now;
             var isObjectValidInit = eventObj.IsValid;
-            eventObj.Description = string.Empty;
+            eventObj.EventName = string.Empty;
 
             Assert.NotNull(eventObj);
             Assert.True(isObjectValidInit);
@@ -126,7 +127,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             Assert.NotNull(eventObj);
             Assert.False(eventObj.IsValid);
-            Assert.Equal("The field EventName must be a string or array type with a maximum length of '50'.",
+            Assert.Equal("The field EventName must be a string or array type with a maximum length of '255'.",
                 eventObj.BrokenRulesCollection[0].Description);
         }        
         // test exception if attempt to save in invalid state

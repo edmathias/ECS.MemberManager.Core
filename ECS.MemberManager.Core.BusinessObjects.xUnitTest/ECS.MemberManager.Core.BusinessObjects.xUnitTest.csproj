@@ -33,8 +33,15 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="ContactForSponsor" />
+      <Folder Include="EventDocument" />
       <Folder Include="MemberInfo" />
+      <Folder Include="MembershipType" />
+      <Folder Include="Office" />
+      <Folder Include="Organization" />
+      <Folder Include="OrganizationType" />
       <Folder Include="Payment" />
+      <Folder Include="Phone" />
     </ItemGroup>
 
     <ItemGroup>
@@ -78,6 +85,35 @@
       <Compile Remove="ContactForSponsor\DocumentTypeROCL_Tests.cs" />
       <Compile Remove="ContactForSponsor\DocumentTypeROR_Tests.cs" />
       <Compile Remove="ContactForSponsor\DocumentTypeRORL_Tests.cs" />
+      <Compile Remove="ContactForSponsor\ContactForSponsorEC_Tests.cs" />
+      <Compile Remove="ContactForSponsor\ContactForSponsorECL_Tests.cs" />
+      <Compile Remove="ContactForSponsor\ContactForSponsorER_Tests.cs" />
+      <Compile Remove="MembershipType\MembershipTypeEditList_Tests.cs" />
+      <Compile Remove="MembershipType\MembershipTypeEditTests.cs" />
+      <Compile Remove="MembershipType\MembershipTypeInfo_Tests.cs" />
+      <Compile Remove="MembershipType\MembershipTypeInfoList_Tests.cs" />
+      <Compile Remove="EventDocument\EventDocumentEditList_Tests.cs" />
+      <Compile Remove="EventDocument\EventDocumentEditTests.cs" />
+      <Compile Remove="EventDocument\EventDocumentInfoList_Tests.cs" />
+      <Compile Remove="EventDocument\EventDocumentInfoTests.cs" />
+      <Compile Remove="Office\OfficeEdit_Tests.cs" />
+      <Compile Remove="Office\OfficeEditList_Tests.cs" />
+      <Compile Remove="Office\OfficeInfo_Tests.cs" />
+      <Compile Remove="Office\OfficeInfoList_Tests.cs" />
+      <Compile Remove="Organization\OrganizationEdit_Tests.cs" />
+      <Compile Remove="Organization\OrganizationEditList_Tests.cs" />
+      <Compile Remove="Organization\OrganizationInfo_Tests.cs" />
+      <Compile Remove="Organization\OrganizationInfoList_Tests.cs" />
+      <Compile Remove="OrganizationType\OrganizationTypeEdit_Tests.cs" />
+      <Compile Remove="OrganizationType\OrganizationTypeEditList_Tests.cs" />
+      <Compile Remove="OrganizationType\OrganizationTypeInfo_Tests.cs" />
+      <Compile Remove="OrganizationType\OrganizationTypeInfoList_Tests.cs" />
+      <Compile Remove="Phone\PhoneEdit_Tests.cs" />
+      <Compile Remove="Phone\PhoneEditChild_Tests - Copy.cs" />
+      <Compile Remove="Phone\PhoneEditChildList_Tests.cs" />
+      <Compile Remove="Phone\PhoneInfo_Tests.cs" />
+      <Compile Remove="Phone\PhoneInfoChild_Tests.cs" />
+      <Compile Remove="Phone\PhoneInfoChildList_Tests.cs" />
     </ItemGroup>
     
 

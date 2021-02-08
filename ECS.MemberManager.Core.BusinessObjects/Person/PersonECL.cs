@@ -7,35 +7,40 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class PersonECL : BusinessListBase<PersonECL,PersonEC>
+    public class PersonECL : BusinessListBase<PersonECL, PersonEC>
     {
         public static void AddObjectAuthorizationRules()
         {
             // TODO: add object-level authorization rules
         }
 
-        internal static async Task<PersonECL> NewPersonList()
+        internal static async Task<PersonECL> NewPersonECL()
         {
-            return await DataPortal.CreateChildAsync<PersonECL>();
+            return await DataPortal.CreateAsync<PersonECL>();
         }
 
-        internal static async Task<PersonECL> GetPersonList(IList<Person> listOfChildren)
+        internal static async Task<PersonECL> GetPersonECL(List<Person> childData)
         {
-            return await DataPortal.FetchChildAsync<PersonECL>(listOfChildren);
+            return await DataPortal.FetchAsync<PersonECL>(childData);
         }
 
-        [FetchChild]
-        private async void Fetch(IList<Person> listOfChildren)
+        [Fetch]
+        private async Task Fetch(List<Person> childData)
         {
-            RaiseListChangedEvents = false;
-            
-            foreach (var childData in listOfChildren)
+            using (LoadListMode)
             {
-                this.Add( await PersonEC.GetPerson(childData)  );
+                foreach (var Person in childData)
+                {
+                    var PersonToAdd = await PersonEC.GetPersonEC(Person);
+                    Add(PersonToAdd);
+                }
             }
-
-            RaiseListChangedEvents = true;
         }
-  
+
+        [Update]
+        private void Update()
+        {
+            Child_Update();
+        }
     }
 }

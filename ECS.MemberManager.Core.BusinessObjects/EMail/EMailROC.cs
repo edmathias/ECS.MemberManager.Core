@@ -12,36 +12,45 @@ namespace ECS.MemberManager.Core.BusinessObjects
     public class EMailROC : BusinessBase<EMailROC>
     {
         #region Business Methods
-        
+
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
+
         public int Id
         {
             get => GetProperty(IdProperty);
             private set => LoadProperty(IdProperty, value);
         }
 
-        public static readonly PropertyInfo<EMailTypeEC> EMailTypeProperty = RegisterProperty<EMailTypeEC>(p => p.EMailType);
-        public EMailTypeEC EMailType
+        public static readonly PropertyInfo<EMailTypeROC> EMailTypeProperty =
+            RegisterProperty<EMailTypeROC>(p => p.EMailType);
+
+        public EMailTypeROC EMailType
         {
             get => GetProperty(EMailTypeProperty);
             private set => LoadProperty(EMailTypeProperty, value);
         }
 
-        public static readonly PropertyInfo<string> EMailAddressProperty = RegisterProperty<string>(p => p.EMailAddress);
+        public static readonly PropertyInfo<string>
+            EMailAddressProperty = RegisterProperty<string>(p => p.EMailAddress);
+
         public string EMailAddress
         {
             get => GetProperty(EMailAddressProperty);
             private set => LoadProperty(EMailAddressProperty, value);
         }
-        
-        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(p => p.LastUpdatedBy);
+
+        public static readonly PropertyInfo<string> LastUpdatedByProperty =
+            RegisterProperty<string>(p => p.LastUpdatedBy);
+
         public string LastUpdatedBy
         {
             get => GetProperty(LastUpdatedByProperty);
             private set => LoadProperty(LastUpdatedByProperty, value);
         }
 
-        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
+        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty =
+            RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
+
         public SmartDate LastUpdatedDate
         {
             get => GetProperty(LastUpdatedDateProperty);
@@ -63,7 +72,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             get => GetProperty(RowVersionProperty);
             private set => LoadProperty(RowVersionProperty, value);
         }
-        
+
         #endregion
 
         #region Factory Methods
@@ -76,20 +85,18 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #endregion
 
         #region Data Access Methods
- 
+
         [FetchChild]
         private async void FetchChild(EMail childData)
         {
-            using (BypassPropertyChecks)
-            {
-                Id = childData.Id;
-                EMailType = await EMailTypeEC.GetEMailTypeEC(childData.EMailType);
-                EMailAddress = childData.EMailAddress;
-                LastUpdatedBy = childData.LastUpdatedBy;
-                LastUpdatedDate = childData.LastUpdatedDate;
-                Notes = childData.Notes;
-                RowVersion = childData.RowVersion;
-            }
+            Id = childData.Id;
+            EMailType = childData.EMailType != null 
+                ? await EMailTypeROC.GetEMailTypeROC(childData.EMailType) : null;
+            EMailAddress = childData.EMailAddress;
+            LastUpdatedBy = childData.LastUpdatedBy;
+            LastUpdatedDate = childData.LastUpdatedDate;
+            Notes = childData.Notes;
+            RowVersion = childData.RowVersion;
         }
 
         #endregion
