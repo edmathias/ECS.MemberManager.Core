@@ -46,6 +46,10 @@
       <Compile Remove="EMail\EMailInfo.cs" />
       <Compile Remove="EMail\EMailInfoList.cs" />
       <Compile Remove="Event\EventEdit.cs" />
+      <Compile Remove="MembershipType\MembershipTypeEdit.cs" />
+      <Compile Remove="MembershipType\MembershipTypeEditList.cs" />
+      <Compile Remove="MembershipType\MembershipTypeInfo.cs" />
+      <Compile Remove="MembershipType\MembershipTypeInfoList.cs" />
     </ItemGroup>
 
     <ItemGroup>

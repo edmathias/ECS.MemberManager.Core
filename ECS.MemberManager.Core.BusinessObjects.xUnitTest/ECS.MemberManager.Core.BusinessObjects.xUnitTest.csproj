@@ -36,7 +36,6 @@
       <Folder Include="ContactForSponsor" />
       <Folder Include="EventDocument" />
       <Folder Include="MemberInfo" />
-      <Folder Include="MembershipType" />
       <Folder Include="Office" />
       <Folder Include="Organization" />
       <Folder Include="OrganizationType" />
@@ -45,7 +44,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Remove="MembershipType\MembershipTypeERL_Tests.cs" />
       <Compile Remove="Payment\PaymentER_Tests.cs" />
       <Compile Remove="ContactForSponsor\ContactForSponsorERL_Tests.cs" />
       <Compile Remove="Organization\OrganizationER_Tests.cs" />

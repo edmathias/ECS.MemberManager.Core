@@ -1,19 +1,19 @@
-﻿using System;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
+using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.ADO;
+using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using Microsoft.Extensions.Configuration;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class MembershipTypeInfoList_Tests
+    public class MembershipTypeROCL_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
 
-        public MembershipTypeInfoList_Tests()
+        public MembershipTypeROCL_Tests()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -37,11 +37,16 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         private async void MembershipTypeInfoList_TestGetMembershipTypeInfoList()
         {
-            var membershipTypeEditList = await MembershipTypeInfoList.GetMembershipTypeInfoList();
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IMembershipTypeDal>();
+            var childData = await dal.Fetch();
 
-            Assert.NotNull(membershipTypeEditList);
-            Assert.Equal(3, membershipTypeEditList.Count);
+            var membershipTypeInfoList = await MembershipTypeROCL.GetMembershipTypeROCL(childData);
+            
+            Assert.NotNull(membershipTypeInfoList);
+            Assert.True(membershipTypeInfoList.IsReadOnly);
+            Assert.Equal(3, membershipTypeInfoList.Count);
         }
-
+      
     }
 }
