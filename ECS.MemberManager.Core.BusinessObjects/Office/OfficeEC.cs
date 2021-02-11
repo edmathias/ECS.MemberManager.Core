@@ -10,18 +10,20 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class OfficeEdit : BusinessBase<OfficeEdit>
+    public class OfficeEC : BusinessBase<OfficeEC>
     {
         #region Business Methods
-        
+
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
+
         public int Id
         {
             get => GetProperty(IdProperty);
             private set => LoadProperty(IdProperty, value);
         }
-       
+
         public static readonly PropertyInfo<string> NameProperty = RegisterProperty<string>(p => p.Name);
+
         [Required, MaxLength(50)]
         public string Name
         {
@@ -30,13 +32,16 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<int> TermProperty = RegisterProperty<int>(p => p.Term);
+
         public int Term
         {
             get => GetProperty(TermProperty);
             set => SetProperty(TermProperty, value);
         }
 
-        public static readonly PropertyInfo<string> CalendarPeriodProperty = RegisterProperty<string>(p => p.CalendarPeriod);
+        public static readonly PropertyInfo<string> CalendarPeriodProperty =
+            RegisterProperty<string>(p => p.CalendarPeriod);
+
         public string CalendarPeriod
         {
             get => GetProperty(CalendarPeriodProperty);
@@ -44,6 +49,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<int> ChosenHowProperty = RegisterProperty<int>(p => p.ChosenHow);
+
         public int ChosenHow
         {
             get => GetProperty(ChosenHowProperty);
@@ -52,13 +58,16 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         [MaxLength(50)]
         public static readonly PropertyInfo<string> AppointerProperty = RegisterProperty<string>(p => p.Appointer);
+
         public string Appointer
         {
             get => GetProperty(AppointerProperty);
             set => SetProperty(AppointerProperty, value);
         }
 
-        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(p => p.LastUpdatedBy);
+        public static readonly PropertyInfo<string> LastUpdatedByProperty =
+            RegisterProperty<string>(p => p.LastUpdatedBy);
+
         [Required, MaxLength(255)]
         public string LastUpdatedBy
         {
@@ -66,7 +75,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(LastUpdatedByProperty, value);
         }
 
-        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
+        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty =
+            RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
+
         [Required]
         public SmartDate LastUpdatedDate
         {
@@ -75,6 +86,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
+
         public string Notes
         {
             get => GetProperty(NotesProperty);
@@ -82,6 +94,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
+
         public byte[] RowVersion
         {
             get => GetProperty(RowVersionProperty);
@@ -105,39 +118,24 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        public static async Task<OfficeEdit> NewOfficeEdit()
+        public static async Task<OfficeEC> NewOfficeEC()
         {
-            return await DataPortal.CreateAsync<OfficeEdit>();
+            return await DataPortal.CreateAsync<OfficeEC>();
         }
 
-        public static async Task<OfficeEdit> GetOfficeEdit(Office childData)
+        public static async Task<OfficeEC> GetOfficeEC(Office childData)
         {
-            return await DataPortal.FetchChildAsync<OfficeEdit>(childData);
+            return await DataPortal.FetchChildAsync<OfficeEC>(childData);
         }
 
-        public static async Task<OfficeEdit> GetOfficeEdit(int id)
+        public static async Task DeleteOfficeEC(int id)
         {
-            return await DataPortal.FetchAsync<OfficeEdit>(id);
-        }
-
-        public static async Task DeleteOfficeEdit(int id)
-        {
-            await DataPortal.DeleteAsync<OfficeEdit>(id);
+            await DataPortal.DeleteAsync<OfficeEC>(id);
         }
 
         #endregion
 
         #region Data Access Methods
-        
-        [Fetch]
-        private async Task Fetch(int id)
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IOfficeDal>();
-            var data = await dal.Fetch(id);
-
-            Fetch(data);
-        }
 
         [FetchChild]
         private void Fetch(Office childData)
@@ -157,13 +155,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
             }
         }
 
-        [Insert]
+        [InsertChild]
         private async Task Insert()
         {
             await InsertChild();
         }
 
-        [InsertChild]
         private async Task InsertChild()
         {
             using var dalManager = DalFactory.GetManager();
@@ -185,19 +182,18 @@ namespace ECS.MemberManager.Core.BusinessObjects
             RowVersion = insertedOffice.RowVersion;
         }
 
-        [Update]
+        [UpdateChild]
         private async Task Update()
         {
             await ChildUpdate();
         }
 
-        [UpdateChild]
         private async Task ChildUpdate()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IOfficeDal>();
 
-            var emailTypeToUpdate = new Office()
+            var officeTypeToUpdate = new Office()
             {
                 Id = Id,
                 Name = Name,
@@ -211,10 +207,10 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 RowVersion = RowVersion
             };
 
-            var updatedEmail = await dal.Update(emailTypeToUpdate);
+            var updatedEmail = await dal.Update(officeTypeToUpdate);
             RowVersion = updatedEmail.RowVersion;
         }
-        
+
         [DeleteSelfChild]
         private async Task DeleteSelf()
         {
@@ -226,7 +222,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IOfficeDal>();
-           
+
             await dal.Delete(id);
         }
 

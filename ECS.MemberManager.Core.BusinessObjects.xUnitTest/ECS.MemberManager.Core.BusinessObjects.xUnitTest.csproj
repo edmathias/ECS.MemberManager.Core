@@ -35,7 +35,6 @@
     <ItemGroup>
       <Folder Include="ContactForSponsor" />
       <Folder Include="MemberInfo" />
-      <Folder Include="Office" />
       <Folder Include="Organization" />
       <Folder Include="OrganizationType" />
       <Folder Include="Payment" />
@@ -93,7 +92,6 @@
       <Compile Remove="EventDocument\EventDocumentEditTests.cs" />
       <Compile Remove="EventDocument\EventDocumentInfoList_Tests.cs" />
       <Compile Remove="EventDocument\EventDocumentInfoTests.cs" />
-      <Compile Remove="Office\OfficeEdit_Tests.cs" />
       <Compile Remove="Office\OfficeEditList_Tests.cs" />
       <Compile Remove="Office\OfficeInfo_Tests.cs" />
       <Compile Remove="Office\OfficeInfoList_Tests.cs" />

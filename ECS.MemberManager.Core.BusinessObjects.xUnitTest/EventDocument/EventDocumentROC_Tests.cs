@@ -37,15 +37,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestEventDocumentROC_NewEventDocumentROC()
-        {
-            var eventDocumentObj = await EventDocumentROC.NewEventDocumentROC();
-
-            Assert.NotNull(eventDocumentObj);
-            Assert.IsType<EventDocumentROC>(eventDocumentObj);
-        }
-        
-        [Fact]
         public async Task TestEventDocumentROC_GetEventDocumentROC()
         {
             var eventDocumentObjToLoad = BuildEventDocument();
