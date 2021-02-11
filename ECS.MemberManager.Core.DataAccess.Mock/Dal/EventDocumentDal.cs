@@ -38,8 +38,8 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             eventToUpdate.Id = eventUpdate.Id;
             eventToUpdate.Notes = eventUpdate.Notes;
             eventToUpdate.DocumentName = eventUpdate.DocumentName;
-            eventToUpdate.EventId = eventUpdate.EventId;
-            eventToUpdate.DocumentTypeId = eventUpdate.DocumentTypeId;
+            eventToUpdate.Event = eventUpdate.Event;
+            eventToUpdate.DocumentType = eventUpdate.DocumentType;
             eventToUpdate.LastUpdatedBy = eventUpdate.LastUpdatedBy;
             eventToUpdate.LastUpdatedDate = eventUpdate.LastUpdatedDate;
             eventToUpdate.PathAndFileName = eventUpdate.PathAndFileName;

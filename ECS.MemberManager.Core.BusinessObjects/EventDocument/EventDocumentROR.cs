@@ -10,7 +10,7 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class EventDocumentER : BusinessBase<EventDocumentER>
+    public class EventDocumentROR : BusinessBase<EventDocumentROR>
     {
         #region Business Methods
 
@@ -19,7 +19,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         public int Id
         {
             get => GetProperty(IdProperty);
-            private set => SetProperty(IdProperty, value);
+            private set => LoadProperty(IdProperty, value);
         }
 
         public static readonly PropertyInfo<EventEC> EventProperty = RegisterProperty<EventEC>(p => p.Event);
@@ -27,17 +27,17 @@ namespace ECS.MemberManager.Core.BusinessObjects
         public EventEC Event
         {
             get => GetProperty(EventProperty);
-            set => SetProperty(EventProperty, value);
+            private set => LoadProperty(EventProperty, value);
         }
+
 
         public static readonly PropertyInfo<string>
             DocumentNameProperty = RegisterProperty<string>(p => p.DocumentName);
 
-        [Required(), MaxLength(50)]
         public string DocumentName
         {
             get => GetProperty(DocumentNameProperty);
-            set => SetProperty(DocumentNameProperty, value);
+            private set => LoadProperty(DocumentNameProperty, value);
         }
 
         public static readonly PropertyInfo<DocumentTypeEC> DocumentTypeProperty =
@@ -46,49 +46,41 @@ namespace ECS.MemberManager.Core.BusinessObjects
         public DocumentTypeEC DocumentType
         {
             get => GetProperty(DocumentTypeProperty);
-            set => SetProperty(DocumentTypeProperty, value);
+            private set => LoadProperty(DocumentTypeProperty, value);
         }
 
         public static readonly PropertyInfo<string> PathAndFileNameProperty =
             RegisterProperty<string>(p => p.PathAndFileName);
-
-        [Required(), MaxLength(255)]
         public string PathAndFileName
         {
             get => GetProperty(PathAndFileNameProperty);
-            set => SetProperty(PathAndFileNameProperty, value);
+            private set => LoadProperty(PathAndFileNameProperty, value);
         }
 
         public static readonly PropertyInfo<string> LastUpdatedByProperty =
             RegisterProperty<string>(p => p.LastUpdatedBy);
-
-        [Required, MaxLength(255)]
         public string LastUpdatedBy
         {
             get => GetProperty(LastUpdatedByProperty);
-            set => SetProperty(LastUpdatedByProperty, value);
+            private set => LoadProperty(LastUpdatedByProperty, value);
         }
 
         public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty =
             RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
-
-        [Required]
         public SmartDate LastUpdatedDate
         {
             get => GetProperty(LastUpdatedDateProperty);
-            set => SetProperty(LastUpdatedDateProperty, value);
+            private set => LoadProperty(LastUpdatedDateProperty, value);
         }
 
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
-
         public string Notes
         {
             get => GetProperty(NotesProperty);
-            set => SetProperty(NotesProperty, value);
+            private set => LoadProperty(NotesProperty, value);
         }
 
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
-
         public byte[] RowVersion
         {
             get => GetProperty(RowVersionProperty);
@@ -112,24 +104,24 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        public static async Task<EventDocumentER> NewEventDocumentER()
+        public static async Task<EventDocumentROR> NewEventDocumentROR()
         {
-            return await DataPortal.CreateAsync<EventDocumentER>();
+            return await DataPortal.CreateAsync<EventDocumentROR>();
         }
 
-        public static async Task<EventDocumentER> GetEventDocumentER(EventDocument childData)
+        public static async Task<EventDocumentROR> GetEventDocumentROR(EventDocument childData)
         {
-            return await DataPortal.FetchChildAsync<EventDocumentER>(childData);
+            return await DataPortal.FetchChildAsync<EventDocumentROR>(childData);
         }
 
-        public static async Task<EventDocumentER> GetEventDocumentER(int id)
+        public static async Task<EventDocumentROR> GetEventDocumentROR(int id)
         {
-            return await DataPortal.FetchAsync<EventDocumentER>(id);
+            return await DataPortal.FetchAsync<EventDocumentROR>(id);
         }
 
-        public static async Task DeleteEventDocumentER(int id)
+        public static async Task DeleteEventDocumentROR(int id)
         {
-            await DataPortal.DeleteAsync<EventDocumentER>(id);
+            await DataPortal.DeleteAsync<EventDocumentROR>(id);
         }
 
         #endregion

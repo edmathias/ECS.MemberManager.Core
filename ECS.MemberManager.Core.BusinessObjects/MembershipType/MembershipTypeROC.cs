@@ -97,7 +97,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access Methods
 
         [FetchChild]
-        private async Task Fetch(MembershipType childData)
+        private void Fetch(MembershipType childData)
         {
             Id = childData.Id;
             Description = childData.Description;

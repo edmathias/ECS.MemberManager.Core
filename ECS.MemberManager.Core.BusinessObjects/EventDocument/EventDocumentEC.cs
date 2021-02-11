@@ -19,15 +19,16 @@ namespace ECS.MemberManager.Core.BusinessObjects
         public int Id
         {
             get => GetProperty(IdProperty);
-            set => SetProperty(IdProperty, value);
+            private set => LoadProperty(IdProperty, value);
         }
 
-        public static readonly PropertyInfo<int> EventIdProperty = RegisterProperty<int>(p => p.EventId);
-        public int EventId
+        public static readonly PropertyInfo<EventEC> EventProperty = RegisterProperty<EventEC>(p => p.Event);
+        public EventEC Event
         {
-            get => GetProperty(EventIdProperty);
-            set => SetProperty(EventIdProperty, value);
+            get => GetProperty(EventProperty);
+            set => SetProperty(EventProperty, value);
         }
+
 
         public static readonly PropertyInfo<string> DocumentNameProperty = RegisterProperty<string>(p => p.DocumentName);
         [Required(),MaxLength(50)]
@@ -37,11 +38,11 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(DocumentNameProperty, value);
         }
 
-        public static readonly PropertyInfo<int> DocumentTypeIdProperty = RegisterProperty<int>(p => p.DocumentTypeId);
-        public int DocumentTypeId
+        public static readonly PropertyInfo<DocumentTypeEC> DocumentTypeProperty = RegisterProperty<DocumentTypeEC>(p => p.DocumentType);
+        public DocumentTypeEC DocumentType
         {
-            get => GetProperty(DocumentTypeIdProperty);
-            set => SetProperty(DocumentTypeIdProperty, value);
+            get => GetProperty(DocumentTypeProperty);
+            set => SetProperty(DocumentTypeProperty, value);
         }
 
         public static readonly PropertyInfo<string> PathAndFileNameProperty = RegisterProperty<string>(p => p.PathAndFileName);
@@ -115,14 +116,16 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access Methods
 
         [FetchChild]
-        private void Fetch(EventDocument childData)
+        private async Task Fetch(EventDocument childData)
         {
             using (BypassPropertyChecks)
             {
                 Id = childData.Id;
-                EventId = childData.EventId;
+                Event = childData.Event != null ? await EventEC.GetEventEC(childData.Event) : null;
                 DocumentName = childData.DocumentName;
-                DocumentTypeId = childData.DocumentTypeId;
+                DocumentType = childData.DocumentType != null
+                    ? await DocumentTypeEC.GetDocumentTypeEC(childData.DocumentType)
+                    : null;
                 PathAndFileName = childData.PathAndFileName;
                 LastUpdatedBy = childData.LastUpdatedBy;
                 LastUpdatedDate = childData.LastUpdatedDate;
@@ -138,9 +141,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
             var dal = dalManager.GetProvider<IEventDocumentDal>();
             var data = new EventDocument()
             {
-                EventId = EventId,
+                Event = new Event() { Id = Event.Id },
                 DocumentName = DocumentName,
-                DocumentTypeId = DocumentTypeId,
+                DocumentType = DocumentType != null ? new DocumentType() { Id = DocumentType.Id } : null,
                 PathAndFileName = PathAndFileName,
                 LastUpdatedBy = LastUpdatedBy,
                 LastUpdatedDate = LastUpdatedDate,
@@ -162,9 +165,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
             var emailTypeToUpdate = new EventDocument()
             {
                 Id = Id,
-                EventId = EventId,
+                Event = Event != null ? new Event() { Id = Event.Id } : null,
                 DocumentName = DocumentName,
-                DocumentTypeId = DocumentTypeId,
+                DocumentType = DocumentType != null ? new DocumentType() { Id = DocumentType.Id } : null,
                 PathAndFileName = PathAndFileName,
                 LastUpdatedBy = LastUpdatedBy,
                 LastUpdatedDate = LastUpdatedDate,

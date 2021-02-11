@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
@@ -11,11 +11,16 @@ namespace ECS.MemberManager.Core.BusinessObjects
     [Serializable]
     public class EventDocumentERL : BusinessListBase<EventDocumentERL,EventDocumentEC>
     {
+        #region Authorization Rules
         public static void AddObjectAuthorizationRules()
         {
             // TODO: add object-level authorization rules
         }
 
+        #endregion
+       
+        #region Factory Methods
+        
         public static async Task<EventDocumentERL> NewEventDocumentERL()
         {
             return await DataPortal.CreateAsync<EventDocumentERL>();
@@ -25,13 +30,10 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             return await DataPortal.FetchAsync<EventDocumentERL>();
         }
+       
+        #endregion
         
-        [RunLocal]
-        [Create]
-        private void Create()
-        {
-            base.DataPortal_Create();
-        }
+        #region Data Access
         
         [Fetch]
         private async Task Fetch()
@@ -40,17 +42,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
             var dal = dalManager.GetProvider<IEventDocumentDal>();
             var childData = await dal.Fetch();
 
-            await Fetch(childData);
-        }
-
-        private async Task Fetch(List<EventDocument> childData)
-        {
             using (LoadListMode)
             {
-                foreach (var eventDocument in childData)
+                foreach (var eventObj in childData)
                 {
-                    var eventDocumentToAdd = await EventDocumentEC.GetEventDocumentEC(eventDocument);
-                    Add(eventDocumentToAdd);
+                    var eventToAdd = 
+                        await EventDocumentEC.GetEventDocumentEC(eventObj);
+                    Add(eventToAdd);
                 }
             }
         }
@@ -60,5 +58,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             Child_Update();
         }
+        
+        #endregion
     }
 }

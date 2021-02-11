@@ -1,17 +1,23 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Csla;
+using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Mock;
+using ECS.MemberManager.Core.EF.Domain;
 using Microsoft.Extensions.Configuration;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class EventDocumentInfoList_Tests
+    public class EventDocumentROR_Tests 
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
 
-        public EventDocumentInfoList_Tests()
+        public EventDocumentROR_Tests()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -30,18 +36,25 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                     IsDatabaseBuilt = true;
                 }
             }
-            
         }
-        
+
         [Fact]
-        private async void EventDocumentInfoList_TestGetEventDocumentInfoList()
+        public async Task EventDocumentROR_TestGetEventDocument()
         {
-            var eMailTypeInfoList = await EventDocumentInfoList.GetEventDocumentInfoList();
-            
-            Assert.NotNull(eMailTypeInfoList);
-            Assert.True(eMailTypeInfoList.IsReadOnly);
-            Assert.Equal(3, eMailTypeInfoList.Count);
+            var eventDocumentObj = await EventDocumentROR.GetEventDocumentROR(1);
+
+            Assert.NotNull(eventDocumentObj);
+            Assert.IsType<EventDocumentROR>(eventDocumentObj);
+            Assert.Equal(1,eventDocumentObj.Id);
         }
-      
+
+        [Fact]
+        public async Task EventDocumentROR_TestGetNewEventDocumentROR()
+        {
+            var eventDocumentObj = await EventDocumentROR.NewEventDocumentROR();
+
+            Assert.NotNull(eventDocumentObj);
+            Assert.IsType<EventDocumentROR>(eventDocumentObj);
+        }
     }
 }

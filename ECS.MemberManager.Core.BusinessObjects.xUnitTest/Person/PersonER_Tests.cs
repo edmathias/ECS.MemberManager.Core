@@ -74,7 +74,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         public async void TestPersonER_Insert()
         {
             var person = await PersonER.NewPersonER();
-            BuildPerson(person);
+            await BuildPerson(person);
 
             var savedPerson = await person.SaveAsync();
 
@@ -100,7 +100,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         public async Task TestPersonER_TestInvalidSave()
         {
             var person = await PersonER.NewPersonER();
-            BuildPerson(person);
+            await BuildPerson(person);
             person.LastName = string.Empty;
 
             Assert.False(person.IsValid);
@@ -147,7 +147,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         public async Task TestPersonER_LastNameRequired()
         {
             var person = await PersonER.NewPersonER();
-            BuildPerson(person);
+            await BuildPerson(person);
             var isObjectValidInit = person.IsValid;
             person.LastName = string.Empty;
             
@@ -161,7 +161,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         public async Task TestPersonER_PersonAddressMaxLengthLessThan50()
         {
             var personType = await PersonER.NewPersonER();
-            BuildPerson(personType);
+            await BuildPerson(personType);
             var isObjectValidInit = personType.IsValid;
             personType.LastName =  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
                                       "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
@@ -178,7 +178,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         public async Task TestPersonER_LastUpdatedByRequired()
         {
             var personType = await PersonER.NewPersonER();
-            BuildPerson(personType);
+            await BuildPerson(personType);
             var isObjectValidInit = personType.IsValid;
             personType.LastUpdatedBy = string.Empty;
 
@@ -192,7 +192,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         public async Task TestPersonER_LastUpdatedByMaxLengthLessThan255()
         {
             var personType = await PersonER.NewPersonER();
-            BuildPerson(personType);
+            await BuildPerson(personType);
             var isObjectValidInit = personType.IsValid;
             personType.LastUpdatedBy =  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
                                       "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +

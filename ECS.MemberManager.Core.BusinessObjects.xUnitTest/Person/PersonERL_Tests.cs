@@ -98,7 +98,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var countBeforeAdd = personERL.Count;
             
             var personToAdd = personERL.AddNew();
-            BuildPersonEC(personToAdd);
+            await BuildPersonEC(personToAdd);
 
             var updatedList = await personERL.SaveAsync();
             

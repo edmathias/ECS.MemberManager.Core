@@ -10,7 +10,7 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class EventDocumentInfo : ReadOnlyBase<EventDocumentInfo>
+    public class EventDocumentROC : ReadOnlyBase<EventDocumentROC>
     {
         #region Business Methods
 
@@ -19,63 +19,61 @@ namespace ECS.MemberManager.Core.BusinessObjects
         public int Id
         {
             get => GetProperty(IdProperty);
-            set => LoadProperty(IdProperty, value);
+            private set => LoadProperty(IdProperty, value);
         }
 
-        public static readonly PropertyInfo<int> EventIdProperty = RegisterProperty<int>(p => p.EventId);
+        public static readonly PropertyInfo<EventEC> EventProperty = RegisterProperty<EventEC>(p => p.Event);
 
-        public int EventId
+        public EventEC Event
         {
-            get => GetProperty(EventIdProperty);
-            set => LoadProperty(EventIdProperty, value);
+            get => GetProperty(EventProperty);
+            private set => LoadProperty(EventProperty, value);
         }
+
 
         public static readonly PropertyInfo<string>
             DocumentNameProperty = RegisterProperty<string>(p => p.DocumentName);
 
-        [Required(), MaxLength(50)]
         public string DocumentName
         {
             get => GetProperty(DocumentNameProperty);
-            set => LoadProperty(DocumentNameProperty, value);
+            private set => LoadProperty(DocumentNameProperty, value);
         }
 
-        public static readonly PropertyInfo<int> DocumentTypeIdProperty = RegisterProperty<int>(p => p.DocumentTypeId);
+        public static readonly PropertyInfo<DocumentTypeEC> DocumentTypeProperty =
+            RegisterProperty<DocumentTypeEC>(p => p.DocumentType);
 
-        public int DocumentTypeId
+        public DocumentTypeEC DocumentType
         {
-            get => GetProperty(DocumentTypeIdProperty);
-            set => LoadProperty(DocumentTypeIdProperty, value);
+            get => GetProperty(DocumentTypeProperty);
+            private set => LoadProperty(DocumentTypeProperty, value);
         }
 
         public static readonly PropertyInfo<string> PathAndFileNameProperty =
             RegisterProperty<string>(p => p.PathAndFileName);
 
-        [Required(), MaxLength(255)]
         public string PathAndFileName
         {
             get => GetProperty(PathAndFileNameProperty);
-            set => LoadProperty(PathAndFileNameProperty, value);
+            private set => LoadProperty(PathAndFileNameProperty, value);
         }
 
         public static readonly PropertyInfo<string> LastUpdatedByProperty =
             RegisterProperty<string>(p => p.LastUpdatedBy);
 
-        [Required, MaxLength(255)]
         public string LastUpdatedBy
         {
             get => GetProperty(LastUpdatedByProperty);
-            set => LoadProperty(LastUpdatedByProperty, value);
+            private set => LoadProperty(LastUpdatedByProperty, value);
         }
 
         public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty =
             RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
 
-        [Required]
         public SmartDate LastUpdatedDate
         {
             get => GetProperty(LastUpdatedDateProperty);
-            set => LoadProperty(LastUpdatedDateProperty, value);
+            private set => LoadProperty(LastUpdatedDateProperty, value);
         }
 
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
@@ -83,7 +81,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         public string Notes
         {
             get => GetProperty(NotesProperty);
-            set => LoadProperty(NotesProperty, value);
+            private set => LoadProperty(NotesProperty, value);
         }
 
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
@@ -111,37 +109,29 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        public static async Task<EventDocumentInfo> GetEventDocumentInfo(EventDocument childData)
+        public static async Task<EventDocumentROC> NewEventDocumentROC()
         {
-            return await DataPortal.FetchChildAsync<EventDocumentInfo>(childData);
+            return await DataPortal.CreateAsync<EventDocumentROC>();
         }
 
-        public static async Task<EventDocumentInfo> GetEventDocumentInfo(int id)
+        public static async Task<EventDocumentROC> GetEventDocumentROC(EventDocument childData)
         {
-            return await DataPortal.FetchAsync<EventDocumentInfo>(id);
+            return await DataPortal.FetchChildAsync<EventDocumentROC>(childData);
         }
 
         #endregion
 
         #region Data Access Methods
 
-        [Fetch]
-        private async Task Fetch(int id)
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEventDocumentDal>();
-            var data = await dal.Fetch(id);
-
-            Fetch(data);
-        }
-
         [FetchChild]
-        private void Fetch(EventDocument childData)
+        private async Task Fetch(EventDocument childData)
         {
             Id = childData.Id;
-            EventId = childData.EventId;
+            Event = childData.Event != null ? await EventEC.GetEventEC(childData.Event) : null;
             DocumentName = childData.DocumentName;
-            DocumentTypeId = childData.DocumentTypeId;
+            DocumentType = childData.DocumentType != null
+                ? await DocumentTypeEC.GetDocumentTypeEC(childData.DocumentType)
+                : null;
             PathAndFileName = childData.PathAndFileName;
             LastUpdatedBy = childData.LastUpdatedBy;
             LastUpdatedDate = childData.LastUpdatedDate;

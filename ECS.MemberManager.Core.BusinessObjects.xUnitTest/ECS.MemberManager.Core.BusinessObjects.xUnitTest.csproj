@@ -34,7 +34,6 @@
 
     <ItemGroup>
       <Folder Include="ContactForSponsor" />
-      <Folder Include="EventDocument" />
       <Folder Include="MemberInfo" />
       <Folder Include="Office" />
       <Folder Include="Organization" />
@@ -112,6 +111,10 @@
       <Compile Remove="Phone\PhoneInfo_Tests.cs" />
       <Compile Remove="Phone\PhoneInfoChild_Tests.cs" />
       <Compile Remove="Phone\PhoneInfoChildList_Tests.cs" />
+      <Compile Remove="EventDocument\EventROC_Tests.cs" />
+      <Compile Remove="EventDocument\EventROCL_Tests.cs" />
+      <Compile Remove="EventDocument\EventROR_Tests.cs" />
+      <Compile Remove="EventDocument\EventRORL_Tests.cs" />
     </ItemGroup>
     
 
