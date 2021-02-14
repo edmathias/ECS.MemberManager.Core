@@ -9,6 +9,7 @@ using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
+    ----
     [Serializable]
     public class OrganizationTypeEdit : BusinessBase<OrganizationTypeEdit>
     {

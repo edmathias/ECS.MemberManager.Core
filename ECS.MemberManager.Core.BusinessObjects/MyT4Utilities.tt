@@ -1,0 +1,135 @@
+﻿<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Data" #>
+<#@ assembly name="System.Collections" #>
+<#@ assembly name="C:\Windows\Microsoft.NET\Framework64\v4.0.30319\System.Data.Entity.Design.dll" #>
+<#@ import namespace="System.Data.SqlClient" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Data.Entity.Design" #>
+
+
+<#+
+    public struct ColumnData
+    {
+        public string columnName;
+        public string dotNetType;
+        public bool isPrimaryKey;
+        public bool isForeignKey;
+    }
+    
+    public static string GetNetDataType(string sqlDataTypeName)
+    {
+        switch (sqlDataTypeName.ToLower())
+        {
+            case "bigint":
+                return "Int64";
+            case "binary":
+            case "image":
+            case "varbinary":
+                return "byte[]";
+            case "bit":
+                return "bool";
+            case "char":
+                return "char";
+            case "datetime":
+            case "datetime2":
+            case "smalldatetime":
+                return "SmartDate";
+            case "decimal":
+            case "money":
+            case "numeric":
+                return "decimal";
+            case "float":
+                return "double";
+            case "int":
+                return "int";
+            case "nchar":
+            case "nvarchar":
+            case "text":
+            case "varchar":
+            case "xml":
+                return "string";
+            case "timestamp":
+                return "byte[]";
+            case "real":
+                return "single";
+            case "smallint":
+                return "Int16";
+            case "tinyint":
+                return "byte";
+            case "uniqueidentifier":
+                return "Guid";
+             
+            default:
+                return null;
+        }
+    } 
+   
+    public static string BuildColumnQueryString(string tableName)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.AppendLine("SELECT TAB.name as TableName, COL.name AS ColumnName, TYP.name AS DataTypeName,COL.is_identity as IsPrimaryKey, TYP.max_length AS MaxLength,fk_cols.constraint_object_id as KeyConstraint");
+        sb.AppendLine("FROM sys.columns COL INNER JOIN sys.tables TAB On COL.object_id = TAB.object_id");
+        sb.AppendLine("INNER JOIN sys.types TYP ON TYP.user_type_id = COL.user_type_id");
+        sb.AppendLine("LEFT OUTER JOIN sys.foreign_key_columns fk_cols");
+        sb.AppendLine("on fk_cols.parent_object_id = TAB.object_id and fk_cols.parent_column_id = COL.column_id");
+        sb.AppendLine(String.Format("WHERE TAB.name = \'{0}\'",tableName));
+ 
+        return sb.ToString() ;
+    }
+
+    public static string GetOrdinalDataType(string dataType) 
+    {
+        switch(dataType) 
+        {
+            case "string":
+                return "String";
+            case "int":
+                return "Int32";
+            default:
+                return null;;
+        }
+    }
+    
+    public static List<ColumnData> GetColumnData(SqlDataReader reader) 
+    {
+        var columnData = new List<ColumnData>();
+        
+        while (reader.Read())
+        {
+            var columnToAdd = new ColumnData();
+            columnToAdd.dotNetType = GetNetDataType(reader.GetString(reader.GetOrdinal("DataTypeName")));
+            columnToAdd.columnName = reader.GetString(reader.GetOrdinal("ColumnName"));
+            columnToAdd.isPrimaryKey = reader.GetBoolean(reader.GetOrdinal("IsPrimaryKey"));
+            columnToAdd.isForeignKey = false;
+            var ordinal = reader.GetOrdinal("KeyConstraint");
+            var keyValue = reader.GetValue(ordinal);
+            columnToAdd.isForeignKey = !DBNull.Value.Equals(keyValue); 
+            
+            columnData.Add(columnToAdd);
+        }
+        
+        return columnData;
+   }
+   
+   public static string ConvertForeignKeyColumn(string columnName) 
+   {
+        if(columnName.Contains("Id"))
+        {
+            var objName = columnName.Replace("Id",string.Empty);
+            return objName + ".Id";
+        }
+        
+        return columnName;
+   }
+   
+    public static string Pluralize(String s)
+    {
+       return System.Data.Entity.Design.PluralizationServices.PluralizationService.CreateService(System.Globalization.CultureInfo.CurrentCulture).Pluralize(s);
+    }    
+
+    public static string Singularize(String s)
+    {
+       return System.Data.Entity.Design.PluralizationServices.PluralizationService.CreateService(System.Globalization.CultureInfo.CurrentCulture).Singularize(s);
+    }    
+#>

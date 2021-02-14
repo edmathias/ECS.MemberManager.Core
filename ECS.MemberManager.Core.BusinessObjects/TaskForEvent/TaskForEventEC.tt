@@ -1,0 +1,209 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+<#@ include file="..\MyT4Utilities.tt" #>
+<#
+    var objectName = "TaskForEvent";
+#>
+using System;
+using System.Threading.Tasks;
+using Csla;
+using ECS.MemberManager.Core.DataAccess;
+using ECS.MemberManager.Core.DataAccess.Dal;
+using ECS.MemberManager.Core.EF.Domain;
+
+namespace ECS.MemberManager.Core.BusinessObjects
+{
+    [Serializable]
+    public partial class <#= objectName #>EC : BusinessBase<<#= objectName #>EC>
+    {
+        #region Business Methods 
+
+ <#
+    var connectionString =
+        "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ECSMemberManager;Integrated Security=True;Connect Timeout=30";
+
+    string columnquery = BuildColumnQueryString(Pluralize(objectName));
+
+    List<ColumnData> columnList = new List<ColumnData>();
+
+    using (SqlConnection connection = new SqlConnection(connectionString))
+    {
+        SqlCommand command = new SqlCommand(columnquery, connection);
+        connection.Open();
+        SqlDataReader reader = command.ExecuteReader();
+
+        columnList = GetColumnData(reader);
+    }
+
+    foreach(var columnData in columnList ) 
+    {
+        var outputName = columnData.columnName;
+        if(columnData.isForeignKey)
+        {
+            var newOutputName = ConvertForeignKeyColumn(outputName);
+            var objType = newOutputName.Replace(".Id", string.Empty);
+#>
+        public static readonly PropertyInfo<<#= objType #>EC> <#= objType #>Property = RegisterProperty<<#= objType #>EC>(o => o.<#= objType #>);
+        public <#= objType #>EC <#= objType  #> 
+        {
+            get => GetProperty(<#= objType #>Property); 
+            set => SetProperty(<#= objType  #>Property, value); 
+        }        
+
+<#            
+        } // end if 
+        else
+        { 
+            #>
+        public static readonly PropertyInfo<<#= columnData.dotNetType #>> <#= columnData.columnName #>Property = RegisterProperty<<#= columnData.dotNetType	 #>>(o => o.<#= columnData.columnName #>);
+        public virtual <#= columnData.dotNetType #> <#= columnData.columnName #> 
+        {
+            get => GetProperty(<#= columnData.columnName #>Property); 
+<#
+            if (columnData.isPrimaryKey)
+            { 
+#>
+            private set => LoadProperty(<#= columnData.columnName #>Property, value); 
+<#                
+            }
+            else
+            {
+#>
+            set => SetProperty(<#= columnData.columnName #>Property, value); 
+<#                
+            }
+#>   
+        }        
+<#
+        }  // end else
+    } // end foreach 
+#>
+        #endregion 
+
+        #region Factory Methods
+
+        public static async Task<<#= objectName #>EC> New<#= objectName #>EC()
+        {
+            return await DataPortal.CreateChildAsync<<#= objectName #>EC>();
+        }
+
+        public static async Task<<#= objectName #>EC> Get<#= objectName #>EC(<#=objectName#> childData)
+        {
+            return await DataPortal.FetchChildAsync<<#= objectName #>EC>(childData);
+        }
+
+        #endregion
+
+        #region Data Access Methods
+
+        [FetchChild]
+        private async Task Fetch(<#= objectName #> childData)
+        {
+            using (BypassPropertyChecks)
+            {
+<#
+    foreach (var columnData in columnList)
+    {
+        if (columnData.isForeignKey)
+        {
+            var objName = columnData.columnName.Replace("Id", string.Empty);
+#>
+                <#= objName #> = await <#= objName #>EC.Get<#= objName#>EC(childData.<#= objName #>);
+<#
+        }
+        else
+        {
+#>
+                <#= columnData.columnName #> = childData.<#= columnData.columnName #>;
+<#
+        }
+    }
+#>
+            }
+        }
+
+        [InsertChild]
+        private async Task Insert()
+        {
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<I<#= objectName #>Dal>();
+            var data = new <#= objectName #>()
+            {
+<#
+    foreach (var columnData in columnList)
+    {
+        if (columnData.isForeignKey)
+        {
+            var objName = columnData.columnName.Replace("Id", string.Empty);
+#>
+                <#= objName #> = new <#= objName #>() { Id = <#= objName #>.Id },
+<#
+        }
+        else
+        {
+#>
+                <#= columnData.columnName #> = <#= columnData.columnName #>,
+<#
+        }
+    }
+#>
+            };
+
+            var insertedObj = await dal.Insert(data);
+            Id = insertedObj.Id;
+            RowVersion = insertedObj.RowVersion;
+        }
+
+        [UpdateChild]
+        private async Task Update()
+        {
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<I<#=objectName #>Dal>();
+
+            var objToUpdate = new <#= objectName#>()
+            {
+<#
+    foreach (var columnData in columnList)
+    {
+        if (columnData.isForeignKey)
+        {
+            var objName = columnData.columnName.Replace("Id", string.Empty);
+#>
+                <#= objName #> = new <#= objName #>() { Id = <#= objName #>.Id },
+<#
+        }
+        else
+        {
+#>
+                <#= columnData.columnName #> = <#= columnData.columnName #>,
+<#
+        }
+    }
+#>        
+            };
+
+            var updatedObj = await dal.Update(objToUpdate);
+            RowVersion = updatedObj.RowVersion;
+        }
+
+        [DeleteSelf]
+        private async Task DeleteSelf()
+        {
+            await Delete(Id);
+        }
+        
+        [Delete]
+        private async Task Delete(int id)
+        {
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<I<#= objectName#>Dal>();
+           
+            await dal.Delete(id);
+        }
+
+
+        #endregion
+    }
+}

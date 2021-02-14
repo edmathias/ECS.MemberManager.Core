@@ -64,8 +64,6 @@
       <Compile Remove="OrganizationType\OrganizationTypeEditList.cs" />
       <Compile Remove="OrganizationType\OrganizationTypeInfo.cs" />
       <Compile Remove="OrganizationType\OrganizationTypeInfoList.cs" />
-      <None Remove="TaskForEvent\TaskForEventER.tt" />
-      <Compile Remove="TaskForEvent\EventER.cs" />
     </ItemGroup>
 
     <ItemGroup>
@@ -78,42 +76,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Content Include="TaskForEvent\TaskForEventEC.tt">
+      <None Update="TaskForEvent\TaskForEvent.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
-        <LastGenOutput>TaskForEventEC.cs</LastGenOutput>
-      </Content>
-      <Content Include="TaskForEvent\TaskForEventECL.tt">
-        <Generator>TextTemplatingFileGenerator</Generator>
-        <LastGenOutput>TaskForEventECL.cs</LastGenOutput>
-      </Content>
-      <Content Include="TaskForEvent\TaskForEventER.tt">
-        <Generator>TextTemplatingFileGenerator</Generator>
-        <LastGenOutput>TaskForEventER.cs</LastGenOutput>
-      </Content>
-      <Content Include="TaskForEvent\TaskForEventERL.tt">
-        <Generator>TextTemplatingFileGenerator</Generator>
-        <LastGenOutput>TaskForEventERL.cs</LastGenOutput>
-      </Content>
-      <Content Include="TaskForEvent\TaskForEventROC.tt">
-        <Generator>TextTemplatingFileGenerator</Generator>
-        <LastGenOutput>TaskForEventROC.cs</LastGenOutput>
-      </Content>
-      <Content Include="TaskForEvent\TaskForEventROCL.tt">
-        <Generator>TextTemplatingFileGenerator</Generator>
-        <LastGenOutput>TaskForEventROCL.cs</LastGenOutput>
-      </Content>
-      <Content Include="TaskForEvent\TaskForEventROR.tt">
-        <Generator>TextTemplatingFileGenerator</Generator>
-        <LastGenOutput>TaskForEventROR.cs</LastGenOutput>
-      </Content>
-      <Content Include="TaskForEvent\TaskForEventRORL.tt">
-        <Generator>TextTemplatingFileGenerator</Generator>
-        <LastGenOutput>TaskForEventRORL.cs</LastGenOutput>
-      </Content>
+      </None>
     </ItemGroup>
 
 </Project>
