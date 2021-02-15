@@ -1,0 +1,46 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+<#@ include file="..\MyT4Utilities.tt" #>
+<#
+    var objectName = "Organization";
+#>
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Csla;
+using ECS.MemberManager.Core.DataAccess;
+using ECS.MemberManager.Core.DataAccess.Dal;
+using ECS.MemberManager.Core.EF.Domain;
+
+namespace ECS.MemberManager.Core.BusinessObjects
+{
+    [Serializable]
+    public class <#=objectName #>ROCL : ReadOnlyListBase<<#=objectName #>ROCL, <#=objectName #>ROC>
+    {
+        public static void AddObjectAuthorizationRules()
+        {
+            // TODO: add object-level authorization rules
+        }
+
+        internal static async Task<<#= objectName #>ROCL> Get<#= objectName #>ROCL(List<<#= objectName #>> childData)
+        {
+            return await DataPortal.FetchAsync<<#= objectName #>ROCL>(childData);
+        }
+
+        [Fetch]
+        private async Task Fetch(List<<#= objectName #>> childData)
+        {
+            using (LoadListMode)
+            {
+                foreach (var objectToFetch in childData)
+                {
+                    var <#= objectName #>ToAdd = await <#= objectName #>ROC.Get<#= objectName #>ROC(objectToFetch);
+                    Add(<#= objectName #>ToAdd);
+                }
+            }
+        }
+    }
+}
+

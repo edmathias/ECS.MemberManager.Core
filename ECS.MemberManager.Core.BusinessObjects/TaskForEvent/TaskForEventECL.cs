@@ -12,32 +12,32 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class OrganizationECL : BusinessListBase<OrganizationECL, OrganizationEC>
+    public partial class TaskForEventECL : BusinessListBase<TaskForEventECL, TaskForEventEC>
     {
         public static void AddObjectAuthorizationRules()
         {
             // TODO: add object-level authorization rules
         }
 
-        internal static async Task<OrganizationECL> NewOrganizationECL()
+        internal static async Task<TaskForEventECL> NewTaskForEventECL()
         {
-            return await DataPortal.CreateAsync<OrganizationECL>();
+            return await DataPortal.CreateAsync<TaskForEventECL>();
         }
 
-        internal static async Task<OrganizationECL> GetOrganizationECL(List<Organization> childData)
+        internal static async Task<TaskForEventECL> GetTaskForEventECL(List<TaskForEvent> childData)
         {
-            return await DataPortal.FetchAsync<OrganizationECL>(childData);
+            return await DataPortal.FetchAsync<TaskForEventECL>(childData);
         }
 
         [Fetch]
-        private async Task Fetch(List<Organization> childData)
+        private async Task Fetch(List<TaskForEvent> childData)
         {
             using (LoadListMode)
             {
-                foreach (var Organization in childData)
+                foreach (var TaskForEvent in childData)
                 {
-                    var OrganizationToAdd = await OrganizationEC.GetOrganizationEC(Organization);
-                    Add(OrganizationToAdd);
+                    var TaskForEventToAdd = await TaskForEventEC.GetTaskForEventEC(TaskForEvent);
+                    Add(TaskForEventToAdd);
                 }
             }
         }

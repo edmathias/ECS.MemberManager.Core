@@ -11,7 +11,7 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class OrganizationER : BusinessBase<OrganizationER>
+    public partial class TaskForEventER : BusinessBase<TaskForEventER>
     {
         #region Business Methods 
 
@@ -22,25 +22,39 @@ namespace ECS.MemberManager.Core.BusinessObjects
             private set => LoadProperty(IdProperty, value); 
         
         }        
-        public static readonly PropertyInfo<string> NameProperty = RegisterProperty<string>(o => o.Name);
-        public virtual string Name 
+        public static readonly PropertyInfo<EventEC> EventProperty = RegisterProperty<EventEC>(o => o.Event);
+        public virtual EventEC Event 
         {
-            get => GetProperty(NameProperty); 
-            set => SetProperty(NameProperty, value); 
-        
-        }        
-        public static readonly PropertyInfo<OrganizationTypeEC> OrganizationTypeProperty = RegisterProperty<OrganizationTypeEC>(o => o.OrganizationType);
-        public virtual OrganizationTypeEC OrganizationType 
-        {
-            get => GetProperty(OrganizationTypeProperty); 
-            set => SetProperty(OrganizationTypeProperty, value); 
+            get => GetProperty(EventProperty); 
+            set => SetProperty(EventProperty, value); 
         }        
 
-        public static readonly PropertyInfo<SmartDate> DateOfFirstContactProperty = RegisterProperty<SmartDate>(o => o.DateOfFirstContact);
-        public virtual SmartDate DateOfFirstContact 
+        public static readonly PropertyInfo<string> TaskNameProperty = RegisterProperty<string>(o => o.TaskName);
+        public virtual string TaskName 
         {
-            get => GetProperty(DateOfFirstContactProperty); 
-            set => SetProperty(DateOfFirstContactProperty, value); 
+            get => GetProperty(TaskNameProperty); 
+            set => SetProperty(TaskNameProperty, value); 
+        
+        }        
+        public static readonly PropertyInfo<SmartDate> PlannedDateProperty = RegisterProperty<SmartDate>(o => o.PlannedDate);
+        public virtual SmartDate PlannedDate 
+        {
+            get => GetProperty(PlannedDateProperty); 
+            set => SetProperty(PlannedDateProperty, value); 
+        
+        }        
+        public static readonly PropertyInfo<SmartDate> ActualDateProperty = RegisterProperty<SmartDate>(o => o.ActualDate);
+        public virtual SmartDate ActualDate 
+        {
+            get => GetProperty(ActualDateProperty); 
+            set => SetProperty(ActualDateProperty, value); 
+        
+        }        
+        public static readonly PropertyInfo<string> InformationProperty = RegisterProperty<string>(o => o.Information);
+        public virtual string Information 
+        {
+            get => GetProperty(InformationProperty); 
+            set => SetProperty(InformationProperty, value); 
         
         }        
         public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(o => o.LastUpdatedBy);
@@ -75,19 +89,19 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        public static async Task<OrganizationER> NewOrganizationER()
+        public static async Task<TaskForEventER> NewTaskForEventER()
         {
-            return await DataPortal.CreateAsync<OrganizationER>();
+            return await DataPortal.CreateAsync<TaskForEventER>();
         }
 
-        public static async Task<OrganizationER> GetOrganizationER(int id)
+        public static async Task<TaskForEventER> GetTaskForEventER(int id)
         {
-            return await DataPortal.FetchAsync<OrganizationER>(id);
+            return await DataPortal.FetchAsync<TaskForEventER>(id);
         }
 
-        public static async Task DeleteOrganizationER(int id)
+        public static async Task DeleteTaskForEventER(int id)
         {
-            await DataPortal.DeleteAsync<OrganizationER>(id);
+            await DataPortal.DeleteAsync<TaskForEventER>(id);
         }
 
         #endregion
@@ -98,18 +112,20 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private async Task Fetch(int id)
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IOrganizationDal>();
+            var dal = dalManager.GetProvider<ITaskForEventDal>();
             var data = await dal.Fetch(id);
 
             using (BypassPropertyChecks)
             {
                 Id = data.Id;
-                Name = data.Name;
-                if(data.OrganizationType != null )
+                if(data.Event != null )
                 {
-                    OrganizationType = await OrganizationTypeEC.GetOrganizationTypeEC(data.OrganizationType);
+                    Event = await EventEC.GetEventEC(data.Event);
                 }
-                DateOfFirstContact = data.DateOfFirstContact;
+                TaskName = data.TaskName;
+                PlannedDate = data.PlannedDate;
+                ActualDate = data.ActualDate;
+                Information = data.Information;
                 LastUpdatedBy = data.LastUpdatedBy;
                 LastUpdatedDate = data.LastUpdatedDate;
                 Notes = data.Notes;
@@ -121,13 +137,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private async Task Insert()
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IOrganizationDal>();
-            var data = new Organization()
+            var dal = dalManager.GetProvider<ITaskForEventDal>();
+            var data = new TaskForEvent()
             {
                 Id = Id,
-                Name = Name,
-                OrganizationType = (OrganizationType != null ? new OrganizationType() { Id = OrganizationType.Id } : null),
-                DateOfFirstContact = DateOfFirstContact,
+                Event = (Event != null ? new Event() { Id = Event.Id } : null),
+                TaskName = TaskName,
+                PlannedDate = PlannedDate,
+                ActualDate = ActualDate,
+                Information = Information,
                 LastUpdatedBy = LastUpdatedBy,
                 LastUpdatedDate = LastUpdatedDate,
                 Notes = Notes,
@@ -143,14 +161,16 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private async Task Update()
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IOrganizationDal>();
+            var dal = dalManager.GetProvider<ITaskForEventDal>();
 
-            var objToUpdate = new Organization()
+            var objToUpdate = new TaskForEvent()
             {
                 Id = Id,
-                Name = Name,
-                OrganizationType = (OrganizationType != null ? new OrganizationType() { Id = OrganizationType.Id } : null),
-                DateOfFirstContact = DateOfFirstContact,
+                Event = (Event != null ? new Event() { Id = Event.Id } : null),
+                TaskName = TaskName,
+                PlannedDate = PlannedDate,
+                ActualDate = ActualDate,
+                Information = Information,
                 LastUpdatedBy = LastUpdatedBy,
                 LastUpdatedDate = LastUpdatedDate,
                 Notes = Notes,
@@ -172,7 +192,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private async Task Delete(int id)
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IOrganizationDal>();
+            var dal = dalManager.GetProvider<ITaskForEventDal>();
            
             await dal.Delete(id);
         }

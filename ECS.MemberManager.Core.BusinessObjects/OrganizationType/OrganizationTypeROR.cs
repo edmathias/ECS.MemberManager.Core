@@ -11,17 +11,16 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class OrganizationTypeROC : ReadOnlyBase<OrganizationTypeROC>
+    public partial class OrganizationTypeROR : ReadOnlyBase<OrganizationTypeROR>
     {
-        #region Business Methods 
+        #region Business Methods
 
- 
-        public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
+         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
         public int Id 
         {
             get => GetProperty(IdProperty); 
             private set => LoadProperty(IdProperty, value); 
-   
+        
         }        
         public static readonly PropertyInfo<CategoryOfOrganizationROC> CategoryOfOrganizationProperty = RegisterProperty<CategoryOfOrganizationROC>(o => o.CategoryOfOrganization);
         public CategoryOfOrganizationROC CategoryOfOrganization 
@@ -35,48 +34,50 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             get => GetProperty(NameProperty); 
             private set => LoadProperty(NameProperty, value); 
-   
+        
         }        
-
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
         public string Notes 
         {
             get => GetProperty(NotesProperty); 
             private set => LoadProperty(NotesProperty, value); 
-   
+        
         }        
-
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
         public byte[] RowVersion 
         {
             get => GetProperty(RowVersionProperty); 
             private set => LoadProperty(RowVersionProperty, value); 
-   
+        
         }        
         #endregion 
 
         #region Factory Methods
 
-        public static async Task<OrganizationTypeROC> GetOrganizationTypeROC(OrganizationType childData)
+        public static async Task<OrganizationTypeROR> GetOrganizationTypeROR(int id)
         {
-            return await DataPortal.FetchChildAsync<OrganizationTypeROC>(childData);
+            return await DataPortal.FetchAsync<OrganizationTypeROR>(id);
         }
 
         #endregion
 
         #region Data Access Methods
 
-        [FetchChild]
-        private async Task Fetch(OrganizationType childData)
+        [Fetch]
+        private async Task Fetch(int id)
         {
-            Id = childData.Id;
-            if(childData.CategoryOfOrganization != null )
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IOrganizationTypeDal>();
+            var data = await dal.Fetch(id);
+
+            Id = data.Id;
+            if(data.CategoryOfOrganization != null )
             {
-                CategoryOfOrganization = await CategoryOfOrganizationROC.GetCategoryOfOrganizationROC(childData.CategoryOfOrganization);
+                CategoryOfOrganization = await CategoryOfOrganizationROC.GetCategoryOfOrganizationROC(data.CategoryOfOrganization);
             }
-            Name = childData.Name;
-            Notes = childData.Notes;
-            RowVersion = childData.RowVersion;
+            Name = data.Name;
+            Notes = data.Notes;
+            RowVersion = data.RowVersion;
         }
 
         #endregion

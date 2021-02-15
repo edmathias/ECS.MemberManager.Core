@@ -1,6 +1,7 @@
-﻿using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿
+
+
+using System;
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -10,143 +11,133 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class OrganizationTypeEC :  BusinessBase<OrganizationTypeEC>
+    public partial class OrganizationTypeEC : BusinessBase<OrganizationTypeEC>
     {
-        #region Business Methods
+        #region Business Methods 
 
-        public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
-        public int Id
+         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
+        public virtual int Id 
         {
-            get => GetProperty(IdProperty);
-            private set => LoadProperty(IdProperty, value);
-        }
-
-        public static readonly PropertyInfo<string> NameProperty = RegisterProperty<string>(p => p.Name);
-        [Required,MaxLength(50)]
-        public string Name
+            get => GetProperty(IdProperty); 
+            private set => LoadProperty(IdProperty, value); 
+   
+        }        
+        public static readonly PropertyInfo<CategoryOfOrganizationEC> CategoryOfOrganizationProperty = RegisterProperty<CategoryOfOrganizationEC>(o => o.CategoryOfOrganization);
+        public CategoryOfOrganizationEC CategoryOfOrganization 
         {
-            get => GetProperty(NameProperty);
-            set => SetProperty(NameProperty, value);
-        }
+            get => GetProperty(CategoryOfOrganizationProperty); 
+            set => SetProperty(CategoryOfOrganizationProperty, value); 
+        }        
 
-        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
-        public string Notes
+        public static readonly PropertyInfo<string> NameProperty = RegisterProperty<string>(o => o.Name);
+        public virtual string Name 
         {
-            get => GetProperty(NotesProperty);
-            set => SetProperty(NotesProperty, value);
-        }
-
-        public static readonly PropertyInfo<CategoryOfOrganizationEC> CategoryOfOrganizationProperty = RegisterProperty<CategoryOfOrganizationEC>(p => p.CategoryOfOrganization);
-        public CategoryOfOrganizationEC CategoryOfOrganization
+            get => GetProperty(NameProperty); 
+            set => SetProperty(NameProperty, value); 
+   
+        }        
+        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
+        public virtual string Notes 
         {
-            get => GetProperty(CategoryOfOrganizationProperty);
-            set => SetProperty(CategoryOfOrganizationProperty, value);
-        }
-
-        protected override void AddBusinessRules()
+            get => GetProperty(NotesProperty); 
+            set => SetProperty(NotesProperty, value); 
+   
+        }        
+        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
+        public virtual byte[] RowVersion 
         {
-            base.AddBusinessRules();
-
-            // TODO: add business rules
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
-        
-        #endregion
+            get => GetProperty(RowVersionProperty); 
+            set => SetProperty(RowVersionProperty, value); 
+   
+        }        
+        #endregion 
 
         #region Factory Methods
 
-        public static async Task<OrganizationTypeEC> NewOrganizationType()
+        public static async Task<OrganizationTypeEC> NewOrganizationTypeEC()
         {
             return await DataPortal.CreateChildAsync<OrganizationTypeEC>();
         }
 
-        public static async Task<OrganizationTypeEC> GetOrganizationType(Organization childData)
+        public static async Task<OrganizationTypeEC> GetOrganizationTypeEC(OrganizationType childData)
         {
             return await DataPortal.FetchChildAsync<OrganizationTypeEC>(childData);
         }
 
-        public static async Task DeleteOrganizationType(int id)
-        {
-            await DataPortal.DeleteAsync<OrganizationTypeEC>(id);
-        }
-
         #endregion
 
-        #region Data Access
+        #region Data Access Methods
 
         [FetchChild]
-        private async void Fetch(OrganizationType childData)
+        private async Task Fetch(OrganizationType childData)
         {
             using (BypassPropertyChecks)
             {
                 Id = childData.Id;
+                if(childData.CategoryOfOrganization != null )
+                {
+                    CategoryOfOrganization = await CategoryOfOrganizationEC.GetCategoryOfOrganizationEC(childData.CategoryOfOrganization);
+                }
                 Name = childData.Name;
                 Notes = childData.Notes;
-                if(childData.CategoryOfOrganization != null )
-                    CategoryOfOrganization = await CategoryOfOrganizationEC.GetCategoryOfOrganization(childData.CategoryOfOrganization);
-                else
-                    CategoryOfOrganization = await CategoryOfOrganizationEC.NewCategoryOfOrganization();
+                RowVersion = childData.RowVersion;
             }
         }
 
         [InsertChild]
-        private void Insert()
+        private async Task Insert()
         {
-            using IDalManager dalManager = DalFactory.GetManager();
+            using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IOrganizationTypeDal>();
-            
-            using (BypassPropertyChecks)
+            var data = new OrganizationType()
             {
-                var organizationTypeToInsert = new OrganizationType()
-                {
-                    Name = Name,
-                    Notes = Notes
-                };
+                Id = Id,
+                CategoryOfOrganization = (CategoryOfOrganization != null ? new CategoryOfOrganization() { Id = CategoryOfOrganization.Id } : null),
+                Name = Name,
+                Notes = Notes,
+                RowVersion = RowVersion,
+            };
 
-                Id = dal.Insert(organizationTypeToInsert);
-            }
+            var insertedObj = await dal.Insert(data);
+            Id = insertedObj.Id;
+            RowVersion = insertedObj.RowVersion;
         }
 
         [UpdateChild]
-        private void Update()
+        private async Task Update()
         {
-            using IDalManager dalManager = DalFactory.GetManager();
+            using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IOrganizationTypeDal>();
-            using (BypassPropertyChecks)
+
+            var objToUpdate = new OrganizationType()
             {
-                // format dto and update dal 
-                var organizationTypeToUpdate = dal.Fetch(Id);
-                organizationTypeToUpdate.Name = Name;
-                organizationTypeToUpdate.Notes = Notes;
-                
-                dal.Update(organizationTypeToUpdate);
-            }
+                Id = Id,
+                CategoryOfOrganization = (CategoryOfOrganization != null ? new CategoryOfOrganization() { Id = CategoryOfOrganization.Id } : null),
+                Name = Name,
+                Notes = Notes,
+                RowVersion = RowVersion,
+        
+            };
+
+            var updatedObj = await dal.Update(objToUpdate);
+            RowVersion = updatedObj.RowVersion;
         }
 
         [DeleteSelfChild]
-        private void DeleteSelf()
+        private async Task DeleteSelf()
         {
-            Delete(this.Id);
+            await Delete(Id);
         }
-
-        [Delete]
-        private void Delete(int id)
+        
+        private async Task Delete(int id)
         {
-            using IDalManager dalManager = DalFactory.GetManager();
+            using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IOrganizationTypeDal>();
-
-            dal.Delete(id);
+           
+            await dal.Delete(id);
         }
 
 
         #endregion
-
-
-        
     }
 }

@@ -19,12 +19,6 @@
       <Compile Remove="Payment\PaymentER.cs" />
       <Compile Remove="Sponsor\SponsorEC.cs" />
       <Compile Remove="Sponsor\SponsorER.cs" />
-      <Compile Remove="OrganizationType\OrganizationTypeEC.cs" />
-      <Compile Remove="OrganizationType\OrganizationTypeROC.cs" />
-      <Compile Remove="Organization\OrganizationEC.cs" />
-      <Compile Remove="Organization\OrganizationECL.cs" />
-      <Compile Remove="Organization\OrganizationER.cs" />
-      <Compile Remove="OrganizationType\OrganizationTypeER.cs" />
       <Compile Remove="Person\PersonEdit.cs" />
       <Compile Remove="EMailType\EMailTypeEdit.cs" />
       <Compile Remove="EMailType\EMailTypeEditList.cs" />
@@ -113,11 +107,218 @@
         <DesignTime>True</DesignTime>
         <DependentUpon>TaskForEventRORL.tt</DependentUpon>
       </Compile>
+      <Compile Update="TaskForEvent\TaskForEventEC.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>TaskForEventEC.tt</DependentUpon>
+      </Compile>
+      <Compile Update="TaskForEvent\TaskForEventECL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>TaskForEventECL.tt</DependentUpon>
+      </Compile>
+      <Compile Update="TaskForEvent\TaskForEventER.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>TaskForEventER.tt</DependentUpon>
+      </Compile>
+      <Compile Update="TaskForEvent\TaskForEventERL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>TaskForEventERL.tt</DependentUpon>
+      </Compile>
+      <Compile Update="TaskForEvent\TaskForEventROC.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>TaskForEventROC.tt</DependentUpon>
+      </Compile>
+      <Compile Update="TaskForEvent\TaskForEventROCL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>TaskForEventROCL.tt</DependentUpon>
+      </Compile>
+      <Compile Update="TaskForEvent\TaskForEventROR.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>TaskForEventROR.tt</DependentUpon>
+      </Compile>
+      <Compile Update="TaskForEvent\TaskForEventRORL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>TaskForEventRORL.tt</DependentUpon>
+      </Compile>
+      <None Update="Organization\OrganizationEC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>OrganizationEC.cs</LastGenOutput>
+      </None>
+      <Compile Update="Organization\OrganizationEC.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>OrganizationEC.tt</DependentUpon>
+      </Compile>
+      <None Update="OrganizationType\OrganizationTypeEC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>OrganizationTypeEC.cs</LastGenOutput>
+      </None>
+      <Compile Update="OrganizationType\OrganizationTypeEC.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>OrganizationTypeEC.tt</DependentUpon>
+      </Compile>
+      <None Update="OrganizationType\OrganizationTypeECL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>OrganizationTypeECL.cs</LastGenOutput>
+      </None>
+      <Compile Update="OrganizationType\OrganizationTypeECL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>OrganizationTypeECL.tt</DependentUpon>
+      </Compile>
+      <None Update="OrganizationType\OrganizationTypeER.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>OrganizationTypeER.cs</LastGenOutput>
+      </None>
+      <Compile Update="OrganizationType\OrganizationTypeER.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>OrganizationTypeER.tt</DependentUpon>
+      </Compile>
+      <None Update="OrganizationType\OrganizationTypeERL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>OrganizationTypeERL.cs</LastGenOutput>
+      </None>
+      <Compile Update="OrganizationType\OrganizationTypeERL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>OrganizationTypeERL.tt</DependentUpon>
+      </Compile>
+      <None Update="OrganizationType\OrganizationTypeROC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>OrganizationTypeROC.cs</LastGenOutput>
+      </None>
+      <Compile Update="OrganizationType\OrganizationTypeROC.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>OrganizationTypeROC.tt</DependentUpon>
+      </Compile>
+      <None Update="OrganizationType\OrganizationTypeROCL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>OrganizationTypeROCL.cs</LastGenOutput>
+      </None>
+      <Compile Update="OrganizationType\OrganizationTypeROCL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>OrganizationTypeROCL.tt</DependentUpon>
+      </Compile>
+      <None Update="OrganizationType\OrganizationTypeROR.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>OrganizationTypeROR.cs</LastGenOutput>
+      </None>
+      <Compile Update="OrganizationType\OrganizationTypeROR.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>OrganizationTypeROR.tt</DependentUpon>
+      </Compile>
+      <None Update="OrganizationType\OrganizationTypeRORL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>OrganizationTypeRORL.cs</LastGenOutput>
+      </None>
+      <Compile Update="OrganizationType\OrganizationTypeRORL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>OrganizationTypeRORL.tt</DependentUpon>
+      </Compile>
+      <None Update="Organization\OrganizationECL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>OrganizationECL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Organization\OrganizationECL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>OrganizationECL.tt</DependentUpon>
+      </Compile>
+      <None Update="Organization\OrganizationER.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>OrganizationER.cs</LastGenOutput>
+      </None>
+      <Compile Update="Organization\OrganizationER.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>OrganizationER.tt</DependentUpon>
+      </Compile>
+      <None Update="Organization\OrganizationERL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>OrganizationERL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Organization\OrganizationERL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>OrganizationERL.tt</DependentUpon>
+      </Compile>
+      <None Update="Organization\OrganizationROC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>OrganizationROC.cs</LastGenOutput>
+      </None>
+      <Compile Update="Organization\OrganizationROC.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>OrganizationROC.tt</DependentUpon>
+      </Compile>
+      <None Update="Organization\OrganizationROCL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>OrganizationROCL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Organization\OrganizationROCL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>OrganizationROCL.tt</DependentUpon>
+      </Compile>
+      <None Update="Organization\OrganizationROR.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>OrganizationROR.cs</LastGenOutput>
+      </None>
+      <Compile Update="Organization\OrganizationROR.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>OrganizationROR.tt</DependentUpon>
+      </Compile>
+      <None Update="Organization\OrganizationRORL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>OrganizationRORL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Organization\OrganizationRORL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>OrganizationRORL.tt</DependentUpon>
+      </Compile>
+      <Compile Update="OrganizationType\OrganizationTypeECL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>OrganizationTypeECL.tt</DependentUpon>
+      </Compile>
+      <Compile Update="OrganizationType\OrganizationTypeERL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>OrganizationTypeERL.tt</DependentUpon>
+      </Compile>
+      <Compile Update="OrganizationType\OrganizationTypeROCL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>OrganizationTypeROCL.tt</DependentUpon>
+      </Compile>
+      <Compile Update="OrganizationType\OrganizationTypeROR.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>OrganizationTypeROR.tt</DependentUpon>
+      </Compile>
+      <Compile Update="OrganizationType\OrganizationTypeRORL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>OrganizationTypeRORL.tt</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Organization" />
-      <Folder Include="OrganizationType" />
       <Folder Include="Payment" />
       <Folder Include="Phone" />
       <Folder Include="Sponsor" />

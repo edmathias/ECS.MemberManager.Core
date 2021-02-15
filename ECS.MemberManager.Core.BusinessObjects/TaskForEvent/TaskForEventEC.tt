@@ -110,7 +110,10 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             var objName = columnData.columnName.Replace("Id", string.Empty);
 #>
-                <#= objName #> = await <#= objName #>EC.Get<#= objName#>EC(childData.<#= objName #>);
+                if(childData.<#= objName #> != null )
+                {
+                    <#= objName #> = await <#= objName #>EC.Get<#= objName#>EC(childData.<#= objName #>);
+                }
 <#
         }
         else
@@ -138,7 +141,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             var objName = columnData.columnName.Replace("Id", string.Empty);
 #>
-                <#= objName #> = new <#= objName #>() { Id = <#= objName #>.Id },
+                <#= objName #> = (<#= objName #> != null ? new <#= objName #>() { Id = <#= objName #>.Id } : null),
 <#
         }
         else
@@ -171,7 +174,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             var objName = columnData.columnName.Replace("Id", string.Empty);
 #>
-                <#= objName #> = new <#= objName #>() { Id = <#= objName #>.Id },
+                <#= objName #> = (<#= objName #> != null ? new <#= objName #>() { Id = <#= objName #>.Id } : null),
 <#
         }
         else

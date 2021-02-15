@@ -4,7 +4,7 @@
 <#@ output extension=".cs" #>
 <#@ include file="..\MyT4Utilities.tt" #>
 <#
-    var objectName = "TaskForEvent";
+    var objectName = "OrganizationType";
 #>
 using System;
 using System.Threading.Tasks;

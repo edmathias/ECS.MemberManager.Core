@@ -1,6 +1,7 @@
-﻿using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿
+
+
+using System;
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -10,149 +11,139 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class OrganizationTypeEdit :  BusinessBase<OrganizationTypeEdit>
+    public partial class OrganizationTypeER : BusinessBase<OrganizationTypeER>
     {
-        #region Business Methods
+        #region Business Methods 
 
-        public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
-        public int Id
+         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
+        public virtual int Id 
         {
-            get => GetProperty(IdProperty);
-            private set => LoadProperty(IdProperty, value);
-        }
-
-        public static readonly PropertyInfo<string> NameProperty = RegisterProperty<string>(p => p.Name);
-        [Required,MaxLength(50)]
-        public string Name
-        {
-            get => GetProperty(NameProperty);
-            set => SetProperty(NameProperty, value);
-        }
-
-        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
-        public string Notes
-        {
-            get => GetProperty(NotesProperty);
-            set => SetProperty(NotesProperty, value);
-        }
-
-        public static readonly PropertyInfo<CategoryOfOrganizationEdit> CategoryOfOrganizationProperty = RegisterProperty<CategoryOfOrganizationEdit>(p => p.CategoryOfOrganization);
-        public CategoryOfOrganizationEdit CategoryOfOrganization
-        {
-            get => GetProperty(CategoryOfOrganizationProperty);
-            set => SetProperty(CategoryOfOrganizationProperty, value);
-        }
-
-        protected override void AddBusinessRules()
-        {
-            base.AddBusinessRules();
-
-            // TODO: add business rules
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
+            get => GetProperty(IdProperty); 
+            private set => LoadProperty(IdProperty, value); 
         
-        #endregion
+        }        
+        public static readonly PropertyInfo<CategoryOfOrganizationEC> CategoryOfOrganizationProperty = RegisterProperty<CategoryOfOrganizationEC>(o => o.CategoryOfOrganization);
+        public virtual CategoryOfOrganizationEC CategoryOfOrganization 
+        {
+            get => GetProperty(CategoryOfOrganizationProperty); 
+            set => SetProperty(CategoryOfOrganizationProperty, value); 
+        }        
+
+        public static readonly PropertyInfo<string> NameProperty = RegisterProperty<string>(o => o.Name);
+        public virtual string Name 
+        {
+            get => GetProperty(NameProperty); 
+            set => SetProperty(NameProperty, value); 
+        
+        }        
+        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
+        public virtual string Notes 
+        {
+            get => GetProperty(NotesProperty); 
+            set => SetProperty(NotesProperty, value); 
+        
+        }        
+        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
+        public virtual byte[] RowVersion 
+        {
+            get => GetProperty(RowVersionProperty); 
+            set => SetProperty(RowVersionProperty, value); 
+        
+        }        
+        #endregion 
 
         #region Factory Methods
 
-        public static async Task<OrganizationTypeEdit> NewOrganizationType()
+        public static async Task<OrganizationTypeER> NewOrganizationTypeER()
         {
-            return await DataPortal.CreateAsync<OrganizationTypeEdit>();
+            return await DataPortal.CreateAsync<OrganizationTypeER>();
         }
 
-        public static async Task<OrganizationTypeEdit> GetOrganizationType(int id)
+        public static async Task<OrganizationTypeER> GetOrganizationTypeER(int id)
         {
-            return await DataPortal.FetchAsync<OrganizationTypeEdit>(id);
+            return await DataPortal.FetchAsync<OrganizationTypeER>(id);
         }
 
-        public static async Task<OfficeEdit> GetOrganizationTypeEdit(Office childData)
+        public static async Task DeleteOrganizationTypeER(int id)
         {
-            return await DataPortal.FetchChildAsync<OrganizationTypeEdit>(childData);
+            await DataPortal.DeleteAsync<OrganizationTypeER>(id);
         }
-        
-        public static async Task DeleteOrganizationType(int id)
-        {
-            await DataPortal.DeleteAsync<OrganizationTypeEdit>(id);
-        }
-
 
         #endregion
 
-        #region Data Access
+        #region Data Access Methods
 
         [Fetch]
-        private void Fetch(int id)
+        private async Task Fetch(int id)
         {
-            using IDalManager dalManager = DalFactory.GetManager();
+            using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IOrganizationTypeDal>();
-            var data = dal.Fetch(id);
+            var data = await dal.Fetch(id);
+
             using (BypassPropertyChecks)
             {
                 Id = data.Id;
+                if(data.CategoryOfOrganization != null )
+                {
+                    CategoryOfOrganization = await CategoryOfOrganizationEC.GetCategoryOfOrganizationEC(data.CategoryOfOrganization);
+                }
                 Name = data.Name;
                 Notes = data.Notes;
-                // TODO: get categoryoforganization
+                RowVersion = data.RowVersion;
             }
-        }
-
-        [FetchChild]
-        private void Fetch(Office childData)
-        {
-            
         }
 
         [Insert]
-        private void Insert()
+        private async Task Insert()
         {
-            using IDalManager dalManager = DalFactory.GetManager();
+            using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IOrganizationTypeDal>();
-            
-            using (BypassPropertyChecks)
+            var data = new OrganizationType()
             {
-                var organizationTypeToInsert = new OrganizationType()
-                {
-                    Name = Name,
-                    Notes = Notes
-                };
+                Id = Id,
+                CategoryOfOrganization = (CategoryOfOrganization != null ? new CategoryOfOrganization() { Id = CategoryOfOrganization.Id } : null),
+                Name = Name,
+                Notes = Notes,
+                RowVersion = RowVersion,
+            };
 
-                Id = dal.Insert(organizationTypeToInsert);
-            }
+            var insertedObj = await dal.Insert(data);
+            Id = insertedObj.Id;
+            RowVersion = insertedObj.RowVersion;
         }
 
         [Update]
-        private void Update()
+        private async Task Update()
         {
-            using IDalManager dalManager = DalFactory.GetManager();
+            using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IOrganizationTypeDal>();
-            using (BypassPropertyChecks)
+
+            var objToUpdate = new OrganizationType()
             {
-                // format dto and update dal 
-                var organizationTypeToUpdate = dal.Fetch(Id);
-                organizationTypeToUpdate.Name = Name;
-                organizationTypeToUpdate.Notes = Notes;
-                
-                dal.Update(organizationTypeToUpdate);
-            }
+                Id = Id,
+                CategoryOfOrganization = (CategoryOfOrganization != null ? new CategoryOfOrganization() { Id = CategoryOfOrganization.Id } : null),
+                Name = Name,
+                Notes = Notes,
+                RowVersion = RowVersion,
+            };
+
+            var updatedObj = await dal.Update(objToUpdate);
+            RowVersion = updatedObj.RowVersion;
         }
 
         [DeleteSelf]
-        private void DeleteSelf()
+        private async Task DeleteSelf()
         {
-            Delete(this.Id);
+            await Delete(Id);
         }
-
+        
         [Delete]
-        private void Delete(int id)
+        private async Task Delete(int id)
         {
-            using IDalManager dalManager = DalFactory.GetManager();
+            using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IOrganizationTypeDal>();
-
-            dal.Delete(id);
+           
+            await dal.Delete(id);
         }
 
 

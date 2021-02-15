@@ -1,57 +1,88 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Csla;
 using Csla.Rules;
+using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Mock;
+using ECS.MemberManager.Core.EF.Domain;
+using Microsoft.Extensions.Configuration;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class OrganizationTypeER_Tests
+    public class OrganizationTypeER_Tests 
     {
+        private IConfigurationRoot _config = null;
+        private bool IsDatabaseBuilt = false;
+
         public OrganizationTypeER_Tests()
         {
-            MockDb.ResetMockDb();
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            _config = builder.Build();
+            var testLibrary = _config.GetValue<string>("TestLibrary");
+
+            if (testLibrary == "Mock")
+                MockDb.ResetMockDb();
+            else
+            {
+                if (!IsDatabaseBuilt)
+                {
+                    var adoDb = new ADODb();
+                    adoDb.BuildMemberManagerADODb();
+                    IsDatabaseBuilt = true;
+                }
+            }
         }
         
        [Fact]
-        public async Task TestOrganizationTypeER_Get()
+        public async void OrganizationTypeER_Get()
         {
-            var organizationType = await OrganizationTypeER.GetOrganizationType(1);
-
+            var organizationType = await OrganizationTypeER.GetOrganizationTypeER(1);
+            
+            Assert.NotNull(organizationType.CategoryOfOrganization);
             Assert.Equal(1, organizationType.Id);
             Assert.True(organizationType.IsValid);
         }
 
         [Fact]
-        public async Task TestOrganizationTypeER_New()
+        public async void OrganizationTypeER_GetNewObject()
         {
-            var organizationType = await OrganizationTypeER.NewOrganizationType();
+            var organizationType = await OrganizationTypeER.NewOrganizationTypeER();
 
             Assert.NotNull(organizationType);
             Assert.False(organizationType.IsValid);
         }
 
         [Fact]
-        public async Task TestOrganizationTypeER_Update()
+        public async void OrganizationTypeER_UpdateExistingObjectInDatabase()
         {
-            var organizationType = await OrganizationTypeER.GetOrganizationType(1);
-            organizationType.Notes = "These are updated Notes";
+            var updatedName = "new name";
+            var organizationType = await OrganizationTypeER.GetOrganizationTypeER(1);
+            organizationType.Name = updatedName;
             
-            var result = organizationType.Save();
+            var result = await organizationType.SaveAsync();
 
             Assert.NotNull(result);
-            Assert.Equal("These are updated Notes",result.Notes);
+            Assert.Equal(updatedName,result.Name);
         }
 
         [Fact]
-        public async Task TestOrganizationTypeER_Insert()
+        public async Task OrganizationTypeER_InsertNewObjectIntoDatabase()
         {
-            var organizationType = await OrganizationTypeER.NewOrganizationType();
-            organizationType.Name = "Organization name";
-            organizationType.Notes = "this is a great organization";
+            var organizationType = await OrganizationTypeER.NewOrganizationTypeER();
+            organizationType.Name = "inserted name";
+            organizationType.CategoryOfOrganization = await CategoryOfOrganizationEC.GetCategoryOfOrganizationEC(new CategoryOfOrganization
+            {
+                Id = 1,
+                Category = "Category name",
+                DisplayOrder = 1
+            });
 
-            var savedOrganizationType = organizationType.Save();
+            var savedOrganizationType = await organizationType.SaveAsync();
            
             Assert.NotNull(savedOrganizationType);
             Assert.IsType<OrganizationTypeER>(savedOrganizationType);
@@ -59,56 +90,57 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestOrganizationTypeER_Delete()
+        public async Task OrganizationTypeER_DeleteObjectFromDatabase()
         {
-            int beforeCount = MockDb.OrganizationTypes.Count();
+            const int ID_TO_DELETE = 99;
             
-            await OrganizationTypeER.DeleteOrganizationType(99);
+            await OrganizationTypeER.DeleteOrganizationTypeER(ID_TO_DELETE);
             
-            Assert.NotEqual(beforeCount,MockDb.OrganizationTypes.Count());
+            var categoryToCheck = await Assert.ThrowsAsync<Csla.DataPortalException>
+                (() => OrganizationTypeER.GetOrganizationTypeER(ID_TO_DELETE));        
         }
         
         // test invalid state 
         [Fact]
-        public async Task TestOrganizationTypeER_NameRequired()
+        public async Task OrganizationTypeER_NameRequired() 
         {
-            var organizationType = await OrganizationTypeER.NewOrganizationType();
-            organizationType.Name = "make valid";
+            var organizationType = await OrganizationTypeER.NewOrganizationTypeER();
+            organizationType.Name = "Make it valid";
             var isObjectValidInit = organizationType.IsValid;
-            organizationType.Name = string.Empty;
+            organizationType.Name = String.Empty;
 
             Assert.NotNull(organizationType);
             Assert.True(isObjectValidInit);
             Assert.False(organizationType.IsValid);
- 
         }
        
         [Fact]
-        public async Task TestOrganizationTypeER_DescriptionExceedsMaxLengthOf50()
+        public async Task OrganizationTypeER_NameExceedsMaxLengthOf50()
         {
-            var organizationType = await OrganizationTypeER.NewOrganizationType();
-            organizationType.Name = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor "+
-                                       "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis "+
-                                       "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "+
-                                       "Duis aute irure dolor in reprehenderit";
+            var organizationType = await OrganizationTypeER.NewOrganizationTypeER();
+            organizationType.Name = "valid name";
+            Assert.True(organizationType.IsValid);
 
+            organizationType.Name =
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis ";
+
+            Assert.NotNull(organizationType);
             Assert.False(organizationType.IsValid);
-            Assert.Equal("The field Name must be a string or array type with a maximum length of '50'.", 
+            Assert.Equal("Name can not exceed 50 characters",
                 organizationType.BrokenRulesCollection[0].Description);
  
         }        
         // test exception if attempt to save in invalid state
 
         [Fact]
-        public async Task TestOrganizationTypeER_TestInvalidSave()
+        public async Task OrganizationTypeER_TestInvalidSave()
         {
-            var organizationType = await OrganizationTypeER.NewOrganizationType();
-            OrganizationTypeER savedOrganizationType = null;
-            
+            var organizationType = await OrganizationTypeER.NewOrganizationTypeER();
+            organizationType.Name = String.Empty;
+                
             Assert.False(organizationType.IsValid);
-            Assert.Throws<ValidationException>(() => savedOrganizationType =  organizationType.Save() );
+            Assert.Throws<Csla.Rules.ValidationException>(() => organizationType.Save());
         }
-        
-
     }
 }

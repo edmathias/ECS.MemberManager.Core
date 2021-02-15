@@ -89,7 +89,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                             DateOfFirstContact = DateTime.Now,
                             LastUpdatedBy = "edm",
                             LastUpdatedDate = DateTime.Now,
-                            OrganizationTypeId = 1
+                            OrganizationType = OrganizationTypes.First(ot => ot.Id == 1 )
                         }
                     },
                 },
@@ -103,7 +103,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                         new Organization()
                         {
                             Id=1,
-                            OrganizationTypeId = 1,
+                            OrganizationType = OrganizationTypes.First(ot => ot.Id == 1 ),
                             Name = "test org",
                             DateOfFirstContact = DateTime.Now,
                             LastUpdatedBy = "edm",
@@ -360,8 +360,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 {
                     Id = 1,
                     Addresses = new List<Address>(),
-                    CategoryOfOrganizations = new List<CategoryOfOrganization>(),
-                    OrganizationTypeId = 1,
+                    OrganizationType = OrganizationTypes.First(ot => ot.Id == 1),
                     DateOfFirstContact = DateTime.Now,
                     EMails = new List<EMail>(),
                     LastUpdatedBy = "edm",
@@ -371,8 +370,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 {
                     Id = 2,
                     Addresses = new List<Address>(),
-                    CategoryOfOrganizations = new List<CategoryOfOrganization>(),
-                    OrganizationTypeId = 2, 
+                    OrganizationType = OrganizationTypes.First(ot => ot.Id == 2),
                     DateOfFirstContact = DateTime.Now,
                     EMails = new List<EMail>(),
                     LastUpdatedBy = "edm",
@@ -382,8 +380,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 {
                     Id = 99,
                     Addresses = new List<Address>(),
-                    CategoryOfOrganizations = new List<CategoryOfOrganization>(),
-                    OrganizationTypeId = 1, 
+                    OrganizationType = OrganizationTypes.First(ot => ot.Id == 2),
                     DateOfFirstContact = DateTime.Now,
                     EMails = new List<EMail>(),
                     LastUpdatedBy = "edm",

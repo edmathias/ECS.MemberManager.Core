@@ -4,7 +4,7 @@
 <#@ output extension=".cs" #>
 <#@ include file="..\MyT4Utilities.tt" #>
 <#
-    var objectName = "TaskForEvent";
+    var objectName = "OrganizationType";
 #>
 using System;
 using System.Threading.Tasks;
@@ -16,7 +16,7 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class <#= objectName #>ER : BusinessBase<<#= objectName #>ER>
+    public partial class <#= objectName #>EC : BusinessBase<<#= objectName #>EC>
     {
         #region Business Methods 
 
@@ -46,35 +46,35 @@ namespace ECS.MemberManager.Core.BusinessObjects
             var objType = newOutputName.Replace(".Id", string.Empty);
 #>
         public static readonly PropertyInfo<<#= objType #>EC> <#= objType #>Property = RegisterProperty<<#= objType #>EC>(o => o.<#= objType #>);
-        public virtual <#= objType #>EC <#= objType  #> 
+        public <#= objType #>EC <#= objType  #> 
         {
             get => GetProperty(<#= objType #>Property); 
-            set => SetProperty(<#= objType #>Property, value); 
+            set => SetProperty(<#= objType  #>Property, value); 
         }        
 
 <#            
         } // end if 
         else
         { 
- #>
+            #>
         public static readonly PropertyInfo<<#= columnData.dotNetType #>> <#= columnData.columnName #>Property = RegisterProperty<<#= columnData.dotNetType	 #>>(o => o.<#= columnData.columnName #>);
         public virtual <#= columnData.dotNetType #> <#= columnData.columnName #> 
         {
             get => GetProperty(<#= columnData.columnName #>Property); 
- <#
+<#
             if (columnData.isPrimaryKey)
             { 
 #>
-           private set => LoadProperty(<#= columnData.columnName #>Property, value); 
+            private set => LoadProperty(<#= columnData.columnName #>Property, value); 
 <#                
             }
             else
             {
 #>
-           set => SetProperty(<#= columnData.columnName #>Property, value); 
+            set => SetProperty(<#= columnData.columnName #>Property, value); 
 <#                
             }
-#>        
+#>   
         }        
 <#
         }  // end else
@@ -84,32 +84,23 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
-        public static async Task<<#= objectName #>ER> New<#= objectName #>ER()
+        public static async Task<<#= objectName #>EC> New<#= objectName #>EC()
         {
-            return await DataPortal.CreateAsync<<#= objectName #>ER>();
+            return await DataPortal.CreateChildAsync<<#= objectName #>EC>();
         }
 
-        public static async Task<<#= objectName #>ER> Get<#= objectName #>ER(int id)
+        public static async Task<<#= objectName #>EC> Get<#= objectName #>EC(<#=objectName#> childData)
         {
-            return await DataPortal.FetchAsync<<#= objectName #>ER>(id);
-        }
-
-        public static async Task Delete<#= objectName #>ER(int id)
-        {
-            await DataPortal.DeleteAsync<<#= objectName #>ER>(id);
+            return await DataPortal.FetchChildAsync<<#= objectName #>EC>(childData);
         }
 
         #endregion
 
         #region Data Access Methods
 
-        [Fetch]
-        private async Task Fetch(int id)
+        [FetchChild]
+        private async Task Fetch(<#= objectName #> childData)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<I<#= objectName #>Dal>();
-            var data = await dal.Fetch(id);
-
             using (BypassPropertyChecks)
             {
 <#
@@ -119,16 +110,16 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             var objName = columnData.columnName.Replace("Id", string.Empty);
 #>
-                if(data.<#= objName #> != null )
+                if(childData.<#= objName #> != null )
                 {
-                    <#= objName #> = await <#= objName #>EC.Get<#= objName#>EC(data.<#= objName #>);
+                    <#= objName #> = await <#= objName #>EC.Get<#= objName#>EC(childData.<#= objName #>);
                 }
 <#
         }
         else
         {
 #>
-                <#= columnData.columnName #> = data.<#= columnData.columnName #>;
+                <#= columnData.columnName #> = childData.<#= columnData.columnName #>;
 <#
         }
     }
@@ -136,7 +127,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             }
         }
 
-        [Insert]
+        [InsertChild]
         private async Task Insert()
         {
             using var dalManager = DalFactory.GetManager();
@@ -168,7 +159,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             RowVersion = insertedObj.RowVersion;
         }
 
-        [Update]
+        [UpdateChild]
         private async Task Update()
         {
             using var dalManager = DalFactory.GetManager();
@@ -200,13 +191,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
             RowVersion = updatedObj.RowVersion;
         }
 
-        [DeleteSelf]
+        [DeleteSelfChild]
         private async Task DeleteSelf()
         {
             await Delete(Id);
         }
         
-        [Delete]
         private async Task Delete(int id)
         {
             using var dalManager = DalFactory.GetManager();

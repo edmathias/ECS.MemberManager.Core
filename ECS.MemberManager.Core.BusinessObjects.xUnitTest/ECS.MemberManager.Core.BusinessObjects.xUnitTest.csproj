@@ -36,7 +36,6 @@
       <Folder Include="ContactForSponsor" />
       <Folder Include="MemberInfo" />
       <Folder Include="Organization" />
-      <Folder Include="OrganizationType" />
       <Folder Include="Payment" />
       <Folder Include="Phone" />
     </ItemGroup>
@@ -45,7 +44,6 @@
       <Compile Remove="Payment\PaymentER_Tests.cs" />
       <Compile Remove="ContactForSponsor\ContactForSponsorERL_Tests.cs" />
       <Compile Remove="Organization\OrganizationER_Tests.cs" />
-      <Compile Remove="OrganizationType\OrganizationTypeER_Tests.cs" />
       <Compile Remove="Address\AddressEditChild_Tests.cs" />
       <Compile Remove="Address\AddressInfoChildTests.cs" />
       <Compile Remove="EMailType\EMailTypeEdit_Tests.cs" />
@@ -99,7 +97,6 @@
       <Compile Remove="Organization\OrganizationEditList_Tests.cs" />
       <Compile Remove="Organization\OrganizationInfo_Tests.cs" />
       <Compile Remove="Organization\OrganizationInfoList_Tests.cs" />
-      <Compile Remove="OrganizationType\OrganizationTypeEdit_Tests.cs" />
       <Compile Remove="OrganizationType\OrganizationTypeEditList_Tests.cs" />
       <Compile Remove="OrganizationType\OrganizationTypeInfo_Tests.cs" />
       <Compile Remove="OrganizationType\OrganizationTypeInfoList_Tests.cs" />

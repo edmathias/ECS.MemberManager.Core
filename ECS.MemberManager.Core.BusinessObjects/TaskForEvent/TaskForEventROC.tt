@@ -103,7 +103,10 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             var objName = columnData.columnName.Replace("Id", string.Empty);
 #>
-            <#= objName #> = await <#= objName #>ROC.Get<#= objName#>ROC(childData.<#= objName #>);
+            if(childData.<#= objName #> != null )
+            {
+                <#= objName #> = await <#= objName #>ROC.Get<#= objName#>ROC(childData.<#= objName #>);
+            }
 <#
         }
         else

@@ -12,21 +12,16 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class OrganizationECL : BusinessListBase<OrganizationECL, OrganizationEC>
+    public class OrganizationROCL : ReadOnlyListBase<OrganizationROCL, OrganizationROC>
     {
         public static void AddObjectAuthorizationRules()
         {
             // TODO: add object-level authorization rules
         }
 
-        internal static async Task<OrganizationECL> NewOrganizationECL()
+        internal static async Task<OrganizationROCL> GetOrganizationROCL(List<Organization> childData)
         {
-            return await DataPortal.CreateAsync<OrganizationECL>();
-        }
-
-        internal static async Task<OrganizationECL> GetOrganizationECL(List<Organization> childData)
-        {
-            return await DataPortal.FetchAsync<OrganizationECL>(childData);
+            return await DataPortal.FetchAsync<OrganizationROCL>(childData);
         }
 
         [Fetch]
@@ -34,18 +29,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             using (LoadListMode)
             {
-                foreach (var Organization in childData)
+                foreach (var objectToFetch in childData)
                 {
-                    var OrganizationToAdd = await OrganizationEC.GetOrganizationEC(Organization);
+                    var OrganizationToAdd = await OrganizationROC.GetOrganizationROC(objectToFetch);
                     Add(OrganizationToAdd);
                 }
             }
-        }
-
-        [Update]
-        private void Update()
-        {
-            Child_Update();
         }
     }
 }
