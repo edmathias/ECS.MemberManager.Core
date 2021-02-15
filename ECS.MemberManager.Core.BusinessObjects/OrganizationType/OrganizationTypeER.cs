@@ -125,6 +125,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 Name = Name,
                 Notes = Notes,
                 RowVersion = RowVersion,
+        
             };
 
             var updatedObj = await dal.Update(objToUpdate);
