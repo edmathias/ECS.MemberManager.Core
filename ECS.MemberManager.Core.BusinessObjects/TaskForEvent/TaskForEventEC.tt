@@ -188,13 +188,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
             RowVersion = updatedObj.RowVersion;
         }
 
-        [DeleteSelf]
+        [DeleteSelfChild]
         private async Task DeleteSelf()
         {
             await Delete(Id);
         }
         
-        [Delete]
         private async Task Delete(int id)
         {
             using var dalManager = DalFactory.GetManager();

@@ -24,9 +24,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
             // TODO: add object-level authorization rules
         }
 
-        internal static async Task<<#= objectName #>RORL> Get<#= objectName #>RORL(List<<#= objectName #>> childData)
+        internal static async Task<<#= objectName #>RORL> Get<#= objectName #>RORL()
         {
-            return await DataPortal.FetchAsync<<#= objectName #>RORL>(childData);
+            return await DataPortal.FetchAsync<<#= objectName #>RORL>();
         }
 
         [Fetch]

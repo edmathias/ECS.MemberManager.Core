@@ -9,7 +9,7 @@
 
 
 <#+
-    public struct ColumnData
+    public class ColumnData
     {
         public string columnName;
         public string dotNetType;

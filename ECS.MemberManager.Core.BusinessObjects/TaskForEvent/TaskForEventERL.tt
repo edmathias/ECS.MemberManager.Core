@@ -23,24 +23,40 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             // TODO: add object-level authorization rules
         }
-
-        internal static async Task<<#= objectName #>ERL> Get<#= objectName #>ERL(List<<#= objectName #>> childData)
+        
+        public static async Task<TaskForEventERL> NewTaskForEventERL()
         {
-            return await DataPortal.FetchAsync<<#= objectName #>ERL>(childData);
+            return await DataPortal.CreateAsync<TaskForEventERL>();
+        }
+
+        internal static async Task<<#= objectName #>ERL> Get<#= objectName #>ERL()
+        {
+            return await DataPortal.FetchAsync<<#= objectName #>ERL>();
         }
 
         [Fetch]
-        private async Task Fetch(List<<#= objectName #>> childData)
+        private async Task Fetch()
         {
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<ITaskForEventDal>();
+            var childData = await dal.Fetch();
+
             using (LoadListMode)
             {
-                foreach (var <#= objectName #> in childData)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var <#= objectName #>ToAdd = await <#= objectName #>EC.Get<#= objectName #>EC(<#= objectName #>);
-                    Add(<#= objectName #>ToAdd);
+                    var objectToAdd = await <#= objectName #>EC.Get<#= objectName #>EC(domainObjToAdd);
+                    Add(objectToAdd);
                 }
             }
         }
+
+        [Update]
+        private void Update()
+        {
+            Child_Update();
+        }
+        
     }
 }
 

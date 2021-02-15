@@ -74,6 +74,22 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
 
             InsertPaymentTypes();
 
+            InsertTasksForEvents();
+
+        }
+
+        private static void InsertTasksForEvents()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("SET IDENTITY_INSERT dbo.TaskForEvents ON;");
+            sb.AppendLine("INSERT INTO dbo.TaskForEvents(Id, EventId, TaskName, PlannedDate, ActualDate, Information, LastUpdatedBy, LastUpdatedDate, Notes)");
+            sb.AppendLine("SELECT 1, 1, N'Task Name 1', '20210331', '20210329', N'information line', N'edm', '20210214', N'notes for 1' UNION ALL");
+            sb.AppendLine("SELECT 2, 2, N'Task name 2', '20210415', '20210430', N'information line 2', N'edm', '20210101', N'notes for 2' UNION ALL");
+            sb.AppendLine("SELECT 99, 1, N'Task to delete', '20210930', '20200915', N'information to delete', N'edm', '20210115', N'delete this'");
+            sb.AppendLine("SET IDENTITY_INSERT dbo.TaskForEvents OFF;");
+            sb.AppendLine("DBCC CHECKIDENT ('TaskForEvents', RESEED, 2)");
+            
+            _db.Execute(sb.ToString());            
         }
 
         private static void InsertPaymentTypes()

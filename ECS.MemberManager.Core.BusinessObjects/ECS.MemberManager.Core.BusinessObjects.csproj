@@ -64,8 +64,55 @@
       <Compile Remove="OrganizationType\OrganizationTypeEditList.cs" />
       <Compile Remove="OrganizationType\OrganizationTypeInfo.cs" />
       <Compile Remove="OrganizationType\OrganizationTypeInfoList.cs" />
-      <None Remove="TaskForEvent\TaskForEventER.tt" />
       <Compile Remove="TaskForEvent\EventER.cs" />
+      <None Update="TaskForEvent\TaskForEventERBase.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>TaskForEventERBase.cs</LastGenOutput>
+      </None>
+      <Compile Update="TaskForEvent\TaskForEventERBase.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>TaskForEventERBase.tt</DependentUpon>
+      </Compile>
+      <None Update="TaskForEvent\TaskForEventER.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>TaskForEventER.cs</LastGenOutput>
+      </None>
+      <Compile Update="TaskForEvent\TaskForEventEC.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>TaskForEventEC.tt</DependentUpon>
+      </Compile>
+      <Compile Update="TaskForEvent\TaskForEventERL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>TaskForEventERL.tt</DependentUpon>
+      </Compile>
+      <Compile Update="TaskForEvent\TaskForEventECL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>TaskForEventECL.tt</DependentUpon>
+      </Compile>
+      <Compile Update="TaskForEvent\TaskForEventROC.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>TaskForEventROC.tt</DependentUpon>
+      </Compile>
+      <Compile Update="TaskForEvent\TaskForEventROCL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>TaskForEventROCL.tt</DependentUpon>
+      </Compile>
+      <Compile Update="TaskForEvent\TaskForEventROR.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>TaskForEventROR.tt</DependentUpon>
+      </Compile>
+      <Compile Update="TaskForEvent\TaskForEventRORL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>TaskForEventRORL.tt</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
@@ -90,10 +137,6 @@
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>TaskForEventECL.cs</LastGenOutput>
       </Content>
-      <Content Include="TaskForEvent\TaskForEventER.tt">
-        <Generator>TextTemplatingFileGenerator</Generator>
-        <LastGenOutput>TaskForEventER.cs</LastGenOutput>
-      </Content>
       <Content Include="TaskForEvent\TaskForEventERL.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>TaskForEventERL.cs</LastGenOutput>
@@ -113,6 +156,10 @@
       <Content Include="TaskForEvent\TaskForEventRORL.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>TaskForEventRORL.cs</LastGenOutput>
+      </Content>
+      <Content Update="TaskForEvent\TaskForEventERBase.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>TaskForEventERBase.cs</LastGenOutput>
       </Content>
     </ItemGroup>
 
