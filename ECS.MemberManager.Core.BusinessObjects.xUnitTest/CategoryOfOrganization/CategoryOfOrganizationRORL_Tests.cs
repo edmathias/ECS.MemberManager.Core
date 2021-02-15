@@ -34,9 +34,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        private async void AddressRORL_TestGetAddressRORL()
+        private async void CategoryOfOrganizationRORL_TestGetCategoryOfOrganizationRORL()
         {
-            var categoryOfOrganizationTypeInfoList = await AddressRORL.GetAddressRORL();
+            var categoryOfOrganizationTypeInfoList = await CategoryOfOrganizationRORL.GetCategoryOfOrganizationRORL();
             
             Assert.NotNull(categoryOfOrganizationTypeInfoList);
             Assert.True(categoryOfOrganizationTypeInfoList.IsReadOnly);

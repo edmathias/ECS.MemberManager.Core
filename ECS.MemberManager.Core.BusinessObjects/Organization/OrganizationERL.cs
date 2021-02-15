@@ -19,9 +19,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
             // TODO: add object-level authorization rules
         }
         
-        public static async Task<TaskForEventERL> NewTaskForEventERL()
+        public static async Task<OrganizationERL> NewOrganizationERL()
         {
-            return await DataPortal.CreateAsync<TaskForEventERL>();
+            return await DataPortal.CreateAsync<OrganizationERL>();
         }
 
         internal static async Task<OrganizationERL> GetOrganizationERL()

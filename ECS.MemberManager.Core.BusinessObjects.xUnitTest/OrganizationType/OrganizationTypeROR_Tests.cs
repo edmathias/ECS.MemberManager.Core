@@ -1,25 +1,31 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Csla;
+using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Mock;
+using ECS.MemberManager.Core.EF.Domain;
 using Microsoft.Extensions.Configuration;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class OrganizationTypeInfoList_Tests
+    public class OrganizationTypeROR_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
 
-        public OrganizationTypeInfoList_Tests()
+        public OrganizationTypeROR_Tests()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
+
+            if (testLibrary == "Mock")
                 MockDb.ResetMockDb();
             else
             {
@@ -31,15 +37,14 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 }
             }
         }
-        
+
         [Fact]
-        private async void OrganizationTypeInfoList_TestGetOrganizationTypeInfoList()
+        public async void OrganizationTypeROR_Get()
         {
-            var membershipTypeEditList = await OrganizationTypeInfoList.GetOrganizationTypeInfoList();
+            var organizationType = await OrganizationTypeROR.GetOrganizationTypeROR(1);
 
-            Assert.NotNull(membershipTypeEditList);
-            Assert.Equal(3, membershipTypeEditList.Count);
+            Assert.NotNull(organizationType.CategoryOfOrganization);
+            Assert.Equal(1, organizationType.Id);
         }
-
     }
 }
