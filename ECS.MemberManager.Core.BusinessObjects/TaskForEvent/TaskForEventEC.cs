@@ -89,6 +89,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
+        public static async Task<TaskForEventEC> NewTaskForEventEC()
+        {
+            return await DataPortal.CreateChildAsync<TaskForEventEC>();
+        }
+        public static async Task<TaskForEventEC> GetTaskForEventEC(TaskForEvent childData)
+        {
+            return await DataPortal.FetchChildAsync<TaskForEventEC>(childData);
+        }  
+
 
 
         #endregion

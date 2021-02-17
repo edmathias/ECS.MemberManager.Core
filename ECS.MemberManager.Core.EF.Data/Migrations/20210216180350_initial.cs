@@ -76,24 +76,6 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EMails",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    EMailTypeId = table.Column<int>(type: "int", nullable: false),
-                    EMailAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastUpdatedBy = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    LastUpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EMails", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "EMailTypes",
                 columns: table => new
                 {
@@ -106,6 +88,25 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_EMailTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EventMembers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MemberInfoId = table.Column<int>(type: "int", nullable: false),
+                    EventId = table.Column<int>(type: "int", nullable: false),
+                    RoleId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    LastUpdatedBy = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    LastUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EventMembers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -270,9 +271,9 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CategoryOfOrganizationId = table.Column<int>(type: "int", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Notes = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    CategoryOfOrganizationId = table.Column<int>(type: "int", nullable: true),
                     RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
                 },
                 constraints: table =>
@@ -282,6 +283,30 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                         name: "FK_OrganizationTypes_CategoryOfOrganizations_CategoryOfOrganizationId",
                         column: x => x.CategoryOfOrganizationId,
                         principalTable: "CategoryOfOrganizations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EMails",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EMailAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastUpdatedBy = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    LastUpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EMailTypeId = table.Column<int>(type: "int", nullable: true),
+                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EMails", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EMails_EMailTypes_EMailTypeId",
+                        column: x => x.EMailTypeId,
+                        principalTable: "EMailTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -346,6 +371,38 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Organizations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    DateOfFirstContact = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastUpdatedBy = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    LastUpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    OrganizationTypeId = table.Column<int>(type: "int", nullable: true),
+                    CategoryOfOrganizationId = table.Column<int>(type: "int", nullable: true),
+                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Organizations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Organizations_CategoryOfOrganizations_CategoryOfOrganizationId",
+                        column: x => x.CategoryOfOrganizationId,
+                        principalTable: "CategoryOfOrganizations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Organizations_OrganizationTypes_OrganizationTypeId",
+                        column: x => x.OrganizationTypeId,
+                        principalTable: "OrganizationTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Persons",
                 columns: table => new
                 {
@@ -382,28 +439,75 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Organizations",
+                name: "AddressOrganization",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    OrganizationTypeId = table.Column<int>(type: "int", nullable: true),
-                    DateOfFirstContact = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastUpdatedBy = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    LastUpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
+                    AddressesId = table.Column<int>(type: "int", nullable: false),
+                    OrganizationsId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Organizations", x => x.Id);
+                    table.PrimaryKey("PK_AddressOrganization", x => new { x.AddressesId, x.OrganizationsId });
                     table.ForeignKey(
-                        name: "FK_Organizations_OrganizationTypes_OrganizationTypeId",
-                        column: x => x.OrganizationTypeId,
-                        principalTable: "OrganizationTypes",
+                        name: "FK_AddressOrganization_Addresses_AddressesId",
+                        column: x => x.AddressesId,
+                        principalTable: "Addresses",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AddressOrganization_Organizations_OrganizationsId",
+                        column: x => x.OrganizationsId,
+                        principalTable: "Organizations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EMailOrganization",
+                columns: table => new
+                {
+                    EMailsId = table.Column<int>(type: "int", nullable: false),
+                    OrganizationsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EMailOrganization", x => new { x.EMailsId, x.OrganizationsId });
+                    table.ForeignKey(
+                        name: "FK_EMailOrganization_EMails_EMailsId",
+                        column: x => x.EMailsId,
+                        principalTable: "EMails",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EMailOrganization_Organizations_OrganizationsId",
+                        column: x => x.OrganizationsId,
+                        principalTable: "Organizations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrganizationPhone",
+                columns: table => new
+                {
+                    OrganizationsId = table.Column<int>(type: "int", nullable: false),
+                    PhonesId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrganizationPhone", x => new { x.OrganizationsId, x.PhonesId });
+                    table.ForeignKey(
+                        name: "FK_OrganizationPhone_Organizations_OrganizationsId",
+                        column: x => x.OrganizationsId,
+                        principalTable: "Organizations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrganizationPhone_Phones_PhonesId",
+                        column: x => x.PhonesId,
+                        principalTable: "Phones",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -487,7 +591,7 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                     PersonId = table.Column<int>(type: "int", nullable: true),
                     MemberNumber = table.Column<string>(type: "nvarchar(35)", maxLength: 35, nullable: true),
                     DateFirstJoined = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PrivacyId = table.Column<int>(type: "int", nullable: true),
+                    PrivacyLevelId = table.Column<int>(type: "int", nullable: true),
                     MemberStatusId = table.Column<int>(type: "int", nullable: true),
                     MembershipTypeId = table.Column<int>(type: "int", nullable: true),
                     LastUpdatedBy = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
@@ -517,8 +621,8 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_MemberInfo_PrivacyLevels_PrivacyId",
-                        column: x => x.PrivacyId,
+                        name: "FK_MemberInfo_PrivacyLevels_PrivacyLevelId",
+                        column: x => x.PrivacyLevelId,
                         principalTable: "PrivacyLevels",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -615,133 +719,6 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TermInOffices",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PersonId = table.Column<int>(type: "int", nullable: true),
-                    OfficeId = table.Column<int>(type: "int", nullable: true),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastUpdatedBy = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    LastUpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TermInOffices", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_TermInOffices_Offices_OfficeId",
-                        column: x => x.OfficeId,
-                        principalTable: "Offices",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_TermInOffices_Persons_PersonId",
-                        column: x => x.PersonId,
-                        principalTable: "Persons",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AddressOrganization",
-                columns: table => new
-                {
-                    AddressesId = table.Column<int>(type: "int", nullable: false),
-                    OrganizationsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AddressOrganization", x => new { x.AddressesId, x.OrganizationsId });
-                    table.ForeignKey(
-                        name: "FK_AddressOrganization_Addresses_AddressesId",
-                        column: x => x.AddressesId,
-                        principalTable: "Addresses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_AddressOrganization_Organizations_OrganizationsId",
-                        column: x => x.OrganizationsId,
-                        principalTable: "Organizations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CategoryOfOrganizationOrganization",
-                columns: table => new
-                {
-                    CategoryOfOrganizationsId = table.Column<int>(type: "int", nullable: false),
-                    OrganizationsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CategoryOfOrganizationOrganization", x => new { x.CategoryOfOrganizationsId, x.OrganizationsId });
-                    table.ForeignKey(
-                        name: "FK_CategoryOfOrganizationOrganization_CategoryOfOrganizations_CategoryOfOrganizationsId",
-                        column: x => x.CategoryOfOrganizationsId,
-                        principalTable: "CategoryOfOrganizations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CategoryOfOrganizationOrganization_Organizations_OrganizationsId",
-                        column: x => x.OrganizationsId,
-                        principalTable: "Organizations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "EMailOrganization",
-                columns: table => new
-                {
-                    EMailsId = table.Column<int>(type: "int", nullable: false),
-                    OrganizationsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EMailOrganization", x => new { x.EMailsId, x.OrganizationsId });
-                    table.ForeignKey(
-                        name: "FK_EMailOrganization_EMails_EMailsId",
-                        column: x => x.EMailsId,
-                        principalTable: "EMails",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_EMailOrganization_Organizations_OrganizationsId",
-                        column: x => x.OrganizationsId,
-                        principalTable: "Organizations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "OrganizationPhone",
-                columns: table => new
-                {
-                    OrganizationsId = table.Column<int>(type: "int", nullable: false),
-                    PhonesId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OrganizationPhone", x => new { x.OrganizationsId, x.PhonesId });
-                    table.ForeignKey(
-                        name: "FK_OrganizationPhone_Organizations_OrganizationsId",
-                        column: x => x.OrganizationsId,
-                        principalTable: "Organizations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_OrganizationPhone_Phones_PhonesId",
-                        column: x => x.PhonesId,
-                        principalTable: "Phones",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Sponsors",
                 columns: table => new
                 {
@@ -779,32 +756,32 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EventMembers",
+                name: "TermInOffices",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    MemberInfoId = table.Column<int>(type: "int", nullable: true),
-                    EventId = table.Column<int>(type: "int", nullable: true),
-                    Role = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    PersonId = table.Column<int>(type: "int", nullable: true),
+                    OfficeId = table.Column<int>(type: "int", nullable: true),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastUpdatedBy = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    LastUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastUpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EventMembers", x => x.Id);
+                    table.PrimaryKey("PK_TermInOffices", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EventMembers_Events_EventId",
-                        column: x => x.EventId,
-                        principalTable: "Events",
+                        name: "FK_TermInOffices_Offices_OfficeId",
+                        column: x => x.OfficeId,
+                        principalTable: "Offices",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_EventMembers_MemberInfo_MemberInfoId",
-                        column: x => x.MemberInfoId,
-                        principalTable: "MemberInfo",
+                        name: "FK_TermInOffices_Persons_PersonId",
+                        column: x => x.PersonId,
+                        principalTable: "Persons",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -815,14 +792,14 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    SponsorId = table.Column<int>(type: "int", nullable: true),
                     DateWhenContacted = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Purpose = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     RecordOfDiscussion = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PersonId = table.Column<int>(type: "int", nullable: true),
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastUpdatedBy = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     LastUpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SponsorId = table.Column<int>(type: "int", nullable: true),
+                    PersonId = table.Column<int>(type: "int", nullable: true),
                     RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
                 },
                 constraints: table =>
@@ -853,11 +830,6 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                 column: "PersonsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CategoryOfOrganizationOrganization_OrganizationsId",
-                table: "CategoryOfOrganizationOrganization",
-                column: "OrganizationsId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_CategoryOfPersonPerson_PersonsId",
                 table: "CategoryOfPersonPerson",
                 column: "PersonsId");
@@ -878,6 +850,11 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                 column: "OrganizationsId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_EMails_EMailTypeId",
+                table: "EMails",
+                column: "EMailTypeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_EventDocuments_DocumentTypeId",
                 table: "EventDocuments",
                 column: "DocumentTypeId");
@@ -886,16 +863,6 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                 name: "IX_EventDocuments_EventId",
                 table: "EventDocuments",
                 column: "EventId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_EventMembers_EventId",
-                table: "EventMembers",
-                column: "EventId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_EventMembers_MemberInfoId",
-                table: "EventMembers",
-                column: "MemberInfoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EventPerson_PersonsId",
@@ -918,14 +885,19 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                 column: "PersonId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MemberInfo_PrivacyId",
+                name: "IX_MemberInfo_PrivacyLevelId",
                 table: "MemberInfo",
-                column: "PrivacyId");
+                column: "PrivacyLevelId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrganizationPhone_PhonesId",
                 table: "OrganizationPhone",
                 column: "PhonesId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Organizations_CategoryOfOrganizationId",
+                table: "Organizations",
+                column: "CategoryOfOrganizationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Organizations_OrganizationTypeId",
@@ -1007,9 +979,6 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                 name: "AddressPerson");
 
             migrationBuilder.DropTable(
-                name: "CategoryOfOrganizationOrganization");
-
-            migrationBuilder.DropTable(
                 name: "CategoryOfPersonPerson");
 
             migrationBuilder.DropTable(
@@ -1019,9 +988,6 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                 name: "EMailOrganization");
 
             migrationBuilder.DropTable(
-                name: "EMailTypes");
-
-            migrationBuilder.DropTable(
                 name: "EventDocuments");
 
             migrationBuilder.DropTable(
@@ -1029,6 +995,9 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "EventPerson");
+
+            migrationBuilder.DropTable(
+                name: "MemberInfo");
 
             migrationBuilder.DropTable(
                 name: "OrganizationPhone");
@@ -1061,7 +1030,13 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                 name: "DocumentTypes");
 
             migrationBuilder.DropTable(
-                name: "MemberInfo");
+                name: "MembershipTypes");
+
+            migrationBuilder.DropTable(
+                name: "MemberStatuses");
+
+            migrationBuilder.DropTable(
+                name: "PrivacyLevels");
 
             migrationBuilder.DropTable(
                 name: "PaymentSources");
@@ -1082,16 +1057,7 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                 name: "Organizations");
 
             migrationBuilder.DropTable(
-                name: "MembershipTypes");
-
-            migrationBuilder.DropTable(
-                name: "MemberStatuses");
-
-            migrationBuilder.DropTable(
                 name: "Persons");
-
-            migrationBuilder.DropTable(
-                name: "PrivacyLevels");
 
             migrationBuilder.DropTable(
                 name: "OrganizationTypes");
@@ -1104,6 +1070,9 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "CategoryOfOrganizations");
+
+            migrationBuilder.DropTable(
+                name: "EMailTypes");
         }
     }
 }
