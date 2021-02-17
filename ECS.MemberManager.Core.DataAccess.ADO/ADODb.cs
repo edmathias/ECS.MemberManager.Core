@@ -76,6 +76,22 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
 
             InsertTasksForEvents();
 
+            InsertMemberInfo();
+
+        }
+
+        private static void InsertMemberInfo()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("SET IDENTITY_INSERT dbo.MemberInfo ON;");
+            sb.AppendLine("INSERT INTO [dbo].[MemberInfo]([Id], [PersonId], [MemberNumber], [DateFirstJoined], [PrivacyLevelId], [MemberStatusId], [MembershipTypeId], [LastUpdatedBy], [LastUpdatedDate], [Notes])");
+            sb.AppendLine("SELECT 1, 1, N'12345', '20200908 00:00:00.000', 1, 1, 1, N'edm', '20210101 00:00:00.000', N'notes for 1' UNION ALL");
+            sb.AppendLine("SELECT 2, 2, N'56789', '20200615 00:00:00.000', 2, 2, 2, N'edm', '20210201 00:00:00.000', N'notes for 2' UNION ALL");
+            sb.AppendLine("SELECT 99, 2, N'99999', '20190101 00:00:00.000', 1, 1, 1, N'edm', '20201001 00:00:00.000', N'delete this'");
+            sb.AppendLine("SET IDENTITY_INSERT dbo.MemberInfo OFF;");
+            sb.AppendLine("DBCC CHECKIDENT ('MemberInfo', RESEED, 2)");
+            
+            _db.Execute(sb.ToString());            
         }
 
         private static void InsertTasksForEvents()
@@ -458,8 +474,8 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
         {
             var sb = new StringBuilder();
             sb.AppendLine("delete from AddressOrganization");
-            sb.AppendLine("delete from CategoryOfOrganizationOrganization");
-            sb.AppendLine("delete from CategoryOfPersonPerson");
+//            sb.AppendLine("delete from CategoryOfOrganizationOrganization");
+//            sb.AppendLine("delete from CategoryOfPersonPerson");
             sb.AppendLine("delete from ContactForSponsors");
         //    sb.AppendLine("delete from EMailOrganization");
             sb.AppendLine("delete from EventDocuments");
@@ -470,27 +486,27 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             sb.AppendLine("delete from PersonPhone");
             sb.AppendLine("delete from PersonalNotes");
             sb.AppendLine("delete from TaskForEvents");
+            sb.AppendLine("delete from MemberInfo");
             sb.AppendLine("delete from TermInOffices");
-            sb.AppendLine("delete from EMailTypes");
             sb.AppendLine("delete from MemberStatuses");
-            sb.AppendLine("delete from MembershipTypes");
             sb.AppendLine("delete from PaymentSources");
-            sb.AppendLine("delete from PaymentTypes");
             sb.AppendLine("delete from Phones");
             sb.AppendLine("delete from PrivacyLevels");
             sb.AppendLine("delete from Sponsors");
             sb.AppendLine("delete from Organizations");
-            sb.AppendLine("delete from OrganizationTypes");
-            sb.AppendLine("delete from CategoryOfOrganizations");
             sb.AppendLine("delete from Events");
             sb.AppendLine("delete from Offices");
             sb.AppendLine("delete from Persons");
+            sb.AppendLine("delete from EMails");
             sb.AppendLine("delete from Titles");
             sb.AppendLine("delete from CategoryOfPersons");
             sb.AppendLine("delete from Addresses");
-            sb.AppendLine("delete from EMails");
             sb.AppendLine("delete from DocumentTypes");
-            sb.AppendLine("delete from MemberInfo");
+            sb.AppendLine("delete from MembershipTypes");
+            sb.AppendLine("delete from PaymentTypes");
+            sb.AppendLine("delete from OrganizationTypes");
+            sb.AppendLine("delete from CategoryOfOrganizations");
+            sb.AppendLine("delete from EMailTypes");
 
             return sb.ToString();
         } 

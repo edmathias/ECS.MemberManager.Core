@@ -59,6 +59,9 @@
       <Compile Remove="OrganizationType\OrganizationTypeInfo.cs" />
       <Compile Remove="OrganizationType\OrganizationTypeInfoList.cs" />
       <Compile Remove="TaskForEvent\EventER.cs" />
+      <None Update="CSLA_T4.tt">
+        <Generator></Generator>
+      </None>
       <None Update="TaskForEvent\TaskForEventERBase.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>TaskForEventERBase.cs</LastGenOutput>
@@ -315,6 +318,15 @@
         <AutoGen>True</AutoGen>
         <DesignTime>True</DesignTime>
         <DependentUpon>OrganizationTypeRORL.tt</DependentUpon>
+      </Compile>
+      <None Update="MemberInfo\MemberInfoEC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>MemberInfoEC.cs</LastGenOutput>
+      </None>
+      <Compile Update="MemberInfo\MemberInfoEC.cs">
+        <DependentUpon>MemberInfoEC.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
     </ItemGroup>
 

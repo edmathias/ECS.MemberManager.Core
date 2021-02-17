@@ -1,0 +1,61 @@
+﻿<#@ template language="C#" debug="true" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+<#@ include file="..\CSLA_T4.tt" #>
+<#
+    var objectName = "MemberInfo";
+    var pluralObjectName = objectName;
+    var stereoType = "EC";
+    var childStereo = true;
+    var readOnly = false;
+#>
+using System; 
+using System.Threading.Tasks;
+using Csla;
+using ECS.MemberManager.Core.DataAccess;
+using ECS.MemberManager.Core.DataAccess.Dal;
+using ECS.MemberManager.Core.EF.Domain;
+
+namespace ECS.MemberManager.Core.BusinessObjects
+{
+    [Serializable]
+    public partial class <#= objectName #><#= stereoType #> : BusinessBase<<#= objectName #><#= stereoType#>>
+    {
+        #region Business Methods 
+ <#
+    var columnList = BuildColumnList(pluralObjectName); 
+
+    foreach(var columnData in columnList ) 
+    {
+        BuildCSLAProperties(columnData,stereoType);
+    }
+#>
+        #endregion 
+
+        #region Factory Methods
+<#
+        BuildFactoryMethods(objectName,stereoType,childStereo);
+#>
+
+        #endregion
+
+        #region Data Access Methods
+        
+<#
+        BuildFetch(columnList,objectName,stereoType,childStereo);
+#>
+        
+<#
+        BuildInsert(columnList,objectName,stereoType,childStereo);
+#>
+        
+<#      
+        BuildUpdate(columnList,objectName, stereoType, childStereo);
+        
+        BuildDeleteMethods(objectName);
+#>
+
+        #endregion
+    }
+}

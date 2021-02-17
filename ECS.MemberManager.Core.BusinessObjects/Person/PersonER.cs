@@ -1,6 +1,7 @@
-﻿using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿
+
+
+using System;
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -10,121 +11,102 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class PersonER : BusinessBase<PersonER>
+    public partial class PersonER : BusinessBase<PersonER>
     {
-        #region Business Methods
+        #region Business Methods 
+
+         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
+        public virtual int Id 
+        {
+            get => GetProperty(IdProperty); 
+            private set => LoadProperty(IdProperty, value); 
         
-        public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
-        public int Id
+        }        
+        public static readonly PropertyInfo<TitleEC> TitleProperty = RegisterProperty<TitleEC>(o => o.Title);
+        public virtual TitleEC Title 
         {
-            get => GetProperty(IdProperty);
-            private set => LoadProperty(IdProperty, value);
-        }
+            get => GetProperty(TitleProperty); 
+            set => SetProperty(TitleProperty, value); 
+        }        
 
-        public static readonly PropertyInfo<TitleEC> TitleProperty = RegisterProperty<TitleEC>(p => p.Title);
-        public TitleEC Title
+        public static readonly PropertyInfo<string> LastNameProperty = RegisterProperty<string>(o => o.LastName);
+        public virtual string LastName 
         {
-            get => GetProperty(TitleProperty);
-            set => SetProperty(TitleProperty, value);
-        }
-
-        public static readonly PropertyInfo<EMailEC> EMailProperty = RegisterProperty<EMailEC>(p => p.EMail);
-        public EMailEC EMail
-        {
-            get => GetProperty(EMailProperty);
-            set => SetProperty(EMailProperty, value);
-        }
-
-        public static readonly PropertyInfo<string> LastNameProperty = RegisterProperty<string>(p => p.LastName);
-        [Required,MaxLength(50)]
-        public string LastName
-        {
-            get => GetProperty(LastNameProperty);
-            set => SetProperty(LastNameProperty, value);
-        }
-
-        public static readonly PropertyInfo<string> MiddleNameProperty = RegisterProperty<string>(p => p.MiddleName);
-        [MaxLength(50)]
-        public string MiddleName
-        {
-            get => GetProperty(MiddleNameProperty);
-            set => SetProperty(MiddleNameProperty, value);
-        }
-
-        public static readonly PropertyInfo<string> FirstNameProperty = RegisterProperty<string>(p => p.FirstName);
-        [MaxLength(50)]
-        public string FirstName
-        {
-            get => GetProperty(FirstNameProperty);
-            set => SetProperty(FirstNameProperty, value);
-        }
-
-        public static readonly PropertyInfo<SmartDate> DateOfFirstContactProperty = RegisterProperty<SmartDate>(p => p.DateOfFirstContact);
-        public SmartDate DateOfFirstContact
-        {
-            get => GetProperty(DateOfFirstContactProperty);
-            set => SetProperty(DateOfFirstContactProperty, value);
-        }
+            get => GetProperty(LastNameProperty); 
+            set => SetProperty(LastNameProperty, value); 
         
-        public static readonly PropertyInfo<SmartDate> BirthDateProperty = RegisterProperty<SmartDate>(p => p.BirthDate);
-        public SmartDate BirthDate
+        }        
+        public static readonly PropertyInfo<string> MiddleNameProperty = RegisterProperty<string>(o => o.MiddleName);
+        public virtual string MiddleName 
         {
-            get => GetProperty(BirthDateProperty);
-            set => SetProperty(BirthDateProperty, value);
-        }
+            get => GetProperty(MiddleNameProperty); 
+            set => SetProperty(MiddleNameProperty, value); 
         
-        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(p => p.LastUpdatedBy);
-        [Required,MaxLength(255)]
-        public string LastUpdatedBy
+        }        
+        public static readonly PropertyInfo<string> FirstNameProperty = RegisterProperty<string>(o => o.FirstName);
+        public virtual string FirstName 
         {
-            get => GetProperty(LastUpdatedByProperty);
-            set => SetProperty(LastUpdatedByProperty, value);
-        }
-
-        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
-        [Required]
-        public SmartDate LastUpdatedDate
-        {
-            get => GetProperty(LastUpdatedDateProperty);
-            set => SetProperty(LastUpdatedDateProperty, value);
-        }
-
-        public static readonly PropertyInfo<string> CodeProperty = RegisterProperty<string>(p => p.Code);
-        [MaxLength(5)]
-        public string Code
-        {
-            get => GetProperty(CodeProperty);
-            set => SetProperty(CodeProperty, value);
-        }
+            get => GetProperty(FirstNameProperty); 
+            set => SetProperty(FirstNameProperty, value); 
         
-        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
-        public string Notes
+        }        
+        public static readonly PropertyInfo<SmartDate> DateOfFirstContactProperty = RegisterProperty<SmartDate>(o => o.DateOfFirstContact);
+        public virtual SmartDate DateOfFirstContact 
         {
-            get => GetProperty(NotesProperty);
-            set => SetProperty(NotesProperty, value);
-        }
-       
-        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
-        public byte[] RowVersion
-        {
-            get => GetProperty(RowVersionProperty);
-            private set => LoadProperty(RowVersionProperty, value);
-        }
+            get => GetProperty(DateOfFirstContactProperty); 
+            set => SetProperty(DateOfFirstContactProperty, value); 
         
-        protected override void AddBusinessRules()
+        }        
+        public static readonly PropertyInfo<SmartDate> BirthDateProperty = RegisterProperty<SmartDate>(o => o.BirthDate);
+        public virtual SmartDate BirthDate 
         {
-            base.AddBusinessRules();
-
-            // TODO: add business rules
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public static void AddObjectAuthorizationRules()
+            get => GetProperty(BirthDateProperty); 
+            set => SetProperty(BirthDateProperty, value); 
+        
+        }        
+        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(o => o.LastUpdatedBy);
+        public virtual string LastUpdatedBy 
         {
-            // TODO: add object-level authorization rules
-        }
+            get => GetProperty(LastUpdatedByProperty); 
+            set => SetProperty(LastUpdatedByProperty, value); 
+        
+        }        
+        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(o => o.LastUpdatedDate);
+        public virtual SmartDate LastUpdatedDate 
+        {
+            get => GetProperty(LastUpdatedDateProperty); 
+            set => SetProperty(LastUpdatedDateProperty, value); 
+        
+        }        
+        public static readonly PropertyInfo<string> CodeProperty = RegisterProperty<string>(o => o.Code);
+        public virtual string Code 
+        {
+            get => GetProperty(CodeProperty); 
+            set => SetProperty(CodeProperty, value); 
+        
+        }        
+        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
+        public virtual string Notes 
+        {
+            get => GetProperty(NotesProperty); 
+            set => SetProperty(NotesProperty, value); 
+        
+        }        
+        public static readonly PropertyInfo<EMailEC> EMailProperty = RegisterProperty<EMailEC>(o => o.EMail);
+        public virtual EMailEC EMail 
+        {
+            get => GetProperty(EMailProperty); 
+            set => SetProperty(EMailProperty, value); 
+        }        
 
-        #endregion
+        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
+        public virtual byte[] RowVersion 
+        {
+            get => GetProperty(RowVersionProperty); 
+            set => SetProperty(RowVersionProperty, value); 
+        
+        }        
+        #endregion 
 
         #region Factory Methods
 
@@ -146,7 +128,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #endregion
 
         #region Data Access Methods
- 
+
         [Fetch]
         private async Task Fetch(int id)
         {
@@ -157,17 +139,17 @@ namespace ECS.MemberManager.Core.BusinessObjects
             using (BypassPropertyChecks)
             {
                 Id = data.Id;
-                Title = await TitleEC.GetTitleEC(data.Title);
-                EMail = await EMailEC.GetEMailEC(data.EMail);
+                Title = (data.Title != null ? await TitleEC.GetTitleEC( new Title() { Id = data.Title.Id }) : null);
                 LastName = data.LastName;
                 MiddleName = data.MiddleName;
                 FirstName = data.FirstName;
                 DateOfFirstContact = data.DateOfFirstContact;
-                BirthDate = data.BirthDate;                
+                BirthDate = data.BirthDate;
                 LastUpdatedBy = data.LastUpdatedBy;
                 LastUpdatedDate = data.LastUpdatedDate;
                 Code = data.Code;
                 Notes = data.Notes;
+                EMail = (data.EMail != null ? await EMailEC.GetEMailEC( new EMail() { Id = data.EMail.Id }) : null);
                 RowVersion = data.RowVersion;
             }
         }
@@ -179,22 +161,24 @@ namespace ECS.MemberManager.Core.BusinessObjects
             var dal = dalManager.GetProvider<IPersonDal>();
             var data = new Person()
             {
-                Title = new Title() { Id = Title.Id },
-                EMail = new EMail() { Id = EMail.Id },
-                LastName = LastName,
-                MiddleName = MiddleName,
-                FirstName = FirstName,
-                DateOfFirstContact = DateOfFirstContact,
-                BirthDate = BirthDate,                
-                LastUpdatedBy = LastUpdatedBy,
-                LastUpdatedDate = LastUpdatedDate,
-                Code = Code,
-                Notes = Notes
+                Id = this.Id,
+                Title = (this.Title != null ? new Title() { Id = this.Title.Id } : null),
+                LastName = this.LastName,
+                MiddleName = this.MiddleName,
+                FirstName = this.FirstName,
+                DateOfFirstContact = this.DateOfFirstContact,
+                BirthDate = this.BirthDate,
+                LastUpdatedBy = this.LastUpdatedBy,
+                LastUpdatedDate = this.LastUpdatedDate,
+                Code = this.Code,
+                Notes = this.Notes,
+                EMail = (this.EMail != null ? new EMail() { Id = this.EMail.Id } : null),
+                RowVersion = this.RowVersion,
             };
 
-            var insertedPerson = await dal.Insert(data);
-            Id = insertedPerson.Id;
-            RowVersion = insertedPerson.RowVersion;
+            var insertedObj = await dal.Insert(data);
+            Id = insertedObj.Id;
+            RowVersion = insertedObj.RowVersion;
         }
 
         [Update]
@@ -203,25 +187,26 @@ namespace ECS.MemberManager.Core.BusinessObjects
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IPersonDal>();
 
-            var emailTypeToUpdate = new Person()
+            var objToUpdate = new Person()
             {
-                Id = Id,
-                Title = new Title() { Id = Title.Id },
-                EMail = new EMail() { Id = EMail.Id },
-                LastName = LastName,
-                MiddleName = MiddleName,
-                FirstName = FirstName,
-                DateOfFirstContact = DateOfFirstContact,
-                BirthDate = BirthDate,                
-                LastUpdatedBy = LastUpdatedBy,
-                LastUpdatedDate = LastUpdatedDate,
-                Code = Code,
-                Notes = Notes,
-                RowVersion = RowVersion
+                Id = this.Id,
+                Title = (this.Title != null ? new Title() { Id = this.Title.Id } : null),
+                LastName = this.LastName,
+                MiddleName = this.MiddleName,
+                FirstName = this.FirstName,
+                DateOfFirstContact = this.DateOfFirstContact,
+                BirthDate = this.BirthDate,
+                LastUpdatedBy = this.LastUpdatedBy,
+                LastUpdatedDate = this.LastUpdatedDate,
+                Code = this.Code,
+                Notes = this.Notes,
+                EMail = (this.EMail != null ? new EMail() { Id = this.EMail.Id } : null),
+                RowVersion = this.RowVersion,
+        
             };
 
-            var updatedEmail = await dal.Update(emailTypeToUpdate);
-            RowVersion = updatedEmail.RowVersion;
+            var updatedObj = await dal.Update(objToUpdate);
+            RowVersion = updatedObj.RowVersion;
         }
 
         [DeleteSelf]
@@ -238,6 +223,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
            
             await dal.Delete(id);
         }
+
 
         #endregion
     }

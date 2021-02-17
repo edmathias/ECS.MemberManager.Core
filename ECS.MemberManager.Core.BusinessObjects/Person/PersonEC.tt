@@ -4,7 +4,8 @@
 <#@ output extension=".cs" #>
 <#@ include file="..\MyT4Utilities.tt" #>
 <#
-    var objectName = "TaskForEvent";
+    var objectName = "Person";
+    var pluralObjectName = "Persons";
 #>
 using System;
 using System.Threading.Tasks;
@@ -24,7 +25,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
     var connectionString =
         "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ECSMemberManager;Integrated Security=True;Connect Timeout=30";
 
-    string columnquery = BuildColumnQueryString(Pluralize(objectName));
+    string columnquery = BuildColumnQueryString(pluralObjectName);
 
     List<ColumnData> columnList = new List<ColumnData>();
 
@@ -84,7 +85,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
         #region Factory Methods
 
+        public static async Task<<#= objectName #>EC> New<#= objectName #>EC()
+        {
+            return await DataPortal.CreateChildAsync<<#= objectName #>EC>();
+        }
 
+        public static async Task<<#= objectName #>EC> Get<#= objectName #>EC(<#=objectName#> childData)
+        {
+            return await DataPortal.FetchChildAsync<<#= objectName #>EC>(childData);
+        }
 
         #endregion
 
@@ -102,10 +111,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             var objName = columnData.columnName.Replace("Id", string.Empty);
 #>
-                if(childData.<#= objName #> != null )
-                {
-                    <#= objName #> = await <#= objName #>EC.Get<#= objName#>EC(childData.<#= objName #>);
-                }
+                <#= objName #> = (childData.<#= objName #> != null ? await <#= objName#>EC.Get<#=objName #>EC( new <#= objName #>() { Id = childData.<#= objName #>.Id }) : null);
 <#
         }
         else

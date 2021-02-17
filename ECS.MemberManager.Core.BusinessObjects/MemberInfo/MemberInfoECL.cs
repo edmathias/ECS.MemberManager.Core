@@ -12,32 +12,32 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class PersonECL : BusinessListBase<PersonECL, PersonEC>
+    public partial class MemberInfoECL : BusinessListBase<MemberInfoECL, MemberInfoEC>
     {
         public static void AddObjectAuthorizationRules()
         {
             // TODO: add object-level authorization rules
         }
 
-        internal static async Task<PersonECL> NewPersonECL()
+        internal static async Task<MemberInfoECL> NewMemberInfoECL()
         {
-            return await DataPortal.CreateAsync<PersonECL>();
+            return await DataPortal.CreateAsync<MemberInfoECL>();
         }
 
-        internal static async Task<PersonECL> GetPersonECL(List<Person> childData)
+        internal static async Task<MemberInfoECL> GetMemberInfoECL(List<MemberInfo> childData)
         {
-            return await DataPortal.FetchAsync<PersonECL>(childData);
+            return await DataPortal.FetchAsync<MemberInfoECL>(childData);
         }
 
         [Fetch]
-        private async Task Fetch(List<Person> childData)
+        private async Task Fetch(List<MemberInfo> childData)
         {
             using (LoadListMode)
             {
-                foreach (var Person in childData)
+                foreach (var MemberInfo in childData)
                 {
-                    var PersonToAdd = await PersonEC.GetPersonEC(Person);
-                    Add(PersonToAdd);
+                    var MemberInfoToAdd = await MemberInfoEC.GetMemberInfoEC(MemberInfo);
+                    Add(MemberInfoToAdd);
                 }
             }
         }

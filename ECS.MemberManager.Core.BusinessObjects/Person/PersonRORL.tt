@@ -1,6 +1,11 @@
-﻿
-
-
+﻿<#@ template language="C#" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+<#@ include file="..\MyT4Utilities.tt" #>
+<#
+    var objectName = "Person";
+#>
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,30 +17,30 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class PersonRORL : ReadOnlyListBase<PersonRORL, PersonROC>
+    public class <#=objectName #>RORL : ReadOnlyListBase<<#=objectName #>RORL, <#=objectName #>ROC>
     {
         public static void AddObjectAuthorizationRules()
         {
             // TODO: add object-level authorization rules
         }
 
-        internal static async Task<PersonRORL> GetPersonRORL()
+        internal static async Task<<#= objectName #>RORL> Get<#= objectName #>RORL()
         {
-            return await DataPortal.FetchAsync<PersonRORL>();
+            return await DataPortal.FetchAsync<<#= objectName #>RORL>();
         }
 
         [Fetch]
         private async Task Fetch()
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPersonDal>();
+            var dal = dalManager.GetProvider<I<#=objectName#>Dal>();
             var childData = await dal.Fetch();
 
             using (LoadListMode)
             {
                 foreach (var objectToFetch in childData)
                 {
-                    var objectToAdd = await PersonROC.GetPersonROC(objectToFetch);
+                    var objectToAdd = await <#= objectName #>ROC.Get<#= objectName #>ROC(objectToFetch);
                     Add(objectToAdd);
                 }
             }

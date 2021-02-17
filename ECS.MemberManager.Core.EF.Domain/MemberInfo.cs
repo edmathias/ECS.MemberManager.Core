@@ -1,8 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Dapper.Contrib.Extensions;
 
 namespace ECS.MemberManager.Core.EF.Domain
 {
+    [Table("MemberInfo")]
     public class MemberInfo : EntityBase
     {
         [Required]
@@ -11,7 +13,7 @@ namespace ECS.MemberManager.Core.EF.Domain
         public string MemberNumber { get; set; }
         [Required]
         public DateTime DateFirstJoined { get; set; }
-        public PrivacyLevel Privacy { get; set; }
+        public PrivacyLevel PrivacyLevel { get; set; }
         [Required]
         public MemberStatus MemberStatus { get; set; }
         [Required]

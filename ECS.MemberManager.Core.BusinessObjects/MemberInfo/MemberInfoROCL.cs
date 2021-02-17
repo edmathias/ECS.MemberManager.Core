@@ -12,27 +12,27 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class PersonROCL : ReadOnlyListBase<PersonROCL, PersonROC>
+    public class MemberInfoROCL : ReadOnlyListBase<MemberInfoROCL, MemberInfoROC>
     {
         public static void AddObjectAuthorizationRules()
         {
             // TODO: add object-level authorization rules
         }
 
-        internal static async Task<PersonROCL> GetPersonROCL(List<Person> childData)
+        internal static async Task<MemberInfoROCL> GetMemberInfoROCL(List<MemberInfo> childData)
         {
-            return await DataPortal.FetchAsync<PersonROCL>(childData);
+            return await DataPortal.FetchAsync<MemberInfoROCL>(childData);
         }
 
         [Fetch]
-        private async Task Fetch(List<Person> childData)
+        private async Task Fetch(List<MemberInfo> childData)
         {
             using (LoadListMode)
             {
                 foreach (var objectToFetch in childData)
                 {
-                    var PersonToAdd = await PersonROC.GetPersonROC(objectToFetch);
-                    Add(PersonToAdd);
+                    var MemberInfoToAdd = await MemberInfoROC.GetMemberInfoROC(objectToFetch);
+                    Add(MemberInfoToAdd);
                 }
             }
         }

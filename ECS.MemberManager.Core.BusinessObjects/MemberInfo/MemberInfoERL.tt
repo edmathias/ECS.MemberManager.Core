@@ -1,6 +1,11 @@
-﻿
-
-
+﻿<#@ template language="C#" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+<#@ include file="..\MyT4Utilities.tt" #>
+<#
+    var objectName = "MemberInfo";
+#>
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,35 +17,35 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class PersonERL : BusinessListBase<PersonERL, PersonEC>
+    public class <#=objectName #>ERL : BusinessListBase<<#=objectName #>ERL, <#=objectName #>EC>
     {
         public static void AddObjectAuthorizationRules()
         {
             // TODO: add object-level authorization rules
         }
         
-        public static async Task<PersonERL> NewPersonERL()
+        public static async Task<<#= objectName #>ERL> New<#= objectName #>ERL()
         {
-            return await DataPortal.CreateAsync<PersonERL>();
+            return await DataPortal.CreateAsync<<#= objectName #>ERL>();
         }
 
-        internal static async Task<PersonERL> GetPersonERL()
+        internal static async Task<<#= objectName #>ERL> Get<#= objectName #>ERL()
         {
-            return await DataPortal.FetchAsync<PersonERL>();
+            return await DataPortal.FetchAsync<<#= objectName #>ERL>();
         }
 
         [Fetch]
         private async Task Fetch()
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPersonDal>();
+            var dal = dalManager.GetProvider<I<#= objectName #>Dal>();
             var childData = await dal.Fetch();
 
             using (LoadListMode)
             {
                 foreach (var domainObjToAdd in childData)
                 {
-                    var objectToAdd = await PersonEC.GetPersonEC(domainObjToAdd);
+                    var objectToAdd = await <#= objectName #>EC.Get<#= objectName #>EC(domainObjToAdd);
                     Add(objectToAdd);
                 }
             }

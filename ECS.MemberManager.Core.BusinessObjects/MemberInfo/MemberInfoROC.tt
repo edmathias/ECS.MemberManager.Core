@@ -1,0 +1,122 @@
+﻿<#@ template language="C#" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+<#@ include file="..\MyT4Utilities.tt" #>
+<#
+    var objectName = "MemberInfo";
+    var pluralObjectName = objectName;
+#>
+using System;
+using System.Threading.Tasks;
+using Csla;
+using ECS.MemberManager.Core.DataAccess;
+using ECS.MemberManager.Core.DataAccess.Dal;
+using ECS.MemberManager.Core.EF.Domain;
+
+namespace ECS.MemberManager.Core.BusinessObjects
+{
+    [Serializable]
+    public partial class <#= objectName #>ROC : ReadOnlyBase<<#= objectName #>ROC>
+    {
+        #region Business Methods 
+
+ <#
+    var connectionString =
+        "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ECSMemberManager;Integrated Security=True;Connect Timeout=30";
+
+    string columnquery = BuildColumnQueryString(pluralObjectName);
+
+    List<ColumnData> columnList = new List<ColumnData>();
+
+    using (SqlConnection connection = new SqlConnection(connectionString))
+    {
+        SqlCommand command = new SqlCommand(columnquery, connection);
+        connection.Open();
+        SqlDataReader reader = command.ExecuteReader();
+
+        columnList = GetColumnData(reader);
+    }
+
+    foreach(var columnData in columnList ) 
+    {
+        var outputName = columnData.columnName;
+        if(columnData.isForeignKey)
+        {
+            var newOutputName = ConvertForeignKeyColumn(outputName);
+            var objType = newOutputName.Replace(".Id", string.Empty);
+#>
+        public static readonly PropertyInfo<<#= objType #>ROC> <#= objType #>Property = RegisterProperty<<#= objType #>ROC>(o => o.<#= objType #>);
+        public <#= objType #>ROC <#= objType  #> 
+        {
+            get => GetProperty(<#= objType #>Property); 
+            private set => LoadProperty(<#= objType  #>Property, value); 
+        }        
+<#            
+        } // end if 
+        else
+        { 
+#>
+
+        public static readonly PropertyInfo<<#= columnData.dotNetType #>> <#= columnData.columnName #>Property = RegisterProperty<<#= columnData.dotNetType	 #>>(o => o.<#= columnData.columnName #>);
+        public <#= columnData.dotNetType #> <#= columnData.columnName #> 
+        {
+            get => GetProperty(<#= columnData.columnName #>Property); 
+<#
+            if (columnData.isPrimaryKey)
+            { 
+#>
+            private set => LoadProperty(<#= columnData.columnName #>Property, value); 
+<#                
+            }
+            else
+            {
+#>
+            private set => LoadProperty(<#= columnData.columnName #>Property, value); 
+<#                
+            }
+#>   
+        }        
+<#  
+        }  // end else
+    } // end foreach 
+#>
+        #endregion 
+
+        #region Factory Methods
+
+        public static async Task<<#= objectName #>ROC> Get<#= objectName #>ROC(<#=objectName#> childData)
+        {
+            return await DataPortal.FetchChildAsync<<#= objectName #>ROC>(childData);
+        }
+
+        #endregion
+
+        #region Data Access Methods
+
+        [FetchChild]
+        private async Task Fetch(<#= objectName #> childData)
+        {
+<#
+    foreach (var columnData in columnList)
+    {
+        if (columnData.isForeignKey)
+        {
+            var objName = columnData.columnName.Replace("Id", string.Empty);
+#>
+            <#= objName #> = (childData.<#= objName #> != null ? await <#= objName #>ROC.Get<#= objName #>ROC( new <#=objName #>() { Id = childData.<#= objName #>.Id }) : null);
+<#
+        }
+        else
+        {
+#>
+            <#= columnData.columnName #> = childData.<#= columnData.columnName #>;
+<#
+        }
+    }
+#>
+        }
+
+        #endregion
+    }
+}

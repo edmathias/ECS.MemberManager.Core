@@ -12,34 +12,44 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class PersonRORL : ReadOnlyListBase<PersonRORL, PersonROC>
+    public class MemberInfoERL : BusinessListBase<MemberInfoERL, MemberInfoEC>
     {
         public static void AddObjectAuthorizationRules()
         {
             // TODO: add object-level authorization rules
         }
-
-        internal static async Task<PersonRORL> GetPersonRORL()
+        
+        public static async Task<MemberInfoERL> NewMemberInfoERL()
         {
-            return await DataPortal.FetchAsync<PersonRORL>();
+            return await DataPortal.CreateAsync<MemberInfoERL>();
+        }
+
+        internal static async Task<MemberInfoERL> GetMemberInfoERL()
+        {
+            return await DataPortal.FetchAsync<MemberInfoERL>();
         }
 
         [Fetch]
         private async Task Fetch()
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPersonDal>();
+            var dal = dalManager.GetProvider<IMemberInfoDal>();
             var childData = await dal.Fetch();
 
             using (LoadListMode)
             {
-                foreach (var objectToFetch in childData)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var objectToAdd = await PersonROC.GetPersonROC(objectToFetch);
+                    var objectToAdd = await MemberInfoEC.GetMemberInfoEC(domainObjToAdd);
                     Add(objectToAdd);
                 }
             }
         }
+
+        [Update]
+        private void Update()
+        {
+            Child_Update();
+        }
     }
 }
-
