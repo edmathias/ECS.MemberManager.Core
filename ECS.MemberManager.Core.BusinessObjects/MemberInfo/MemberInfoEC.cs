@@ -1,7 +1,8 @@
 ﻿
 
 
-using System; 
+using System;
+using System.Collections.Generic; 
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -20,9 +21,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
             get => GetProperty(IdProperty); 
             private set => LoadProperty(IdProperty, value); 
    
-        }        
+        } 
         public static readonly PropertyInfo<PersonEC> PersonProperty = RegisterProperty<PersonEC>(o => o.Person);
-        public PersonEC Person 
+        public PersonEC Person  
         {
             get => GetProperty(PersonProperty); 
             set => SetProperty(PersonProperty, value); 
@@ -34,30 +35,30 @@ namespace ECS.MemberManager.Core.BusinessObjects
             get => GetProperty(MemberNumberProperty); 
             set => SetProperty(MemberNumberProperty, value); 
    
-        }        
+        } 
         public static readonly PropertyInfo<SmartDate> DateFirstJoinedProperty = RegisterProperty<SmartDate>(o => o.DateFirstJoined);
         public virtual SmartDate DateFirstJoined 
         {
             get => GetProperty(DateFirstJoinedProperty); 
             set => SetProperty(DateFirstJoinedProperty, value); 
    
-        }        
+        } 
         public static readonly PropertyInfo<PrivacyLevelEC> PrivacyLevelProperty = RegisterProperty<PrivacyLevelEC>(o => o.PrivacyLevel);
-        public PrivacyLevelEC PrivacyLevel 
+        public PrivacyLevelEC PrivacyLevel  
         {
             get => GetProperty(PrivacyLevelProperty); 
             set => SetProperty(PrivacyLevelProperty, value); 
         }        
 
         public static readonly PropertyInfo<MemberStatusEC> MemberStatusProperty = RegisterProperty<MemberStatusEC>(o => o.MemberStatus);
-        public MemberStatusEC MemberStatus 
+        public MemberStatusEC MemberStatus  
         {
             get => GetProperty(MemberStatusProperty); 
             set => SetProperty(MemberStatusProperty, value); 
         }        
 
         public static readonly PropertyInfo<MembershipTypeEC> MembershipTypeProperty = RegisterProperty<MembershipTypeEC>(o => o.MembershipType);
-        public MembershipTypeEC MembershipType 
+        public MembershipTypeEC MembershipType  
         {
             get => GetProperty(MembershipTypeProperty); 
             set => SetProperty(MembershipTypeProperty, value); 
@@ -69,46 +70,46 @@ namespace ECS.MemberManager.Core.BusinessObjects
             get => GetProperty(LastUpdatedByProperty); 
             set => SetProperty(LastUpdatedByProperty, value); 
    
-        }        
+        } 
         public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(o => o.LastUpdatedDate);
         public virtual SmartDate LastUpdatedDate 
         {
             get => GetProperty(LastUpdatedDateProperty); 
             set => SetProperty(LastUpdatedDateProperty, value); 
    
-        }        
+        } 
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
         public virtual string Notes 
         {
             get => GetProperty(NotesProperty); 
             set => SetProperty(NotesProperty, value); 
    
-        }        
+        } 
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
         public virtual byte[] RowVersion 
         {
             get => GetProperty(RowVersionProperty); 
             set => SetProperty(RowVersionProperty, value); 
    
-        }        
+        } 
         #endregion 
 
         #region Factory Methods
-    
-
-        public static async Task<MemberInfoEC> NewMemberInfoEC()
+        internal static async Task<MemberInfoEC> NewMemberInfoEC()
         {
             return await DataPortal.CreateChildAsync<MemberInfoEC>();
         }
-        public static async Task<MemberInfoEC> GetMemberInfoEC(MemberInfo childData)
+
+        internal static async Task<MemberInfoEC> GetMemberInfoEC(MemberInfo childData)
         {
             return await DataPortal.FetchChildAsync<MemberInfoEC>(childData);
         }  
 
+
         #endregion
 
         #region Data Access Methods
-        
+
         [FetchChild]
         private async Task Fetch(MemberInfo data)
         {
@@ -127,7 +128,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 RowVersion = data.RowVersion;
             }
         }
-        
+
         [InsertChild]
         private async Task Insert()
         {
@@ -153,8 +154,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
             Id = insertedObj.Id;
             RowVersion = insertedObj.RowVersion;
         }
-         
-        [UpdateChild]
+
+       [UpdateChild]
         private async Task Update()
         {
             using var dalManager = DalFactory.GetManager();
@@ -175,11 +176,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 RowVersion = RowVersion,
             };
 
-            var insertedObj = await dal.Insert(data);
+            var insertedObj = await dal.Update(data);
             Id = insertedObj.Id;
             RowVersion = insertedObj.RowVersion;
         }
-        
+
+       
         [DeleteSelfChild]
         private async Task DeleteSelf()
         {

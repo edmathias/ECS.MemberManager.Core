@@ -22,13 +22,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
             private set => LoadProperty(IdProperty, value); 
         
         }        
-        public static readonly PropertyInfo<CategoryOfOrganizationEC> CategoryOfOrganizationProperty = RegisterProperty<CategoryOfOrganizationEC>(o => o.CategoryOfOrganization);
-        public virtual CategoryOfOrganizationEC CategoryOfOrganization 
-        {
-            get => GetProperty(CategoryOfOrganizationProperty); 
-            set => SetProperty(CategoryOfOrganizationProperty, value); 
-        }        
-
         public static readonly PropertyInfo<string> NameProperty = RegisterProperty<string>(o => o.Name);
         public virtual string Name 
         {
@@ -43,6 +36,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(NotesProperty, value); 
         
         }        
+        public static readonly PropertyInfo<CategoryOfOrganizationEC> CategoryOfOrganizationProperty = RegisterProperty<CategoryOfOrganizationEC>(o => o.CategoryOfOrganization);
+        public virtual CategoryOfOrganizationEC CategoryOfOrganization 
+        {
+            get => GetProperty(CategoryOfOrganizationProperty); 
+            set => SetProperty(CategoryOfOrganizationProperty, value); 
+        }        
+
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
         public virtual byte[] RowVersion 
         {
@@ -83,12 +83,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
             using (BypassPropertyChecks)
             {
                 Id = data.Id;
+                Name = data.Name;
+                Notes = data.Notes;
                 if(data.CategoryOfOrganization != null )
                 {
                     CategoryOfOrganization = await CategoryOfOrganizationEC.GetCategoryOfOrganizationEC(data.CategoryOfOrganization);
                 }
-                Name = data.Name;
-                Notes = data.Notes;
                 RowVersion = data.RowVersion;
             }
         }
@@ -101,9 +101,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
             var data = new OrganizationType()
             {
                 Id = Id,
-                CategoryOfOrganization = (CategoryOfOrganization != null ? new CategoryOfOrganization() { Id = CategoryOfOrganization.Id } : null),
                 Name = Name,
                 Notes = Notes,
+                CategoryOfOrganization = (CategoryOfOrganization != null ? new CategoryOfOrganization() { Id = CategoryOfOrganization.Id } : null),
                 RowVersion = RowVersion,
             };
 
@@ -121,9 +121,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
             var objToUpdate = new OrganizationType()
             {
                 Id = Id,
-                CategoryOfOrganization = (CategoryOfOrganization != null ? new CategoryOfOrganization() { Id = CategoryOfOrganization.Id } : null),
                 Name = Name,
                 Notes = Notes,
+                CategoryOfOrganization = (CategoryOfOrganization != null ? new CategoryOfOrganization() { Id = CategoryOfOrganization.Id } : null),
                 RowVersion = RowVersion,
         
             };

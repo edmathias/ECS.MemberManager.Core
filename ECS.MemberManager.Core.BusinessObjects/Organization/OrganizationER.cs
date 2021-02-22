@@ -2,6 +2,7 @@
 
 
 using System;
+using System.Collections.Generic; 
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -14,67 +15,72 @@ namespace ECS.MemberManager.Core.BusinessObjects
     public partial class OrganizationER : BusinessBase<OrganizationER>
     {
         #region Business Methods 
-
          public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
         public virtual int Id 
         {
             get => GetProperty(IdProperty); 
             private set => LoadProperty(IdProperty, value); 
-        
-        }        
+   
+        } 
         public static readonly PropertyInfo<string> NameProperty = RegisterProperty<string>(o => o.Name);
         public virtual string Name 
         {
             get => GetProperty(NameProperty); 
             set => SetProperty(NameProperty, value); 
-        
-        }        
-        public static readonly PropertyInfo<OrganizationTypeEC> OrganizationTypeProperty = RegisterProperty<OrganizationTypeEC>(o => o.OrganizationType);
-        public virtual OrganizationTypeEC OrganizationType 
-        {
-            get => GetProperty(OrganizationTypeProperty); 
-            set => SetProperty(OrganizationTypeProperty, value); 
-        }        
-
+   
+        } 
         public static readonly PropertyInfo<SmartDate> DateOfFirstContactProperty = RegisterProperty<SmartDate>(o => o.DateOfFirstContact);
         public virtual SmartDate DateOfFirstContact 
         {
             get => GetProperty(DateOfFirstContactProperty); 
             set => SetProperty(DateOfFirstContactProperty, value); 
-        
-        }        
+   
+        } 
         public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(o => o.LastUpdatedBy);
         public virtual string LastUpdatedBy 
         {
             get => GetProperty(LastUpdatedByProperty); 
             set => SetProperty(LastUpdatedByProperty, value); 
-        
-        }        
+   
+        } 
         public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(o => o.LastUpdatedDate);
         public virtual SmartDate LastUpdatedDate 
         {
             get => GetProperty(LastUpdatedDateProperty); 
             set => SetProperty(LastUpdatedDateProperty, value); 
-        
-        }        
+   
+        } 
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
         public virtual string Notes 
         {
             get => GetProperty(NotesProperty); 
             set => SetProperty(NotesProperty, value); 
-        
+   
+        } 
+        public static readonly PropertyInfo<OrganizationTypeEC> OrganizationTypeProperty = RegisterProperty<OrganizationTypeEC>(o => o.OrganizationType);
+        public OrganizationTypeEC OrganizationType  
+        {
+            get => GetProperty(OrganizationTypeProperty); 
+            set => SetProperty(OrganizationTypeProperty, value); 
         }        
+
+        public static readonly PropertyInfo<CategoryOfOrganizationEC> CategoryOfOrganizationProperty = RegisterProperty<CategoryOfOrganizationEC>(o => o.CategoryOfOrganization);
+        public CategoryOfOrganizationEC CategoryOfOrganization  
+        {
+            get => GetProperty(CategoryOfOrganizationProperty); 
+            set => SetProperty(CategoryOfOrganizationProperty, value); 
+        }        
+
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
         public virtual byte[] RowVersion 
         {
             get => GetProperty(RowVersionProperty); 
             set => SetProperty(RowVersionProperty, value); 
-        
-        }        
+   
+        } 
         #endregion 
 
         #region Factory Methods
-
         public static async Task<OrganizationER> NewOrganizationER()
         {
             return await DataPortal.CreateAsync<OrganizationER>();
@@ -83,12 +89,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
         public static async Task<OrganizationER> GetOrganizationER(int id)
         {
             return await DataPortal.FetchAsync<OrganizationER>(id);
-        }
+        }  
 
         public static async Task DeleteOrganizationER(int id)
         {
             await DataPortal.DeleteAsync<OrganizationER>(id);
-        }
+        } 
+
 
         #endregion
 
@@ -105,14 +112,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
             {
                 Id = data.Id;
                 Name = data.Name;
-                if(data.OrganizationType != null )
-                {
-                    OrganizationType = await OrganizationTypeEC.GetOrganizationTypeEC(data.OrganizationType);
-                }
                 DateOfFirstContact = data.DateOfFirstContact;
                 LastUpdatedBy = data.LastUpdatedBy;
                 LastUpdatedDate = data.LastUpdatedDate;
                 Notes = data.Notes;
+                OrganizationType = (data.OrganizationType != null ? await OrganizationTypeEC.GetOrganizationTypeEC(data.OrganizationType) : null);
+                CategoryOfOrganization = (data.CategoryOfOrganization != null ? await CategoryOfOrganizationEC.GetCategoryOfOrganizationEC(data.CategoryOfOrganization) : null);
                 RowVersion = data.RowVersion;
             }
         }
@@ -124,13 +129,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
             var dal = dalManager.GetProvider<IOrganizationDal>();
             var data = new Organization()
             {
+
                 Id = Id,
                 Name = Name,
-                OrganizationType = (OrganizationType != null ? new OrganizationType() { Id = OrganizationType.Id } : null),
                 DateOfFirstContact = DateOfFirstContact,
                 LastUpdatedBy = LastUpdatedBy,
                 LastUpdatedDate = LastUpdatedDate,
                 Notes = Notes,
+                OrganizationType = (OrganizationType != null ? new OrganizationType() { Id = OrganizationType.Id } : null),
+                CategoryOfOrganization = (CategoryOfOrganization != null ? new CategoryOfOrganization() { Id = CategoryOfOrganization.Id } : null),
                 RowVersion = RowVersion,
             };
 
@@ -139,35 +146,37 @@ namespace ECS.MemberManager.Core.BusinessObjects
             RowVersion = insertedObj.RowVersion;
         }
 
-        [Update]
+       [Update]
         private async Task Update()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IOrganizationDal>();
-
-            var objToUpdate = new Organization()
+            var data = new Organization()
             {
+
                 Id = Id,
                 Name = Name,
-                OrganizationType = (OrganizationType != null ? new OrganizationType() { Id = OrganizationType.Id } : null),
                 DateOfFirstContact = DateOfFirstContact,
                 LastUpdatedBy = LastUpdatedBy,
                 LastUpdatedDate = LastUpdatedDate,
                 Notes = Notes,
+                OrganizationType = (OrganizationType != null ? new OrganizationType() { Id = OrganizationType.Id } : null),
+                CategoryOfOrganization = (CategoryOfOrganization != null ? new CategoryOfOrganization() { Id = CategoryOfOrganization.Id } : null),
                 RowVersion = RowVersion,
-        
             };
 
-            var updatedObj = await dal.Update(objToUpdate);
-            RowVersion = updatedObj.RowVersion;
+            var insertedObj = await dal.Update(data);
+            Id = insertedObj.Id;
+            RowVersion = insertedObj.RowVersion;
         }
 
-        [DeleteSelf]
+       
+        [DeleteSelfChild]
         private async Task DeleteSelf()
         {
             await Delete(Id);
         }
-        
+       
         [Delete]
         private async Task Delete(int id)
         {
@@ -176,7 +185,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
            
             await dal.Delete(id);
         }
-
 
         #endregion
     }

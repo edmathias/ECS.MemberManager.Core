@@ -57,65 +57,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(listToTest);
             Assert.Equal(3, listToTest.Count);
         }
-        
-        [Fact]
-        private async void MemberStatusECL_TestDeleteMemberStatusEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IMemberStatusDal>();
-            var childData = await dal.Fetch();
-            
-            var memberStatusEditList = await MemberStatusECL.GetMemberStatusECL(childData);
 
-            var memberStatus = memberStatusEditList.First(a => a.Id == 99);
-
-            // remove is deferred delete
-            memberStatusEditList.Remove(memberStatus); 
-
-            var memberStatusListAfterDelete = await memberStatusEditList.SaveAsync();
-            
-            Assert.NotEqual(childData.Count,memberStatusListAfterDelete.Count);
-        }
-
-        [Fact]
-        private async void MemberStatusECL_TestUpdateMemberStatusEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IMemberStatusDal>();
-            var childData = await dal.Fetch();
-            
-            var memberStatusList = await MemberStatusECL.GetMemberStatusECL(childData);
-            var countBeforeUpdate = memberStatusList.Count;
-            var idToUpdate = memberStatusList.Min(a => a.Id);
-            var memberStatusToUpdate = memberStatusList.First(a => a.Id == idToUpdate);
-
-            memberStatusToUpdate.Description = "This was updated";
-            await memberStatusList.SaveAsync();
-
-            var updatedList = await dal.Fetch();
-            var updatedMemberStatussList = await MemberStatusECL.GetMemberStatusECL(updatedList);
-            
-            Assert.Equal("This was updated",updatedMemberStatussList.First(a => a.Id == idToUpdate).Description);
-            Assert.Equal(countBeforeUpdate, updatedMemberStatussList.Count);
-        }
-
-        [Fact]
-        private async void MemberStatusECL_TestAddMemberStatusEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IMemberStatusDal>();
-            var childData = await dal.Fetch();
-
-            var memberStatusList = await MemberStatusECL.GetMemberStatusECL(childData);
-            var countBeforeAdd = memberStatusList.Count;
-            
-            var memberStatusToAdd = memberStatusList.AddNew();
-            BuildMemberStatus(memberStatusToAdd); 
-
-            var memberStatusEditList = await memberStatusList.SaveAsync();
-            
-            Assert.NotEqual(countBeforeAdd, memberStatusEditList.Count);
-        }
 
         private void BuildMemberStatus(MemberStatusEC memberStatus)
         {

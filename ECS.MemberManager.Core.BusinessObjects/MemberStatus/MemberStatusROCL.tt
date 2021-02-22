@@ -4,7 +4,8 @@
 <#@ output extension=".cs" #>
 <#@ include file="..\CSLA_T4.tt" #>
 <#
-    var objectName = "Organization";
+    var objectName = "MemberStatus";
+    var pluralObjectName = "MemberStatuses";
     var stereoType = "ROCL";
     var isChild = true;
     var isReadOnly = true;

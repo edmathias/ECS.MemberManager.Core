@@ -4,13 +4,13 @@
 <#@ output extension=".cs" #>
 <#@ include file="..\CSLA_T4.tt" #>
 <#
-    var objectName = "Organization";
-    var stereoType = "ROCL";
-    var isChild = true;
+    var objectName = "MemberStatus";
+    var pluralObjectName = "MemberStatuses";
+    var stereoType = "RORL";
+    var isChild = false;
     var isReadOnly = true;
     var childStereo = GetChildStereoType(stereoType);
-    var isListStereo = true;
-    var cslaListType = (isReadOnly ? "ReadOnly" : "Business");
+    var cslaListType = (isReadOnly ? "ReadOnly" : "Business");    
 #>
 using System; 
 using System.Collections.Generic;

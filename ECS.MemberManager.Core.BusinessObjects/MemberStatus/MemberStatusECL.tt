@@ -4,10 +4,11 @@
 <#@ output extension=".cs" #>
 <#@ include file="..\CSLA_T4.tt" #>
 <#
-    var objectName = "Organization";
-    var stereoType = "ROCL";
+    var objectName = "MemberStatus";
+    var pluralObjectName = "MemberStatuses";
+    var stereoType = "ECL";
     var isChild = true;
-    var isReadOnly = true;
+    var isReadOnly = false;
     var childStereo = GetChildStereoType(stereoType);
     var isListStereo = true;
     var cslaListType = (isReadOnly ? "ReadOnly" : "Business");
@@ -38,6 +39,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
 <#
         BuildListFetch(  objectName,  isChild,  childStereo);
 #>
+       
+        [Update]
+        private void Update()
+        {
+            Child_Update();
+        }
 
         #endregion
 

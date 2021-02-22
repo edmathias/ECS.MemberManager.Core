@@ -1,7 +1,7 @@
 ﻿
 
 
-using System;
+using System; 
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
@@ -12,41 +12,39 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class MemberInfoECL : BusinessListBase<MemberInfoECL, MemberInfoEC>
+    public partial class MemberInfoECL : BusinessListBase<MemberInfoECL,MemberInfoEC>
     {
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
+        #region Factory Methods
 
         internal static async Task<MemberInfoECL> NewMemberInfoECL()
         {
-            return await DataPortal.CreateAsync<MemberInfoECL>();
+            return await DataPortal.CreateChildAsync<MemberInfoECL>();
         }
 
         internal static async Task<MemberInfoECL> GetMemberInfoECL(List<MemberInfo> childData)
         {
-            return await DataPortal.FetchAsync<MemberInfoECL>(childData);
+            return await DataPortal.FetchChildAsync<MemberInfoECL>(childData);
         }
 
-        [Fetch]
+        #endregion
+
+        #region Data Access
+ 
+        [FetchChild]
         private async Task Fetch(List<MemberInfo> childData)
         {
+
             using (LoadListMode)
             {
-                foreach (var MemberInfo in childData)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var MemberInfoToAdd = await MemberInfoEC.GetMemberInfoEC(MemberInfo);
-                    Add(MemberInfoToAdd);
+                    var objectToAdd = await MemberInfoEC.GetMemberInfoEC(domainObjToAdd);
+                    Add(objectToAdd);
                 }
             }
         }
 
-        [Update]
-        private void Update()
-        {
-            Child_Update();
-        }
-    }
-}
+        #endregion
 
+     }
+}

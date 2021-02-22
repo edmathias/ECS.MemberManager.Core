@@ -1,12 +1,19 @@
-﻿<#@ template language="C#" #>
+﻿<#@ template language="C#" debug="true" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ output extension=".cs" #>
-<#@ include file="..\MyT4Utilities.tt" #>
+<#@ include file="..\CSLA_T4.tt" #>
 <#
     var objectName = "MemberInfo";
+    var pluralObjectName = "MemberInfo";
+    var stereoType = "ECL";
+    var isChild = true;
+    var isReadOnly = false;
+    var childStereo = GetChildStereoType(stereoType);
+    var isListStereo = true;
+    var cslaListType = (isReadOnly ? "ReadOnly" : "Business");
 #>
-using System;
+using System; 
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
@@ -17,41 +24,23 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class <#=objectName #>ECL : BusinessListBase<<#=objectName #>ECL, <#=objectName #>EC>
+    public partial class <#= objectName #><#= stereoType #> : <#=cslaListType #>ListBase<<#= objectName #><#= stereoType#>,<#= objectName#><#=childStereo #>>
     {
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
+        #region Factory Methods
 
-        internal static async Task<<#= objectName #>ECL> New<#= objectName #>ECL()
-        {
-            return await DataPortal.CreateAsync<<#= objectName #>ECL>();
-        }
+<#
+        BuildFetchFactoryMethod( objectName, isChild, stereoType);
+#>
 
-        internal static async Task<<#= objectName #>ECL> Get<#= objectName #>ECL(List<<#= objectName #>> childData)
-        {
-            return await DataPortal.FetchAsync<<#= objectName #>ECL>(childData);
-        }
+        #endregion
 
-        [Fetch]
-        private async Task Fetch(List<<#= objectName #>> childData)
-        {
-            using (LoadListMode)
-            {
-                foreach (var <#= objectName #> in childData)
-                {
-                    var <#= objectName #>ToAdd = await <#= objectName #>EC.Get<#= objectName #>EC(<#= objectName #>);
-                    Add(<#= objectName #>ToAdd);
-                }
-            }
-        }
+        #region Data Access
+ 
+<#
+        BuildListFetch(  objectName,  isChild,  childStereo);
+#>
 
-        [Update]
-        private void Update()
-        {
-            Child_Update();
-        }
-    }
+        #endregion
+
+     }
 }
-

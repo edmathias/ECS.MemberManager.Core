@@ -5,12 +5,13 @@
 <#@ include file="..\CSLA_T4.tt" #>
 <#
     var objectName = "MemberInfo";
-    var pluralObjectName = objectName;
+    var pluralObjectName = "MemberInfo";
     var stereoType = "EC";
-    var childStereo = true;
-    var readOnly = false;
+    var isChild = true;
+    var isReadOnly = false;
 #>
-using System; 
+using System;
+using System.Collections.Generic; 
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -24,36 +25,36 @@ namespace ECS.MemberManager.Core.BusinessObjects
     {
         #region Business Methods 
  <#
-    var columnList = BuildColumnList(pluralObjectName); 
+    var columnList = BuildColumnList(pluralObjectName);
 
     foreach(var columnData in columnList ) 
     {
-        BuildCSLAProperties(columnData,stereoType);
+        BuildCSLAProperties(columnData,stereoType,isReadOnly);
     }
 #>
         #endregion 
 
         #region Factory Methods
 <#
-        BuildFactoryMethods(objectName,stereoType,childStereo);
+        BuildFactoryMethods(objectName,stereoType,isChild,isReadOnly);
 #>
 
         #endregion
 
         #region Data Access Methods
-        
+
 <#
-        BuildFetch(columnList,objectName,stereoType,childStereo);
-#>
+        BuildFetch(columnList,objectName,stereoType,isChild);
+
+        if (!isReadOnly)
+        {
+            BuildInsert(columnList,objectName,stereoType,isChild);
+
+            BuildUpdate(columnList,objectName, stereoType, isChild);
         
-<#
-        BuildInsert(columnList,objectName,stereoType,childStereo);
-#>
-        
-<#      
-        BuildUpdate(columnList,objectName, stereoType, childStereo);
-        
-        BuildDeleteMethods(objectName);
+            BuildDeleteMethods(objectName);
+        }
+
 #>
 
         #endregion

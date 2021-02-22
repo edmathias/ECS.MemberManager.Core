@@ -23,12 +23,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
             private set => LoadProperty(IdProperty, value); 
    
         }        
-        public static readonly PropertyInfo<CategoryOfOrganizationROC> CategoryOfOrganizationProperty = RegisterProperty<CategoryOfOrganizationROC>(o => o.CategoryOfOrganization);
-        public CategoryOfOrganizationROC CategoryOfOrganization 
-        {
-            get => GetProperty(CategoryOfOrganizationProperty); 
-            private set => LoadProperty(CategoryOfOrganizationProperty, value); 
-        }        
 
         public static readonly PropertyInfo<string> NameProperty = RegisterProperty<string>(o => o.Name);
         public string Name 
@@ -44,6 +38,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
             get => GetProperty(NotesProperty); 
             private set => LoadProperty(NotesProperty, value); 
    
+        }        
+        public static readonly PropertyInfo<CategoryOfOrganizationROC> CategoryOfOrganizationProperty = RegisterProperty<CategoryOfOrganizationROC>(o => o.CategoryOfOrganization);
+        public CategoryOfOrganizationROC CategoryOfOrganization 
+        {
+            get => GetProperty(CategoryOfOrganizationProperty); 
+            private set => LoadProperty(CategoryOfOrganizationProperty, value); 
         }        
 
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
@@ -70,12 +70,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private async Task Fetch(OrganizationType childData)
         {
             Id = childData.Id;
+            Name = childData.Name;
+            Notes = childData.Notes;
             if(childData.CategoryOfOrganization != null )
             {
                 CategoryOfOrganization = await CategoryOfOrganizationROC.GetCategoryOfOrganizationROC(childData.CategoryOfOrganization);
             }
-            Name = childData.Name;
-            Notes = childData.Notes;
             RowVersion = childData.RowVersion;
         }
 

@@ -319,14 +319,187 @@
         <DesignTime>True</DesignTime>
         <DependentUpon>OrganizationTypeRORL.tt</DependentUpon>
       </Compile>
+      <None Update="MemberStatus\MemberStatus.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>MemberStatus.cs</LastGenOutput>
+      </None>
+      <Compile Update="MemberStatus\MemberStatus.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>MemberStatus.tt</DependentUpon>
+      </Compile>
+      <None Update="MemberStatus\MemberStatusEC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>MemberStatusEC.cs</LastGenOutput>
+      </None>
+      <None Update="MemberStatus\MemberStatusER.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>MemberStatusER.cs</LastGenOutput>
+      </None>
+      <None Update="MemberStatus\MemberStatusROC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>MemberStatusROC.cs</LastGenOutput>
+      </None>
+      <None Update="MemberStatus\MemberStatusROR.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>MemberStatusROR.cs</LastGenOutput>
+      </None>
+      <None Update="MemberStatus\MemberStatusERL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>MemberStatusERL.cs</LastGenOutput>
+      </None>
+      <None Update="MemberStatus\MemberStatusRORL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>MemberStatusRORL.cs</LastGenOutput>
+      </None>
+      <None Update="MemberStatus\MemberStatusROCL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>MemberStatusROCL.cs</LastGenOutput>
+      </None>
+      <None Update="MemberStatus\MemberStatusECL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>MemberStatusECL.cs</LastGenOutput>
+      </None>
+      <Compile Update="MemberStatus\MemberStatusERL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>MemberStatusERL.tt</DependentUpon>
+      </Compile>
       <None Update="MemberInfo\MemberInfoEC.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>MemberInfoEC.cs</LastGenOutput>
       </None>
+      <None Update="MemberInfo\MemberInfoECL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>MemberInfoECL.cs</LastGenOutput>
+      </None>
+      <None Update="MemberInfo\MemberStatusER.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>MemberStatusER.cs</LastGenOutput>
+      </None>
+      <None Update="MemberInfo\MemberStatusERL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>MemberStatusERL.cs</LastGenOutput>
+      </None>
+      <None Update="MemberInfo\MemberStatusROC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>MemberStatusROC.cs</LastGenOutput>
+      </None>
+      <None Update="MemberInfo\MemberStatusROCL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>MemberStatusROCL.cs</LastGenOutput>
+      </None>
+      <None Update="MemberInfo\MemberStatusROR.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>MemberStatusROR.cs</LastGenOutput>
+      </None>
+      <None Update="MemberInfo\MemberStatusRORL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>MemberStatusRORL.cs</LastGenOutput>
+      </None>
       <Compile Update="MemberInfo\MemberInfoEC.cs">
-        <DependentUpon>MemberInfoEC.tt</DependentUpon>
-        <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>MemberInfoEC.tt</DependentUpon>
+      </Compile>
+      <Compile Update="MemberStatus\MemberStatusEC.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>MemberStatusEC.tt</DependentUpon>
+      </Compile>
+      <Compile Update="MemberInfo\MemberInfoECL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>MemberInfoECL.tt</DependentUpon>
+      </Compile>
+      <None Update="MemberInfo\MemberInfoER.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>MemberInfoER.cs</LastGenOutput>
+      </None>
+      <Compile Update="MemberInfo\MemberInfoER.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>MemberInfoER.tt</DependentUpon>
+      </Compile>
+      <None Update="MemberInfo\MemberInfoERL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>MemberInfoERL.cs</LastGenOutput>
+      </None>
+      <Compile Update="MemberInfo\MemberInfoERL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>MemberInfoERL.tt</DependentUpon>
+      </Compile>
+      <None Update="MemberInfo\MemberInfoROC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>MemberInfoROC.cs</LastGenOutput>
+      </None>
+      <Compile Update="MemberInfo\MemberInfoROC.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>MemberInfoROC.tt</DependentUpon>
+      </Compile>
+      <Compile Update="MemberStatus\MemberStatusROC.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>MemberStatusROC.tt</DependentUpon>
+      </Compile>
+      <None Update="MemberInfo\MemberInfoROCL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>MemberInfoROCL.cs</LastGenOutput>
+      </None>
+      <Compile Update="MemberInfo\MemberInfoROCL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>MemberInfoROCL.tt</DependentUpon>
+      </Compile>
+      <None Update="MemberInfo\MemberInfoROR.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>MemberInfoROR.cs</LastGenOutput>
+      </None>
+      <Compile Update="MemberInfo\MemberInfoROR.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>MemberInfoROR.tt</DependentUpon>
+      </Compile>
+      <None Update="MemberInfo\MemberInfoRORL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>MemberInfoRORL.cs</LastGenOutput>
+      </None>
+      <Compile Update="MemberInfo\MemberInfoRORL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>MemberInfoRORL.tt</DependentUpon>
+      </Compile>
+      <Compile Update="MemberStatus\MemberStatusER.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>MemberStatusER.tt</DependentUpon>
+      </Compile>
+      <Compile Update="MemberStatus\MemberStatusECL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>MemberStatusECL.tt</DependentUpon>
+      </Compile>
+      <Compile Update="MemberStatus\MemberStatusROCL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>MemberStatusROCL.tt</DependentUpon>
+      </Compile>
+      <Compile Update="MemberStatus\MemberStatusROR.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>MemberStatusROR.tt</DependentUpon>
+      </Compile>
+      <Compile Update="MemberStatus\MemberStatusRORL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>MemberStatusRORL.tt</DependentUpon>
+      </Compile>
+      <Compile Update="MemberStatus\MemberStatusERL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>MemberStatusERL.tt</DependentUpon>
       </Compile>
     </ItemGroup>
 

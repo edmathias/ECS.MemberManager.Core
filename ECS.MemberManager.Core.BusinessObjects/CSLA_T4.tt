@@ -24,15 +24,16 @@
 
 <#+
   // Insert any template procedures here
-    void BuildCSLAProperties(ColumnData columnData,string stereoType)
+    void BuildCSLAProperties(ColumnData columnData, string stereoType, bool isReadOnly )
     {
+        var childStereoType = GetChildStereoType(stereoType);
         if(columnData.isForeignKey)
         {
             var newOutputName = ConvertForeignKeyColumn(columnData.columnName);
             var objType = newOutputName.Replace(".Id", string.Empty);
 #>
-        public static readonly PropertyInfo<<#= objType #><#= stereoType #>> <#= objType #>Property = RegisterProperty<<#= objType #><#= stereoType#>>(o => o.<#= objType #>);
-        public <#= objType #>EC <#= objType  #> 
+        public static readonly PropertyInfo<<#= objType #><#= childStereoType#>> <#= objType #>Property = RegisterProperty<<#= objType #><#= childStereoType#>>(o => o.<#= objType #>);
+        public <#= objType #><#= childStereoType #> <#= objType #>  
         {
             get => GetProperty(<#= objType #>Property); 
             set => SetProperty(<#= objType  #>Property, value); 
@@ -48,7 +49,7 @@
         {
             get => GetProperty(<#= columnData.columnName #>Property); 
 <#+
-            if (columnData.isPrimaryKey)
+            if (columnData.isPrimaryKey || isReadOnly)
             { 
 #>
             private set => LoadProperty(<#= columnData.columnName #>Property, value); 
@@ -61,115 +62,60 @@
 <#+                
             }
 #>   
-        }        
+        } 
 <#+
         }  // end else
     }
 #>
 
 <#+
-    void BuildFetchDataAccessProperties(ColumnData columnData,string stereoType)
+    void BuildFactoryMethods(string objectName, string stereoType, bool isChild, bool isReadOnly )
     {
-        if (columnData.isForeignKey)
-        {
-            var objName = columnData.columnName.Replace("Id", string.Empty);
-#>
-                <#= objName #> = (data.<#=objName #> != null ? await <#= objName #><#=stereoType#>.Get<#= objName #><#=stereoType#>(data.<#= objName #>) : null);
-<#+
-        }
-        else
+        var childDesig = (isChild ? "Child" : String.Empty);
+        var visibility = (isChild ? "internal" : "public");
+        var childDataString = (isChild ? "childData" : "id");
+        var childParams = (isChild ? objectName+" "  + childDataString : "int id"); 
+        
+        if (!isReadOnly)
         {
 #>
-                <#= columnData.columnName #> = data.<#= columnData.columnName #>;
-<#+
+        <#= visibility #> static async Task<<#= objectName #><#= stereoType #>> New<#= objectName #><#= stereoType #>()
+        {
+            return await DataPortal.Create<#= childDesig #>Async<<#= objectName #><#= stereoType #>>();
         }
-    }
-#>
 
-<#+
-    void BuildInsertUpdateDataAccessProperties(ColumnData columnData,string stereoType)
-    {
-        if (columnData.isForeignKey)
-        {
-            var objName = columnData.columnName.Replace("Id", string.Empty);
-#>
-                <#= objName #> = (<#= objName #> != null ? new <#= objName #>() { Id = <#= objName #>.Id } : null),
-<#+
+<#+            
         }
-        else
-        {
 #>
-                <#= columnData.columnName #> = <#= columnData.columnName #>,
-<#+
-        }
-    }
-#>
-
-<#+
-    void BuildFactoryMethods(string objectName, string stereoType, bool childStereo)
-    {
-        var childDesig = childStereo ? "Child" : string.Empty; 
-#>    
-
-        public static async Task<<#= objectName #><#= stereoType #>> New<#= objectName #><#= stereoType #>()
+        <#= visibility #> static async Task<<#= objectName #><#= stereoType #>> Get<#= objectName #><#= stereoType #>(<#=childParams #>)
         {
-            return await DataPortal.Create<#=childDesig #>Async<<#= objectName #><#= stereoType #>>();
-        }
-<#+
-        if (childStereo)
-        {
- #>
-        public static async Task<<#= objectName #><#= stereoType #>> Get<#= objectName #><#= stereoType #>(<#=objectName#> childData)
-        {
-            return await DataPortal.Fetch<#=childDesig #>Async<<#= objectName #><#= stereoType #>>(childData);
+            return await DataPortal.Fetch<#= childDesig #>Async<<#= objectName #><#= stereoType #>>(<#=childDataString #>);
         }  
+
 <#+
-        }
-        else
+        if (!isReadOnly && !isChild )
         {
 #>
-        public static async Task<<#= objectName #><#= stereoType #>> Get<#= objectName #><#=stereoType#>(int id)
-        {
-            return await DataPortal.Fetch<#=childDesig #>Async<<#= objectName #><#= stereoType #>>(id);
-        } 
-
         public static async Task Delete<#= objectName #><#= stereoType #>(int id)
         {
-            await DataPortal.Delete<#=childDesig #>Async<<#= objectName #><#= stereoType #>>(id);
+            await DataPortal.DeleteAsync<<#= objectName #><#= stereoType #>>(id);
         } 
-<#+            
+
+<#+
         }
     
     }
 #>
-<#+
-    void BuildDeleteMethods(string objectType)
-    {
-#>
-       
-        [DeleteSelfChild]
-        private async Task DeleteSelf()
-        {
-            await Delete(Id);
-        }
-       
-        [Delete]
-        private async Task Delete(int id)
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<I<#= objectType #>Dal>();
-           
-            await dal.Delete(id);
-        }
-<#+
-    }
-#>
 
 <#+
-    void BuildFetch(List<ColumnData> columnList,string objectType, string stereoType, bool isChild)
+    void BuildFetch(List<ColumnData> columnList,string objectType, string stereoType, bool isChild )
     {
-        var childDesig = isChild ? "Child" : String.Empty;
-        #>
+        var visibility = (isChild ? "internal" : "public");
+        var childDesig = (isChild ? "Child" : string.Empty);
+        var childParam = (isChild ? "childData" : string.Empty);
+        var childList = (isChild ? "List<" + objectType + ">" : string.Empty);
+        
+#>
         [Fetch<#=childDesig #>]
 <#+
         if (isChild)
@@ -201,6 +147,7 @@
 #>
             }
         }
+
 <#+      
     }
 #>
@@ -221,7 +168,7 @@
 <#+
     foreach (var columnData in columnList)
     {
-        BuildInsertUpdateDataAccessProperties(columnData,stereoType);
+        BuildInsertUpdateDataAccessProperties(columnData);
     }
 #>
             };
@@ -230,7 +177,45 @@
             Id = insertedObj.Id;
             RowVersion = insertedObj.RowVersion;
         }
- <#+      
+
+<#+      
+    }
+#>
+
+<#+
+    void BuildListFetch(string objectName, bool isChild, string childStereo)
+    {
+        if (!isChild)
+        {
+#>
+        [Fetch]
+        private async Task Fetch()
+        {
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<I<#= objectName #>Dal>();
+            var childData = await dal.Fetch();
+<#+
+        }
+        else
+        {
+#>
+        [FetchChild]
+        private async Task Fetch(List<<#= objectName #>> childData)
+        {
+<#+
+        }
+#>
+
+            using (LoadListMode)
+            {
+                foreach (var domainObjToAdd in childData)
+                {
+                    var objectToAdd = await <#= objectName #><#= childStereo #>.Get<#= objectName #><#= childStereo #>(domainObjToAdd);
+                    Add(objectToAdd);
+                }
+            }
+        }
+<#+
     }
 #>
 
@@ -238,8 +223,9 @@
     void BuildUpdate(List<ColumnData> columnList, string objectType, string stereoType, bool isChild )
     { 
         var childDesig = isChild ? "Child" : String.Empty;
+        
 #>
-        [Update<#=childDesig #>]
+       [Update<#=childDesig #>]
         private async Task Update()
         {
             using var dalManager = DalFactory.GetManager();
@@ -250,15 +236,124 @@
 <#+
     foreach (var columnData in columnList)
     {
-        BuildInsertUpdateDataAccessProperties(columnData,stereoType);
+        BuildInsertUpdateDataAccessProperties(columnData);
     }
 #>
             };
 
-            var insertedObj = await dal.Insert(data);
+            var insertedObj = await dal.Update(data);
             Id = insertedObj.Id;
             RowVersion = insertedObj.RowVersion;
         }
- <#+      
+
+<#+      
     }
 #>
+
+<#+
+    void BuildDeleteMethods(string objectType)
+    {
+#>
+       
+        [DeleteSelfChild]
+        private async Task DeleteSelf()
+        {
+            await Delete(Id);
+        }
+       
+        [Delete]
+        private async Task Delete(int id)
+        {
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<I<#= objectType #>Dal>();
+           
+            await dal.Delete(id);
+        }
+<#+
+    }
+#>
+
+<#+
+    void BuildFetchDataAccessProperties(ColumnData columnData, string stereoType )
+    {
+        if (columnData.isForeignKey)
+        {
+            var objName = columnData.columnName.Replace("Id", string.Empty);
+            var childStereoType =  GetChildStereoType(stereoType);
+
+#>
+                <#= objName #> = (data.<#=objName #> != null ? await <#= objName #><#=childStereoType#>.Get<#= objName #><#=childStereoType#>(data.<#= objName #>) : null);
+<#+
+        }
+        else
+        {
+#>
+                <#= columnData.columnName #> = data.<#= columnData.columnName #>;
+<#+
+        }
+    }
+#>
+
+<#+
+    void BuildInsertUpdateDataAccessProperties(ColumnData columnData)
+    {
+        if (columnData.isForeignKey)
+        {
+            var objName = columnData.columnName.Replace("Id", string.Empty);
+#>
+                <#= objName #> = (<#= objName #> != null ? new <#= objName #>() { Id = <#= objName #>.Id } : null),
+<#+
+        }
+        else
+        {
+#>
+                <#= columnData.columnName #> = <#= columnData.columnName #>,
+<#+
+        }
+    }
+#>
+
+<#+
+    string GetChildStereoType(string stereoType)
+    {
+        switch (stereoType)
+        {
+            case "ER" :
+            case "EC":
+            case "ECL":
+            case "ERL":
+                return "EC";
+            case "ROR":
+            case "ROC":
+            case "RORL":
+            case "ROCL":
+                return "ROC";
+            default:
+                return string.Empty;
+        }
+    }
+#>
+
+<#+
+    void BuildFetchFactoryMethod(string objectName, bool isChild, string stereo)
+    {
+        var visibility = (isChild ? "internal" : "public");
+        var childDesig = (isChild ? "Child" : string.Empty);
+        var childParam = (isChild ? "childData" : string.Empty);
+        var childList = (isChild ? "List<" + objectName + ">" : string.Empty);
+        
+#>
+        <#=visibility #> static async Task<<#=objectName #><#=stereo #>> New<#=objectName#><#=stereo #>()
+        {
+            return await DataPortal.Create<#=childDesig#>Async<<#=objectName #><#=stereo #>>();
+        }
+
+        <#=visibility #> static async Task<<#=objectName #><#=stereo #>> Get<#=objectName#><#=stereo #>(<#=childList #> <#=childParam#>)
+        {
+            return await DataPortal.Fetch<#=childDesig#>Async<<#=objectName #><#=stereo #>>(<#=childParam#>);
+        }
+<#+
+    }
+#>
+
+

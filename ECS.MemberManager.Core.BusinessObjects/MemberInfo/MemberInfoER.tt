@@ -1,13 +1,18 @@
-﻿<#@ template language="C#" #>
+﻿<#@ template language="C#" debug="true" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ output extension=".cs" #>
-<#@ include file="..\MyT4Utilities.tt" #>
+<#@ include file="..\CSLA_T4.tt" #>
 <#
     var objectName = "MemberInfo";
-    var pluralObjectName = objectName;
+    var pluralObjectName = "MemberInfo";
+    var stereoType = "ER";
+    var isChild = false;
+    var isReadOnly = false;
+    var isListStereo = false;
 #>
 using System;
+using System.Collections.Generic; 
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -17,202 +22,41 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class <#= objectName #>ER : BusinessBase<<#= objectName #>ER>
+    public partial class <#= objectName #><#= stereoType #> : BusinessBase<<#= objectName #><#= stereoType#>>
     {
         #region Business Methods 
-
  <#
-    var connectionString =
-        "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ECSMemberManager;Integrated Security=True;Connect Timeout=30";
-
-    string columnquery = BuildColumnQueryString(pluralObjectName);
-
-    List<ColumnData> columnList = new List<ColumnData>();
-
-    using (SqlConnection connection = new SqlConnection(connectionString))
-    {
-        SqlCommand command = new SqlCommand(columnquery, connection);
-        connection.Open();
-        SqlDataReader reader = command.ExecuteReader();
-
-        columnList = GetColumnData(reader);
-    }
+    var columnList = BuildColumnList(pluralObjectName);
 
     foreach(var columnData in columnList ) 
     {
-        var outputName = columnData.columnName;
-        if(columnData.isForeignKey)
-        {
-            var newOutputName = ConvertForeignKeyColumn(outputName);
-            var objType = newOutputName.Replace(".Id", string.Empty);
-#>
-        public static readonly PropertyInfo<<#= objType #>EC> <#= objType #>Property = RegisterProperty<<#= objType #>EC>(o => o.<#= objType #>);
-        public virtual <#= objType #>EC <#= objType  #> 
-        {
-            get => GetProperty(<#= objType #>Property); 
-            set => SetProperty(<#= objType #>Property, value); 
-        }        
-
-<#            
-        } // end if 
-        else
-        { 
- #>
-        public static readonly PropertyInfo<<#= columnData.dotNetType #>> <#= columnData.columnName #>Property = RegisterProperty<<#= columnData.dotNetType	 #>>(o => o.<#= columnData.columnName #>);
-        public virtual <#= columnData.dotNetType #> <#= columnData.columnName #> 
-        {
-            get => GetProperty(<#= columnData.columnName #>Property); 
- <#
-            if (columnData.isPrimaryKey)
-            { 
-#>
-           private set => LoadProperty(<#= columnData.columnName #>Property, value); 
-<#                
-            }
-            else
-            {
-#>
-           set => SetProperty(<#= columnData.columnName #>Property, value); 
-<#                
-            }
-#>        
-        }        
-<#
-        }  // end else
-    } // end foreach 
+        BuildCSLAProperties(columnData,stereoType,isReadOnly);
+    }
 #>
         #endregion 
 
         #region Factory Methods
-
-        public static async Task<<#= objectName #>ER> New<#= objectName #>ER()
-        {
-            return await DataPortal.CreateAsync<<#= objectName #>ER>();
-        }
-
-        public static async Task<<#= objectName #>ER> Get<#= objectName #>ER(int id)
-        {
-            return await DataPortal.FetchAsync<<#= objectName #>ER>(id);
-        }
-
-        public static async Task Delete<#= objectName #>ER(int id)
-        {
-            await DataPortal.DeleteAsync<<#= objectName #>ER>(id);
-        }
+<#
+        BuildFactoryMethods(objectName,stereoType,isChild,isReadOnly);
+#>
 
         #endregion
 
         #region Data Access Methods
 
-        [Fetch]
-        private async Task Fetch(int id)
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<I<#= objectName #>Dal>();
-            var data = await dal.Fetch(id);
+<#
+        BuildFetch(columnList,objectName,stereoType,isChild);
 
-            using (BypassPropertyChecks)
-            {
-<#
-    foreach (var columnData in columnList)
-    {
-        if (columnData.isForeignKey)
+        if (!isReadOnly)
         {
-            var objName = columnData.columnName.Replace("Id", string.Empty);
-#>
-                <#= objName #> = (data.<#= objName #> != null ? await <#= objName#>EC.Get<#=objName #>EC( new <#= objName #>() { Id = data.<#= objName #>.Id }) : null);
-<#
-        }
-        else
-        {
-#>
-                <#= columnData.columnName #> = data.<#= columnData.columnName #>;
-<#
-        }
-    }
-#>
-            }
-        }
+            BuildInsert(columnList,objectName,stereoType,isChild);
 
-        [Insert]
-        private async Task Insert()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<I<#= objectName #>Dal>();
-            var data = new <#= objectName #>()
-            {
-<#
-    foreach (var columnData in columnList)
-    {
-        if (columnData.isForeignKey)
-        {
-            var objName = columnData.columnName.Replace("Id", string.Empty);
-#>
-                <#= objName #> = (this.<#= objName #> != null ? new <#= objName #>() { Id = this.<#= objName #>.Id } : null),
-<#
-        }
-        else
-        {
-#>
-                <#= columnData.columnName #> = this.<#= columnData.columnName #>,
-<#
-        }
-    }
-#>
-            };
-
-            var insertedObj = await dal.Insert(data);
-            Id = insertedObj.Id;
-            RowVersion = insertedObj.RowVersion;
-        }
-
-        [Update]
-        private async Task Update()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<I<#=objectName #>Dal>();
-
-            var objToUpdate = new <#= objectName#>()
-            {
-<#
-    foreach (var columnData in columnList)
-    {
-        if (columnData.isForeignKey)
-        {
-            var objName = columnData.columnName.Replace("Id", string.Empty);
-#>
-                <#= objName #> = (this.<#= objName #> != null ? new <#= objName #>() { Id = this.<#= objName #>.Id } : null),
-<#
-        }
-        else
-        {
-#>
-                <#= columnData.columnName #> = this.<#= columnData.columnName #>,
-<#
-        }
-    }
-#>        
-            };
-
-            var updatedObj = await dal.Update(objToUpdate);
-            RowVersion = updatedObj.RowVersion;
-        }
-
-        [DeleteSelf]
-        private async Task DeleteSelf()
-        {
-            await Delete(Id);
-        }
+            BuildUpdate(columnList,objectName, stereoType, isChild);
         
-        [Delete]
-        private async Task Delete(int id)
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<I<#= objectName#>Dal>();
-           
-            await dal.Delete(id);
+            BuildDeleteMethods(objectName);
         }
 
+#>
 
         #endregion
     }

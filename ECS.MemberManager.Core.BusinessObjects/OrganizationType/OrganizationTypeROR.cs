@@ -22,13 +22,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
             private set => LoadProperty(IdProperty, value); 
         
         }        
-        public static readonly PropertyInfo<CategoryOfOrganizationROC> CategoryOfOrganizationProperty = RegisterProperty<CategoryOfOrganizationROC>(o => o.CategoryOfOrganization);
-        public CategoryOfOrganizationROC CategoryOfOrganization 
-        {
-            get => GetProperty(CategoryOfOrganizationProperty); 
-            private set => LoadProperty(CategoryOfOrganizationProperty, value); 
-        }        
-
         public static readonly PropertyInfo<string> NameProperty = RegisterProperty<string>(o => o.Name);
         public string Name 
         {
@@ -43,6 +36,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
             private set => LoadProperty(NotesProperty, value); 
         
         }        
+        public static readonly PropertyInfo<CategoryOfOrganizationROC> CategoryOfOrganizationProperty = RegisterProperty<CategoryOfOrganizationROC>(o => o.CategoryOfOrganization);
+        public CategoryOfOrganizationROC CategoryOfOrganization 
+        {
+            get => GetProperty(CategoryOfOrganizationProperty); 
+            private set => LoadProperty(CategoryOfOrganizationProperty, value); 
+        }        
+
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
         public byte[] RowVersion 
         {
@@ -71,12 +71,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
             var data = await dal.Fetch(id);
 
             Id = data.Id;
+            Name = data.Name;
+            Notes = data.Notes;
             if(data.CategoryOfOrganization != null )
             {
                 CategoryOfOrganization = await CategoryOfOrganizationROC.GetCategoryOfOrganizationROC(data.CategoryOfOrganization);
             }
-            Name = data.Name;
-            Notes = data.Notes;
             RowVersion = data.RowVersion;
         }
 

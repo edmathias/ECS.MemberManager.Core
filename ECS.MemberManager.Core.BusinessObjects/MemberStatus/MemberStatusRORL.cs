@@ -1,34 +1,35 @@
-using System;
+﻿
+
+
+using System; 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
+using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class MemberStatusRORL : ReadOnlyListBase<MemberStatusRORL,MemberStatusROC>
+    public partial class MemberStatusRORL : ReadOnlyListBase<MemberStatusRORL,MemberStatusROC>
     {
-        #region Business Methods
-        
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
-        
-        #endregion
-        
         #region Factory Methods
 
-        public static async Task<MemberStatusRORL> GetMemberStatusRORL()
+        public static async Task<MemberStatusRORL> NewMemberStatusRORL()
+        {
+            return await DataPortal.CreateAsync<MemberStatusRORL>();
+        }
+
+        public static async Task<MemberStatusRORL> GetMemberStatusRORL( )
         {
             return await DataPortal.FetchAsync<MemberStatusRORL>();
         }
-        
-        #endregion
-        
-        #region Data Access
 
+        #endregion
+
+        #region Data Access
+ 
         [Fetch]
         private async Task Fetch()
         {
@@ -38,14 +39,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
             using (LoadListMode)
             {
-                foreach (var memberStatus in childData)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var memberStatusToAdd = await MemberStatusROC.GetMemberStatusROC(memberStatus);
-                    Add(memberStatusToAdd);
+                    var objectToAdd = await MemberStatusROC.GetMemberStatusROC(domainObjToAdd);
+                    Add(objectToAdd);
                 }
             }
         }
-        
+
         #endregion
-    }
+
+     }
 }

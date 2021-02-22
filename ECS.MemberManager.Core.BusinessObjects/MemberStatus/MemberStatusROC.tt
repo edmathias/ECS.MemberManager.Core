@@ -4,12 +4,12 @@
 <#@ output extension=".cs" #>
 <#@ include file="..\CSLA_T4.tt" #>
 <#
-    var objectName = "Organization";
-    var pluralObjectName = Pluralize	(objectName);
-    var stereoType = "EC";
+    var objectName = "MemberStatus";
+    var pluralObjectName = "MemberStatuses";
+    var stereoType = "ROC";
     var isChild = true;
-    var isReadOnly = false;
-    var isListStereo = false;
+    var isReadOnly = true;
+    var isListStereo = true;
 #>
 using System;
 using System.Collections.Generic; 
