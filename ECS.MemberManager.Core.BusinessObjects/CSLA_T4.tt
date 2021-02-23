@@ -32,13 +32,13 @@
             var newOutputName = ConvertForeignKeyColumn(columnData.columnName);
             var objType = newOutputName.Replace(".Id", string.Empty);
 #>
+
         public static readonly PropertyInfo<<#= objType #><#= childStereoType#>> <#= objType #>Property = RegisterProperty<<#= objType #><#= childStereoType#>>(o => o.<#= objType #>);
         public <#= objType #><#= childStereoType #> <#= objType #>  
         {
             get => GetProperty(<#= objType #>Property); 
             set => SetProperty(<#= objType  #>Property, value); 
         }        
-
 <#+
         } // end if 
         else
@@ -58,11 +58,11 @@
             else
             {
 #>
-            set => SetProperty(<#= columnData.columnName #>Property, value); 
-<#+                
+            set => SetProperty(<#= columnData.columnName #>Property, value); <#+                
             }
 #>   
-        } 
+        }
+ 
 <#+
         }  // end else
     }
@@ -108,7 +108,7 @@
 #>
 
 <#+
-    void BuildFetch(List<ColumnData> columnList,string objectType, string stereoType, bool isChild )
+    void BuildFetch(List<ColumnData> columnList,string objectType, string stereoType, bool isChild, bool isReadOnly )
     {
         var visibility = (isChild ? "internal" : "public");
         var childDesig = (isChild ? "Child" : string.Empty);
@@ -133,21 +133,29 @@
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<I<#= objectType #>Dal>();
             var data = await dal.Fetch(id);
-
 <#+
         }
+        if (!isReadOnly)
+        {
 #>
-            using (BypassPropertyChecks)
+            using(BypassPropertyChecks)
             {
-<#+    
-    foreach (var columnData in columnList)
-    {
-        BuildFetchDataAccessProperties(columnData,stereoType);
-    }
-#>
-            }
+<#+                
         }
 
+        foreach (var columnData in columnList)
+        {
+            BuildFetchDataAccessProperties(columnData,stereoType);
+        }
+
+        if (!isReadOnly)
+        {
+#>
+            }            
+<#+                
+        }
+#>
+        }
 <#+      
     }
 #>
@@ -280,7 +288,6 @@
         {
             var objName = columnData.columnName.Replace("Id", string.Empty);
             var childStereoType =  GetChildStereoType(stereoType);
-
 #>
                 <#= objName #> = (data.<#=objName #> != null ? await <#= objName #><#=childStereoType#>.Get<#= objName #><#=childStereoType#>(data.<#= objName #>) : null);
 <#+

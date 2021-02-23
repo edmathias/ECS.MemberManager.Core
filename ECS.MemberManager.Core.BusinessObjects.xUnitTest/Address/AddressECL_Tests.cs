@@ -60,65 +60,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.Equal(3, addressECL.Count);
         }
         
-        [Fact]
-        private async void AddressECL_TestDeleteAddressEditChildEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IAddressDal>();
-            var addresses = await dal.Fetch();
-
-            var addressErl = await AddressECL.GetAddressECL(addresses);
-            var listCount = addressErl.Count;
-            var addressToDelete = addressErl.First(et => et.Id == 99);
-
-            // remove is deferred delete
-            var isDeleted = addressErl.Remove(addressToDelete); 
-
-            var addressListAfterDelete = await addressErl.SaveAsync();
-
-            Assert.NotNull(addressListAfterDelete);
-            Assert.IsType<AddressECL>(addressListAfterDelete);
-            Assert.True(isDeleted);
-            Assert.NotEqual(listCount,addressListAfterDelete.Count);
-        }
-
-        [Fact]
-        private async void AddressECL_TestUpdateAddressEditChildEntry()
-        {
-            const int idToUpdate = 1;
-            
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IAddressDal>();
-            var addresses = await dal.Fetch();
-            
-            var addressECL = await AddressECL.GetAddressECL(addresses);
-            var countBeforeUpdate = addressECL.Count;
-            var addressToUpdate = addressECL.First(a => a.Id == idToUpdate);
-            addressToUpdate.Notes = "This was updated";
-
-            var updatedList = await addressECL.SaveAsync();
-            
-            Assert.Equal("This was updated",updatedList.First(a => a.Id == idToUpdate).Notes);
-            Assert.Equal(countBeforeUpdate, updatedList.Count);
-        }
-
-        [Fact]
-        private async void AddressECL_TestAddAddressEditChildEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IAddressDal>();
-            var addresses = await dal.Fetch();
-
-            var addressECL = await AddressECL.GetAddressECL(addresses);
-            var countBeforeAdd = addressECL.Count;
-            
-            var addressToAdd = addressECL.AddNew();
-            BuildValidAddress(addressToAdd);
-
-            var updatedList = await addressECL.SaveAsync();
-            
-            Assert.NotEqual(countBeforeAdd, updatedList.Count);
-        }
 
         private void BuildValidAddress(AddressEC address)
         {

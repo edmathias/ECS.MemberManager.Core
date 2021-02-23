@@ -1,6 +1,8 @@
-using System;
+﻿
+
+
+using System; 
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -10,11 +12,13 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class AddressROCL : ReadOnlyListBase<AddressROCL,AddressROC>
+    public partial class AddressROCL : ReadOnlyListBase<AddressROCL,AddressROC>
     {
-        public static void AddObjectAuthorizationRules()
+        #region Factory Methods
+
+        internal static async Task<AddressROCL> NewAddressROCL()
         {
-            // TODO: add object-level authorization rules
+            return await DataPortal.CreateChildAsync<AddressROCL>();
         }
 
         internal static async Task<AddressROCL> GetAddressROCL(List<Address> childData)
@@ -22,17 +26,25 @@ namespace ECS.MemberManager.Core.BusinessObjects
             return await DataPortal.FetchChildAsync<AddressROCL>(childData);
         }
 
+        #endregion
+
+        #region Data Access
+ 
         [FetchChild]
         private async Task Fetch(List<Address> childData)
         {
+
             using (LoadListMode)
             {
-                foreach (var address in childData)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var addressToAdd = await AddressROC.GetAddressROC(address);
-                    Add(addressToAdd);
+                    var objectToAdd = await AddressROC.GetAddressROC(domainObjToAdd);
+                    Add(objectToAdd);
                 }
             }
         }
-    }
+
+        #endregion
+
+     }
 }

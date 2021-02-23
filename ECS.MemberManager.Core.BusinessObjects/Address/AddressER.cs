@@ -1,6 +1,7 @@
-﻿using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿
+
+using System;
+using System.Collections.Generic; 
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -10,106 +11,84 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class AddressER : BusinessBase<AddressER>
+    public partial class AddressER : BusinessBase<AddressER>
     {
         #region Business Methods
-
-        public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
-
-        public int Id
+ 
+        public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
+        public virtual int Id 
         {
-            get => GetProperty(IdProperty);
-            set => SetProperty(IdProperty, value);
+            get => GetProperty(IdProperty); 
+            private set => LoadProperty(IdProperty, value); 
+   
         }
-
-        public static readonly PropertyInfo<string> Address1Property = RegisterProperty<string>(p => p.Address1);
-        [Required, MaxLength(35)]
-        public string Address1
+ 
+        public static readonly PropertyInfo<string> Address1Property = RegisterProperty<string>(o => o.Address1);
+        public virtual string Address1 
         {
-            get => GetProperty(Address1Property);
-            set => SetProperty(Address1Property, value);
+            get => GetProperty(Address1Property); 
+            set => SetProperty(Address1Property, value);    
         }
-        
-        public static readonly PropertyInfo<string> Address2Property = RegisterProperty<string>(p => p.Address2);
-        [Required, MaxLength(35)]
-        public string Address2
+ 
+        public static readonly PropertyInfo<string> Address2Property = RegisterProperty<string>(o => o.Address2);
+        public virtual string Address2 
         {
-            get => GetProperty(Address2Property);
-            set => SetProperty(Address2Property, value);
+            get => GetProperty(Address2Property); 
+            set => SetProperty(Address2Property, value);    
         }
-
-        public static readonly PropertyInfo<string> CityProperty = RegisterProperty<string>(p => p.City);
-        [Required, MaxLength(50)]
-        public string City
+ 
+        public static readonly PropertyInfo<string> CityProperty = RegisterProperty<string>(o => o.City);
+        public virtual string City 
         {
-            get => GetProperty(CityProperty);
-            set => SetProperty(CityProperty, value);
+            get => GetProperty(CityProperty); 
+            set => SetProperty(CityProperty, value);    
         }
-
-        public static readonly PropertyInfo<string> StateProperty = RegisterProperty<string>(p => p.State);
-        [Required, MaxLength(2)]
-        public string State
+ 
+        public static readonly PropertyInfo<string> StateProperty = RegisterProperty<string>(o => o.State);
+        public virtual string State 
         {
-            get => GetProperty(StateProperty);
-            set => SetProperty(StateProperty, value);
+            get => GetProperty(StateProperty); 
+            set => SetProperty(StateProperty, value);    
         }
-
-        public static readonly PropertyInfo<string> PostCodeProperty = RegisterProperty<string>(p => p.PostCode);
-        [Required, MaxLength(9)]
-        public string PostCode
+ 
+        public static readonly PropertyInfo<string> PostCodeProperty = RegisterProperty<string>(o => o.PostCode);
+        public virtual string PostCode 
         {
-            get => GetProperty(PostCodeProperty);
-            set => SetProperty(PostCodeProperty, value);
+            get => GetProperty(PostCodeProperty); 
+            set => SetProperty(PostCodeProperty, value);    
         }
-        
-        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
-        public string Notes
+ 
+        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
+        public virtual string Notes 
         {
-            get => GetProperty(NotesProperty);
-            set => SetProperty(NotesProperty, value);
+            get => GetProperty(NotesProperty); 
+            set => SetProperty(NotesProperty, value);    
         }
-
-        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(p => p.LastUpdatedBy);
-        [Required,MaxLength(255)]
-        public string LastUpdatedBy
+ 
+        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(o => o.LastUpdatedBy);
+        public virtual string LastUpdatedBy 
         {
-            get => GetProperty(LastUpdatedByProperty);
-            set => SetProperty(LastUpdatedByProperty, value);
+            get => GetProperty(LastUpdatedByProperty); 
+            set => SetProperty(LastUpdatedByProperty, value);    
         }
-
-        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
-        [Required]
-        public SmartDate LastUpdatedDate
+ 
+        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(o => o.LastUpdatedDate);
+        public virtual SmartDate LastUpdatedDate 
         {
-            get => GetProperty(LastUpdatedDateProperty);
-            set => SetProperty(LastUpdatedDateProperty, value);
+            get => GetProperty(LastUpdatedDateProperty); 
+            set => SetProperty(LastUpdatedDateProperty, value);    
         }
-
-        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
-
-        public byte[] RowVersion
+ 
+        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
+        public virtual byte[] RowVersion 
         {
-            get => GetProperty(RowVersionProperty);
-            private set => LoadProperty(RowVersionProperty, value);
+            get => GetProperty(RowVersionProperty); 
+            set => SetProperty(RowVersionProperty, value);    
         }
-
-        protected override void AddBusinessRules()
-        {
-            base.AddBusinessRules();
-
-            // TODO: add business rules
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
-
-        #endregion
+ 
+        #endregion 
 
         #region Factory Methods
-
         public static async Task<AddressER> NewAddressER()
         {
             return await DataPortal.CreateAsync<AddressER>();
@@ -118,12 +97,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
         public static async Task<AddressER> GetAddressER(int id)
         {
             return await DataPortal.FetchAsync<AddressER>(id);
-        }
+        }  
 
         public static async Task DeleteAddressER(int id)
         {
             await DataPortal.DeleteAsync<AddressER>(id);
-        }
+        } 
+
 
         #endregion
 
@@ -135,8 +115,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IAddressDal>();
             var data = await dal.Fetch(id);
-
-            using (BypassPropertyChecks)
+            using(BypassPropertyChecks)
             {
                 Id = data.Id;
                 Address1 = data.Address1;
@@ -144,13 +123,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 City = data.City;
                 State = data.State;
                 PostCode = data.PostCode;
+                Notes = data.Notes;
                 LastUpdatedBy = data.LastUpdatedBy;
                 LastUpdatedDate = data.LastUpdatedDate;
-                Notes = data.Notes;
                 RowVersion = data.RowVersion;
-            }
+            }            
         }
-
         [Insert]
         private async Task Insert()
         {
@@ -158,51 +136,56 @@ namespace ECS.MemberManager.Core.BusinessObjects
             var dal = dalManager.GetProvider<IAddressDal>();
             var data = new Address()
             {
-                Address1 = Address1,
-                Address2 = Address2,
-                City = City,
-                State = State,
-                PostCode = PostCode,
-                LastUpdatedBy = LastUpdatedBy,
-                LastUpdatedDate = LastUpdatedDate,
-                Notes = Notes
-            };
 
-            var insertedAddress = await dal.Insert(data);
-            Id = insertedAddress.Id;
-            RowVersion = insertedAddress.RowVersion;
-        }
-
-        [Update]
-        private async Task Update()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IAddressDal>();
-
-            var emailTypeToUpdate = new Address()
-            {
                 Id = Id,
                 Address1 = Address1,
                 Address2 = Address2,
                 City = City,
                 State = State,
                 PostCode = PostCode,
+                Notes = Notes,
                 LastUpdatedBy = LastUpdatedBy,
                 LastUpdatedDate = LastUpdatedDate,
-                Notes = Notes,
-                RowVersion = RowVersion
+                RowVersion = RowVersion,
             };
 
-            var updatedEmail = await dal.Update(emailTypeToUpdate);
-            RowVersion = updatedEmail.RowVersion;
+            var insertedObj = await dal.Insert(data);
+            Id = insertedObj.Id;
+            RowVersion = insertedObj.RowVersion;
         }
-        
-        [DeleteSelf]
+
+       [Update]
+        private async Task Update()
+        {
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IAddressDal>();
+            var data = new Address()
+            {
+
+                Id = Id,
+                Address1 = Address1,
+                Address2 = Address2,
+                City = City,
+                State = State,
+                PostCode = PostCode,
+                Notes = Notes,
+                LastUpdatedBy = LastUpdatedBy,
+                LastUpdatedDate = LastUpdatedDate,
+                RowVersion = RowVersion,
+            };
+
+            var insertedObj = await dal.Update(data);
+            Id = insertedObj.Id;
+            RowVersion = insertedObj.RowVersion;
+        }
+
+       
+        [DeleteSelfChild]
         private async Task DeleteSelf()
         {
             await Delete(Id);
         }
-
+       
         [Delete]
         private async Task Delete(int id)
         {

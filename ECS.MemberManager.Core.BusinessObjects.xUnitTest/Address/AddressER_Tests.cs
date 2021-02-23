@@ -167,7 +167,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             Assert.NotNull(address);
             Assert.False(address.IsValid);
-            Assert.Equal("The field Address1 must be a string or array type with a maximum length of '35'.",address.BrokenRulesCollection[0].Description);
+            Assert.Equal("Address1 can not exceed 35 characters",address.BrokenRulesCollection[0].Description);
         }
 
         [Fact]
@@ -182,7 +182,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             Assert.NotNull(address);
             Assert.False(address.IsValid);
-            Assert.Equal("The field Address2 must be a string or array type with a maximum length of '35'.",address.BrokenRulesCollection[0].Description);
+            Assert.Equal("Address2 can not exceed 35 characters",address.BrokenRulesCollection[0].Description);
         }
 
         [Fact]
@@ -197,7 +197,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             Assert.NotNull(address);
             Assert.False(address.IsValid);
-            Assert.Equal("The field City must be a string or array type with a maximum length of '50'.",address.BrokenRulesCollection[0].Description);
+            Assert.Equal("City can not exceed 50 characters",address.BrokenRulesCollection[0].Description);
         }
 
         [Fact]
@@ -209,7 +209,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             Assert.NotNull(address);
             Assert.False(address.IsValid);
-            Assert.Equal("The field State must be a string or array type with a maximum length of '2'.",address.BrokenRulesCollection[0].Description);
+            Assert.Equal("State can not exceed 2 characters",address.BrokenRulesCollection[0].Description);
         }
 
         [Fact]
@@ -221,7 +221,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             Assert.NotNull(address);
             Assert.False(address.IsValid);
-            Assert.Equal("The field PostCode must be a string or array type with a maximum length of '9'.",address.BrokenRulesCollection[0].Description);
+            Assert.Equal("PostCode can not exceed 9 characters",address.BrokenRulesCollection[0].Description);
         }
 
         [Fact]

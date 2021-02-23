@@ -1,6 +1,7 @@
-﻿using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿
+
+using System;
+using System.Collections.Generic; 
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -10,137 +11,115 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class AddressROC : ReadOnlyBase<AddressROC>
+    public partial class AddressROC : ReadOnlyBase<AddressROC>
     {
-        #region Business Methods
-
-        public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
-
-        public int Id
+        #region Business Methods 
+         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
+        public virtual int Id 
         {
-            get => GetProperty(IdProperty);
-            private set => LoadProperty(IdProperty, value);
+            get => GetProperty(IdProperty); 
+            private set => LoadProperty(IdProperty, value); 
+   
         }
-
-        public static readonly PropertyInfo<string> Address1Property = RegisterProperty<string>(p => p.Address1);
-
-        [Required, MaxLength(35)]
-        public string Address1
+ 
+        public static readonly PropertyInfo<string> Address1Property = RegisterProperty<string>(o => o.Address1);
+        public virtual string Address1 
         {
-            get => GetProperty(Address1Property);
-            private set => LoadProperty(Address1Property, value);
+            get => GetProperty(Address1Property); 
+            private set => LoadProperty(Address1Property, value); 
+   
         }
-
-        public static readonly PropertyInfo<string> Address2Property = RegisterProperty<string>(p => p.Address2);
-
-        [Required, MaxLength(35)]
-        public string Address2
+ 
+        public static readonly PropertyInfo<string> Address2Property = RegisterProperty<string>(o => o.Address2);
+        public virtual string Address2 
         {
-            get => GetProperty(Address2Property);
-            private set => LoadProperty(Address2Property, value);
+            get => GetProperty(Address2Property); 
+            private set => LoadProperty(Address2Property, value); 
+   
         }
-
-        public static readonly PropertyInfo<string> CityProperty = RegisterProperty<string>(p => p.City);
-
-        [Required, MaxLength(50)]
-        public string City
+ 
+        public static readonly PropertyInfo<string> CityProperty = RegisterProperty<string>(o => o.City);
+        public virtual string City 
         {
-            get => GetProperty(CityProperty);
-            private set => LoadProperty(CityProperty, value);
+            get => GetProperty(CityProperty); 
+            private set => LoadProperty(CityProperty, value); 
+   
         }
-
-        public static readonly PropertyInfo<string> StateProperty = RegisterProperty<string>(p => p.State);
-
-        [Required, MaxLength(9)]
-        public string State
+ 
+        public static readonly PropertyInfo<string> StateProperty = RegisterProperty<string>(o => o.State);
+        public virtual string State 
         {
-            get => GetProperty(StateProperty);
-            private set => LoadProperty(StateProperty, value);
+            get => GetProperty(StateProperty); 
+            private set => LoadProperty(StateProperty, value); 
+   
         }
-
-        public static readonly PropertyInfo<string> PostCodeProperty = RegisterProperty<string>(p => p.PostCode);
-
-        public string PostCode
+ 
+        public static readonly PropertyInfo<string> PostCodeProperty = RegisterProperty<string>(o => o.PostCode);
+        public virtual string PostCode 
         {
-            get => GetProperty(PostCodeProperty);
-            private set => LoadProperty(PostCodeProperty, value);
+            get => GetProperty(PostCodeProperty); 
+            private set => LoadProperty(PostCodeProperty, value); 
+   
         }
-
-        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
-
-        public string Notes
+ 
+        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
+        public virtual string Notes 
         {
-            get => GetProperty(NotesProperty);
-            private set => LoadProperty(NotesProperty, value);
+            get => GetProperty(NotesProperty); 
+            private set => LoadProperty(NotesProperty, value); 
+   
         }
-
-        public static readonly PropertyInfo<string> LastUpdatedByProperty =
-            RegisterProperty<string>(p => p.LastUpdatedBy);
-
-        [Required, MaxLength(255)]
-        public string LastUpdatedBy
+ 
+        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(o => o.LastUpdatedBy);
+        public virtual string LastUpdatedBy 
         {
-            get => GetProperty(LastUpdatedByProperty);
-            private set => LoadProperty(LastUpdatedByProperty, value);
+            get => GetProperty(LastUpdatedByProperty); 
+            private set => LoadProperty(LastUpdatedByProperty, value); 
+   
         }
-
-        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty =
-            RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
-
-        [Required]
-        public SmartDate LastUpdatedDate
+ 
+        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(o => o.LastUpdatedDate);
+        public virtual SmartDate LastUpdatedDate 
         {
-            get => GetProperty(LastUpdatedDateProperty);
-            private set => LoadProperty(LastUpdatedDateProperty, value);
+            get => GetProperty(LastUpdatedDateProperty); 
+            private set => LoadProperty(LastUpdatedDateProperty, value); 
+   
         }
-
-        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
-
-        public byte[] RowVersion
+ 
+        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
+        public virtual byte[] RowVersion 
         {
-            get => GetProperty(RowVersionProperty);
-            private set => LoadProperty(RowVersionProperty, value);
+            get => GetProperty(RowVersionProperty); 
+            private set => LoadProperty(RowVersionProperty, value); 
+   
         }
-
-        protected override void AddBusinessRules()
-        {
-            base.AddBusinessRules();
-
-            // TODO: add business rules
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
-
-        #endregion
+ 
+        #endregion 
 
         #region Factory Methods
-
         internal static async Task<AddressROC> GetAddressROC(Address childData)
         {
             return await DataPortal.FetchChildAsync<AddressROC>(childData);
-        }
+        }  
+
 
         #endregion
 
         #region Data Access Methods
 
         [FetchChild]
-        private void Fetch(Address childData)
+        private async Task Fetch(Address data)
         {
-            Id = childData.Id;
-            Address1 = childData.Address1;
-            Address2 = childData.Address2;
-            City = childData.City;
-            State = childData.State;
-            PostCode = childData.PostCode;
-            LastUpdatedBy = childData.LastUpdatedBy;
-            LastUpdatedDate = childData.LastUpdatedDate;
-            Notes = childData.Notes;
-            RowVersion = childData.RowVersion;
+                Id = data.Id;
+                Address1 = data.Address1;
+                Address2 = data.Address2;
+                City = data.City;
+                State = data.State;
+                PostCode = data.PostCode;
+                Notes = data.Notes;
+                LastUpdatedBy = data.LastUpdatedBy;
+                LastUpdatedDate = data.LastUpdatedDate;
+                RowVersion = data.RowVersion;
         }
 
         #endregion

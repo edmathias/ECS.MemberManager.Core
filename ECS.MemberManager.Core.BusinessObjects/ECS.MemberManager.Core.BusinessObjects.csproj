@@ -235,11 +235,6 @@
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>OrganizationECL.cs</LastGenOutput>
       </None>
-      <Compile Update="Organization\OrganizationECL.cs">
-        <AutoGen>True</AutoGen>
-        <DesignTime>True</DesignTime>
-        <DependentUpon>OrganizationECL.tt</DependentUpon>
-      </Compile>
       <None Update="Organization\OrganizationER.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>OrganizationER.cs</LastGenOutput>
@@ -500,6 +495,104 @@
         <AutoGen>True</AutoGen>
         <DesignTime>True</DesignTime>
         <DependentUpon>MemberStatusERL.tt</DependentUpon>
+      </Compile>
+      <None Update="Address\AddressER.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>AddressER.cs</LastGenOutput>
+      </None>
+      <Compile Update="Address\AddressER.cs">
+        <DependentUpon>AddressER.tt</DependentUpon>
+      </Compile>
+      <None Update="Address\AddressEC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>AddressEC.cs</LastGenOutput>
+      </None>
+      <Compile Update="Address\AddressEC.cs">
+        <DependentUpon>AddressEC.tt</DependentUpon>
+      </Compile>
+      <None Update="Address\OrganizationECL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>OrganizationECL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Organization\OrganizationECL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>OrganizationECL.tt</DependentUpon>
+      </Compile>
+      <None Update="Address\AddressECL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>AddressECL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Address\AddressECL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>AddressECL.tt</DependentUpon>
+      </Compile>
+      <None Update="Address\AddressROC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>AddressROC.cs</LastGenOutput>
+      </None>
+      <Compile Update="Address\AddressROC.cs">
+        <DependentUpon>AddressROC.tt</DependentUpon>
+      </Compile>
+      <None Update="Address\AddressROR.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>AddressROR.cs</LastGenOutput>
+      </None>
+      <Compile Update="Address\AddressROR.cs">
+        <DependentUpon>AddressROR.tt</DependentUpon>
+      </Compile>
+      <None Update="Address\AddressERL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>AddressERL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Address\AddressERL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>AddressERL.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Address\AddressEC.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>AddressEC.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Address\AddressECL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>AddressECL.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Address\AddressROC.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>AddressROC.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Address\AddressROR.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>AddressROR.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Address\AddressER.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>AddressER.tt</DependentUpon>
+      </Compile>
+      <None Update="Address\AddressROCL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>AddressROCL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Address\AddressROCL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>AddressROCL.tt</DependentUpon>
+      </Compile>
+      <None Update="Address\AddressRORL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>AddressRORL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Address\AddressRORL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>AddressRORL.tt</DependentUpon>
       </Compile>
     </ItemGroup>
 
