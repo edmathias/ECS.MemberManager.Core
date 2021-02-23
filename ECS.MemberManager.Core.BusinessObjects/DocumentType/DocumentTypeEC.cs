@@ -1,142 +1,150 @@
-﻿using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿
+
+using System;
+using System.Collections.Generic; 
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
-using Microsoft.VisualBasic;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class DocumentTypeEC : BusinessBase<DocumentTypeEC>
+    public partial class DocumentTypeEC : BusinessBase<DocumentTypeEC>
     {
         #region Business Methods
-        
-        public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
-        public int Id
+ 
+        public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
+        public virtual int Id 
         {
-            get => GetProperty(IdProperty);
-            private set => LoadProperty(IdProperty, value);
+            get => GetProperty(IdProperty); 
+            private set => LoadProperty(IdProperty, value); 
+   
         }
-
-        public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(p => p.Description);
-        [Required, MaxLength(50)]
-        public string Description
+ 
+        public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(o => o.Description);
+        public virtual string Description 
         {
-            get => GetProperty(DescriptionProperty);
-            set => SetProperty(DescriptionProperty, value);
+            get => GetProperty(DescriptionProperty); 
+            set => SetProperty(DescriptionProperty, value);    
         }
-       
-        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(p => p.LastUpdatedBy);
-        [Required,MaxLength(255)]
-        public string LastUpdatedBy
+ 
+        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(o => o.LastUpdatedBy);
+        public virtual string LastUpdatedBy 
         {
-            get => GetProperty(LastUpdatedByProperty);
-            set => SetProperty(LastUpdatedByProperty, value);
+            get => GetProperty(LastUpdatedByProperty); 
+            set => SetProperty(LastUpdatedByProperty, value);    
         }
-
-        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
-        [Required]
-        public SmartDate LastUpdatedDate
+ 
+        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(o => o.LastUpdatedDate);
+        public virtual SmartDate LastUpdatedDate 
         {
-            get => GetProperty(LastUpdatedDateProperty);
-            set => SetProperty(LastUpdatedDateProperty, value);
+            get => GetProperty(LastUpdatedDateProperty); 
+            set => SetProperty(LastUpdatedDateProperty, value);    
         }
-
-        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
-        public string Notes
+ 
+        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
+        public virtual string Notes 
         {
-            get => GetProperty(NotesProperty);
-            set => SetProperty(NotesProperty, value);
+            get => GetProperty(NotesProperty); 
+            set => SetProperty(NotesProperty, value);    
         }
-       
-        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
-        public byte[] RowVersion
+ 
+        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
+        public virtual byte[] RowVersion 
         {
-            get => GetProperty(RowVersionProperty);
-            private set => LoadProperty(RowVersionProperty, value);
+            get => GetProperty(RowVersionProperty); 
+            set => SetProperty(RowVersionProperty, value);    
         }
-        
-        #endregion
+ 
+        #endregion 
 
         #region Factory Methods
-
         internal static async Task<DocumentTypeEC> NewDocumentTypeEC()
         {
             return await DataPortal.CreateChildAsync<DocumentTypeEC>();
-        }        
-        
-        internal static async Task<DocumentTypeEC> GetDocumentTypeEC(DocumentType data)
-        {
-            return await DataPortal.FetchChildAsync<DocumentTypeEC>(data);
         }
+
+        internal static async Task<DocumentTypeEC> GetDocumentTypeEC(DocumentType childData)
+        {
+            return await DataPortal.FetchChildAsync<DocumentTypeEC>(childData);
+        }  
+
 
         #endregion
 
         #region Data Access Methods
- 
-        [FetchChild]
-        private void FetchChild(DocumentType childData)
-        {
-            using (BypassPropertyChecks)
-            {
-                Id = childData.Id;
-                Description = childData.Description;
-                LastUpdatedBy = childData.LastUpdatedBy;
-                LastUpdatedDate = childData.LastUpdatedDate;
-                Notes = childData.Notes;
-                RowVersion = childData.RowVersion;
-            }
-        }
 
+        [FetchChild]
+        private async Task Fetch(DocumentType data)
+        {
+            using(BypassPropertyChecks)
+            {
+                Id = data.Id;
+                Description = data.Description;
+                LastUpdatedBy = data.LastUpdatedBy;
+                LastUpdatedDate = data.LastUpdatedDate;
+                Notes = data.Notes;
+                RowVersion = data.RowVersion;
+            }            
+        }
         [InsertChild]
-        private async Task InsertChild()
+        private async Task Insert()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IDocumentTypeDal>();
             var data = new DocumentType()
             {
+
+                Id = Id,
                 Description = Description,
                 LastUpdatedBy = LastUpdatedBy,
                 LastUpdatedDate = LastUpdatedDate,
-                Notes = Notes
+                Notes = Notes,
+                RowVersion = RowVersion,
             };
 
-            var insertedDocumentType = await dal.Insert(data);
-            Id = insertedDocumentType.Id;
-            RowVersion = insertedDocumentType.RowVersion;
+            var insertedObj = await dal.Insert(data);
+            Id = insertedObj.Id;
+            RowVersion = insertedObj.RowVersion;
         }
 
-        [UpdateChild]
-        private async Task UpdateChild()
+       [UpdateChild]
+        private async Task Update()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IDocumentTypeDal>();
-
-            var emailTypeToUpdate = new DocumentType()
+            var data = new DocumentType()
             {
+
                 Id = Id,
                 Description = Description,
+                LastUpdatedBy = LastUpdatedBy,
+                LastUpdatedDate = LastUpdatedDate,
                 Notes = Notes,
                 RowVersion = RowVersion,
-                LastUpdatedBy = "edm",
-                LastUpdatedDate = DateTime.Now
             };
 
-            var updatedEmail = await dal.Update(emailTypeToUpdate);
-            RowVersion = updatedEmail.RowVersion;
+            var insertedObj = await dal.Update(data);
+            Id = insertedObj.Id;
+            RowVersion = insertedObj.RowVersion;
         }
 
+       
         [DeleteSelfChild]
-        private async Task DeleteSelfChild()
+        private async Task DeleteSelf()
+        {
+            await Delete(Id);
+        }
+       
+        [Delete]
+        private async Task Delete(int id)
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IDocumentTypeDal>();
            
-            await dal.Delete(Id);
+            await dal.Delete(id);
         }
 
         #endregion

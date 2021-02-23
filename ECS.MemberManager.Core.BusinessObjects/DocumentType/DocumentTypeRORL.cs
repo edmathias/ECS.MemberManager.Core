@@ -1,6 +1,8 @@
-using System;
+﻿
+
+
+using System; 
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -10,28 +12,24 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class DocumentTypeRORL : ReadOnlyListBase<DocumentTypeRORL,DocumentTypeROC>
+    public partial class DocumentTypeRORL : ReadOnlyListBase<DocumentTypeRORL,DocumentTypeROC>
     {
-        #region Business Methods
-        
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
-        
-        #endregion
-        
         #region Factory Methods
 
-        public static async Task<DocumentTypeRORL> GetDocumentTypeRORL()
+        public static async Task<DocumentTypeRORL> NewDocumentTypeRORL()
+        {
+            return await DataPortal.CreateAsync<DocumentTypeRORL>();
+        }
+
+        public static async Task<DocumentTypeRORL> GetDocumentTypeRORL( )
         {
             return await DataPortal.FetchAsync<DocumentTypeRORL>();
         }
-        
-        #endregion
-        
-        #region Data Access
 
+        #endregion
+
+        #region Data Access
+ 
         [Fetch]
         private async Task Fetch()
         {
@@ -41,14 +39,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
             using (LoadListMode)
             {
-                foreach (var documentType in childData)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var documentTypeToAdd = await DocumentTypeROC.GetDocumentTypeROC(documentType);
-                    Add(documentTypeToAdd);
+                    var objectToAdd = await DocumentTypeROC.GetDocumentTypeROC(domainObjToAdd);
+                    Add(objectToAdd);
                 }
             }
         }
-        
+
         #endregion
-    }
+
+     }
 }

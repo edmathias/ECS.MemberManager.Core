@@ -1,6 +1,7 @@
-﻿using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿
+
+using System;
+using System.Collections.Generic; 
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -10,101 +11,81 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class DocumentTypeROC : ReadOnlyBase<DocumentTypeROC>
+    public partial class DocumentTypeROC : ReadOnlyBase<DocumentTypeROC>
     {
-        #region Business Methods
-
-        public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
-
-        public int Id
+        #region Business Methods 
+         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
+        public virtual int Id 
         {
-            get => GetProperty(IdProperty);
-            private set => LoadProperty(IdProperty, value);
+            get => GetProperty(IdProperty); 
+            private set => LoadProperty(IdProperty, value); 
+   
         }
-
-        public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(p => p.Description);
-
-        [Required, MaxLength(50)]
-        public string Description
+ 
+        public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(o => o.Description);
+        public virtual string Description 
         {
-            get => GetProperty(DescriptionProperty);
-            private set => LoadProperty(DescriptionProperty, value);
+            get => GetProperty(DescriptionProperty); 
+            private set => LoadProperty(DescriptionProperty, value); 
+   
         }
-
-        public static readonly PropertyInfo<string> LastUpdatedByProperty =
-            RegisterProperty<string>(p => p.LastUpdatedBy);
-
-        [Required, MaxLength(255)]
-        public string LastUpdatedBy
+ 
+        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(o => o.LastUpdatedBy);
+        public virtual string LastUpdatedBy 
         {
-            get => GetProperty(LastUpdatedByProperty);
-            private set => LoadProperty(LastUpdatedByProperty, value);
+            get => GetProperty(LastUpdatedByProperty); 
+            private set => LoadProperty(LastUpdatedByProperty, value); 
+   
         }
-
-        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty =
-            RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
-
-        [Required]
-        public SmartDate LastUpdatedDate
+ 
+        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(o => o.LastUpdatedDate);
+        public virtual SmartDate LastUpdatedDate 
         {
-            get => GetProperty(LastUpdatedDateProperty);
-            private set => LoadProperty(LastUpdatedDateProperty, value);
+            get => GetProperty(LastUpdatedDateProperty); 
+            private set => LoadProperty(LastUpdatedDateProperty, value); 
+   
         }
-
-        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
-
-        public string Notes
+ 
+        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
+        public virtual string Notes 
         {
-            get => GetProperty(NotesProperty);
-            private set => LoadProperty(NotesProperty, value);
+            get => GetProperty(NotesProperty); 
+            private set => LoadProperty(NotesProperty, value); 
+   
         }
-
-        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
-
-        public byte[] RowVersion
+ 
+        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
+        public virtual byte[] RowVersion 
         {
-            get => GetProperty(RowVersionProperty);
-            private set => LoadProperty(RowVersionProperty, value);
+            get => GetProperty(RowVersionProperty); 
+            private set => LoadProperty(RowVersionProperty, value); 
+   
         }
-
-        
-        protected override void AddBusinessRules()
-        {
-            base.AddBusinessRules();
-
-            // TODO: add business rules
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
-
-        #endregion
+ 
+        #endregion 
 
         #region Factory Methods
-
         internal static async Task<DocumentTypeROC> GetDocumentTypeROC(DocumentType childData)
         {
             return await DataPortal.FetchChildAsync<DocumentTypeROC>(childData);
-        }
+        }  
+
 
         #endregion
 
         #region Data Access Methods
 
         [FetchChild]
-        private void Fetch(DocumentType childData)
+        private async Task Fetch(DocumentType data)
         {
-            Id = childData.Id;
-            Description = childData.Description;
-            LastUpdatedBy = childData.LastUpdatedBy;
-            LastUpdatedDate = childData.LastUpdatedDate;
-            Notes = childData.Notes;
-            RowVersion = childData.RowVersion;
+                Id = data.Id;
+                Description = data.Description;
+                LastUpdatedBy = data.LastUpdatedBy;
+                LastUpdatedDate = data.LastUpdatedDate;
+                Notes = data.Notes;
+                RowVersion = data.RowVersion;
         }
 
-         #endregion
+        #endregion
     }
 }

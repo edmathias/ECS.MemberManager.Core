@@ -60,65 +60,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(listToTest);
             Assert.Equal(3, listToTest.Count);
         }
-        
-        [Fact]
-        private async void DocumentTypeECL_TestDeleteDocumentTypeEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IDocumentTypeDal>();
-            var childData = await dal.Fetch();
-            
-            var documentTypeEditList = await DocumentTypeECL.GetDocumentTypeECL(childData);
-
-            var documentType = documentTypeEditList.First(a => a.Id == 99);
-
-            // remove is deferred delete
-            documentTypeEditList.Remove(documentType); 
-
-            var documentTypeListAfterDelete = await documentTypeEditList.SaveAsync();
-            
-            Assert.NotEqual(childData.Count,documentTypeListAfterDelete.Count);
-        }
-
-        [Fact]
-        private async void DocumentTypeECL_TestUpdateDocumentTypeEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IDocumentTypeDal>();
-            var childData = await dal.Fetch();
-            
-            var documentTypeList = await DocumentTypeECL.GetDocumentTypeECL(childData);
-            var countBeforeUpdate = documentTypeList.Count;
-            var idToUpdate = documentTypeList.Min(a => a.Id);
-            var documentTypeToUpdate = documentTypeList.First(a => a.Id == idToUpdate);
-
-            documentTypeToUpdate.Description = "This was updated";
-            await documentTypeList.SaveAsync();
-
-            var updatedList = await dal.Fetch();
-            var updatedDocumentTypesList = await DocumentTypeECL.GetDocumentTypeECL(updatedList);
-            
-            Assert.Equal("This was updated",updatedDocumentTypesList.First(a => a.Id == idToUpdate).Description);
-            Assert.Equal(countBeforeUpdate, updatedDocumentTypesList.Count);
-        }
-
-        [Fact]
-        private async void DocumentTypeECL_TestAddDocumentTypeEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IDocumentTypeDal>();
-            var childData = await dal.Fetch();
-
-            var documentTypeList = await DocumentTypeECL.GetDocumentTypeECL(childData);
-            var countBeforeAdd = documentTypeList.Count;
-            
-            var documentTypeToAdd = documentTypeList.AddNew();
-            BuildDocumentType(documentTypeToAdd); 
-
-            var documentTypeEditList = await documentTypeList.SaveAsync();
-            
-            Assert.NotEqual(countBeforeAdd, documentTypeEditList.Count);
-        }
 
         private void BuildDocumentType(DocumentTypeEC documentType)
         {

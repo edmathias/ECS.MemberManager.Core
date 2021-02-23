@@ -706,6 +706,62 @@
       <Compile Update="CategoryOfPerson\CategoryOfPersonRORL.cs">
         <DependentUpon>CategoryOfPersonRORL.tt</DependentUpon>
       </Compile>
+      <None Update="DocumentType\DocumentTypeEC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>DocumentTypeEC.cs</LastGenOutput>
+      </None>
+      <Compile Update="DocumentType\DocumentTypeEC.cs">
+        <DependentUpon>DocumentTypeEC.tt</DependentUpon>
+      </Compile>
+      <None Update="DocumentType\DocumentTypeECL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>DocumentTypeECL.cs</LastGenOutput>
+      </None>
+      <Compile Update="DocumentType\DocumentTypeECL.cs">
+        <DependentUpon>DocumentTypeECL.tt</DependentUpon>
+      </Compile>
+      <None Update="DocumentType\DocumentTypeER.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>DocumentTypeER.cs</LastGenOutput>
+      </None>
+      <Compile Update="DocumentType\DocumentTypeER.cs">
+        <DependentUpon>DocumentTypeER.tt</DependentUpon>
+      </Compile>
+      <None Update="DocumentType\DocumentTypeERL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>DocumentTypeERL.cs</LastGenOutput>
+      </None>
+      <Compile Update="DocumentType\DocumentTypeERL.cs">
+        <DependentUpon>DocumentTypeERL.tt</DependentUpon>
+      </Compile>
+      <None Update="DocumentType\DocumentTypeROC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>DocumentTypeROC.cs</LastGenOutput>
+      </None>
+      <Compile Update="DocumentType\DocumentTypeROC.cs">
+        <DependentUpon>DocumentTypeROC.tt</DependentUpon>
+      </Compile>
+      <None Update="DocumentType\DocumentTypeROCL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>DocumentTypeROCL.cs</LastGenOutput>
+      </None>
+      <Compile Update="DocumentType\DocumentTypeROCL.cs">
+        <DependentUpon>DocumentTypeROCL.tt</DependentUpon>
+      </Compile>
+      <None Update="DocumentType\DocumentTypeROR.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>DocumentTypeROR.cs</LastGenOutput>
+      </None>
+      <Compile Update="DocumentType\DocumentTypeROR.cs">
+        <DependentUpon>DocumentTypeROR.tt</DependentUpon>
+      </Compile>
+      <None Update="DocumentType\DocumentTypeRORL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>DocumentTypeRORL.cs</LastGenOutput>
+      </None>
+      <Compile Update="DocumentType\DocumentTypeRORL.cs">
+        <DependentUpon>DocumentTypeRORL.tt</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

@@ -1,4 +1,7 @@
-﻿using System;
+﻿
+
+
+using System; 
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
@@ -9,32 +12,24 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class DocumentTypeERL : BusinessListBase<DocumentTypeERL,DocumentTypeEC>
+    public partial class DocumentTypeERL : BusinessListBase<DocumentTypeERL,DocumentTypeEC>
     {
-        #region Authorization Rules
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
-
-        #endregion
-       
         #region Factory Methods
-        
+
         public static async Task<DocumentTypeERL> NewDocumentTypeERL()
         {
             return await DataPortal.CreateAsync<DocumentTypeERL>();
         }
 
-        public static async Task<DocumentTypeERL> GetDocumentTypeERL()
+        public static async Task<DocumentTypeERL> GetDocumentTypeERL( )
         {
             return await DataPortal.FetchAsync<DocumentTypeERL>();
         }
-       
+
         #endregion
-        
+
         #region Data Access
-        
+ 
         [Fetch]
         private async Task Fetch()
         {
@@ -44,21 +39,21 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
             using (LoadListMode)
             {
-                foreach (var documentType in childData)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var documentTypeToAdd = 
-                        await DocumentTypeEC.GetDocumentTypeEC(documentType);
-                    Add(documentTypeToAdd);
+                    var objectToAdd = await DocumentTypeEC.GetDocumentTypeEC(domainObjToAdd);
+                    Add(objectToAdd);
                 }
             }
         }
-        
+       
         [Update]
         private void Update()
         {
             Child_Update();
         }
-        
+
         #endregion
-    }
+
+     }
 }

@@ -127,8 +127,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             Assert.NotNull(documentType);
             Assert.False(documentType.IsValid);
-            Assert.Equal("The field Description must be a string or array type with a maximum length of '50'.",
-                documentType.BrokenRulesCollection[0].Description);
+            Assert.Equal("Description can not exceed 255 characters",documentType.BrokenRulesCollection[0].Description);
  
         }        
         // test exception if attempt to save in invalid state

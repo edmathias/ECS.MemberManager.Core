@@ -1,0 +1,44 @@
+﻿<#@ template language="C#" debug="true" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+<#@ include file="..\CSLA_T4.tt" #>
+<#
+    var objectName = "DocumentType";
+    var stereoType = "ROCL";
+    var isChild = true;
+    var isReadOnly = true;
+    var childStereo = GetChildStereoType(stereoType);
+    var cslaListType = (isReadOnly ? "ReadOnly" : "Business");
+#>
+using System; 
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Csla;
+using ECS.MemberManager.Core.DataAccess;
+using ECS.MemberManager.Core.DataAccess.Dal;
+using ECS.MemberManager.Core.EF.Domain;
+
+namespace ECS.MemberManager.Core.BusinessObjects
+{
+    [Serializable]
+    public partial class <#= objectName #><#= stereoType #> : <#=cslaListType #>ListBase<<#= objectName #><#= stereoType#>,<#= objectName#><#=childStereo #>>
+    {
+        #region Factory Methods
+
+<#
+        BuildFetchFactoryMethod( objectName, isChild, stereoType);
+#>
+
+        #endregion
+
+        #region Data Access
+ 
+<#
+        BuildListFetch(  objectName,  isChild,  childStereo);
+#>
+
+        #endregion
+
+     }
+}
