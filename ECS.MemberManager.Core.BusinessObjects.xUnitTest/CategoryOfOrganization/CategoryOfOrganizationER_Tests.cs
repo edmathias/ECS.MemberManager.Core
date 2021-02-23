@@ -104,6 +104,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(categoryOfOrganization);
             Assert.True(isObjectValidInit);
             Assert.False(categoryOfOrganization.IsValid);
+            Assert.Equal("Category",categoryOfOrganization.BrokenRulesCollection[0].Property);
+            Assert.Equal("Category required",categoryOfOrganization.BrokenRulesCollection[0].Description);
         }
        
         [Fact]
@@ -119,8 +121,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             Assert.NotNull(categoryOfOrganization);
             Assert.False(categoryOfOrganization.IsValid);
-            Assert.Equal("The field Category must be a string or array type with a maximum length of '35'.",
-                categoryOfOrganization.BrokenRulesCollection[0].Description);
+            Assert.Equal("Category",categoryOfOrganization.BrokenRulesCollection[0].Property);
+            Assert.Equal("Category can not exceed 35 characters",categoryOfOrganization.BrokenRulesCollection[0].Description);
  
         }        
         // test exception if attempt to save in invalid state

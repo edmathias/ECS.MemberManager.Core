@@ -594,6 +594,62 @@
         <DesignTime>True</DesignTime>
         <DependentUpon>AddressRORL.tt</DependentUpon>
       </Compile>
+      <None Update="CategoryOfOrganization\CategoryOfOrganizationEC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>CategoryOfOrganizationEC.cs</LastGenOutput>
+      </None>
+      <None Update="CategoryOfOrganization\CategoryOfOrganizationECL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>CategoryOfOrganizationECL.cs</LastGenOutput>
+      </None>
+      <None Update="CategoryOfOrganization\CategoryOfOrganizationER.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>CategoryOfOrganizationER.cs</LastGenOutput>
+      </None>
+      <None Update="CategoryOfOrganization\CategoryOfOrganizationERL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>CategoryOfOrganizationERL.cs</LastGenOutput>
+      </None>
+      <None Update="CategoryOfOrganization\CategoryOfOrganizationROC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>CategoryOfOrganizationROC.cs</LastGenOutput>
+      </None>
+      <None Update="CategoryOfOrganization\CategoryOfOrganizationROCL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>CategoryOfOrganizationROCL.cs</LastGenOutput>
+      </None>
+      <None Update="CategoryOfOrganization\CategoryOfOrganizationROR.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>CategoryOfOrganizationROR.cs</LastGenOutput>
+      </None>
+      <None Update="CategoryOfOrganization\CategoryOfOrganizationRORL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>CategoryOfOrganizationRORL.cs</LastGenOutput>
+      </None>
+      <Compile Update="CategoryOfOrganization\CategoryOfOrganizationEC.cs">
+        <DependentUpon>CategoryOfOrganizationEC.tt</DependentUpon>
+      </Compile>
+      <Compile Update="CategoryOfOrganization\CategoryOfOrganizationECL.cs">
+        <DependentUpon>CategoryOfOrganizationECL.tt</DependentUpon>
+      </Compile>
+      <Compile Update="CategoryOfOrganization\CategoryOfOrganizationER.cs">
+        <DependentUpon>CategoryOfOrganizationER.tt</DependentUpon>
+      </Compile>
+      <Compile Update="CategoryOfOrganization\CategoryOfOrganizationERL.cs">
+        <DependentUpon>CategoryOfOrganizationERL.tt</DependentUpon>
+      </Compile>
+      <Compile Update="CategoryOfOrganization\CategoryOfOrganizationROC.cs">
+        <DependentUpon>CategoryOfOrganizationROC.tt</DependentUpon>
+      </Compile>
+      <Compile Update="CategoryOfOrganization\CategoryOfOrganizationROCL.cs">
+        <DependentUpon>CategoryOfOrganizationROCL.tt</DependentUpon>
+      </Compile>
+      <Compile Update="CategoryOfOrganization\CategoryOfOrganizationROR.cs">
+        <DependentUpon>CategoryOfOrganizationROR.tt</DependentUpon>
+      </Compile>
+      <Compile Update="CategoryOfOrganization\CategoryOfOrganizationRORL.cs">
+        <DependentUpon>CategoryOfOrganizationRORL.tt</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

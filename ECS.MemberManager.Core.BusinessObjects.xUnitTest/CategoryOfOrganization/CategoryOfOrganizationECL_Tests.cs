@@ -59,66 +59,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(categoryOfOrganizationECL);
             Assert.Equal(3, categoryOfOrganizationECL.Count);
         }
-        
-        [Fact]
-        private async void CategoryOfOrganizationECL_TestDeleteCategoryOfOrganizationEditChildEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ICategoryOfOrganizationDal>();
-            var categoryOfOrganizations = await dal.Fetch();
-
-            var categoryOfOrganizationErl = await CategoryOfOrganizationECL.GetCategoryOfOrganizationECL(categoryOfOrganizations);
-            var listCount = categoryOfOrganizationErl.Count;
-            var categoryOfOrganizationToDelete = categoryOfOrganizationErl.First(et => et.Id == 99);
-
-            // remove is deferred delete
-            var isDeleted = categoryOfOrganizationErl.Remove(categoryOfOrganizationToDelete); 
-
-            var categoryOfOrganizationListAfterDelete = await categoryOfOrganizationErl.SaveAsync();
-
-            Assert.NotNull(categoryOfOrganizationListAfterDelete);
-            Assert.IsType<CategoryOfOrganizationECL>(categoryOfOrganizationListAfterDelete);
-            Assert.True(isDeleted);
-            Assert.NotEqual(listCount,categoryOfOrganizationListAfterDelete.Count);
-        }
-
-        [Fact]
-        private async void CategoryOfOrganizationECL_TestUpdateCategoryOfOrganizationEditChildEntry()
-        {
-            const int idToUpdate = 1;
-            
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ICategoryOfOrganizationDal>();
-            var categoryOfOrganizations = await dal.Fetch();
-            
-            var categoryOfOrganizationECL = await CategoryOfOrganizationECL.GetCategoryOfOrganizationECL(categoryOfOrganizations);
-            var countBeforeUpdate = categoryOfOrganizationECL.Count;
-            var categoryOfOrganizationToUpdate = categoryOfOrganizationECL.First(a => a.Id == idToUpdate);
-            categoryOfOrganizationToUpdate.Category = "This was updated";
-
-            var updatedList = await categoryOfOrganizationECL.SaveAsync();
-            
-            Assert.Equal("This was updated",updatedList.First(a => a.Id == idToUpdate).Category);
-            Assert.Equal(countBeforeUpdate, updatedList.Count);
-        }
-
-        [Fact]
-        private async void CategoryOfOrganizationECL_TestAddCategoryOfOrganizationEditChildEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ICategoryOfOrganizationDal>();
-            var categoryOfOrganizations = await dal.Fetch();
-
-            var categoryOfOrganizationECL = await CategoryOfOrganizationECL.GetCategoryOfOrganizationECL(categoryOfOrganizations);
-            var countBeforeAdd = categoryOfOrganizationECL.Count;
-            
-            var categoryOfOrganizationToAdd = categoryOfOrganizationECL.AddNew();
-            BuildValidCategoryOfOrganization(categoryOfOrganizationToAdd);
-
-            var updatedList = await categoryOfOrganizationECL.SaveAsync();
-            
-            Assert.NotEqual(countBeforeAdd, updatedList.Count);
-        }
 
         private void BuildValidCategoryOfOrganization(CategoryOfOrganizationEC categoryOfOrganization)
         {

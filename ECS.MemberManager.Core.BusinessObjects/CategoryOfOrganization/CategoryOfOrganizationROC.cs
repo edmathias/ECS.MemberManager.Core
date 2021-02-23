@@ -1,6 +1,7 @@
-﻿using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿
+
+using System;
+using System.Collections.Generic; 
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -10,78 +11,61 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class CategoryOfOrganizationROC : ReadOnlyBase<CategoryOfOrganizationROC>
+    public partial class CategoryOfOrganizationROC : ReadOnlyBase<CategoryOfOrganizationROC>
     {
-        #region Business Methods
-
-        public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
-
-        public int Id
+        #region Business Methods 
+         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
+        public virtual int Id 
         {
-            get => GetProperty(IdProperty);
-            private set => LoadProperty(IdProperty, value);
+            get => GetProperty(IdProperty); 
+            private set => LoadProperty(IdProperty, value); 
+   
         }
-
-        public static readonly PropertyInfo<string> CategoryProperty = RegisterProperty<string>(p => p.Category);
-
-        [Required, MaxLength(35)]
-        public string Category
+ 
+        public static readonly PropertyInfo<string> CategoryProperty = RegisterProperty<string>(o => o.Category);
+        public virtual string Category 
         {
-            get => GetProperty(CategoryProperty);
-            private set => LoadProperty(CategoryProperty, value);
+            get => GetProperty(CategoryProperty); 
+            private set => LoadProperty(CategoryProperty, value); 
+   
         }
-
-        public static readonly PropertyInfo<int> DisplayOrderProperty = RegisterProperty<int>(p => p.DisplayOrder);
-
-        public int DisplayOrder
+ 
+        public static readonly PropertyInfo<int> DisplayOrderProperty = RegisterProperty<int>(o => o.DisplayOrder);
+        public virtual int DisplayOrder 
         {
-            get => GetProperty(DisplayOrderProperty);
-            private set => LoadProperty(DisplayOrderProperty, value);
+            get => GetProperty(DisplayOrderProperty); 
+            private set => LoadProperty(DisplayOrderProperty, value); 
+   
         }
-
-        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
-
-        public byte[] RowVersion
+ 
+        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
+        public virtual byte[] RowVersion 
         {
-            get => GetProperty(RowVersionProperty);
-            private set => LoadProperty(RowVersionProperty, value);
+            get => GetProperty(RowVersionProperty); 
+            private set => LoadProperty(RowVersionProperty, value); 
+   
         }
-
-
-        protected override void AddBusinessRules()
-        {
-            base.AddBusinessRules();
-
-            // TODO: add business rules
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
-
-        #endregion
+ 
+        #endregion 
 
         #region Factory Methods
-
-        internal static async Task<CategoryOfOrganizationROC> GetCategoryOfOrganizationROC(
-            CategoryOfOrganization childData)
+        internal static async Task<CategoryOfOrganizationROC> GetCategoryOfOrganizationROC(CategoryOfOrganization childData)
         {
             return await DataPortal.FetchChildAsync<CategoryOfOrganizationROC>(childData);
-        }
+        }  
+
 
         #endregion
 
-        #region Data Access
+        #region Data Access Methods
 
         [FetchChild]
-        private void FetchChild(CategoryOfOrganization childData)
+        private async Task Fetch(CategoryOfOrganization data)
         {
-            Id = childData.Id;
-            Category = childData.Category;
-            DisplayOrder = childData.DisplayOrder;
-            RowVersion = childData.RowVersion;
+                Id = data.Id;
+                Category = data.Category;
+                DisplayOrder = data.DisplayOrder;
+                RowVersion = data.RowVersion;
         }
 
         #endregion

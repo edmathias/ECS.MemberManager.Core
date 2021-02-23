@@ -1,4 +1,7 @@
-﻿using System;
+﻿
+
+
+using System; 
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
@@ -9,53 +12,45 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class CategoryOfOrganizationECL : BusinessListBase<CategoryOfOrganizationECL,CategoryOfOrganizationEC>
+    public partial class CategoryOfOrganizationECL : BusinessListBase<CategoryOfOrganizationECL,CategoryOfOrganizationEC>
     {
-        #region Business Methods
-        
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
-
-        #endregion
-        
         #region Factory Methods
- 
-        public static async Task<CategoryOfOrganizationECL> NewCategoryOfOrganizationECL()
+
+        internal static async Task<CategoryOfOrganizationECL> NewCategoryOfOrganizationECL()
         {
-            return await DataPortal.CreateAsync<CategoryOfOrganizationECL>();
+            return await DataPortal.CreateChildAsync<CategoryOfOrganizationECL>();
         }
 
-        public static async Task<CategoryOfOrganizationECL> GetCategoryOfOrganizationECL(List<CategoryOfOrganization> childData)
+        internal static async Task<CategoryOfOrganizationECL> GetCategoryOfOrganizationECL(List<CategoryOfOrganization> childData)
         {
-            return await DataPortal.FetchAsync<CategoryOfOrganizationECL>(childData);
+            return await DataPortal.FetchChildAsync<CategoryOfOrganizationECL>(childData);
         }
-        
+
         #endregion
-        
+
         #region Data Access
-        
-        [Fetch]
+ 
+        [FetchChild]
         private async Task Fetch(List<CategoryOfOrganization> childData)
         {
+
             using (LoadListMode)
             {
-                foreach (var categoryOfOrganization in childData)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var categoryOfOrganizationToAdd = 
-                        await CategoryOfOrganizationEC.GetCategoryOfOrganizationEC(categoryOfOrganization);
-                    Add(categoryOfOrganizationToAdd);
+                    var objectToAdd = await CategoryOfOrganizationEC.GetCategoryOfOrganizationEC(domainObjToAdd);
+                    Add(objectToAdd);
                 }
             }
         }
-        
+       
         [Update]
         private void Update()
         {
             Child_Update();
         }
-        
+
         #endregion
-    }
+
+     }
 }

@@ -1,6 +1,8 @@
-using System;
+﻿
+
+
+using System; 
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -10,28 +12,24 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class CategoryOfOrganizationRORL : ReadOnlyListBase<CategoryOfOrganizationRORL,CategoryOfOrganizationROC>
+    public partial class CategoryOfOrganizationRORL : ReadOnlyListBase<CategoryOfOrganizationRORL,CategoryOfOrganizationROC>
     {
-        #region Business Methods
-        
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
-        
-        #endregion
-        
         #region Factory Methods
 
-        public static async Task<CategoryOfOrganizationRORL> GetCategoryOfOrganizationRORL()
+        public static async Task<CategoryOfOrganizationRORL> NewCategoryOfOrganizationRORL()
+        {
+            return await DataPortal.CreateAsync<CategoryOfOrganizationRORL>();
+        }
+
+        public static async Task<CategoryOfOrganizationRORL> GetCategoryOfOrganizationRORL( )
         {
             return await DataPortal.FetchAsync<CategoryOfOrganizationRORL>();
         }
-        
-        #endregion
-        
-        #region Data Access
 
+        #endregion
+
+        #region Data Access
+ 
         [Fetch]
         private async Task Fetch()
         {
@@ -41,14 +39,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
             using (LoadListMode)
             {
-                foreach (var address in childData)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var addressToAdd = await CategoryOfOrganizationROC.GetCategoryOfOrganizationROC(address);
-                    Add(addressToAdd);
+                    var objectToAdd = await CategoryOfOrganizationROC.GetCategoryOfOrganizationROC(domainObjToAdd);
+                    Add(objectToAdd);
                 }
             }
         }
-        
+
         #endregion
-    }
+
+     }
 }

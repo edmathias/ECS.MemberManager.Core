@@ -1,6 +1,8 @@
-﻿using System;
+﻿
+
+
+using System; 
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -10,44 +12,39 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class CategoryOfOrganizationROCL : ReadOnlyListBase<CategoryOfOrganizationROCL, CategoryOfOrganizationROC>
+    public partial class CategoryOfOrganizationROCL : ReadOnlyListBase<CategoryOfOrganizationROCL,CategoryOfOrganizationROC>
     {
-        
-        #region Business Rules
-        
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public static void AddObjectAuthorizationRules()
+        #region Factory Methods
+
+        internal static async Task<CategoryOfOrganizationROCL> NewCategoryOfOrganizationROCL()
         {
-            // TODO: add object-level authorization rules
+            return await DataPortal.CreateChildAsync<CategoryOfOrganizationROCL>();
         }
 
-        #endregion
-        
-        #region Factory Methods
-        
-        public static async Task<CategoryOfOrganizationROCL> GetCategoryOfOrganizationROCL(List<CategoryOfOrganization> childData)
+        internal static async Task<CategoryOfOrganizationROCL> GetCategoryOfOrganizationROCL(List<CategoryOfOrganization> childData)
         {
             return await DataPortal.FetchChildAsync<CategoryOfOrganizationROCL>(childData);
         }
-        
-        #endregion
-        
-        #region Data Access
 
+        #endregion
+
+        #region Data Access
+ 
         [FetchChild]
         private async Task Fetch(List<CategoryOfOrganization> childData)
         {
+
             using (LoadListMode)
             {
-                foreach (var category in childData)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var categoryToAdd = await
-                        CategoryOfOrganizationROC.GetCategoryOfOrganizationROC(category); 
-                    Add(categoryToAdd);
+                    var objectToAdd = await CategoryOfOrganizationROC.GetCategoryOfOrganizationROC(domainObjToAdd);
+                    Add(objectToAdd);
                 }
             }
         }
-        
+
         #endregion
-    }
+
+     }
 }
