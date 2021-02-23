@@ -650,6 +650,62 @@
       <Compile Update="CategoryOfOrganization\CategoryOfOrganizationRORL.cs">
         <DependentUpon>CategoryOfOrganizationRORL.tt</DependentUpon>
       </Compile>
+      <None Update="CategoryOfPerson\CategoryOfPersonEC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>CategoryOfPersonEC.cs</LastGenOutput>
+      </None>
+      <Compile Update="CategoryOfPerson\CategoryOfPersonEC.cs">
+        <DependentUpon>CategoryOfPersonEC.tt</DependentUpon>
+      </Compile>
+      <None Update="CategoryOfPerson\CategoryOfPersonECL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>CategoryOfPersonECL.cs</LastGenOutput>
+      </None>
+      <Compile Update="CategoryOfPerson\CategoryOfPersonECL.cs">
+        <DependentUpon>CategoryOfPersonECL.tt</DependentUpon>
+      </Compile>
+      <None Update="CategoryOfPerson\CategoryOfPersonER.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>CategoryOfPersonER.cs</LastGenOutput>
+      </None>
+      <Compile Update="CategoryOfPerson\CategoryOfPersonER.cs">
+        <DependentUpon>CategoryOfPersonER.tt</DependentUpon>
+      </Compile>
+      <None Update="CategoryOfPerson\CategoryOfPersonERL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>CategoryOfPersonERL.cs</LastGenOutput>
+      </None>
+      <Compile Update="CategoryOfPerson\CategoryOfPersonERL.cs">
+        <DependentUpon>CategoryOfPersonERL.tt</DependentUpon>
+      </Compile>
+      <None Update="CategoryOfPerson\CategoryOfPersonROC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>CategoryOfPersonROC.cs</LastGenOutput>
+      </None>
+      <Compile Update="CategoryOfPerson\CategoryOfPersonROC.cs">
+        <DependentUpon>CategoryOfPersonROC.tt</DependentUpon>
+      </Compile>
+      <None Update="CategoryOfPerson\CategoryOfPersonROCL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>CategoryOfPersonROCL.cs</LastGenOutput>
+      </None>
+      <Compile Update="CategoryOfPerson\CategoryOfPersonROCL.cs">
+        <DependentUpon>CategoryOfPersonROCL.tt</DependentUpon>
+      </Compile>
+      <None Update="CategoryOfPerson\CategoryOfPersonROR.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>CategoryOfPersonROR.cs</LastGenOutput>
+      </None>
+      <Compile Update="CategoryOfPerson\CategoryOfPersonROR.cs">
+        <DependentUpon>CategoryOfPersonROR.tt</DependentUpon>
+      </Compile>
+      <None Update="CategoryOfPerson\CategoryOfPersonRORL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>CategoryOfPersonRORL.cs</LastGenOutput>
+      </None>
+      <Compile Update="CategoryOfPerson\CategoryOfPersonRORL.cs">
+        <DependentUpon>CategoryOfPersonRORL.tt</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

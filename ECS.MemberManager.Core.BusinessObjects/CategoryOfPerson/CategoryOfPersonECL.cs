@@ -1,4 +1,7 @@
-﻿using System;
+﻿
+
+
+using System; 
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
@@ -9,53 +12,45 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class CategoryOfPersonECL : BusinessListBase<CategoryOfPersonECL,CategoryOfPersonEC>
+    public partial class CategoryOfPersonECL : BusinessListBase<CategoryOfPersonECL,CategoryOfPersonEC>
     {
-        #region Business Methods
-        
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
-
-        #endregion
-        
         #region Factory Methods
-        
+
         internal static async Task<CategoryOfPersonECL> NewCategoryOfPersonECL()
         {
-            return await DataPortal.CreateAsync<CategoryOfPersonECL>();
+            return await DataPortal.CreateChildAsync<CategoryOfPersonECL>();
         }
 
         internal static async Task<CategoryOfPersonECL> GetCategoryOfPersonECL(List<CategoryOfPerson> childData)
         {
-            return await DataPortal.FetchAsync<CategoryOfPersonECL>(childData);
+            return await DataPortal.FetchChildAsync<CategoryOfPersonECL>(childData);
         }
-        
+
         #endregion
 
         #region Data Access
-        
-        [Fetch]
+ 
+        [FetchChild]
         private async Task Fetch(List<CategoryOfPerson> childData)
         {
+
             using (LoadListMode)
             {
-                foreach (var categoryOfPerson in childData)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var categoryOfPersonToAdd = 
-                        await CategoryOfPersonEC.GetCategoryOfPersonEC(categoryOfPerson);
-                    Add(categoryOfPersonToAdd);
+                    var objectToAdd = await CategoryOfPersonEC.GetCategoryOfPersonEC(domainObjToAdd);
+                    Add(objectToAdd);
                 }
             }
         }
-        
+       
         [Update]
         private void Update()
         {
             Child_Update();
         }
-        
+
         #endregion
-    }
+
+     }
 }

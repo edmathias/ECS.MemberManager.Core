@@ -1,6 +1,8 @@
-using System;
+﻿
+
+
+using System; 
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -10,28 +12,24 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class CategoryOfPersonRORL : ReadOnlyListBase<CategoryOfPersonRORL,CategoryOfPersonROC>
+    public partial class CategoryOfPersonRORL : ReadOnlyListBase<CategoryOfPersonRORL,CategoryOfPersonROC>
     {
-        #region Business Methods
-        
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
-        
-        #endregion
-        
         #region Factory Methods
 
-        public static async Task<CategoryOfPersonRORL> GetCategoryOfPersonRORL()
+        public static async Task<CategoryOfPersonRORL> NewCategoryOfPersonRORL()
+        {
+            return await DataPortal.CreateAsync<CategoryOfPersonRORL>();
+        }
+
+        public static async Task<CategoryOfPersonRORL> GetCategoryOfPersonRORL( )
         {
             return await DataPortal.FetchAsync<CategoryOfPersonRORL>();
         }
-        
-        #endregion
-        
-        #region Data Access
 
+        #endregion
+
+        #region Data Access
+ 
         [Fetch]
         private async Task Fetch()
         {
@@ -41,14 +39,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
             using (LoadListMode)
             {
-                foreach (var address in childData)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var addressToAdd = await CategoryOfPersonROC.GetCategoryOfPersonROC(address);
-                    Add(addressToAdd);
+                    var objectToAdd = await CategoryOfPersonROC.GetCategoryOfPersonROC(domainObjToAdd);
+                    Add(objectToAdd);
                 }
             }
         }
-        
+
         #endregion
-    }
+
+     }
 }

@@ -1,4 +1,7 @@
-﻿using System;
+﻿
+
+
+using System; 
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
@@ -9,32 +12,24 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class CategoryOfPersonERL : BusinessListBase<CategoryOfPersonERL,CategoryOfPersonEC>
+    public partial class CategoryOfPersonERL : BusinessListBase<CategoryOfPersonERL,CategoryOfPersonEC>
     {
-        #region Authorization Rules
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
-
-        #endregion
-       
         #region Factory Methods
-        
+
         public static async Task<CategoryOfPersonERL> NewCategoryOfPersonERL()
         {
             return await DataPortal.CreateAsync<CategoryOfPersonERL>();
         }
 
-        public static async Task<CategoryOfPersonERL> GetCategoryOfPersonERL()
+        public static async Task<CategoryOfPersonERL> GetCategoryOfPersonERL( )
         {
             return await DataPortal.FetchAsync<CategoryOfPersonERL>();
         }
-       
+
         #endregion
-        
+
         #region Data Access
-        
+ 
         [Fetch]
         private async Task Fetch()
         {
@@ -44,21 +39,21 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
             using (LoadListMode)
             {
-                foreach (var categoryOfPerson in childData)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var categoryOfPersonToAdd = 
-                        await CategoryOfPersonEC.GetCategoryOfPersonEC(categoryOfPerson);
-                    Add(categoryOfPersonToAdd);
+                    var objectToAdd = await CategoryOfPersonEC.GetCategoryOfPersonEC(domainObjToAdd);
+                    Add(objectToAdd);
                 }
             }
         }
-        
+       
         [Update]
         private void Update()
         {
             Child_Update();
         }
-        
+
         #endregion
-    }
+
+     }
 }
