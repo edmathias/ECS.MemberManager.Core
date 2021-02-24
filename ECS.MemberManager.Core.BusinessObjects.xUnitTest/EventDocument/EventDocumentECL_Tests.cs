@@ -60,65 +60,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(listToTest);
             Assert.Equal(3, listToTest.Count);
         }
-        
-        [Fact]
-        private async void EventDocumentECL_TestDeleteEventDocumentEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEventDocumentDal>();
-            var childData = await dal.Fetch();
-            
-            var eventDocumentObjEditList = await EventDocumentECL.GetEventDocumentECL(childData);
-
-            var eventDocumentObj = eventDocumentObjEditList.First(a => a.Id == 99);
-
-            // remove is deferred delete
-            eventDocumentObjEditList.Remove(eventDocumentObj); 
-
-            var eventDocumentObjListAfterDelete = await eventDocumentObjEditList.SaveAsync();
-            
-            Assert.NotEqual(childData.Count,eventDocumentObjListAfterDelete.Count);
-        }
-
-        [Fact]
-        private async void EventDocumentECL_TestUpdateEventDocumentEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEventDocumentDal>();
-            var childData = await dal.Fetch();
-            
-            var eventDocumentObjList = await EventDocumentECL.GetEventDocumentECL(childData);
-            var countBeforeUpdate = eventDocumentObjList.Count;
-            var idToUpdate = eventDocumentObjList.Min(a => a.Id);
-            var eventDocumentObjToUpdate = eventDocumentObjList.First(a => a.Id == idToUpdate);
-
-            eventDocumentObjToUpdate.DocumentName = "This was updated";
-            await eventDocumentObjList.SaveAsync();
-
-            var updatedList = await dal.Fetch();
-            var updatedEventDocumentsList = await EventDocumentECL.GetEventDocumentECL(updatedList);
-            
-            Assert.Equal("This was updated",updatedEventDocumentsList.First(a => a.Id == idToUpdate).DocumentName);
-            Assert.Equal(countBeforeUpdate, updatedEventDocumentsList.Count);
-        }
-
-        [Fact]
-        private async void EventDocumentECL_TestAddEventDocumentEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEventDocumentDal>();
-            var childData = await dal.Fetch();
-
-            var eventDocumentObjList = await EventDocumentECL.GetEventDocumentECL(childData);
-            var countBeforeAdd = eventDocumentObjList.Count;
-            
-            var eventDocumentObjToAdd = eventDocumentObjList.AddNew();
-            await BuildEventDocument(eventDocumentObjToAdd); 
-
-            var eventDocumentObjEditList = await eventDocumentObjList.SaveAsync();
-            
-            Assert.NotEqual(countBeforeAdd, eventDocumentObjEditList.Count);
-        }
 
         private async Task BuildEventDocument(EventDocumentEC eventDocumentObj)
         {

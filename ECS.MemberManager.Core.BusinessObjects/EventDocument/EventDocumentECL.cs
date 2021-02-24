@@ -1,46 +1,56 @@
-using System;
+﻿
+
+
+using System; 
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
+using ECS.MemberManager.Core.DataAccess;
+using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class EventDocumentECL : BusinessListBase<EventDocumentECL, EventDocumentEC>
+    public partial class EventDocumentECL : BusinessListBase<EventDocumentECL,EventDocumentEC>
     {
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
+        #region Factory Methods
 
         internal static async Task<EventDocumentECL> NewEventDocumentECL()
         {
-            return await DataPortal.CreateAsync<EventDocumentECL>();
+            return await DataPortal.CreateChildAsync<EventDocumentECL>();
         }
 
         internal static async Task<EventDocumentECL> GetEventDocumentECL(List<EventDocument> childData)
         {
-            return await DataPortal.FetchAsync<EventDocumentECL>(childData);
+            return await DataPortal.FetchChildAsync<EventDocumentECL>(childData);
         }
 
-        [Fetch]
+        #endregion
+
+        #region Data Access
+ 
+        [FetchChild]
         private async Task Fetch(List<EventDocument> childData)
         {
+
             using (LoadListMode)
             {
-                foreach (var eventObj in childData)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var eventToAdd = await EventDocumentEC.GetEventDocumentEC(eventObj);
-                    Add(eventToAdd);
+                    var objectToAdd = await EventDocumentEC.GetEventDocumentEC(domainObjToAdd);
+                    Add(objectToAdd);
                 }
             }
         }
-
+       
         [Update]
         private void Update()
         {
             Child_Update();
         }
-    }
+
+        #endregion
+
+     }
 }

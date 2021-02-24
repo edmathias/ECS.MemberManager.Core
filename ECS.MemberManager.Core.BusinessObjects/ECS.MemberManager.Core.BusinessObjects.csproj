@@ -86,6 +86,16 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>EMailRORL.tt</DependentUpon>
       </Compile>
+      <Compile Update="EventDocument\EventDocumentRORL.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>EventDocumentRORL.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Event\EventRORL.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>EventRORL.tt</DependentUpon>
+      </Compile>
       <Compile Update="TaskForEvent\TaskForEventERBase.cs">
         <AutoGen>True</AutoGen>
         <DesignTime>True</DesignTime>
@@ -893,6 +903,8 @@
       </None>
       <Compile Update="Person\PersonEC.cs">
         <DependentUpon>PersonEC.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="EMailType\EMailTypeEC.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -900,6 +912,8 @@
       </None>
       <Compile Update="EMailType\EMailTypeEC.cs">
         <DependentUpon>EMailTypeEC.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="EMailType\EMailTypeER.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -907,6 +921,8 @@
       </None>
       <Compile Update="EMailType\EMailTypeER.cs">
         <DependentUpon>EMailTypeER.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="EMailType\EMailTypeERL.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -914,6 +930,8 @@
       </None>
       <Compile Update="EMailType\EMailTypeERL.cs">
         <DependentUpon>EMailTypeERL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="EMailType\EMailTypeROC.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -921,6 +939,8 @@
       </None>
       <Compile Update="EMailType\EMailTypeROC.cs">
         <DependentUpon>EMailTypeROC.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="EMailType\EMailTypeROCL.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -928,6 +948,8 @@
       </None>
       <Compile Update="EMailType\EMailTypeROCL.cs">
         <DependentUpon>EMailTypeROCL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="EMailType\EMailTypeROR.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -935,6 +957,8 @@
       </None>
       <Compile Update="EMailType\EMailTypeROR.cs">
         <DependentUpon>EMailTypeROR.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="EMailType\EMailTypeRORL.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -942,10 +966,132 @@
       </None>
       <Compile Update="EMailType\EMailTypeRORL.cs">
         <DependentUpon>EMailTypeRORL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="EMailType\EMailTypeECL.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>EMailTypeECL.cs</LastGenOutput>
+      </None>
+      <None Update="Event\EventEC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>EventEC.cs</LastGenOutput>
+      </None>
+      <Compile Update="Event\EventEC.cs">
+        <DependentUpon>EventEC.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+      </Compile>
+      <None Update="Event\EventER.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>EventER.cs</LastGenOutput>
+      </None>
+      <Compile Update="Event\EventER.cs">
+        <DependentUpon>EventER.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+      </Compile>
+      <None Update="Event\EventECL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>EventECL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Event\EventECL.cs">
+        <DependentUpon>EventECL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+      </Compile>
+      <None Update="Event\EventERL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>EventERL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Event\EventERL.cs">
+        <DependentUpon>EventERL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+      </Compile>
+      <None Update="Event\EventROC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>EventROC.cs</LastGenOutput>
+      </None>
+      <Compile Update="Event\EventROC.cs">
+        <DependentUpon>EventROC.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+      </Compile>
+      <None Update="Event\EventROCL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>EventROCL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Event\EventROCL.cs">
+        <DependentUpon>EventROCL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+      </Compile>
+      <None Update="Event\EventROR.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>EventROR.cs</LastGenOutput>
+      </None>
+      <Compile Update="Event\EventROR.cs">
+        <DependentUpon>EventROR.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+      </Compile>
+      <None Update="Event\EventRORL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>EventRORL.cs</LastGenOutput>
+      </None>
+      <None Update="EventDocument\EventDocumentEC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>EventDocumentEC.cs</LastGenOutput>
+      </None>
+      <None Update="EventDocument\EventDocumentECL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>EventDocumentECL.cs</LastGenOutput>
+      </None>
+      <Compile Update="EventDocument\EventDocumentEC.cs">
+        <DependentUpon>EventDocumentEC.tt</DependentUpon>
+      </Compile>
+      <Compile Update="EventDocument\EventDocumentECL.cs">
+        <DependentUpon>EventDocumentECL.tt</DependentUpon>
+      </Compile>
+      <None Update="EventDocument\EventDocumentER.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>EventDocumentER.cs</LastGenOutput>
+      </None>
+      <Compile Update="EventDocument\EventDocumentER.cs">
+        <DependentUpon>EventDocumentER.tt</DependentUpon>
+      </Compile>
+      <None Update="EventDocument\EventDocumentERL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>EventDocumentERL.cs</LastGenOutput>
+      </None>
+      <Compile Update="EventDocument\EventDocumentERL.cs">
+        <DependentUpon>EventDocumentERL.tt</DependentUpon>
+      </Compile>
+      <None Update="EventDocument\EventDocumentROC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>EventDocumentROC.cs</LastGenOutput>
+      </None>
+      <Compile Update="EventDocument\EventDocumentROC.cs">
+        <DependentUpon>EventDocumentROC.tt</DependentUpon>
+      </Compile>
+      <None Update="EventDocument\EventDocumentROCL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>EventDocumentROCL.cs</LastGenOutput>
+      </None>
+      <Compile Update="EventDocument\EventDocumentROCL.cs">
+        <DependentUpon>EventDocumentROCL.tt</DependentUpon>
+      </Compile>
+      <None Update="EventDocument\EventDocumentROR.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>EventDocumentROR.cs</LastGenOutput>
+      </None>
+      <Compile Update="EventDocument\EventDocumentROR.cs">
+        <DependentUpon>EventDocumentROR.tt</DependentUpon>
+      </Compile>
+      <None Update="EventDocument\EventDocumentRORL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>EventDocumentRORL.cs</LastGenOutput>
       </None>
     </ItemGroup>
 

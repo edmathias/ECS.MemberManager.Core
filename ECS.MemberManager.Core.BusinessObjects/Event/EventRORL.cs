@@ -1,34 +1,35 @@
-using System;
+﻿
+
+
+using System; 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
+using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class EventRORL : ReadOnlyListBase<EventRORL,EventROC>
+    public partial class EventRORL : ReadOnlyListBase<EventRORL,EventROC>
     {
-        #region Business Methods
-        
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
-        
-        #endregion
-        
         #region Factory Methods
 
-        public static async Task<EventRORL> GetEventRORL()
+        public static async Task<EventRORL> NewEventRORL()
+        {
+            return await DataPortal.CreateAsync<EventRORL>();
+        }
+
+        public static async Task<EventRORL> GetEventRORL( )
         {
             return await DataPortal.FetchAsync<EventRORL>();
         }
-        
-        #endregion
-        
-        #region Data Access
 
+        #endregion
+
+        #region Data Access
+ 
         [Fetch]
         private async Task Fetch()
         {
@@ -38,14 +39,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
             using (LoadListMode)
             {
-                foreach (var eMailType in childData)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var eMailTypeToAdd = await EventROC.GetEventROC(eMailType);
-                    Add(eMailTypeToAdd);
+                    var objectToAdd = await EventROC.GetEventROC(domainObjToAdd);
+                    Add(objectToAdd);
                 }
             }
         }
-        
+
         #endregion
-    }
+
+     }
 }

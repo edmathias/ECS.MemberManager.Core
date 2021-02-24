@@ -67,6 +67,21 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
+        public async Task TestEventDocumentEC_DocumentNameRequired()
+        {
+            var eventDocumentObjToTest = BuildEventDocument();
+            var eventDocumentObj = await EventDocumentEC.GetEventDocumentEC(eventDocumentObjToTest);
+            var isObjectValidInit = eventDocumentObj.IsValid;
+            eventDocumentObj.DocumentName = string.Empty;
+            
+            Assert.NotNull(eventDocumentObj);
+            Assert.True(isObjectValidInit);
+            Assert.False(eventDocumentObj.IsValid);
+            Assert.Equal("DocumentName",eventDocumentObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("DocumentName required",eventDocumentObj.BrokenRulesCollection[0].Description);
+        }
+        
+        [Fact]
         public async Task TestEventDocumentEC_DocumentNameLessThan255Chars()
         {
             var eventDocumentObjToTest = BuildEventDocument();
@@ -81,6 +96,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.True(isObjectValidInit);
             Assert.False(eventDocumentObj.IsValid);
             Assert.Equal("DocumentName",eventDocumentObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("DocumentName can not exceed 50 characters",eventDocumentObj.BrokenRulesCollection[0].Description);
         }
 
         [Fact]

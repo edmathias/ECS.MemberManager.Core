@@ -97,7 +97,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         
         // test invalid state 
         [Fact]
-        public async Task EventDocumentER_TestDescriptionRequired()
+        public async Task EventDocumentER_TestDocumentNameRequired()
         {
             var eventDocumentObj = await EventDocumentER.NewEventDocumentER();
             eventDocumentObj.DocumentName = "eventDocument name";
@@ -110,6 +110,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(eventDocumentObj);
             Assert.True(isObjectValidInit);
             Assert.False(eventDocumentObj.IsValid);
+            Assert.Equal("DocumentName",eventDocumentObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("DocumentName required",eventDocumentObj.BrokenRulesCollection[0].Description);
         }
        
         [Fact]
@@ -130,11 +132,50 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(eventDocumentObj);
             Assert.True(isObjectValid);
             Assert.False(eventDocumentObj.IsValid);
-            Assert.Equal("The field DocumentName must be a string or array type with a maximum length of '50'.",
-                eventDocumentObj.BrokenRulesCollection[0].Description);
+            Assert.Equal("DocumentName",eventDocumentObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("DocumentName can not exceed 50 characters",eventDocumentObj.BrokenRulesCollection[0].Description);
         }        
-        // test exception if attempt to save in invalid state
 
+        [Fact]
+        public async Task EventDocumentER_TestPathAndFileNameRequired()
+        {
+            var eventDocumentObj = await EventDocumentER.NewEventDocumentER();
+            eventDocumentObj.DocumentName = "eventDocument name";
+            eventDocumentObj.PathAndFileName = "pathandfilename";
+            eventDocumentObj.LastUpdatedBy = "edm";
+            eventDocumentObj.LastUpdatedDate = DateTime.Now;
+            var isObjectValidInit = eventDocumentObj.IsValid;
+            eventDocumentObj.PathAndFileName = string.Empty;
+
+            Assert.NotNull(eventDocumentObj);
+            Assert.True(isObjectValidInit);
+            Assert.False(eventDocumentObj.IsValid);
+            Assert.Equal("PathAndFileName",eventDocumentObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("PathAndFileName required",eventDocumentObj.BrokenRulesCollection[0].Description);
+        }
+       
+        [Fact]
+        public async Task EventDocumentER_TestPathAndFileNameExceedsMaxLengthOf255()
+        {
+            var eventDocumentObj = await EventDocumentER.NewEventDocumentER();
+            eventDocumentObj.DocumentName = "eventDocument name";
+            eventDocumentObj.PathAndFileName = "c:\\pathandfilename";
+            eventDocumentObj.LastUpdatedBy = "edm";
+            eventDocumentObj.LastUpdatedDate = DateTime.Now;
+            var isObjectValid = eventDocumentObj.IsValid;
+            
+            eventDocumentObj.DocumentName = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor "+
+                                     "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis "+
+                                     "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "+
+                                     "Duis aute irure dolor in reprehenderit";
+
+            Assert.NotNull(eventDocumentObj);
+            Assert.True(isObjectValid);
+            Assert.False(eventDocumentObj.IsValid);
+            Assert.Equal("DocumentName",eventDocumentObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("DocumentName can not exceed 50 characters",eventDocumentObj.BrokenRulesCollection[0].Description);
+        }        
+        
         [Fact]
         public async Task EventDocumentER_TestInvalidSaveEventDocumentER()
         {

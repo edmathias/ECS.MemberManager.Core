@@ -37,7 +37,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestEventEC_NewEventEC()
+        public async Task EventEC_NewEventEC()
         {
             var eventObj = await EventEC.NewEventEC();
 
@@ -47,7 +47,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
         
         [Fact]
-        public async Task TestEventEC_GetEventEC()
+        public async Task EventEC_GetEventEC()
         {
             var eventObjToLoad = BuildEvent();
             var eventObj = await EventEC.GetEventEC(eventObjToLoad);
@@ -64,7 +64,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestEventEC_EventNameLessThan255Chars()
+        public async Task EventEC_EventNameLessThan255Chars()
         {
             var eventObjToTest = BuildEvent();
             var eventObj = await EventEC.GetEventEC(eventObjToTest);
@@ -78,10 +78,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.True(isObjectValidInit);
             Assert.False(eventObj.IsValid);
             Assert.Equal("EventName",eventObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("EventName can not exceed 255 characters",eventObj.BrokenRulesCollection[0].Description);
         }
 
         [Fact]
-        public async Task TestEventEC_LastUpdatedByRequired()
+        public async Task EventEC_LastUpdatedByRequired()
         {
             var eventObjToTest = BuildEvent();
             var eventObj = await EventEC.GetEventEC(eventObjToTest);

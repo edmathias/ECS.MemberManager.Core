@@ -1,46 +1,56 @@
-using System;
+﻿
+
+
+using System; 
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
+using ECS.MemberManager.Core.DataAccess;
+using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class EventECL : BusinessListBase<EventECL, EventEC>
+    public partial class EventECL : BusinessListBase<EventECL,EventEC>
     {
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
+        #region Factory Methods
 
         internal static async Task<EventECL> NewEventECL()
         {
-            return await DataPortal.CreateAsync<EventECL>();
+            return await DataPortal.CreateChildAsync<EventECL>();
         }
 
         internal static async Task<EventECL> GetEventECL(List<Event> childData)
         {
-            return await DataPortal.FetchAsync<EventECL>(childData);
+            return await DataPortal.FetchChildAsync<EventECL>(childData);
         }
 
-        [Fetch]
+        #endregion
+
+        #region Data Access
+ 
+        [FetchChild]
         private async Task Fetch(List<Event> childData)
         {
+
             using (LoadListMode)
             {
-                foreach (var eventObj in childData)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var eventToAdd = await EventEC.GetEventEC(eventObj);
-                    Add(eventToAdd);
+                    var objectToAdd = await EventEC.GetEventEC(domainObjToAdd);
+                    Add(objectToAdd);
                 }
             }
         }
-
+       
         [Update]
         private void Update()
         {
             Child_Update();
         }
-    }
+
+        #endregion
+
+     }
 }

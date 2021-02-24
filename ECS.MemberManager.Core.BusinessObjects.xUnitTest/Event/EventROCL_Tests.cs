@@ -35,7 +35,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
         
         [Fact]
-        private async void EventInfoList_TestGetEventInfoList()
+        private async void EventROCL_TestGetEventROCL()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEventDal>();

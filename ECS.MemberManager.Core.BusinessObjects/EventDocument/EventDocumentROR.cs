@@ -1,6 +1,8 @@
-﻿using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿
+
+
+using System;
+using System.Collections.Generic; 
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -10,119 +12,84 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class EventDocumentROR : BusinessBase<EventDocumentROR>
+    public partial class EventDocumentROR : BusinessBase<EventDocumentROR>
     {
-        #region Business Methods
-
-        public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
-
-        public int Id
+        #region Business Methods 
+         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
+        public virtual int Id 
         {
-            get => GetProperty(IdProperty);
-            private set => LoadProperty(IdProperty, value);
-        }
-
-        public static readonly PropertyInfo<EventEC> EventProperty = RegisterProperty<EventEC>(p => p.Event);
-
-        public EventEC Event
-        {
-            get => GetProperty(EventProperty);
-            private set => LoadProperty(EventProperty, value);
+            get => GetProperty(IdProperty); //1-2
+            private set => LoadProperty(IdProperty, value); //2-3   
         }
 
 
-        public static readonly PropertyInfo<string>
-            DocumentNameProperty = RegisterProperty<string>(p => p.DocumentName);
-
-        public string DocumentName
+        public static readonly PropertyInfo<EventROC> EventProperty = RegisterProperty<EventROC>(o => o.Event);
+        public EventROC Event  
         {
-            get => GetProperty(DocumentNameProperty);
-            private set => LoadProperty(DocumentNameProperty, value);
+            get => GetProperty(EventProperty); //1-1
+        
+            private set => LoadProperty(EventProperty, value); //2-1
+        }    
+ 
+        public static readonly PropertyInfo<string> DocumentNameProperty = RegisterProperty<string>(o => o.DocumentName);
+        public virtual string DocumentName 
+        {
+            get => GetProperty(DocumentNameProperty); //1-2
+            private set => LoadProperty(DocumentNameProperty, value); //2-3   
         }
 
-        public static readonly PropertyInfo<DocumentTypeEC> DocumentTypeProperty =
-            RegisterProperty<DocumentTypeEC>(p => p.DocumentType);
 
-        public DocumentTypeEC DocumentType
+        public static readonly PropertyInfo<DocumentTypeROC> DocumentTypeProperty = RegisterProperty<DocumentTypeROC>(o => o.DocumentType);
+        public DocumentTypeROC DocumentType  
         {
-            get => GetProperty(DocumentTypeProperty);
-            private set => LoadProperty(DocumentTypeProperty, value);
+            get => GetProperty(DocumentTypeProperty); //1-1
+        
+            private set => LoadProperty(DocumentTypeProperty, value); //2-1
+        }    
+ 
+        public static readonly PropertyInfo<string> PathAndFileNameProperty = RegisterProperty<string>(o => o.PathAndFileName);
+        public virtual string PathAndFileName 
+        {
+            get => GetProperty(PathAndFileNameProperty); //1-2
+            private set => LoadProperty(PathAndFileNameProperty, value); //2-3   
         }
 
-        public static readonly PropertyInfo<string> PathAndFileNameProperty =
-            RegisterProperty<string>(p => p.PathAndFileName);
-        public string PathAndFileName
+        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(o => o.LastUpdatedBy);
+        public virtual string LastUpdatedBy 
         {
-            get => GetProperty(PathAndFileNameProperty);
-            private set => LoadProperty(PathAndFileNameProperty, value);
+            get => GetProperty(LastUpdatedByProperty); //1-2
+            private set => LoadProperty(LastUpdatedByProperty, value); //2-3   
         }
 
-        public static readonly PropertyInfo<string> LastUpdatedByProperty =
-            RegisterProperty<string>(p => p.LastUpdatedBy);
-        public string LastUpdatedBy
+        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(o => o.LastUpdatedDate);
+        public virtual SmartDate LastUpdatedDate 
         {
-            get => GetProperty(LastUpdatedByProperty);
-            private set => LoadProperty(LastUpdatedByProperty, value);
+            get => GetProperty(LastUpdatedDateProperty); //1-2
+            private set => LoadProperty(LastUpdatedDateProperty, value); //2-3   
         }
 
-        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty =
-            RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
-        public SmartDate LastUpdatedDate
+        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
+        public virtual string Notes 
         {
-            get => GetProperty(LastUpdatedDateProperty);
-            private set => LoadProperty(LastUpdatedDateProperty, value);
+            get => GetProperty(NotesProperty); //1-2
+            private set => LoadProperty(NotesProperty, value); //2-3   
         }
 
-        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
-        public string Notes
+        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
+        public virtual byte[] RowVersion 
         {
-            get => GetProperty(NotesProperty);
-            private set => LoadProperty(NotesProperty, value);
+            get => GetProperty(RowVersionProperty); //1-2
+            private set => LoadProperty(RowVersionProperty, value); //2-3   
         }
 
-        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
-        public byte[] RowVersion
-        {
-            get => GetProperty(RowVersionProperty);
-            private set => LoadProperty(RowVersionProperty, value);
-        }
-
-        protected override void AddBusinessRules()
-        {
-            base.AddBusinessRules();
-
-            // TODO: add business rules
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
-
-        #endregion
+        #endregion 
 
         #region Factory Methods
-
-        public static async Task<EventDocumentROR> NewEventDocumentROR()
-        {
-            return await DataPortal.CreateAsync<EventDocumentROR>();
-        }
-
-        public static async Task<EventDocumentROR> GetEventDocumentROR(EventDocument childData)
-        {
-            return await DataPortal.FetchChildAsync<EventDocumentROR>(childData);
-        }
-
         public static async Task<EventDocumentROR> GetEventDocumentROR(int id)
         {
             return await DataPortal.FetchAsync<EventDocumentROR>(id);
-        }
+        }  
 
-        public static async Task DeleteEventDocumentROR(int id)
-        {
-            await DataPortal.DeleteAsync<EventDocumentROR>(id);
-        }
 
         #endregion
 
@@ -134,99 +101,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEventDocumentDal>();
             var data = await dal.Fetch(id);
-
-            await Fetch(data);
-        }
-
-        [FetchChild]
-        private async Task Fetch(EventDocument childData)
-        {
-            using (BypassPropertyChecks)
-            {
-                Id = childData.Id;
-                Event = childData.Event != null ? await EventEC.GetEventEC(childData.Event) : null;
-                DocumentName = childData.DocumentName;
-                DocumentType = childData.DocumentType != null
-                    ? await DocumentTypeEC.GetDocumentTypeEC(childData.DocumentType)
-                    : null;
-                PathAndFileName = childData.PathAndFileName;
-                LastUpdatedBy = childData.LastUpdatedBy;
-                LastUpdatedDate = childData.LastUpdatedDate;
-                Notes = childData.Notes;
-                RowVersion = childData.RowVersion;
-            }
-        }
-
-        [Insert]
-        private async Task Insert()
-        {
-            await InsertChild();
-        }
-
-        [InsertChild]
-        private async Task InsertChild()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEventDocumentDal>();
-            var data = new EventDocument()
-            {
-                Event = Event != null ? new Event() {Id = Event.Id} : null,
-                DocumentName = DocumentName,
-                DocumentType = DocumentType != null ? new DocumentType() {Id = DocumentType.Id} : null,
-                PathAndFileName = PathAndFileName,
-                LastUpdatedBy = LastUpdatedBy,
-                LastUpdatedDate = LastUpdatedDate,
-                Notes = Notes,
-                RowVersion = RowVersion
-            };
-
-            var insertedEventDocument = await dal.Insert(data);
-            Id = insertedEventDocument.Id;
-            RowVersion = insertedEventDocument.RowVersion;
-        }
-
-        [Update]
-        private async Task Update()
-        {
-            await ChildUpdate();
-        }
-
-        [UpdateChild]
-        private async Task ChildUpdate()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEventDocumentDal>();
-
-            var emailTypeToUpdate = new EventDocument()
-            {
-                Id = Id,
-                Event = Event != null ? new Event() {Id = Event.Id} : null,
-                DocumentName = DocumentName,
-                DocumentType = DocumentType != null ? new DocumentType() {Id = DocumentType.Id} : null,
-                PathAndFileName = PathAndFileName,
-                LastUpdatedBy = LastUpdatedBy,
-                LastUpdatedDate = LastUpdatedDate,
-                Notes = Notes,
-                RowVersion = RowVersion
-            };
-
-            var updatedEmail = await dal.Update(emailTypeToUpdate);
-            RowVersion = updatedEmail.RowVersion;
-        }
-
-        [DeleteSelfChild]
-        private async Task DeleteSelf()
-        {
-            await Delete(Id);
-        }
-
-        [Delete]
-        private async Task Delete(int id)
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEventDocumentDal>();
-
-            await dal.Delete(id);
+                Id = data.Id;
+                Event = (data.Event != null ? await EventROC.GetEventROC(data.Event) : null);
+                DocumentName = data.DocumentName;
+                DocumentType = (data.DocumentType != null ? await DocumentTypeROC.GetDocumentTypeROC(data.DocumentType) : null);
+                PathAndFileName = data.PathAndFileName;
+                LastUpdatedBy = data.LastUpdatedBy;
+                LastUpdatedDate = data.LastUpdatedDate;
+                Notes = data.Notes;
+                RowVersion = data.RowVersion;
         }
 
         #endregion

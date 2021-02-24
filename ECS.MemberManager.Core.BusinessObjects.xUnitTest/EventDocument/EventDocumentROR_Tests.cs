@@ -48,13 +48,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.Equal(1,eventDocumentObj.Id);
         }
 
-        [Fact]
-        public async Task EventDocumentROR_TestGetNewEventDocumentROR()
-        {
-            var eventDocumentObj = await EventDocumentROR.NewEventDocumentROR();
 
-            Assert.NotNull(eventDocumentObj);
-            Assert.IsType<EventDocumentROR>(eventDocumentObj);
-        }
     }
 }

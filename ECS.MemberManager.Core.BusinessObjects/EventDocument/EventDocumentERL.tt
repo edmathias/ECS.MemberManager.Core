@@ -4,9 +4,9 @@
 <#@ output extension=".cs" #>
 <#@ include file="..\CSLA_T4.tt" #>
 <#
-    var objectName = "CategoryOfOrganization";
-    var stereoType = "ECL";
-    var isChild = true;
+    var objectName = "EventDocument";
+    var stereoType = "ERL";
+    var isChild = false;
     var isReadOnly = false;
     var childStereo = GetChildStereoType(stereoType);
     var cslaListType = (isReadOnly ? "ReadOnly" : "Business");

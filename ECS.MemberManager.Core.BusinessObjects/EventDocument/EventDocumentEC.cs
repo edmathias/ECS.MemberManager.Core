@@ -1,6 +1,7 @@
-﻿using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿
+
+using System;
+using System.Collections.Generic; 
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -10,181 +11,170 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class EventDocumentEC : BusinessBase<EventDocumentEC>
+    public partial class EventDocumentEC : BusinessBase<EventDocumentEC>
     {
         #region Business Methods
-
-        public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
-
-        public int Id
+ 
+        public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
+        public virtual int Id 
         {
-            get => GetProperty(IdProperty);
-            private set => LoadProperty(IdProperty, value);
-        }
-
-        public static readonly PropertyInfo<EventEC> EventProperty = RegisterProperty<EventEC>(p => p.Event);
-        public EventEC Event
-        {
-            get => GetProperty(EventProperty);
-            set => SetProperty(EventProperty, value);
+            get => GetProperty(IdProperty); //1-2
+            private set => LoadProperty(IdProperty, value); //2-3   
         }
 
 
-        public static readonly PropertyInfo<string> DocumentNameProperty = RegisterProperty<string>(p => p.DocumentName);
-        [Required(),MaxLength(50)]
-        public string DocumentName
+        public static readonly PropertyInfo<EventEC> EventProperty = RegisterProperty<EventEC>(o => o.Event);
+        public EventEC Event  
         {
-            get => GetProperty(DocumentNameProperty);
-            set => SetProperty(DocumentNameProperty, value);
+            get => GetProperty(EventProperty); //1-1
+            set => SetProperty(EventProperty, value); //2-2
+        }    
+ 
+        public static readonly PropertyInfo<string> DocumentNameProperty = RegisterProperty<string>(o => o.DocumentName);
+        public virtual string DocumentName 
+        {
+            get => GetProperty(DocumentNameProperty); //1-2
+            set => SetProperty(DocumentNameProperty, value); //2-4
+   
         }
 
-        public static readonly PropertyInfo<DocumentTypeEC> DocumentTypeProperty = RegisterProperty<DocumentTypeEC>(p => p.DocumentType);
-        public DocumentTypeEC DocumentType
+
+        public static readonly PropertyInfo<DocumentTypeEC> DocumentTypeProperty = RegisterProperty<DocumentTypeEC>(o => o.DocumentType);
+        public DocumentTypeEC DocumentType  
         {
-            get => GetProperty(DocumentTypeProperty);
-            set => SetProperty(DocumentTypeProperty, value);
+            get => GetProperty(DocumentTypeProperty); //1-1
+            set => SetProperty(DocumentTypeProperty, value); //2-2
+        }    
+ 
+        public static readonly PropertyInfo<string> PathAndFileNameProperty = RegisterProperty<string>(o => o.PathAndFileName);
+        public virtual string PathAndFileName 
+        {
+            get => GetProperty(PathAndFileNameProperty); //1-2
+            set => SetProperty(PathAndFileNameProperty, value); //2-4
+   
         }
 
-        public static readonly PropertyInfo<string> PathAndFileNameProperty = RegisterProperty<string>(p => p.PathAndFileName);
-        [Required(), MaxLength(255)]
-        public string PathAndFileName
+        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(o => o.LastUpdatedBy);
+        public virtual string LastUpdatedBy 
         {
-            get => GetProperty(PathAndFileNameProperty);
-            set => SetProperty(PathAndFileNameProperty, value);
+            get => GetProperty(LastUpdatedByProperty); //1-2
+            set => SetProperty(LastUpdatedByProperty, value); //2-4
+   
         }
 
-        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(p => p.LastUpdatedBy);
-        [Required,MaxLength(255)]
-        public string LastUpdatedBy
+        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(o => o.LastUpdatedDate);
+        public virtual SmartDate LastUpdatedDate 
         {
-            get => GetProperty(LastUpdatedByProperty);
-            set => SetProperty(LastUpdatedByProperty, value);
+            get => GetProperty(LastUpdatedDateProperty); //1-2
+            set => SetProperty(LastUpdatedDateProperty, value); //2-4
+   
         }
 
-        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
-        [Required] 
-        public SmartDate LastUpdatedDate
+        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
+        public virtual string Notes 
         {
-            get => GetProperty(LastUpdatedDateProperty);
-            set => SetProperty(LastUpdatedDateProperty, value);
+            get => GetProperty(NotesProperty); //1-2
+            set => SetProperty(NotesProperty, value); //2-4
+   
         }
 
-        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
-        public string Notes
+        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
+        public virtual byte[] RowVersion 
         {
-            get => GetProperty(NotesProperty);
-            set => SetProperty(NotesProperty, value);
+            get => GetProperty(RowVersionProperty); //1-2
+            set => SetProperty(RowVersionProperty, value); //2-4
+   
         }
 
-        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
-
-        public byte[] RowVersion
-        {
-            get => GetProperty(RowVersionProperty);
-            private set => LoadProperty(RowVersionProperty, value);
-        }
-
-        protected override void AddBusinessRules()
-        {
-            base.AddBusinessRules();
-
-            // TODO: add business rules
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
-
-        #endregion
+        #endregion 
 
         #region Factory Methods
-
-        public static async Task<EventDocumentEC> NewEventDocumentEC()
+        internal static async Task<EventDocumentEC> NewEventDocumentEC()
         {
-            return await DataPortal.CreateAsync<EventDocumentEC>();
+            return await DataPortal.CreateChildAsync<EventDocumentEC>();
         }
 
-        public static async Task<EventDocumentEC> GetEventDocumentEC(EventDocument childData)
+        internal static async Task<EventDocumentEC> GetEventDocumentEC(EventDocument childData)
         {
             return await DataPortal.FetchChildAsync<EventDocumentEC>(childData);
-        }
+        }  
+
 
         #endregion
 
         #region Data Access Methods
 
         [FetchChild]
-        private async Task Fetch(EventDocument childData)
+        private async Task Fetch(EventDocument data)
         {
-            using (BypassPropertyChecks)
+            using(BypassPropertyChecks)
             {
-                Id = childData.Id;
-                Event = childData.Event != null ? await EventEC.GetEventEC(childData.Event) : null;
-                DocumentName = childData.DocumentName;
-                DocumentType = childData.DocumentType != null
-                    ? await DocumentTypeEC.GetDocumentTypeEC(childData.DocumentType)
-                    : null;
-                PathAndFileName = childData.PathAndFileName;
-                LastUpdatedBy = childData.LastUpdatedBy;
-                LastUpdatedDate = childData.LastUpdatedDate;
-                Notes = childData.Notes;
-                RowVersion = childData.RowVersion;
-            }
+                Id = data.Id;
+                Event = (data.Event != null ? await EventEC.GetEventEC(data.Event) : null);
+                DocumentName = data.DocumentName;
+                DocumentType = (data.DocumentType != null ? await DocumentTypeEC.GetDocumentTypeEC(data.DocumentType) : null);
+                PathAndFileName = data.PathAndFileName;
+                LastUpdatedBy = data.LastUpdatedBy;
+                LastUpdatedDate = data.LastUpdatedDate;
+                Notes = data.Notes;
+                RowVersion = data.RowVersion;
+            }            
         }
-
         [InsertChild]
-        private async Task InsertChild()
+        private async Task Insert()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEventDocumentDal>();
             var data = new EventDocument()
             {
-                Event = new Event() { Id = Event.Id },
+
+                Id = Id,
+                Event = (Event != null ? new Event() { Id = Event.Id } : null),
                 DocumentName = DocumentName,
-                DocumentType = DocumentType != null ? new DocumentType() { Id = DocumentType.Id } : null,
+                DocumentType = (DocumentType != null ? new DocumentType() { Id = DocumentType.Id } : null),
                 PathAndFileName = PathAndFileName,
                 LastUpdatedBy = LastUpdatedBy,
                 LastUpdatedDate = LastUpdatedDate,
                 Notes = Notes,
-                RowVersion = RowVersion
+                RowVersion = RowVersion,
             };
 
-            var insertedEventDocument = await dal.Insert(data);
-            Id = insertedEventDocument.Id;
-            RowVersion = insertedEventDocument.RowVersion;
+            var insertedObj = await dal.Insert(data);
+            Id = insertedObj.Id;
+            RowVersion = insertedObj.RowVersion;
         }
 
-        [UpdateChild]
-        private async Task ChildUpdate()
+       [UpdateChild]
+        private async Task Update()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEventDocumentDal>();
-
-            var emailTypeToUpdate = new EventDocument()
+            var data = new EventDocument()
             {
+
                 Id = Id,
-                Event = Event != null ? new Event() { Id = Event.Id } : null,
+                Event = (Event != null ? new Event() { Id = Event.Id } : null),
                 DocumentName = DocumentName,
-                DocumentType = DocumentType != null ? new DocumentType() { Id = DocumentType.Id } : null,
+                DocumentType = (DocumentType != null ? new DocumentType() { Id = DocumentType.Id } : null),
                 PathAndFileName = PathAndFileName,
                 LastUpdatedBy = LastUpdatedBy,
                 LastUpdatedDate = LastUpdatedDate,
                 Notes = Notes,
-                RowVersion = RowVersion
+                RowVersion = RowVersion,
             };
 
-            var updatedEmail = await dal.Update(emailTypeToUpdate);
-            RowVersion = updatedEmail.RowVersion;
+            var insertedObj = await dal.Update(data);
+            Id = insertedObj.Id;
+            RowVersion = insertedObj.RowVersion;
         }
-        
+
+       
         [DeleteSelfChild]
         private async Task DeleteSelf()
         {
             await Delete(Id);
         }
-
+       
         [Delete]
         private async Task Delete(int id)
         {

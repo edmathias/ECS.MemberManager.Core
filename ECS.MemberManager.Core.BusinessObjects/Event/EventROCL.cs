@@ -1,4 +1,7 @@
-using System;
+﻿
+
+
+using System; 
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
@@ -9,41 +12,39 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class EventROCL : ReadOnlyListBase<EventROCL,EventROC>
+    public partial class EventROCL : ReadOnlyListBase<EventROCL,EventROC>
     {
-        #region Business Rules
-        
-        public static void AddObjectAuthorizationRules()
+        #region Factory Methods
+
+        internal static async Task<EventROCL> NewEventROCL()
         {
-            // TODO: add object-level authorization rules
+            return await DataPortal.CreateChildAsync<EventROCL>();
         }
 
-        #endregion
-        
-        #region Factory Methods
-        
-        internal static async Task<EventROCL> GetEventROCL(IList<Event> childData)
+        internal static async Task<EventROCL> GetEventROCL(List<Event> childData)
         {
             return await DataPortal.FetchChildAsync<EventROCL>(childData);
         }
 
-        #endregion 
-       
+        #endregion
+
         #region Data Access
-        
+ 
         [FetchChild]
-        private async Task FetchChild(List<Event> childData)
+        private async Task Fetch(List<Event> childData)
         {
+
             using (LoadListMode)
             {
-                foreach (var eventObj in childData)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var eventToAdd = await EventROC.GetEventROC(eventObj);
-                    Add(eventToAdd);             
+                    var objectToAdd = await EventROC.GetEventROC(domainObjToAdd);
+                    Add(objectToAdd);
                 }
             }
         }
-       
+
         #endregion
-    }
+
+     }
 }

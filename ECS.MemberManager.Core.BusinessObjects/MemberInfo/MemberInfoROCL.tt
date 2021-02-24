@@ -5,12 +5,10 @@
 <#@ include file="..\CSLA_T4.tt" #>
 <#
     var objectName = "MemberInfo";
-    var pluralObjectName = "MemberInfo";
     var stereoType = "ROCL";
     var isChild = true;
     var isReadOnly = true;
     var childStereo = GetChildStereoType(stereoType);
-    var isListStereo = true;
     var cslaListType = (isReadOnly ? "ReadOnly" : "Business");
 #>
 using System; 

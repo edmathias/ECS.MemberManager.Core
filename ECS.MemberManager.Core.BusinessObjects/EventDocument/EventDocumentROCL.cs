@@ -1,4 +1,7 @@
-using System;
+﻿
+
+
+using System; 
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
@@ -9,41 +12,39 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class EventDocumentROCL : ReadOnlyListBase<EventDocumentROCL,EventDocumentROC>
+    public partial class EventDocumentROCL : ReadOnlyListBase<EventDocumentROCL,EventDocumentROC>
     {
-        #region Business Rules
-        
-        public static void AddObjectAuthorizationRules()
+        #region Factory Methods
+
+        internal static async Task<EventDocumentROCL> NewEventDocumentROCL()
         {
-            // TODO: add object-level authorization rules
+            return await DataPortal.CreateChildAsync<EventDocumentROCL>();
         }
 
-        #endregion
-        
-        #region Factory Methods
-        
-        internal static async Task<EventDocumentROCL> GetEventDocumentROCL(IList<EventDocument> childData)
+        internal static async Task<EventDocumentROCL> GetEventDocumentROCL(List<EventDocument> childData)
         {
             return await DataPortal.FetchChildAsync<EventDocumentROCL>(childData);
         }
 
-        #endregion 
-       
+        #endregion
+
         #region Data Access
-        
+ 
         [FetchChild]
-        private async Task FetchChild(List<EventDocument> childData)
+        private async Task Fetch(List<EventDocument> childData)
         {
+
             using (LoadListMode)
             {
-                foreach (var eventObj in childData)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var eventToAdd = await EventDocumentROC.GetEventDocumentROC(eventObj);
-                    Add(eventToAdd);             
+                    var objectToAdd = await EventDocumentROC.GetEventDocumentROC(domainObjToAdd);
+                    Add(objectToAdd);
                 }
             }
         }
-       
+
         #endregion
-    }
+
+     }
 }

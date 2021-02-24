@@ -1,6 +1,7 @@
-﻿using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿
+
+using System;
+using System.Collections.Generic; 
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -10,133 +11,102 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class EventDocumentROC : ReadOnlyBase<EventDocumentROC>
+    public partial class EventDocumentROC : ReadOnlyBase<EventDocumentROC>
     {
         #region Business Methods
-
-        public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
-
-        public int Id
+ 
+        public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
+        public virtual int Id 
         {
-            get => GetProperty(IdProperty);
-            private set => LoadProperty(IdProperty, value);
-        }
-
-        public static readonly PropertyInfo<EventEC> EventProperty = RegisterProperty<EventEC>(p => p.Event);
-
-        public EventEC Event
-        {
-            get => GetProperty(EventProperty);
-            private set => LoadProperty(EventProperty, value);
+            get => GetProperty(IdProperty); //1-2
+            private set => LoadProperty(IdProperty, value); //2-3   
         }
 
 
-        public static readonly PropertyInfo<string>
-            DocumentNameProperty = RegisterProperty<string>(p => p.DocumentName);
-
-        public string DocumentName
+        public static readonly PropertyInfo<EventROC> EventProperty = RegisterProperty<EventROC>(o => o.Event);
+        public EventROC Event  
         {
-            get => GetProperty(DocumentNameProperty);
-            private set => LoadProperty(DocumentNameProperty, value);
+            get => GetProperty(EventProperty); //1-1
+        
+            private set => LoadProperty(EventProperty, value); //2-1
+        }    
+ 
+        public static readonly PropertyInfo<string> DocumentNameProperty = RegisterProperty<string>(o => o.DocumentName);
+        public virtual string DocumentName 
+        {
+            get => GetProperty(DocumentNameProperty); //1-2
+            private set => LoadProperty(DocumentNameProperty, value); //2-3   
         }
 
-        public static readonly PropertyInfo<DocumentTypeEC> DocumentTypeProperty =
-            RegisterProperty<DocumentTypeEC>(p => p.DocumentType);
 
-        public DocumentTypeEC DocumentType
+        public static readonly PropertyInfo<DocumentTypeROC> DocumentTypeProperty = RegisterProperty<DocumentTypeROC>(o => o.DocumentType);
+        public DocumentTypeROC DocumentType  
         {
-            get => GetProperty(DocumentTypeProperty);
-            private set => LoadProperty(DocumentTypeProperty, value);
+            get => GetProperty(DocumentTypeProperty); //1-1
+        
+            private set => LoadProperty(DocumentTypeProperty, value); //2-1
+        }    
+ 
+        public static readonly PropertyInfo<string> PathAndFileNameProperty = RegisterProperty<string>(o => o.PathAndFileName);
+        public virtual string PathAndFileName 
+        {
+            get => GetProperty(PathAndFileNameProperty); //1-2
+            private set => LoadProperty(PathAndFileNameProperty, value); //2-3   
         }
 
-        public static readonly PropertyInfo<string> PathAndFileNameProperty =
-            RegisterProperty<string>(p => p.PathAndFileName);
-
-        public string PathAndFileName
+        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(o => o.LastUpdatedBy);
+        public virtual string LastUpdatedBy 
         {
-            get => GetProperty(PathAndFileNameProperty);
-            private set => LoadProperty(PathAndFileNameProperty, value);
+            get => GetProperty(LastUpdatedByProperty); //1-2
+            private set => LoadProperty(LastUpdatedByProperty, value); //2-3   
         }
 
-        public static readonly PropertyInfo<string> LastUpdatedByProperty =
-            RegisterProperty<string>(p => p.LastUpdatedBy);
-
-        public string LastUpdatedBy
+        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(o => o.LastUpdatedDate);
+        public virtual SmartDate LastUpdatedDate 
         {
-            get => GetProperty(LastUpdatedByProperty);
-            private set => LoadProperty(LastUpdatedByProperty, value);
+            get => GetProperty(LastUpdatedDateProperty); //1-2
+            private set => LoadProperty(LastUpdatedDateProperty, value); //2-3   
         }
 
-        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty =
-            RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
-
-        public SmartDate LastUpdatedDate
+        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
+        public virtual string Notes 
         {
-            get => GetProperty(LastUpdatedDateProperty);
-            private set => LoadProperty(LastUpdatedDateProperty, value);
+            get => GetProperty(NotesProperty); //1-2
+            private set => LoadProperty(NotesProperty, value); //2-3   
         }
 
-        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
-
-        public string Notes
+        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
+        public virtual byte[] RowVersion 
         {
-            get => GetProperty(NotesProperty);
-            private set => LoadProperty(NotesProperty, value);
+            get => GetProperty(RowVersionProperty); //1-2
+            private set => LoadProperty(RowVersionProperty, value); //2-3   
         }
 
-        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
-
-        public byte[] RowVersion
-        {
-            get => GetProperty(RowVersionProperty);
-            private set => LoadProperty(RowVersionProperty, value);
-        }
-
-        protected override void AddBusinessRules()
-        {
-            base.AddBusinessRules();
-
-            // TODO: add business rules
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
-
-        #endregion
+        #endregion 
 
         #region Factory Methods
-
-        public static async Task<EventDocumentROC> NewEventDocumentROC()
-        {
-            return await DataPortal.CreateAsync<EventDocumentROC>();
-        }
-
-        public static async Task<EventDocumentROC> GetEventDocumentROC(EventDocument childData)
+        internal static async Task<EventDocumentROC> GetEventDocumentROC(EventDocument childData)
         {
             return await DataPortal.FetchChildAsync<EventDocumentROC>(childData);
-        }
+        }  
+
 
         #endregion
 
         #region Data Access Methods
 
         [FetchChild]
-        private async Task Fetch(EventDocument childData)
+        private async Task Fetch(EventDocument data)
         {
-            Id = childData.Id;
-            Event = childData.Event != null ? await EventEC.GetEventEC(childData.Event) : null;
-            DocumentName = childData.DocumentName;
-            DocumentType = childData.DocumentType != null
-                ? await DocumentTypeEC.GetDocumentTypeEC(childData.DocumentType)
-                : null;
-            PathAndFileName = childData.PathAndFileName;
-            LastUpdatedBy = childData.LastUpdatedBy;
-            LastUpdatedDate = childData.LastUpdatedDate;
-            Notes = childData.Notes;
-            RowVersion = childData.RowVersion;
+                Id = data.Id;
+                Event = (data.Event != null ? await EventROC.GetEventROC(data.Event) : null);
+                DocumentName = data.DocumentName;
+                DocumentType = (data.DocumentType != null ? await DocumentTypeROC.GetDocumentTypeROC(data.DocumentType) : null);
+                PathAndFileName = data.PathAndFileName;
+                LastUpdatedBy = data.LastUpdatedBy;
+                LastUpdatedDate = data.LastUpdatedDate;
+                Notes = data.Notes;
+                RowVersion = data.RowVersion;
         }
 
         #endregion

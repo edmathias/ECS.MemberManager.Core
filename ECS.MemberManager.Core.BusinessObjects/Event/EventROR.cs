@@ -1,6 +1,8 @@
-﻿using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿
+
+
+using System;
+using System.Collections.Generic; 
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -10,121 +12,100 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class EventROR : ReadOnlyBase<EventROR>
+    public partial class EventROR : BusinessBase<EventROR>
     {
-        #region Business Methods
-        
-        public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
-        public int Id
+        #region Business Methods 
+         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
+        public virtual int Id 
         {
-            get => GetProperty(IdProperty);
-            private set => LoadProperty(IdProperty, value);
+            get => GetProperty(IdProperty); //1-2
+            private set => LoadProperty(IdProperty, value); //2-3   
         }
 
-        public static readonly PropertyInfo<string> EventNameProperty = RegisterProperty<string>(p => p.EventName);
-        [Required, MaxLength(255)]
-        public string EventName
+        public static readonly PropertyInfo<string> EventNameProperty = RegisterProperty<string>(o => o.EventName);
+        public virtual string EventName 
         {
-            get => GetProperty(EventNameProperty);
-            private set => LoadProperty(EventNameProperty, value);
+            get => GetProperty(EventNameProperty); //1-2
+            private set => LoadProperty(EventNameProperty, value); //2-3   
         }
 
-        public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(p => p.Description);
-        public string Description
+        public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(o => o.Description);
+        public virtual string Description 
         {
-            get => GetProperty(DescriptionProperty);
-            private set => LoadProperty(DescriptionProperty, value);
+            get => GetProperty(DescriptionProperty); //1-2
+            private set => LoadProperty(DescriptionProperty, value); //2-3   
         }
 
-        public static readonly PropertyInfo<bool> IsOneTimeProperty = RegisterProperty<bool>(p => p.IsOneTime);
-        public bool IsOneTime
+        public static readonly PropertyInfo<bool> IsOneTimeProperty = RegisterProperty<bool>(o => o.IsOneTime);
+        public virtual bool IsOneTime 
         {
-            get => GetProperty(IsOneTimeProperty);
-            private set => LoadProperty(IsOneTimeProperty, value);
+            get => GetProperty(IsOneTimeProperty); //1-2
+            private set => LoadProperty(IsOneTimeProperty, value); //2-3   
         }
 
-        public static readonly PropertyInfo<SmartDate> NextDateProperty = RegisterProperty<SmartDate>(p => p.NextDate);
-        public SmartDate NextDate
+        public static readonly PropertyInfo<SmartDate> NextDateProperty = RegisterProperty<SmartDate>(o => o.NextDate);
+        public virtual SmartDate NextDate 
         {
-            get => GetProperty(NextDateProperty);
-            private set => LoadProperty(NextDateProperty, value);
+            get => GetProperty(NextDateProperty); //1-2
+            private set => LoadProperty(NextDateProperty, value); //2-3   
         }
 
-        public static readonly PropertyInfo<string> LastUpdatedByProperty =
-            RegisterProperty<string>(p => p.LastUpdatedBy);
-        [Required, MaxLength(255)]
-        public string LastUpdatedBy
+        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(o => o.LastUpdatedBy);
+        public virtual string LastUpdatedBy 
         {
-            get => GetProperty(LastUpdatedByProperty);
-            private set => LoadProperty(LastUpdatedByProperty, value);
+            get => GetProperty(LastUpdatedByProperty); //1-2
+            private set => LoadProperty(LastUpdatedByProperty, value); //2-3   
         }
 
-        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty =
-            RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
-        [Required]
-        public SmartDate LastUpdatedDate
+        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(o => o.LastUpdatedDate);
+        public virtual SmartDate LastUpdatedDate 
         {
-            get => GetProperty(LastUpdatedDateProperty);
-            private set => LoadProperty(LastUpdatedDateProperty, value);
+            get => GetProperty(LastUpdatedDateProperty); //1-2
+            private set => LoadProperty(LastUpdatedDateProperty, value); //2-3   
         }
 
-        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
-        public string Notes
+        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
+        public virtual string Notes 
         {
-            get => GetProperty(NotesProperty);
-            private set => LoadProperty(NotesProperty, value);
+            get => GetProperty(NotesProperty); //1-2
+            private set => LoadProperty(NotesProperty, value); //2-3   
         }
 
-        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
-        public byte[] RowVersion
+        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
+        public virtual byte[] RowVersion 
         {
-            get => GetProperty(RowVersionProperty);
-            private set => LoadProperty(RowVersionProperty, value);
+            get => GetProperty(RowVersionProperty); //1-2
+            private set => LoadProperty(RowVersionProperty, value); //2-3   
         }
 
-        protected override void AddBusinessRules()
-        {
-            base.AddBusinessRules();
-
-            // TODO: add business rules
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
-
-        #endregion
+        #endregion 
 
         #region Factory Methods
-
         public static async Task<EventROR> GetEventROR(int id)
         {
             return await DataPortal.FetchAsync<EventROR>(id);
-        }
+        }  
+
 
         #endregion
 
         #region Data Access Methods
- 
+
         [Fetch]
         private async Task Fetch(int id)
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEventDal>();
             var data = await dal.Fetch(id);
-
-            Id = data.Id;
-            EventName = data.EventName;
-            Description = data.Description;
-            IsOneTime = data.IsOneTime;
-            NextDate = data.NextDate;
-            LastUpdatedBy = data.LastUpdatedBy;
-            LastUpdatedDate = data.LastUpdatedDate;
-            Notes = data.Notes;
-            RowVersion = data.RowVersion;
-            
+                Id = data.Id;
+                EventName = data.EventName;
+                Description = data.Description;
+                IsOneTime = data.IsOneTime;
+                NextDate = data.NextDate;
+                LastUpdatedBy = data.LastUpdatedBy;
+                LastUpdatedDate = data.LastUpdatedDate;
+                Notes = data.Notes;
+                RowVersion = data.RowVersion;
         }
 
         #endregion

@@ -1,6 +1,7 @@
-﻿using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿
+
+using System;
+using System.Collections.Generic; 
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -10,93 +11,84 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class EventER : BusinessBase<EventER>
+    public partial class EventER : BusinessBase<EventER>
     {
         #region Business Methods
-        
-        public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
-        public int Id
+ 
+        public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
+        public virtual int Id 
         {
-            get => GetProperty(IdProperty);
-            set => SetProperty(IdProperty, value);
-        }
-        
-        public static readonly PropertyInfo<string> EventNameProperty = RegisterProperty<string>(p => p.EventName);
-        [Required, MaxLength(255)]
-        public string EventName
-        {
-            get => GetProperty(EventNameProperty);
-            set => SetProperty(EventNameProperty, value);
+            get => GetProperty(IdProperty); //1-2
+            private set => LoadProperty(IdProperty, value); //2-3   
         }
 
-        public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(p => p.Description);
-        public string Description
+        public static readonly PropertyInfo<string> EventNameProperty = RegisterProperty<string>(o => o.EventName);
+        public virtual string EventName 
         {
-            get => GetProperty(DescriptionProperty);
-            set => SetProperty(DescriptionProperty, value);
+            get => GetProperty(EventNameProperty); //1-2
+            set => SetProperty(EventNameProperty, value); //2-4
+   
         }
 
-        public static readonly PropertyInfo<bool> IsOneTimeProperty = RegisterProperty<bool>(p => p.IsOneTime);
-        public bool IsOneTime
+        public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(o => o.Description);
+        public virtual string Description 
         {
-            get => GetProperty(IsOneTimeProperty);
-            set => SetProperty(IsOneTimeProperty, value);
+            get => GetProperty(DescriptionProperty); //1-2
+            set => SetProperty(DescriptionProperty, value); //2-4
+   
         }
 
-        public static readonly PropertyInfo<SmartDate> NextDateProperty = RegisterProperty<SmartDate>(p => p.NextDate);
-        public SmartDate NextDate
+        public static readonly PropertyInfo<bool> IsOneTimeProperty = RegisterProperty<bool>(o => o.IsOneTime);
+        public virtual bool IsOneTime 
         {
-            get => GetProperty(NextDateProperty);
-            set => SetProperty(NextDateProperty, value);
+            get => GetProperty(IsOneTimeProperty); //1-2
+            set => SetProperty(IsOneTimeProperty, value); //2-4
+   
         }
 
-        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(p => p.LastUpdatedBy);
-        [Required,MaxLength(255)]
-        public string LastUpdatedBy
+        public static readonly PropertyInfo<SmartDate> NextDateProperty = RegisterProperty<SmartDate>(o => o.NextDate);
+        public virtual SmartDate NextDate 
         {
-            get => GetProperty(LastUpdatedByProperty);
-            set => SetProperty(LastUpdatedByProperty, value);
+            get => GetProperty(NextDateProperty); //1-2
+            set => SetProperty(NextDateProperty, value); //2-4
+   
         }
 
-        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
-        [Required]
-        public SmartDate LastUpdatedDate
+        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(o => o.LastUpdatedBy);
+        public virtual string LastUpdatedBy 
         {
-            get => GetProperty(LastUpdatedDateProperty);
-            set => SetProperty(LastUpdatedDateProperty, value);
-        }
-        
-        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
-        public string Notes
-        {
-            get => GetProperty(NotesProperty);
-            set => SetProperty(NotesProperty, value);
+            get => GetProperty(LastUpdatedByProperty); //1-2
+            set => SetProperty(LastUpdatedByProperty, value); //2-4
+   
         }
 
-        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
-        public byte[] RowVersion
+        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(o => o.LastUpdatedDate);
+        public virtual SmartDate LastUpdatedDate 
         {
-            get => GetProperty(RowVersionProperty);
-            private set => LoadProperty(RowVersionProperty, value);
+            get => GetProperty(LastUpdatedDateProperty); //1-2
+            set => SetProperty(LastUpdatedDateProperty, value); //2-4
+   
         }
 
-        protected override void AddBusinessRules()
+        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
+        public virtual string Notes 
         {
-            base.AddBusinessRules();
-
-            // TODO: add business rules
+            get => GetProperty(NotesProperty); //1-2
+            set => SetProperty(NotesProperty, value); //2-4
+   
         }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public static void AddObjectAuthorizationRules()
+        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
+        public virtual byte[] RowVersion 
         {
-            // TODO: add object-level authorization rules
+            get => GetProperty(RowVersionProperty); //1-2
+            set => SetProperty(RowVersionProperty, value); //2-4
+   
         }
 
-        #endregion
+        #endregion 
 
         #region Factory Methods
-
         public static async Task<EventER> NewEventER()
         {
             return await DataPortal.CreateAsync<EventER>();
@@ -105,25 +97,25 @@ namespace ECS.MemberManager.Core.BusinessObjects
         public static async Task<EventER> GetEventER(int id)
         {
             return await DataPortal.FetchAsync<EventER>(id);
-        }
+        }  
 
         public static async Task DeleteEventER(int id)
         {
             await DataPortal.DeleteAsync<EventER>(id);
-        }
+        } 
+
 
         #endregion
 
         #region Data Access Methods
- 
+
         [Fetch]
         private async Task Fetch(int id)
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEventDal>();
             var data = await dal.Fetch(id);
-
-            using (BypassPropertyChecks)
+            using(BypassPropertyChecks)
             {
                 Id = data.Id;
                 EventName = data.EventName;
@@ -134,9 +126,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 LastUpdatedDate = data.LastUpdatedDate;
                 Notes = data.Notes;
                 RowVersion = data.RowVersion;
-            }
+            }            
         }
-
         [Insert]
         private async Task Insert()
         {
@@ -144,28 +135,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             var dal = dalManager.GetProvider<IEventDal>();
             var data = new Event()
             {
-                EventName = EventName,
-                Description = Description,
-                IsOneTime = IsOneTime,
-                NextDate = NextDate,
-                LastUpdatedBy = LastUpdatedBy,
-                LastUpdatedDate = LastUpdatedDate,
-                Notes = Notes
-            };
 
-            var insertedEvent = await dal.Insert(data);
-            Id = insertedEvent.Id;
-            RowVersion = insertedEvent.RowVersion;
-        }
-
-        [Update]
-        private async Task Update()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEventDal>();
-
-            var eventTypeToUpdate = new Event()
-            {
                 Id = Id,
                 EventName = EventName,
                 Description = Description,
@@ -174,19 +144,45 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 LastUpdatedBy = LastUpdatedBy,
                 LastUpdatedDate = LastUpdatedDate,
                 Notes = Notes,
-                RowVersion = RowVersion
+                RowVersion = RowVersion,
             };
 
-            var updatedEmail = await dal.Update(eventTypeToUpdate);
-            RowVersion = updatedEmail.RowVersion;
+            var insertedObj = await dal.Insert(data);
+            Id = insertedObj.Id;
+            RowVersion = insertedObj.RowVersion;
         }
 
-        [DeleteSelf]
+       [Update]
+        private async Task Update()
+        {
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IEventDal>();
+            var data = new Event()
+            {
+
+                Id = Id,
+                EventName = EventName,
+                Description = Description,
+                IsOneTime = IsOneTime,
+                NextDate = NextDate,
+                LastUpdatedBy = LastUpdatedBy,
+                LastUpdatedDate = LastUpdatedDate,
+                Notes = Notes,
+                RowVersion = RowVersion,
+            };
+
+            var insertedObj = await dal.Update(data);
+            Id = insertedObj.Id;
+            RowVersion = insertedObj.RowVersion;
+        }
+
+       
+        [DeleteSelfChild]
         private async Task DeleteSelf()
         {
             await Delete(Id);
         }
-        
+       
         [Delete]
         private async Task Delete(int id)
         {

@@ -127,8 +127,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             Assert.NotNull(eventObj);
             Assert.False(eventObj.IsValid);
-            Assert.Equal("The field EventName must be a string or array type with a maximum length of '255'.",
-                eventObj.BrokenRulesCollection[0].Description);
+            Assert.Equal("EventName",eventObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("EventName can not exceed 255 characters",eventObj.BrokenRulesCollection[0].Description);
         }        
         // test exception if attempt to save in invalid state
 
