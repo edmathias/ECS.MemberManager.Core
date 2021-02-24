@@ -18,74 +18,82 @@ namespace ECS.MemberManager.Core.BusinessObjects
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
         public virtual int Id 
         {
-            get => GetProperty(IdProperty); 
-            private set => LoadProperty(IdProperty, value); 
-   
+            get => GetProperty(IdProperty); //1-2
+            private set => LoadProperty(IdProperty, value); //2-3   
         }
- 
+
         public static readonly PropertyInfo<string> Address1Property = RegisterProperty<string>(o => o.Address1);
         public virtual string Address1 
         {
-            get => GetProperty(Address1Property); 
-            set => SetProperty(Address1Property, value);    
+            get => GetProperty(Address1Property); //1-2
+            set => SetProperty(Address1Property, value); //2-4
+   
         }
- 
+
         public static readonly PropertyInfo<string> Address2Property = RegisterProperty<string>(o => o.Address2);
         public virtual string Address2 
         {
-            get => GetProperty(Address2Property); 
-            set => SetProperty(Address2Property, value);    
+            get => GetProperty(Address2Property); //1-2
+            set => SetProperty(Address2Property, value); //2-4
+   
         }
- 
+
         public static readonly PropertyInfo<string> CityProperty = RegisterProperty<string>(o => o.City);
         public virtual string City 
         {
-            get => GetProperty(CityProperty); 
-            set => SetProperty(CityProperty, value);    
+            get => GetProperty(CityProperty); //1-2
+            set => SetProperty(CityProperty, value); //2-4
+   
         }
- 
+
         public static readonly PropertyInfo<string> StateProperty = RegisterProperty<string>(o => o.State);
         public virtual string State 
         {
-            get => GetProperty(StateProperty); 
-            set => SetProperty(StateProperty, value);    
+            get => GetProperty(StateProperty); //1-2
+            set => SetProperty(StateProperty, value); //2-4
+   
         }
- 
+
         public static readonly PropertyInfo<string> PostCodeProperty = RegisterProperty<string>(o => o.PostCode);
         public virtual string PostCode 
         {
-            get => GetProperty(PostCodeProperty); 
-            set => SetProperty(PostCodeProperty, value);    
+            get => GetProperty(PostCodeProperty); //1-2
+            set => SetProperty(PostCodeProperty, value); //2-4
+   
         }
- 
+
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
         public virtual string Notes 
         {
-            get => GetProperty(NotesProperty); 
-            set => SetProperty(NotesProperty, value);    
+            get => GetProperty(NotesProperty); //1-2
+            set => SetProperty(NotesProperty, value); //2-4
+   
         }
- 
+
         public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(o => o.LastUpdatedBy);
         public virtual string LastUpdatedBy 
         {
-            get => GetProperty(LastUpdatedByProperty); 
-            set => SetProperty(LastUpdatedByProperty, value);    
+            get => GetProperty(LastUpdatedByProperty); //1-2
+            set => SetProperty(LastUpdatedByProperty, value); //2-4
+   
         }
- 
+
         public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(o => o.LastUpdatedDate);
         public virtual SmartDate LastUpdatedDate 
         {
-            get => GetProperty(LastUpdatedDateProperty); 
-            set => SetProperty(LastUpdatedDateProperty, value);    
+            get => GetProperty(LastUpdatedDateProperty); //1-2
+            set => SetProperty(LastUpdatedDateProperty, value); //2-4
+   
         }
- 
+
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
         public virtual byte[] RowVersion 
         {
-            get => GetProperty(RowVersionProperty); 
-            set => SetProperty(RowVersionProperty, value);    
+            get => GetProperty(RowVersionProperty); //1-2
+            set => SetProperty(RowVersionProperty, value); //2-4
+   
         }
- 
+
         #endregion 
 
         #region Factory Methods

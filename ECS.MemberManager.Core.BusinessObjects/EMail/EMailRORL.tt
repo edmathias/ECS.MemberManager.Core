@@ -4,10 +4,10 @@
 <#@ output extension=".cs" #>
 <#@ include file="..\CSLA_T4.tt" #>
 <#
-    var objectName = "MemberInfo";
-    var stereoType = "ECL";
-    var isChild = true;
-    var isReadOnly = false;
+    var objectName = "EMail";
+    var stereoType = "RORL";
+    var isChild = false;
+    var isReadOnly = true;
     var childStereo = GetChildStereoType(stereoType);
     var cslaListType = (isReadOnly ? "ReadOnly" : "Business");
 #>

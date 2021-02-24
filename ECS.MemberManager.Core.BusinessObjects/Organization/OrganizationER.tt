@@ -45,7 +45,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access Methods
 
 <#
-        BuildFetch(columnList,objectName,stereoType,isChild);
+        BuildFetch(columnList,objectName,stereoType,isChild,isReadOnly);
 
         if (!isReadOnly)
         {

@@ -62,65 +62,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.Equal(3, listToTest.Count);
         }
 
-        [Fact]
-        private async void EMailECL_TestDeleteEMailEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEMailDal>();
-            var childData = await dal.Fetch();
-
-            var eMailEditList = await EMailECL.GetEMailECL(childData);
-
-            var eMail = eMailEditList.First(a => a.Id == 99);
-
-            // remove is deferred delete
-            eMailEditList.Remove(eMail);
-
-            var eMailListAfterDelete = await eMailEditList.SaveAsync();
-
-            Assert.NotEqual(childData.Count, eMailListAfterDelete.Count);
-        }
-
-        [Fact]
-        private async void EMailECL_TestUpdateEMailEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEMailDal>();
-            var childData = await dal.Fetch();
-
-            var eMailList = await EMailECL.GetEMailECL(childData);
-            var countBeforeUpdate = eMailList.Count;
-            var idToUpdate = eMailList.Min(a => a.Id);
-            var eMailToUpdate = eMailList.First(a => a.Id == idToUpdate);
-
-            eMailToUpdate.Notes = "This was updated";
-            await eMailList.SaveAsync();
-
-            var updatedList = await dal.Fetch();
-            var updatedEMailsList = await EMailECL.GetEMailECL(updatedList);
-
-            Assert.Equal("This was updated", updatedEMailsList.First(a => a.Id == idToUpdate).Notes);
-            Assert.Equal(countBeforeUpdate, updatedEMailsList.Count);
-        }
-
-        [Fact]
-        private async void EMailECL_TestAddEMailEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEMailDal>();
-            var childData = await dal.Fetch();
-
-            var eMailList = await EMailECL.GetEMailECL(childData);
-            var countBeforeAdd = eMailList.Count;
-
-            var eMailToAdd = eMailList.AddNew();
-            await BuildEMail(eMailToAdd);
-
-            var eMailEditList = await eMailList.SaveAsync();
-
-            Assert.NotEqual(countBeforeAdd, eMailEditList.Count);
-        }
-
         private async Task BuildEMail(EMailEC eMail)
         {
             eMail.EMailAddress = "email@email.com";

@@ -36,9 +36,23 @@
         public static readonly PropertyInfo<<#= objType #><#= childStereoType#>> <#= objType #>Property = RegisterProperty<<#= objType #><#= childStereoType#>>(o => o.<#= objType #>);
         public <#= objType #><#= childStereoType #> <#= objType #>  
         {
-            get => GetProperty(<#= objType #>Property); 
-            set => SetProperty(<#= objType  #>Property, value); 
-        }        
+            get => GetProperty(<#= objType #>Property); //1-1
+<#+
+        if(isReadOnly)
+        {
+#>        
+            private set => LoadProperty(<#= objType  #>Property, value); //2-1
+<#+
+        }
+        else
+        {
+#>
+            set => SetProperty(<#= objType  #>Property, value); //2-2
+<#+
+        }
+#>
+        }    
+ 
 <#+
         } // end if 
         else
@@ -47,22 +61,21 @@
         public static readonly PropertyInfo<<#= columnData.dotNetType #>> <#= columnData.columnName #>Property = RegisterProperty<<#= columnData.dotNetType	 #>>(o => o.<#= columnData.columnName #>);
         public virtual <#= columnData.dotNetType #> <#= columnData.columnName #> 
         {
-            get => GetProperty(<#= columnData.columnName #>Property); 
+            get => GetProperty(<#= columnData.columnName #>Property); //1-2
 <#+
             if (columnData.isPrimaryKey || isReadOnly)
             { 
 #>
-            private set => LoadProperty(<#= columnData.columnName #>Property, value); 
-<#+                
+            private set => LoadProperty(<#= columnData.columnName #>Property, value); //2-3<#+                
             }
             else
             {
 #>
-            set => SetProperty(<#= columnData.columnName #>Property, value); <#+                
-            }
-#>   
+            set => SetProperty(<#= columnData.columnName #>Property, value); //2-4
+<#+                
+            }#>   
         }
- 
+
 <#+
         }  // end else
     }

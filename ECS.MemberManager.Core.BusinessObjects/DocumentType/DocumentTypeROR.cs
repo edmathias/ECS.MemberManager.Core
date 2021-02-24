@@ -18,51 +18,45 @@ namespace ECS.MemberManager.Core.BusinessObjects
          public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
         public virtual int Id 
         {
-            get => GetProperty(IdProperty); 
-            private set => LoadProperty(IdProperty, value); 
-   
+            get => GetProperty(IdProperty); //1-2
+            private set => LoadProperty(IdProperty, value); //2-3   
         }
- 
+
         public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(o => o.Description);
         public virtual string Description 
         {
-            get => GetProperty(DescriptionProperty); 
-            private set => LoadProperty(DescriptionProperty, value); 
-   
+            get => GetProperty(DescriptionProperty); //1-2
+            private set => LoadProperty(DescriptionProperty, value); //2-3   
         }
- 
+
         public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(o => o.LastUpdatedBy);
         public virtual string LastUpdatedBy 
         {
-            get => GetProperty(LastUpdatedByProperty); 
-            private set => LoadProperty(LastUpdatedByProperty, value); 
-   
+            get => GetProperty(LastUpdatedByProperty); //1-2
+            private set => LoadProperty(LastUpdatedByProperty, value); //2-3   
         }
- 
+
         public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(o => o.LastUpdatedDate);
         public virtual SmartDate LastUpdatedDate 
         {
-            get => GetProperty(LastUpdatedDateProperty); 
-            private set => LoadProperty(LastUpdatedDateProperty, value); 
-   
+            get => GetProperty(LastUpdatedDateProperty); //1-2
+            private set => LoadProperty(LastUpdatedDateProperty, value); //2-3   
         }
- 
+
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
         public virtual string Notes 
         {
-            get => GetProperty(NotesProperty); 
-            private set => LoadProperty(NotesProperty, value); 
-   
+            get => GetProperty(NotesProperty); //1-2
+            private set => LoadProperty(NotesProperty, value); //2-3   
         }
- 
+
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
         public virtual byte[] RowVersion 
         {
-            get => GetProperty(RowVersionProperty); 
-            private set => LoadProperty(RowVersionProperty, value); 
-   
+            get => GetProperty(RowVersionProperty); //1-2
+            private set => LoadProperty(RowVersionProperty, value); //2-3   
         }
- 
+
         #endregion 
 
         #region Factory Methods

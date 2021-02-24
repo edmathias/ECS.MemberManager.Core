@@ -61,66 +61,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(listToTest);
             Assert.Equal(3, listToTest.Count);
         }
-        
-        [Fact]
-        private async void MemberInfoECL_TestDeleteMemberInfoEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IMemberInfoDal>();
-            var childData = await dal.Fetch();
-            
-            var memberInfoObjEditList = await MemberInfoECL.GetMemberInfoECL(childData);
 
-            var memberInfoObj = memberInfoObjEditList.First(a => a.Id == 99);
-
-            // remove is deferred delete
-            memberInfoObjEditList.Remove(memberInfoObj); 
-
-            var memberInfoObjListAfterDelete = await memberInfoObjEditList.SaveAsync();
-            
-            Assert.NotEqual(childData.Count,memberInfoObjListAfterDelete.Count);
-        }
-
-        [Fact]
-        private async void MemberInfoECL_TestUpdateMemberInfoEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IMemberInfoDal>();
-            var childData = await dal.Fetch();
-            
-            var memberInfoObjList = await MemberInfoECL.GetMemberInfoECL(childData);
-            var countBeforeUpdate = memberInfoObjList.Count;
-            var idToUpdate = memberInfoObjList.Min(a => a.Id);
-            var memberInfoObjToUpdate = memberInfoObjList.First(a => a.Id == idToUpdate);
-
-            memberInfoObjToUpdate.MemberNumber = "This was updated";
-            await memberInfoObjList.SaveAsync();
-
-            var updatedList = await dal.Fetch();
-            var updatedMemberInfosList = await MemberInfoECL.GetMemberInfoECL(updatedList);
-            
-            Assert.Equal("This was updated",updatedMemberInfosList.First(a => a.Id == idToUpdate).MemberNumber);
-            Assert.Equal(countBeforeUpdate, updatedMemberInfosList.Count);
-        }
-
-        [Fact]
-        private async void MemberInfoECL_TestAddMemberInfoEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IMemberInfoDal>();
-            var childData = await dal.Fetch();
-
-            var memberInfoObjList = await MemberInfoECL.GetMemberInfoECL(childData);
-            var countBeforeAdd = memberInfoObjList.Count;
-
-            var memberInfoObjToAdd = await MemberInfoEC.GetMemberInfoEC(await BuildMemberInfo());
-            memberInfoObjList.Add(memberInfoObjToAdd);
-            
-            var memberInfoObjEditList = await memberInfoObjList.SaveAsync();
-            
-            Assert.NotEqual(countBeforeAdd, memberInfoObjEditList.Count);
-        }
-        
 
         private async Task<MemberInfo> BuildMemberInfo()
         {

@@ -212,7 +212,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             eMailToBuild.EMailAddress = "edm@ecs.com";
             eMailToBuild.LastUpdatedBy = "edm";
             eMailToBuild.LastUpdatedDate = DateTime.Now;
-            eMailToBuild.EMailType = await EMailTypeROC.GetEMailTypeROC(
+            eMailToBuild.EMailType = await EMailTypeEC.GetEMailTypeEC(
                 new EMailType()
                 {
                     Id = 1,

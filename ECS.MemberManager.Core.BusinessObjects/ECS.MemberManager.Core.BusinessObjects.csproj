@@ -66,6 +66,21 @@
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>TaskForEventERBase.cs</LastGenOutput>
       </None>
+      <Compile Update="EMail\EMailER.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>EMailER.tt</DependentUpon>
+      </Compile>
+      <Compile Update="EMail\EMailROC.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>EMailROC.tt</DependentUpon>
+      </Compile>
+      <Compile Update="EMail\EMailRORL.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>EMailRORL.tt</DependentUpon>
+      </Compile>
       <Compile Update="TaskForEvent\TaskForEventERBase.cs">
         <AutoGen>True</AutoGen>
         <DesignTime>True</DesignTime>
@@ -628,27 +643,43 @@
       </None>
       <Compile Update="CategoryOfOrganization\CategoryOfOrganizationEC.cs">
         <DependentUpon>CategoryOfOrganizationEC.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <Compile Update="CategoryOfOrganization\CategoryOfOrganizationECL.cs">
         <DependentUpon>CategoryOfOrganizationECL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <Compile Update="CategoryOfOrganization\CategoryOfOrganizationER.cs">
         <DependentUpon>CategoryOfOrganizationER.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <Compile Update="CategoryOfOrganization\CategoryOfOrganizationERL.cs">
         <DependentUpon>CategoryOfOrganizationERL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <Compile Update="CategoryOfOrganization\CategoryOfOrganizationROC.cs">
         <DependentUpon>CategoryOfOrganizationROC.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <Compile Update="CategoryOfOrganization\CategoryOfOrganizationROCL.cs">
         <DependentUpon>CategoryOfOrganizationROCL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <Compile Update="CategoryOfOrganization\CategoryOfOrganizationROR.cs">
         <DependentUpon>CategoryOfOrganizationROR.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <Compile Update="CategoryOfOrganization\CategoryOfOrganizationRORL.cs">
         <DependentUpon>CategoryOfOrganizationRORL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="CategoryOfPerson\CategoryOfPersonEC.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -656,6 +687,8 @@
       </None>
       <Compile Update="CategoryOfPerson\CategoryOfPersonEC.cs">
         <DependentUpon>CategoryOfPersonEC.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="CategoryOfPerson\CategoryOfPersonECL.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -663,6 +696,8 @@
       </None>
       <Compile Update="CategoryOfPerson\CategoryOfPersonECL.cs">
         <DependentUpon>CategoryOfPersonECL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="CategoryOfPerson\CategoryOfPersonER.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -670,6 +705,8 @@
       </None>
       <Compile Update="CategoryOfPerson\CategoryOfPersonER.cs">
         <DependentUpon>CategoryOfPersonER.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="CategoryOfPerson\CategoryOfPersonERL.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -677,6 +714,8 @@
       </None>
       <Compile Update="CategoryOfPerson\CategoryOfPersonERL.cs">
         <DependentUpon>CategoryOfPersonERL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="CategoryOfPerson\CategoryOfPersonROC.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -684,6 +723,8 @@
       </None>
       <Compile Update="CategoryOfPerson\CategoryOfPersonROC.cs">
         <DependentUpon>CategoryOfPersonROC.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="CategoryOfPerson\CategoryOfPersonROCL.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -691,6 +732,8 @@
       </None>
       <Compile Update="CategoryOfPerson\CategoryOfPersonROCL.cs">
         <DependentUpon>CategoryOfPersonROCL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="CategoryOfPerson\CategoryOfPersonROR.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -698,6 +741,8 @@
       </None>
       <Compile Update="CategoryOfPerson\CategoryOfPersonROR.cs">
         <DependentUpon>CategoryOfPersonROR.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="CategoryOfPerson\CategoryOfPersonRORL.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -705,6 +750,8 @@
       </None>
       <Compile Update="CategoryOfPerson\CategoryOfPersonRORL.cs">
         <DependentUpon>CategoryOfPersonRORL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="DocumentType\DocumentTypeEC.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -712,6 +759,8 @@
       </None>
       <Compile Update="DocumentType\DocumentTypeEC.cs">
         <DependentUpon>DocumentTypeEC.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="DocumentType\DocumentTypeECL.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -719,6 +768,8 @@
       </None>
       <Compile Update="DocumentType\DocumentTypeECL.cs">
         <DependentUpon>DocumentTypeECL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="DocumentType\DocumentTypeER.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -726,6 +777,8 @@
       </None>
       <Compile Update="DocumentType\DocumentTypeER.cs">
         <DependentUpon>DocumentTypeER.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="DocumentType\DocumentTypeERL.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -733,6 +786,8 @@
       </None>
       <Compile Update="DocumentType\DocumentTypeERL.cs">
         <DependentUpon>DocumentTypeERL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="DocumentType\DocumentTypeROC.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -740,6 +795,8 @@
       </None>
       <Compile Update="DocumentType\DocumentTypeROC.cs">
         <DependentUpon>DocumentTypeROC.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="DocumentType\DocumentTypeROCL.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -747,6 +804,8 @@
       </None>
       <Compile Update="DocumentType\DocumentTypeROCL.cs">
         <DependentUpon>DocumentTypeROCL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="DocumentType\DocumentTypeROR.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -754,6 +813,8 @@
       </None>
       <Compile Update="DocumentType\DocumentTypeROR.cs">
         <DependentUpon>DocumentTypeROR.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="DocumentType\DocumentTypeRORL.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -761,6 +822,72 @@
       </None>
       <Compile Update="DocumentType\DocumentTypeRORL.cs">
         <DependentUpon>DocumentTypeRORL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+      </Compile>
+      <None Update="EMail\EMailEC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>EMailEC.cs</LastGenOutput>
+      </None>
+      <Compile Update="EMail\EMailEC.cs">
+        <DependentUpon>EMailEC.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+      </Compile>
+      <None Update="EMail\EMailECL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>EMailECL.cs</LastGenOutput>
+      </None>
+      <Compile Update="EMail\EMailECL.cs">
+        <DependentUpon>EMailECL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+      </Compile>
+      <None Update="EMail\EMailER.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>EMailER.cs</LastGenOutput>
+      </None>
+      <None Update="EMail\EMailERL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>EMailERL.cs</LastGenOutput>
+      </None>
+      <Compile Update="EMail\EMailERL.cs">
+        <DependentUpon>EMailERL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+      </Compile>
+      <None Update="EMail\EMailROC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>EMailROC.cs</LastGenOutput>
+      </None>
+      <None Update="EMail\EMailROCL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>EMailROCL.cs</LastGenOutput>
+      </None>
+      <Compile Update="EMail\EMailROCL.cs">
+        <DependentUpon>EMailROCL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+      </Compile>
+      <None Update="EMail\EMailROR.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>EMailROR.cs</LastGenOutput>
+      </None>
+      <Compile Update="EMail\EMailROR.cs">
+        <DependentUpon>EMailROR.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+      </Compile>
+      <None Update="EMail\EMailRORL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>EMailRORL.cs</LastGenOutput>
+      </None>
+      <None Update="Person\PersonEC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PersonEC.cs</LastGenOutput>
+      </None>
+      <Compile Update="Person\PersonEC.cs">
+        <DependentUpon>PersonEC.tt</DependentUpon>
       </Compile>
     </ItemGroup>
 

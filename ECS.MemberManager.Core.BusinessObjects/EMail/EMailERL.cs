@@ -1,38 +1,35 @@
-﻿using System;
+﻿
+
+
+using System; 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
+using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class EMailERL : BusinessListBase<EMailERL,EMailEC>
+    public partial class EMailERL : BusinessListBase<EMailERL,EMailEC>
     {
-        #region Authorization Rules
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
-
-        #endregion
-       
         #region Factory Methods
-        
+
         public static async Task<EMailERL> NewEMailERL()
         {
             return await DataPortal.CreateAsync<EMailERL>();
         }
 
-        public static async Task<EMailERL> GetEMailERL()
+        public static async Task<EMailERL> GetEMailERL( )
         {
             return await DataPortal.FetchAsync<EMailERL>();
         }
-       
+
         #endregion
-        
+
         #region Data Access
-        
+ 
         [Fetch]
         private async Task Fetch()
         {
@@ -42,21 +39,21 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
             using (LoadListMode)
             {
-                foreach (var EMail in childData)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var EMailToAdd = 
-                        await EMailEC.GetEMailEC(EMail);
-                    Add(EMailToAdd);
+                    var objectToAdd = await EMailEC.GetEMailEC(domainObjToAdd);
+                    Add(objectToAdd);
                 }
             }
         }
-        
+       
         [Update]
         private void Update()
         {
             Child_Update();
         }
-        
+
         #endregion
-    }
+
+     }
 }

@@ -4,8 +4,8 @@
 <#@ output extension=".cs" #>
 <#@ include file="..\CSLA_T4.tt" #>
 <#
-    var objectName = "MemberInfo";
-    var pluralObjectName = "MemberInfo";
+    var objectName = "EMail";
+    var pluralObjectName = Pluralize(objectName);
     var stereoType = "ROR";
     var isChild = false;
     var isReadOnly = true;

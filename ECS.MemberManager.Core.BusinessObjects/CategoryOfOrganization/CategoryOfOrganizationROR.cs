@@ -18,35 +18,31 @@ namespace ECS.MemberManager.Core.BusinessObjects
          public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
         public virtual int Id 
         {
-            get => GetProperty(IdProperty); 
-            private set => LoadProperty(IdProperty, value); 
-   
+            get => GetProperty(IdProperty); //1-2
+            private set => LoadProperty(IdProperty, value); //2-3   
         }
- 
+
         public static readonly PropertyInfo<string> CategoryProperty = RegisterProperty<string>(o => o.Category);
         public virtual string Category 
         {
-            get => GetProperty(CategoryProperty); 
-            private set => LoadProperty(CategoryProperty, value); 
-   
+            get => GetProperty(CategoryProperty); //1-2
+            private set => LoadProperty(CategoryProperty, value); //2-3   
         }
- 
+
         public static readonly PropertyInfo<int> DisplayOrderProperty = RegisterProperty<int>(o => o.DisplayOrder);
         public virtual int DisplayOrder 
         {
-            get => GetProperty(DisplayOrderProperty); 
-            private set => LoadProperty(DisplayOrderProperty, value); 
-   
+            get => GetProperty(DisplayOrderProperty); //1-2
+            private set => LoadProperty(DisplayOrderProperty, value); //2-3   
         }
- 
+
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
         public virtual byte[] RowVersion 
         {
-            get => GetProperty(RowVersionProperty); 
-            private set => LoadProperty(RowVersionProperty, value); 
-   
+            get => GetProperty(RowVersionProperty); //1-2
+            private set => LoadProperty(RowVersionProperty, value); //2-3   
         }
- 
+
         #endregion 
 
         #region Factory Methods
