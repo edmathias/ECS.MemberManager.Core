@@ -1,4 +1,7 @@
-﻿using System;
+﻿
+
+
+using System; 
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
@@ -9,52 +12,45 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class OfficeECL : BusinessListBase<OfficeECL,OfficeEC>
+    public partial class MembershipTypeECL : BusinessListBase<MembershipTypeECL,MembershipTypeEC>
     {
-        #region Authorization Rules
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
-
-        #endregion
-       
         #region Factory Methods
-        
-        public static async Task<OfficeECL> NewOfficeECL()
+
+        internal static async Task<MembershipTypeECL> NewMembershipTypeECL()
         {
-            return await DataPortal.CreateChildAsync<OfficeECL>();
+            return await DataPortal.CreateChildAsync<MembershipTypeECL>();
         }
 
-        public static async Task<OfficeECL> GetOfficeECL(List<Office> childData)
+        internal static async Task<MembershipTypeECL> GetMembershipTypeECL(List<MembershipType> childData)
         {
-            return await DataPortal.FetchChildAsync<OfficeECL>(childData);
+            return await DataPortal.FetchChildAsync<MembershipTypeECL>(childData);
         }
-       
+
         #endregion
-        
+
         #region Data Access
-        
+ 
         [FetchChild]
-        private async Task Fetch(List<Office> childData)
+        private async Task Fetch(List<MembershipType> childData)
         {
+
             using (LoadListMode)
             {
-                foreach (var officeObj in childData)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var officeToAdd = 
-                        await OfficeEC.GetOfficeEC(officeObj);
-                    Add(officeToAdd);
+                    var objectToAdd = await MembershipTypeEC.GetMembershipTypeEC(domainObjToAdd);
+                    Add(objectToAdd);
                 }
             }
         }
-        
-        [UpdateChild]
+       
+        [Update]
         private void Update()
         {
             Child_Update();
         }
-        
+
         #endregion
-    }
+
+     }
 }

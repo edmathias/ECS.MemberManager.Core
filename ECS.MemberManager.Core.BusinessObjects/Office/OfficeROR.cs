@@ -1,6 +1,8 @@
-﻿using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿
+
+
+using System;
+using System.Collections.Generic; 
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -10,114 +12,66 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class OfficeROR : ReadOnlyBase<OfficeROR>
+    public partial class MembershipTypeROR : BusinessBase<MembershipTypeROR>
     {
-        #region Business Methods
-
-        public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
-
-        public int Id
+        #region Business Methods 
+         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
+        public virtual int Id 
         {
-            get => GetProperty(IdProperty);
-            private set => LoadProperty(IdProperty, value);
+            get => GetProperty(IdProperty); //1-2
+            private set => LoadProperty(IdProperty, value); //2-3   
         }
 
-        public static readonly PropertyInfo<string> NameProperty = RegisterProperty<string>(p => p.Name);
-
-        public string Name
+        public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(o => o.Description);
+        public virtual string Description 
         {
-            get => GetProperty(NameProperty);
-            private set => LoadProperty(NameProperty, value);
+            get => GetProperty(DescriptionProperty); //1-2
+            private set => LoadProperty(DescriptionProperty, value); //2-3   
         }
 
-        public static readonly PropertyInfo<int> TermProperty = RegisterProperty<int>(p => p.Term);
-
-        public int Term
+        public static readonly PropertyInfo<int> LevelProperty = RegisterProperty<int>(o => o.Level);
+        public virtual int Level 
         {
-            get => GetProperty(TermProperty);
-            private set => LoadProperty(TermProperty, value);
+            get => GetProperty(LevelProperty); //1-2
+            private set => LoadProperty(LevelProperty, value); //2-3   
         }
 
-        public static readonly PropertyInfo<string> CalendarPeriodProperty =
-            RegisterProperty<string>(p => p.CalendarPeriod);
-
-        public string CalendarPeriod
+        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(o => o.LastUpdatedBy);
+        public virtual string LastUpdatedBy 
         {
-            get => GetProperty(CalendarPeriodProperty);
-            private set => LoadProperty(CalendarPeriodProperty, value);
+            get => GetProperty(LastUpdatedByProperty); //1-2
+            private set => LoadProperty(LastUpdatedByProperty, value); //2-3   
         }
 
-        public static readonly PropertyInfo<int> ChosenHowProperty = RegisterProperty<int>(p => p.ChosenHow);
-
-        public int ChosenHow
+        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(o => o.LastUpdatedDate);
+        public virtual SmartDate LastUpdatedDate 
         {
-            get => GetProperty(ChosenHowProperty);
-            private set => LoadProperty(ChosenHowProperty, value);
+            get => GetProperty(LastUpdatedDateProperty); //1-2
+            private set => LoadProperty(LastUpdatedDateProperty, value); //2-3   
         }
 
-        public static readonly PropertyInfo<string> AppointerProperty = RegisterProperty<string>(p => p.Appointer);
-
-        public string Appointer
+        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
+        public virtual string Notes 
         {
-            get => GetProperty(AppointerProperty);
-            private set => LoadProperty(AppointerProperty, value);
+            get => GetProperty(NotesProperty); //1-2
+            private set => LoadProperty(NotesProperty, value); //2-3   
         }
 
-        public static readonly PropertyInfo<string> LastUpdatedByProperty =
-            RegisterProperty<string>(p => p.LastUpdatedBy);
-
-        public string LastUpdatedBy
+        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
+        public virtual byte[] RowVersion 
         {
-            get => GetProperty(LastUpdatedByProperty);
-            private set => LoadProperty(LastUpdatedByProperty, value);
+            get => GetProperty(RowVersionProperty); //1-2
+            private set => LoadProperty(RowVersionProperty, value); //2-3   
         }
 
-        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty =
-            RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
-
-        public SmartDate LastUpdatedDate
-        {
-            get => GetProperty(LastUpdatedDateProperty);
-            private set => LoadProperty(LastUpdatedDateProperty, value);
-        }
-
-        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
-
-        public string Notes
-        {
-            get => GetProperty(NotesProperty);
-            private set => LoadProperty(NotesProperty, value);
-        }
-
-        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
-
-        public byte[] RowVersion
-        {
-            get => GetProperty(RowVersionProperty);
-            private set => LoadProperty(RowVersionProperty, value);
-        }
-
-        protected override void AddBusinessRules()
-        {
-            base.AddBusinessRules();
-
-            // TODO: add business rules
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
-
-        #endregion
+        #endregion 
 
         #region Factory Methods
-
-        public static async Task<OfficeROR> GetOfficeROR(int id)
+        public static async Task<MembershipTypeROR> GetMembershipTypeROR(int id)
         {
-            return await DataPortal.FetchAsync<OfficeROR>(id);
-        }
+            return await DataPortal.FetchAsync<MembershipTypeROR>(id);
+        }  
+
 
         #endregion
 
@@ -127,24 +81,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private async Task Fetch(int id)
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IOfficeDal>();
+            var dal = dalManager.GetProvider<IMembershipTypeDal>();
             var data = await dal.Fetch(id);
-
-            Fetch(data);
-        }
-
-        private void Fetch(Office childData)
-        {
-            Id = childData.Id;
-            Name = childData.Name;
-            Term = childData.Term;
-            CalendarPeriod = childData.CalendarPeriod;
-            ChosenHow = childData.ChosenHow;
-            Appointer = childData.Appointer;
-            LastUpdatedBy = childData.LastUpdatedBy;
-            LastUpdatedDate = childData.LastUpdatedDate;
-            Notes = childData.Notes;
-            RowVersion = childData.RowVersion;
+                Id = data.Id;
+                Description = data.Description;
+                Level = data.Level;
+                LastUpdatedBy = data.LastUpdatedBy;
+                LastUpdatedDate = data.LastUpdatedDate;
+                Notes = data.Notes;
+                RowVersion = data.RowVersion;
         }
 
         #endregion

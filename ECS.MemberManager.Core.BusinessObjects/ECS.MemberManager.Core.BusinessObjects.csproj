@@ -1050,9 +1050,13 @@
       </None>
       <Compile Update="EventDocument\EventDocumentEC.cs">
         <DependentUpon>EventDocumentEC.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <Compile Update="EventDocument\EventDocumentECL.cs">
         <DependentUpon>EventDocumentECL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="EventDocument\EventDocumentER.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -1060,6 +1064,8 @@
       </None>
       <Compile Update="EventDocument\EventDocumentER.cs">
         <DependentUpon>EventDocumentER.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="EventDocument\EventDocumentERL.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -1067,6 +1073,8 @@
       </None>
       <Compile Update="EventDocument\EventDocumentERL.cs">
         <DependentUpon>EventDocumentERL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="EventDocument\EventDocumentROC.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -1074,6 +1082,8 @@
       </None>
       <Compile Update="EventDocument\EventDocumentROC.cs">
         <DependentUpon>EventDocumentROC.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="EventDocument\EventDocumentROCL.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -1081,6 +1091,8 @@
       </None>
       <Compile Update="EventDocument\EventDocumentROCL.cs">
         <DependentUpon>EventDocumentROCL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="EventDocument\EventDocumentROR.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -1088,11 +1100,121 @@
       </None>
       <Compile Update="EventDocument\EventDocumentROR.cs">
         <DependentUpon>EventDocumentROR.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="EventDocument\EventDocumentRORL.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>EventDocumentRORL.cs</LastGenOutput>
       </None>
+      <None Update="MembershipType\MembershipTypeEC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>MembershipTypeEC.cs</LastGenOutput>
+      </None>
+      <Compile Update="MembershipType\MembershipTypeEC.cs">
+        <DependentUpon>MembershipTypeEC.tt</DependentUpon>
+      </Compile>
+      <None Update="MembershipType\MembershipTypeECL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>MembershipTypeECL.cs</LastGenOutput>
+      </None>
+      <Compile Update="MembershipType\MembershipTypeECL.cs">
+        <DependentUpon>MembershipTypeECL.tt</DependentUpon>
+      </Compile>
+      <None Update="MembershipType\MembershipTypeER.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>MembershipTypeER.cs</LastGenOutput>
+      </None>
+      <Compile Update="MembershipType\MembershipTypeER.cs">
+        <DependentUpon>MembershipTypeER.tt</DependentUpon>
+      </Compile>
+      <None Update="MembershipType\MembershipTypeERL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>MembershipTypeERL.cs</LastGenOutput>
+      </None>
+      <Compile Update="MembershipType\MembershipTypeERL.cs">
+        <DependentUpon>MembershipTypeERL.tt</DependentUpon>
+      </Compile>
+      <None Update="MembershipType\MembershipTypeROC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>MembershipTypeROC.cs</LastGenOutput>
+      </None>
+      <Compile Update="MembershipType\MembershipTypeROC.cs">
+        <DependentUpon>MembershipTypeROC.tt</DependentUpon>
+      </Compile>
+      <None Update="MembershipType\MembershipTypeROCL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>MembershipTypeROCL.cs</LastGenOutput>
+      </None>
+      <Compile Update="MembershipType\MembershipTypeROCL.cs">
+        <DependentUpon>MembershipTypeROCL.tt</DependentUpon>
+      </Compile>
+      <None Update="MembershipType\MembershipTypeROR.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>MembershipTypeROR.cs</LastGenOutput>
+      </None>
+      <Compile Update="MembershipType\MembershipTypeROR.cs">
+        <DependentUpon>MembershipTypeROR.tt</DependentUpon>
+      </Compile>
+      <None Update="MembershipType\MembershipTypeRORL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>MembershipTypeRORL.cs</LastGenOutput>
+      </None>
+      <Compile Update="MembershipType\MembershipTypeRORL.cs">
+        <DependentUpon>MembershipTypeRORL.tt</DependentUpon>
+      </Compile>
+      <None Update="Office\OfficeEC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>OfficeEC.cs</LastGenOutput>
+      </None>
+      <None Update="Office\OfficeECL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>OfficeECL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Office\OfficeEC.cs">
+        <DependentUpon>OfficeEC.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Office\OfficeECL.cs">
+        <DependentUpon>OfficeECL.tt</DependentUpon>
+      </Compile>
+      <None Update="Office\OfficeERL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>OfficeERL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Office\OfficeERL.cs">
+        <DependentUpon>OfficeERL.tt</DependentUpon>
+      </Compile>
+      <None Update="Office\OfficeROCL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>OfficeROCL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Office\OfficeROCL.cs">
+        <DependentUpon>OfficeROCL.tt</DependentUpon>
+      </Compile>
+      <None Update="Office\OfficeRORL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>OfficeRORL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Office\OfficeRORL.cs">
+        <DependentUpon>OfficeRORL.tt</DependentUpon>
+      </Compile>
+      <None Update="Office\OfficeROR.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>OfficeROR.cs</LastGenOutput>
+      </None>
+      <None Update="Office\OfficeROC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+      </None>
+      <Compile Update="Office\OfficeROR.cs">
+        <DependentUpon>OfficeROR.tt</DependentUpon>
+      </Compile>
+      <None Update="Office\OfficeER.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>OfficeER.cs</LastGenOutput>
+      </None>
+      <Compile Update="Office\OfficeER.cs">
+        <DependentUpon>OfficeER.tt</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

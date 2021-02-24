@@ -1,51 +1,53 @@
-using System;
+﻿
+
+
+using System; 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
+using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class MembershipTypeRORL : ReadOnlyListBase<MembershipTypeRORL,MembershipTypeROC>
+    public partial class OfficeRORL : ReadOnlyListBase<OfficeRORL,OfficeROC>
     {
-        #region Business Methods
-        
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
-        
-        #endregion
-        
         #region Factory Methods
 
-        public static async Task<MembershipTypeRORL> GetMembershipTypeRORL()
+        public static async Task<OfficeRORL> NewOfficeRORL()
         {
-            return await DataPortal.FetchAsync<MembershipTypeRORL>();
+            return await DataPortal.CreateAsync<OfficeRORL>();
         }
-        
-        #endregion
-        
-        #region Data Access
 
+        public static async Task<OfficeRORL> GetOfficeRORL( )
+        {
+            return await DataPortal.FetchAsync<OfficeRORL>();
+        }
+
+        #endregion
+
+        #region Data Access
+ 
         [Fetch]
         private async Task Fetch()
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IMembershipTypeDal>();
+            var dal = dalManager.GetProvider<IOfficeDal>();
             var childData = await dal.Fetch();
 
             using (LoadListMode)
             {
-                foreach (var eMailType in childData)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var eMailTypeToAdd = await MembershipTypeROC.GetMembershipTypeROC(eMailType);
-                    Add(eMailTypeToAdd);
+                    var objectToAdd = await OfficeROC.GetOfficeROC(domainObjToAdd);
+                    Add(objectToAdd);
                 }
             }
         }
-        
+
         #endregion
-    }
+
+     }
 }

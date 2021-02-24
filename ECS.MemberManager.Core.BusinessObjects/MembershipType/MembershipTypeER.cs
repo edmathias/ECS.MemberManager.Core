@@ -1,6 +1,7 @@
-﻿using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿
+
+using System;
+using System.Collections.Generic; 
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -10,168 +11,194 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class MembershipTypeER : BusinessBase<MembershipTypeER>
+    public partial class OfficeER : BusinessBase<OfficeER>
     {
         #region Business Methods
-        
-        public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
-        public int Id
+ 
+        public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
+        public virtual int Id 
         {
-            get => GetProperty(IdProperty);
-            set => SetProperty(IdProperty, value);
+            get => GetProperty(IdProperty); //1-2
+            private set => LoadProperty(IdProperty, value); //2-3   
         }
 
-        public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(p => p.Description);
-        [Required,MaxLength(50)]
-        public string Description
+        public static readonly PropertyInfo<string> NameProperty = RegisterProperty<string>(o => o.Name);
+        public virtual string Name 
         {
-            get => GetProperty(DescriptionProperty);
-            set => SetProperty(DescriptionProperty, value);
+            get => GetProperty(NameProperty); //1-2
+            set => SetProperty(NameProperty, value); //2-4
+   
         }
 
-        public static readonly PropertyInfo<int> LevelProperty = RegisterProperty<int>(p => p.Level);
-        public int Level
+        public static readonly PropertyInfo<int> TermProperty = RegisterProperty<int>(o => o.Term);
+        public virtual int Term 
         {
-            get => GetProperty(LevelProperty);
-            set => SetProperty(LevelProperty, value);
+            get => GetProperty(TermProperty); //1-2
+            set => SetProperty(TermProperty, value); //2-4
+   
         }
 
-        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(p => p.LastUpdatedBy);
-        [Required,MaxLength(255)]
-        public string LastUpdatedBy
+        public static readonly PropertyInfo<string> CalendarPeriodProperty = RegisterProperty<string>(o => o.CalendarPeriod);
+        public virtual string CalendarPeriod 
         {
-            get => GetProperty(LastUpdatedByProperty);
-            set => SetProperty(LastUpdatedByProperty, value);
+            get => GetProperty(CalendarPeriodProperty); //1-2
+            set => SetProperty(CalendarPeriodProperty, value); //2-4
+   
         }
 
-        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
-        [Required]
-        public SmartDate LastUpdatedDate
+        public static readonly PropertyInfo<int> ChosenHowProperty = RegisterProperty<int>(o => o.ChosenHow);
+        public virtual int ChosenHow 
         {
-            get => GetProperty(LastUpdatedDateProperty);
-            set => SetProperty(LastUpdatedDateProperty, value);
-        }
-        
-        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
-        public string Notes
-        {
-            get => GetProperty(NotesProperty);
-            set => SetProperty(NotesProperty, value);
+            get => GetProperty(ChosenHowProperty); //1-2
+            set => SetProperty(ChosenHowProperty, value); //2-4
+   
         }
 
-        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
-        public byte[] RowVersion
+        public static readonly PropertyInfo<string> AppointerProperty = RegisterProperty<string>(o => o.Appointer);
+        public virtual string Appointer 
         {
-            get => GetProperty(RowVersionProperty);
-            private set => LoadProperty(RowVersionProperty, value);
+            get => GetProperty(AppointerProperty); //1-2
+            set => SetProperty(AppointerProperty, value); //2-4
+   
         }
 
-        protected override void AddBusinessRules()
+        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(o => o.LastUpdatedBy);
+        public virtual string LastUpdatedBy 
         {
-            base.AddBusinessRules();
-
-            // TODO: add business rules
+            get => GetProperty(LastUpdatedByProperty); //1-2
+            set => SetProperty(LastUpdatedByProperty, value); //2-4
+   
         }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public static void AddObjectAuthorizationRules()
+        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(o => o.LastUpdatedDate);
+        public virtual SmartDate LastUpdatedDate 
         {
-            // TODO: add object-level authorization rules
+            get => GetProperty(LastUpdatedDateProperty); //1-2
+            set => SetProperty(LastUpdatedDateProperty, value); //2-4
+   
         }
 
-        #endregion
+        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
+        public virtual string Notes 
+        {
+            get => GetProperty(NotesProperty); //1-2
+            set => SetProperty(NotesProperty, value); //2-4
+   
+        }
+
+        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
+        public virtual byte[] RowVersion 
+        {
+            get => GetProperty(RowVersionProperty); //1-2
+            set => SetProperty(RowVersionProperty, value); //2-4
+   
+        }
+
+        #endregion 
 
         #region Factory Methods
-
-        public static async Task<MembershipTypeER> NewMembershipTypeER()
+        public static async Task<OfficeER> NewOfficeER()
         {
-            return await DataPortal.CreateAsync<MembershipTypeER>();
+            return await DataPortal.CreateAsync<OfficeER>();
         }
 
-        public static async Task<MembershipTypeER> GetMembershipTypeER(int id)
+        public static async Task<OfficeER> GetOfficeER(int id)
         {
-            return await DataPortal.FetchAsync<MembershipTypeER>(id);
-        }
+            return await DataPortal.FetchAsync<OfficeER>(id);
+        }  
 
-        public static async Task DeleteMembershipTypeER(int id)
+        public static async Task DeleteOfficeER(int id)
         {
-            await DataPortal.DeleteAsync<MembershipTypeER>(id);
-        }
+            await DataPortal.DeleteAsync<OfficeER>(id);
+        } 
+
 
         #endregion
 
         #region Data Access Methods
- 
+
         [Fetch]
         private async Task Fetch(int id)
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IMembershipTypeDal>();
+            var dal = dalManager.GetProvider<IOfficeDal>();
             var data = await dal.Fetch(id);
-
-            using (BypassPropertyChecks)
+            using(BypassPropertyChecks)
             {
                 Id = data.Id;
-                Description = data.Description;
-                Level = data.Level;
+                Name = data.Name;
+                Term = data.Term;
+                CalendarPeriod = data.CalendarPeriod;
+                ChosenHow = data.ChosenHow;
+                Appointer = data.Appointer;
                 LastUpdatedBy = data.LastUpdatedBy;
                 LastUpdatedDate = data.LastUpdatedDate;
                 Notes = data.Notes;
                 RowVersion = data.RowVersion;
-            }
+            }            
         }
-
         [Insert]
         private async Task Insert()
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IMembershipTypeDal>();
-            var data = new MembershipType()
+            var dal = dalManager.GetProvider<IOfficeDal>();
+            var data = new Office()
             {
-                Description = Description,
-                Level = Level,
-                LastUpdatedBy = LastUpdatedBy,
-                LastUpdatedDate = LastUpdatedDate,
-                Notes = Notes
-            };
 
-            var insertedMembershipType = await dal.Insert(data);
-            Id = insertedMembershipType.Id;
-            RowVersion = insertedMembershipType.RowVersion;
-        }
-
-        [Update]
-        private async Task Update()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IMembershipTypeDal>();
-
-            var eventTypeToUpdate = new MembershipType()
-            {
                 Id = Id,
-                Description = Description,
-                Level = Level,
+                Name = Name,
+                Term = Term,
+                CalendarPeriod = CalendarPeriod,
+                ChosenHow = ChosenHow,
+                Appointer = Appointer,
                 LastUpdatedBy = LastUpdatedBy,
                 LastUpdatedDate = LastUpdatedDate,
                 Notes = Notes,
-                RowVersion = RowVersion
+                RowVersion = RowVersion,
             };
 
-            var updatedEmail = await dal.Update(eventTypeToUpdate);
-            RowVersion = updatedEmail.RowVersion;
+            var insertedObj = await dal.Insert(data);
+            Id = insertedObj.Id;
+            RowVersion = insertedObj.RowVersion;
         }
 
-        [DeleteSelf]
+       [Update]
+        private async Task Update()
+        {
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IOfficeDal>();
+            var data = new Office()
+            {
+
+                Id = Id,
+                Name = Name,
+                Term = Term,
+                CalendarPeriod = CalendarPeriod,
+                ChosenHow = ChosenHow,
+                Appointer = Appointer,
+                LastUpdatedBy = LastUpdatedBy,
+                LastUpdatedDate = LastUpdatedDate,
+                Notes = Notes,
+                RowVersion = RowVersion,
+            };
+
+            var insertedObj = await dal.Update(data);
+            Id = insertedObj.Id;
+            RowVersion = insertedObj.RowVersion;
+        }
+
+       
+        [DeleteSelfChild]
         private async Task DeleteSelf()
         {
             await Delete(Id);
         }
-        
+       
         [Delete]
         private async Task Delete(int id)
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IMembershipTypeDal>();
+            var dal = dalManager.GetProvider<IOfficeDal>();
            
             await dal.Delete(id);
         }

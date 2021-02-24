@@ -87,7 +87,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
        
         [Fact]
-        public async Task OfficeEC_TestDocumentNameExceedsMaxLengthOf50()
+        public async Task OfficeEC_TestNameExceedsMaxLengthOf50()
         {
             var officeObj = await OfficeEC.NewOfficeEC();
             officeObj.Term = 1;
@@ -107,8 +107,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(officeObj);
             Assert.True(isObjectValid);
             Assert.False(officeObj.IsValid);
-            Assert.Equal("The field Name must be a string or array type with a maximum length of '50'.",
-                officeObj.BrokenRulesCollection[0].Description);
+            Assert.Equal("Name",officeObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("Name can not exceed 50 characters",officeObj.BrokenRulesCollection[0].Description);
         }        
         
         private Office BuildOffice()

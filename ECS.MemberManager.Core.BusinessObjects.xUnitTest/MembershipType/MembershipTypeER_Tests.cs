@@ -40,28 +40,28 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async Task MembershipTypeER_TestGetMembershipType()
         {
-            var eventObj = await MembershipTypeER.GetMembershipTypeER(1);
+            var membershipTypeObj = await MembershipTypeER.GetMembershipTypeER(1);
 
-            Assert.NotNull(eventObj);
-            Assert.IsType<MembershipTypeER>(eventObj);
+            Assert.NotNull(membershipTypeObj);
+            Assert.IsType<MembershipTypeER>(membershipTypeObj);
         }
 
         [Fact]
         public async Task MembershipTypeER_TestGetNewMembershipTypeER()
         {
-            var eventObj = await MembershipTypeER.NewMembershipTypeER();
+            var membershipTypeObj = await MembershipTypeER.NewMembershipTypeER();
 
-            Assert.NotNull(eventObj);
-            Assert.False(eventObj.IsValid);
+            Assert.NotNull(membershipTypeObj);
+            Assert.False(membershipTypeObj.IsValid);
         }
 
         [Fact]
         public async Task MembershipTypeER_TestUpdateExistingMembershipTypeER()
         {
-            var eventObj = await MembershipTypeER.GetMembershipTypeER(1);
-            eventObj.Notes = "These are updated Notes";
+            var membershipTypeObj = await MembershipTypeER.GetMembershipTypeER(1);
+            membershipTypeObj.Notes = "These are updated Notes";
             
-            var result =  await eventObj.SaveAsync();
+            var result =  await membershipTypeObj.SaveAsync();
 
             Assert.NotNull(result);
             Assert.Equal("These are updated Notes",result.Notes );
@@ -70,14 +70,14 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async Task MembershipTypeER_TestInsertNewMembershipTypeER()
         {
-            var eventObj = await MembershipTypeER.NewMembershipTypeER();
-            eventObj.Description = "Type name";
-            eventObj.Level = 1;
-            eventObj.Notes = "This person is on standby";
-            eventObj.LastUpdatedBy = "edm";
-            eventObj.LastUpdatedDate = DateTime.Now;
+            var membershipTypeObj = await MembershipTypeER.NewMembershipTypeER();
+            membershipTypeObj.Description = "Type name";
+            membershipTypeObj.Level = 1;
+            membershipTypeObj.Notes = "This person is on standby";
+            membershipTypeObj.LastUpdatedBy = "edm";
+            membershipTypeObj.LastUpdatedDate = DateTime.Now;
 
-            var savedMembershipType = await eventObj.SaveAsync();
+            var savedMembershipType = await membershipTypeObj.SaveAsync();
            
             Assert.NotNull(savedMembershipType);
             Assert.IsType<MembershipTypeER>(savedMembershipType);
@@ -98,48 +98,48 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async Task MembershipTypeER_TestDescriptionRequired() 
         {
-            var eventObj = await MembershipTypeER.NewMembershipTypeER();
-            eventObj.Description = "make valid";
-            eventObj.LastUpdatedBy = "edm";
-            eventObj.LastUpdatedDate = DateTime.Now;
-            var isObjectValidInit = eventObj.IsValid;
-            eventObj.Description = string.Empty;
+            var membershipTypeObj = await MembershipTypeER.NewMembershipTypeER();
+            membershipTypeObj.Description = "make valid";
+            membershipTypeObj.LastUpdatedBy = "edm";
+            membershipTypeObj.LastUpdatedDate = DateTime.Now;
+            var isObjectValidInit = membershipTypeObj.IsValid;
+            membershipTypeObj.Description = string.Empty;
 
-            Assert.NotNull(eventObj);
+            Assert.NotNull(membershipTypeObj);
             Assert.True(isObjectValidInit);
-            Assert.False(eventObj.IsValid);
+            Assert.False(membershipTypeObj.IsValid);
         }
        
         [Fact]
         public async Task MembershipTypeER_TestDescriptionExceedsMaxLengthOf50()
         {
-            var eventObj = await MembershipTypeER.NewMembershipTypeER();
-            eventObj.LastUpdatedBy = "edm";
-            eventObj.LastUpdatedDate = DateTime.Now;
-            eventObj.Description = "valid length";
-            Assert.True(eventObj.IsValid);
+            var membershipTypeObj = await MembershipTypeER.NewMembershipTypeER();
+            membershipTypeObj.LastUpdatedBy = "edm";
+            membershipTypeObj.LastUpdatedDate = DateTime.Now;
+            membershipTypeObj.Description = "valid length";
+            Assert.True(membershipTypeObj.IsValid);
             
-            eventObj.Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor "+
+            membershipTypeObj.Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor "+
                                    "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis "+
                                    "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "+
                                    "Duis aute irure dolor in reprehenderit";
 
-            Assert.NotNull(eventObj);
-            Assert.False(eventObj.IsValid);
-            Assert.Equal("The field Description must be a string or array type with a maximum length of '50'.",
-                eventObj.BrokenRulesCollection[0].Description);
+            Assert.NotNull(membershipTypeObj);
+            Assert.False(membershipTypeObj.IsValid);
+            Assert.Equal("Description",membershipTypeObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("Description can not exceed 50 characters",membershipTypeObj.BrokenRulesCollection[0].Description);
         }        
         // test exception if attempt to save in invalid state
 
         [Fact]
         public async Task MembershipTypeER_TestInvalidSaveMembershipTypeER()
         {
-            var eventObj = await MembershipTypeER.NewMembershipTypeER();
-            eventObj.Description = String.Empty;
+            var membershipTypeObj = await MembershipTypeER.NewMembershipTypeER();
+            membershipTypeObj.Description = String.Empty;
             MembershipTypeER savedMembershipType = null;
                 
-            Assert.False(eventObj.IsValid);
-            Assert.Throws<Csla.Rules.ValidationException>(() => savedMembershipType =  eventObj.Save() );
+            Assert.False(membershipTypeObj.IsValid);
+            Assert.Throws<Csla.Rules.ValidationException>(() => savedMembershipType =  membershipTypeObj.Save() );
         }
     }
 }

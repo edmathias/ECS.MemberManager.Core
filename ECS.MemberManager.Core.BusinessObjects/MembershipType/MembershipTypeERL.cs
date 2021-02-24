@@ -1,4 +1,7 @@
-using System;
+﻿
+
+
+using System; 
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
@@ -9,44 +12,48 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class MembershipTypeERL : BusinessListBase<MembershipTypeERL, MembershipTypeEC>
+    public partial class OfficeERL : BusinessListBase<OfficeERL,OfficeEC>
     {
-        public static void AddObjectAuthorizationRules()
+        #region Factory Methods
+
+        public static async Task<OfficeERL> NewOfficeERL()
         {
-            // TODO: add object-level authorization rules
+            return await DataPortal.CreateAsync<OfficeERL>();
         }
 
-        internal static async Task<MembershipTypeERL> NewMembershipTypeERL()
+        public static async Task<OfficeERL> GetOfficeERL( )
         {
-            return await DataPortal.CreateAsync<MembershipTypeERL>();
+            return await DataPortal.FetchAsync<OfficeERL>();
         }
 
-        internal static async Task<MembershipTypeERL> GetMembershipTypeERL()
-        {
-            return await DataPortal.FetchAsync<MembershipTypeERL>();
-        }
+        #endregion
 
+        #region Data Access
+ 
         [Fetch]
         private async Task Fetch()
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IMembershipTypeDal>();
-            var data = await dal.Fetch();            
-            
+            var dal = dalManager.GetProvider<IOfficeDal>();
+            var childData = await dal.Fetch();
+
             using (LoadListMode)
             {
-                foreach (var eventObj in data)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var eventToAdd = await MembershipTypeEC.GetMembershipTypeEC(eventObj);
-                    Add(eventToAdd);
+                    var objectToAdd = await OfficeEC.GetOfficeEC(domainObjToAdd);
+                    Add(objectToAdd);
                 }
             }
         }
-
+       
         [Update]
         private void Update()
         {
             Child_Update();
         }
-    }
+
+        #endregion
+
+     }
 }
