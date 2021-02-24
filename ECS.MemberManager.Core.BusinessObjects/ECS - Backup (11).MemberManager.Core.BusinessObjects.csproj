@@ -66,11 +66,6 @@
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>TaskForEventERBase.cs</LastGenOutput>
       </None>
-      <Compile Update="EMailType\EMailTypeECL.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>EMailTypeECL.tt</DependentUpon>
-      </Compile>
       <Compile Update="EMail\EMailER.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
@@ -947,6 +942,9 @@
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>EMailTypeECL.cs</LastGenOutput>
       </None>
+      <Compile Update="EMailType\EMailTypeECL.cs">
+        <DependentUpon>EMailTypeECL.tt</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

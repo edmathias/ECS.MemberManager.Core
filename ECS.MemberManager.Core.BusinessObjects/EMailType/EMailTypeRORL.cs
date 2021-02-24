@@ -1,6 +1,8 @@
-using System;
+﻿
+
+
+using System; 
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -10,28 +12,24 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class EMailTypeRORL : ReadOnlyListBase<EMailTypeRORL,EMailTypeROC>
+    public partial class EMailTypeRORL : ReadOnlyListBase<EMailTypeRORL,EMailTypeROC>
     {
-        #region Business Methods
-        
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
-        
-        #endregion
-        
         #region Factory Methods
 
-        public static async Task<EMailTypeRORL> GetEMailTypeRORL()
+        public static async Task<EMailTypeRORL> NewEMailTypeRORL()
+        {
+            return await DataPortal.CreateAsync<EMailTypeRORL>();
+        }
+
+        public static async Task<EMailTypeRORL> GetEMailTypeRORL( )
         {
             return await DataPortal.FetchAsync<EMailTypeRORL>();
         }
-        
-        #endregion
-        
-        #region Data Access
 
+        #endregion
+
+        #region Data Access
+ 
         [Fetch]
         private async Task Fetch()
         {
@@ -41,14 +39,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
             using (LoadListMode)
             {
-                foreach (var eventObj in childData)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var eventObjToAdd = await EMailTypeROC.GetEMailTypeROC(eventObj);
-                    Add(eventObjToAdd);
+                    var objectToAdd = await EMailTypeROC.GetEMailTypeROC(domainObjToAdd);
+                    Add(objectToAdd);
                 }
             }
         }
-        
+
         #endregion
-    }
+
+     }
 }

@@ -60,65 +60,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(listToTest);
             Assert.Equal(3, listToTest.Count);
         }
-        
-        [Fact]
-        private async void EMailTypeECL_TestDeleteEMailTypeEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEMailTypeDal>();
-            var childData = await dal.Fetch();
-            
-            var eMailTypeEditList = await EMailTypeECL.GetEMailTypeECL(childData);
-
-            var eMailType = eMailTypeEditList.First(a => a.Id == 99);
-
-            // remove is deferred delete
-            eMailTypeEditList.Remove(eMailType); 
-
-            var eMailTypeListAfterDelete = await eMailTypeEditList.SaveAsync();
-            
-            Assert.NotEqual(childData.Count,eMailTypeListAfterDelete.Count);
-        }
-
-        [Fact]
-        private async void EMailTypeECL_TestUpdateEMailTypeEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEMailTypeDal>();
-            var childData = await dal.Fetch();
-            
-            var eMailTypeList = await EMailTypeECL.GetEMailTypeECL(childData);
-            var countBeforeUpdate = eMailTypeList.Count;
-            var idToUpdate = eMailTypeList.Min(a => a.Id);
-            var eMailTypeToUpdate = eMailTypeList.First(a => a.Id == idToUpdate);
-
-            eMailTypeToUpdate.Description = "This was updated";
-            await eMailTypeList.SaveAsync();
-
-            var updatedList = await dal.Fetch();
-            var updatedEMailTypesList = await EMailTypeECL.GetEMailTypeECL(updatedList);
-            
-            Assert.Equal("This was updated",updatedEMailTypesList.First(a => a.Id == idToUpdate).Description);
-            Assert.Equal(countBeforeUpdate, updatedEMailTypesList.Count);
-        }
-
-        [Fact]
-        private async void EMailTypeECL_TestAddEMailTypeEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEMailTypeDal>();
-            var childData = await dal.Fetch();
-
-            var eMailTypeList = await EMailTypeECL.GetEMailTypeECL(childData);
-            var countBeforeAdd = eMailTypeList.Count;
-            
-            var eMailTypeToAdd = eMailTypeList.AddNew();
-            BuildEMailType(eMailTypeToAdd); 
-
-            var eMailTypeEditList = await eMailTypeList.SaveAsync();
-            
-            Assert.NotEqual(countBeforeAdd, eMailTypeEditList.Count);
-        }
 
         private void BuildEMailType(EMailTypeEC eMailType)
         {

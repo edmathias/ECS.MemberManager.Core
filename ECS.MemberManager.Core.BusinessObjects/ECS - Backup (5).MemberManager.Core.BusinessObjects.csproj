@@ -66,11 +66,6 @@
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>TaskForEventERBase.cs</LastGenOutput>
       </None>
-      <Compile Update="EMailType\EMailTypeECL.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>EMailTypeECL.tt</DependentUpon>
-      </Compile>
       <Compile Update="EMail\EMailER.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
@@ -908,45 +903,6 @@
       <Compile Update="EMailType\EMailTypeER.cs">
         <DependentUpon>EMailTypeER.tt</DependentUpon>
       </Compile>
-      <None Update="EMailType\EMailTypeERL.tt">
-        <Generator>TextTemplatingFileGenerator</Generator>
-        <LastGenOutput>EMailTypeERL.cs</LastGenOutput>
-      </None>
-      <Compile Update="EMailType\EMailTypeERL.cs">
-        <DependentUpon>EMailTypeERL.tt</DependentUpon>
-      </Compile>
-      <None Update="EMailType\EMailTypeROC.tt">
-        <Generator>TextTemplatingFileGenerator</Generator>
-        <LastGenOutput>EMailTypeROC.cs</LastGenOutput>
-      </None>
-      <Compile Update="EMailType\EMailTypeROC.cs">
-        <DependentUpon>EMailTypeROC.tt</DependentUpon>
-      </Compile>
-      <None Update="EMailType\EMailTypeROCL.tt">
-        <Generator>TextTemplatingFileGenerator</Generator>
-        <LastGenOutput>EMailTypeROCL.cs</LastGenOutput>
-      </None>
-      <Compile Update="EMailType\EMailTypeROCL.cs">
-        <DependentUpon>EMailTypeROCL.tt</DependentUpon>
-      </Compile>
-      <None Update="EMailType\EMailTypeROR.tt">
-        <Generator>TextTemplatingFileGenerator</Generator>
-        <LastGenOutput>EMailTypeROR.cs</LastGenOutput>
-      </None>
-      <Compile Update="EMailType\EMailTypeROR.cs">
-        <DependentUpon>EMailTypeROR.tt</DependentUpon>
-      </Compile>
-      <None Update="EMailType\EMailTypeRORL.tt">
-        <Generator>TextTemplatingFileGenerator</Generator>
-        <LastGenOutput>EMailTypeRORL.cs</LastGenOutput>
-      </None>
-      <Compile Update="EMailType\EMailTypeRORL.cs">
-        <DependentUpon>EMailTypeRORL.tt</DependentUpon>
-      </Compile>
-      <None Update="EMailType\EMailTypeECL.tt">
-        <Generator>TextTemplatingFileGenerator</Generator>
-        <LastGenOutput>EMailTypeECL.cs</LastGenOutput>
-      </None>
     </ItemGroup>
 
     <ItemGroup>
