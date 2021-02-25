@@ -2,12 +2,10 @@
 
 
 using System; 
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
-using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {

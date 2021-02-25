@@ -61,66 +61,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.Equal(3, organizationTypeECL.Count);
         }
         
-        [Fact]
-        private async void OrganizationTypeECL_TestDeleteOrganizationTypeEC()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IOrganizationTypeDal>();
-            var organizationTypes = await dal.Fetch();
-
-            var organizationTypeErl = await OrganizationTypeECL.GetOrganizationTypeECL(organizationTypes);
-            var listCount = organizationTypeErl.Count;
-            var organizationTypeToDelete = organizationTypeErl.First(et => et.Id == 99);
-
-            // remove is deferred delete
-            var isDeleted = organizationTypeErl.Remove(organizationTypeToDelete); 
-
-            var organizationTypeListAfterDelete = await organizationTypeErl.SaveAsync();
-
-            Assert.NotNull(organizationTypeListAfterDelete);
-            Assert.IsType<OrganizationTypeECL>(organizationTypeListAfterDelete);
-            Assert.True(isDeleted);
-            Assert.NotEqual(listCount,organizationTypeListAfterDelete.Count);
-        }
-
-        [Fact]
-        private async void OrganizationTypeECL_TestUpdateOrganizationECEntry()
-        {
-            const int idToUpdate = 1;
-            
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IOrganizationTypeDal>();
-            var organizationTypes = await dal.Fetch();
-            
-            var organizationTypeECL = await OrganizationTypeECL.GetOrganizationTypeECL(organizationTypes);
-            var countBeforeUpdate = organizationTypeECL.Count;
-            var organizationTypeToUpdate = organizationTypeECL.First(a => a.Id == idToUpdate);
-            organizationTypeToUpdate.Name = "This was updated";
-
-            var updatedList = await organizationTypeECL.SaveAsync();
-            
-            Assert.Equal("This was updated",updatedList.First(a => a.Id == idToUpdate).Name);
-            Assert.Equal(countBeforeUpdate, updatedList.Count);
-        }
-
-        [Fact]
-        private async void OrganizationTypeECL_TestAddOrganizationTypeECEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IOrganizationTypeDal>();
-            var organizationTypes = await dal.Fetch();
-
-            var organizationTypeECL = await OrganizationTypeECL.GetOrganizationTypeECL(organizationTypes);
-            var countBeforeAdd = organizationTypeECL.Count;
-            
-            var organizationTypeToAdd = organizationTypeECL.AddNew();
-            await BuildValidOrganizationType(organizationTypeToAdd);
-
-            var updatedList = await organizationTypeECL.SaveAsync();
-            
-            Assert.NotEqual(countBeforeAdd, updatedList.Count);
-        }
-
         private async Task BuildValidOrganizationType(OrganizationTypeEC organizationType)
         {
             organizationType.Name = "org name";

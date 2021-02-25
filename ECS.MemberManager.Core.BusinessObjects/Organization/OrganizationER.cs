@@ -1,6 +1,5 @@
 ﻿
 
-
 using System;
 using System.Collections.Generic; 
 using System.Threading.Tasks;
@@ -14,8 +13,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
     [Serializable]
     public partial class OrganizationER : BusinessBase<OrganizationER>
     {
-        #region Business Methods 
-         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
+        #region Business Methods
+ 
+        public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
         public virtual int Id 
         {
             get => GetProperty(IdProperty); //1-2

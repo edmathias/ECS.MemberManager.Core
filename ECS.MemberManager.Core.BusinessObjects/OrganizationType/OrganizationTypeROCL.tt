@@ -1,12 +1,17 @@
-﻿<#@ template language="C#" #>
+﻿<#@ template language="C#" debug="true" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ output extension=".cs" #>
-<#@ include file="..\MyT4Utilities.tt" #>
+<#@ include file="..\CSLA_T4.tt" #>
 <#
     var objectName = "OrganizationType";
+    var stereoType = "ROCL";
+    var isChild = true;
+    var isReadOnly = true;
+    var childStereo = GetChildStereoType(stereoType);
+    var cslaListType = (isReadOnly ? "ReadOnly" : "Business");
 #>
-using System;
+using System; 
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
@@ -17,30 +22,23 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class <#=objectName #>ROCL : ReadOnlyListBase<<#=objectName #>ROCL, <#=objectName #>ROC>
+    public partial class <#= objectName #><#= stereoType #> : <#=cslaListType #>ListBase<<#= objectName #><#= stereoType#>,<#= objectName#><#=childStereo #>>
     {
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
+        #region Factory Methods
 
-        internal static async Task<<#= objectName #>ROCL> Get<#= objectName #>ROCL(List<<#= objectName #>> childData)
-        {
-            return await DataPortal.FetchAsync<<#= objectName #>ROCL>(childData);
-        }
+<#
+        BuildFetchFactoryMethod( objectName, isChild, stereoType);
+#>
 
-        [Fetch]
-        private async Task Fetch(List<<#= objectName #>> childData)
-        {
-            using (LoadListMode)
-            {
-                foreach (var objectToFetch in childData)
-                {
-                    var <#= objectName #>ToAdd = await <#= objectName #>ROC.Get<#= objectName #>ROC(objectToFetch);
-                    Add(<#= objectName #>ToAdd);
-                }
-            }
-        }
-    }
+        #endregion
+
+        #region Data Access
+ 
+<#
+        BuildListFetch(  objectName,  isChild,  childStereo);
+#>
+
+        #endregion
+
+     }
 }
-

@@ -1,7 +1,7 @@
 ﻿
 
 
-using System;
+using System; 
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
@@ -12,23 +12,24 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class OrganizationTypeERL : BusinessListBase<OrganizationTypeERL, OrganizationTypeEC>
+    public partial class OrganizationTypeERL : BusinessListBase<OrganizationTypeERL,OrganizationTypeEC>
     {
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
-        
+        #region Factory Methods
+
         public static async Task<OrganizationTypeERL> NewOrganizationTypeERL()
         {
             return await DataPortal.CreateAsync<OrganizationTypeERL>();
         }
 
-        internal static async Task<OrganizationTypeERL> GetOrganizationTypeERL()
+        public static async Task<OrganizationTypeERL> GetOrganizationTypeERL( )
         {
             return await DataPortal.FetchAsync<OrganizationTypeERL>();
         }
 
+        #endregion
+
+        #region Data Access
+ 
         [Fetch]
         private async Task Fetch()
         {
@@ -45,13 +46,14 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 }
             }
         }
-
+       
         [Update]
         private void Update()
         {
             Child_Update();
         }
-        
-    }
-}
 
+        #endregion
+
+     }
+}

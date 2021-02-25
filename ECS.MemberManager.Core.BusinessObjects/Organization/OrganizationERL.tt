@@ -9,7 +9,6 @@
     var isChild = false;
     var isReadOnly = false;
     var childStereo = GetChildStereoType(stereoType);
-    var isListStereo = true;
     var cslaListType = (isReadOnly ? "ReadOnly" : "Business");
 #>
 using System; 
@@ -38,6 +37,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
 <#
         BuildListFetch(  objectName,  isChild,  childStereo);
 #>
+       
+        [Update]
+        private void Update()
+        {
+            Child_Update();
+        }
 
         #endregion
 

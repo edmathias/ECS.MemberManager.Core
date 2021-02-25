@@ -46,6 +46,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 }
             }
         }
+       
+        [Update]
+        private void Update()
+        {
+            Child_Update();
+        }
 
         #endregion
 

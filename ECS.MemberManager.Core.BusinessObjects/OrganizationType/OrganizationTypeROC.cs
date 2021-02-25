@@ -1,7 +1,7 @@
 ﻿
 
-
 using System;
+using System.Collections.Generic; 
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -13,70 +13,66 @@ namespace ECS.MemberManager.Core.BusinessObjects
     [Serializable]
     public partial class OrganizationTypeROC : ReadOnlyBase<OrganizationTypeROC>
     {
-        #region Business Methods 
-
+        #region Business Methods
  
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
-        public int Id 
+        public virtual int Id 
         {
-            get => GetProperty(IdProperty); 
-            private set => LoadProperty(IdProperty, value); 
-   
-        }        
+            get => GetProperty(IdProperty); //1-2
+            private set => LoadProperty(IdProperty, value); //2-3   
+        }
 
         public static readonly PropertyInfo<string> NameProperty = RegisterProperty<string>(o => o.Name);
-        public string Name 
+        public virtual string Name 
         {
-            get => GetProperty(NameProperty); 
-            private set => LoadProperty(NameProperty, value); 
-   
-        }        
+            get => GetProperty(NameProperty); //1-2
+            private set => LoadProperty(NameProperty, value); //2-3   
+        }
 
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
-        public string Notes 
+        public virtual string Notes 
         {
-            get => GetProperty(NotesProperty); 
-            private set => LoadProperty(NotesProperty, value); 
-   
-        }        
-        public static readonly PropertyInfo<CategoryOfOrganizationROC> CategoryOfOrganizationProperty = RegisterProperty<CategoryOfOrganizationROC>(o => o.CategoryOfOrganization);
-        public CategoryOfOrganizationROC CategoryOfOrganization 
-        {
-            get => GetProperty(CategoryOfOrganizationProperty); 
-            private set => LoadProperty(CategoryOfOrganizationProperty, value); 
-        }        
+            get => GetProperty(NotesProperty); //1-2
+            private set => LoadProperty(NotesProperty, value); //2-3   
+        }
 
-        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
-        public byte[] RowVersion 
+
+        public static readonly PropertyInfo<CategoryOfOrganizationROC> CategoryOfOrganizationProperty = RegisterProperty<CategoryOfOrganizationROC>(o => o.CategoryOfOrganization);
+        public CategoryOfOrganizationROC CategoryOfOrganization  
         {
-            get => GetProperty(RowVersionProperty); 
-            private set => LoadProperty(RowVersionProperty, value); 
-   
-        }        
+            get => GetProperty(CategoryOfOrganizationProperty); //1-1
+        
+            private set => LoadProperty(CategoryOfOrganizationProperty, value); //2-1
+        }    
+ 
+        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
+        public virtual byte[] RowVersion 
+        {
+            get => GetProperty(RowVersionProperty); //1-2
+            private set => LoadProperty(RowVersionProperty, value); //2-3   
+        }
+
         #endregion 
 
         #region Factory Methods
-
-        public static async Task<OrganizationTypeROC> GetOrganizationTypeROC(OrganizationType childData)
+        internal static async Task<OrganizationTypeROC> GetOrganizationTypeROC(OrganizationType childData)
         {
             return await DataPortal.FetchChildAsync<OrganizationTypeROC>(childData);
-        }
+        }  
+
 
         #endregion
 
         #region Data Access Methods
 
         [FetchChild]
-        private async Task Fetch(OrganizationType childData)
+        private async Task Fetch(OrganizationType data)
         {
-            Id = childData.Id;
-            Name = childData.Name;
-            Notes = childData.Notes;
-            if(childData.CategoryOfOrganization != null )
-            {
-                CategoryOfOrganization = await CategoryOfOrganizationROC.GetCategoryOfOrganizationROC(childData.CategoryOfOrganization);
-            }
-            RowVersion = childData.RowVersion;
+                Id = data.Id;
+                Name = data.Name;
+                Notes = data.Notes;
+                CategoryOfOrganization = (data.CategoryOfOrganization != null ? await CategoryOfOrganizationROC.GetCategoryOfOrganizationROC(data.CategoryOfOrganization) : null);
+                RowVersion = data.RowVersion;
         }
 
         #endregion

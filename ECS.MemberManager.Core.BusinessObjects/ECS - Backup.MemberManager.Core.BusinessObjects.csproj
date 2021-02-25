@@ -180,15 +180,6 @@
         <DesignTime>True</DesignTime>
         <DependentUpon>TaskForEventRORL.tt</DependentUpon>
       </Compile>
-      <None Update="Organization\OrganizationEC.tt">
-        <Generator>TextTemplatingFileGenerator</Generator>
-        <LastGenOutput>OrganizationEC.cs</LastGenOutput>
-      </None>
-      <Compile Update="Organization\OrganizationEC.cs">
-        <AutoGen>True</AutoGen>
-        <DesignTime>True</DesignTime>
-        <DependentUpon>OrganizationEC.tt</DependentUpon>
-      </Compile>
       <None Update="OrganizationType\OrganizationTypeEC.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>OrganizationTypeEC.cs</LastGenOutput>
@@ -260,59 +251,6 @@
         <AutoGen>True</AutoGen>
         <DesignTime>True</DesignTime>
         <DependentUpon>OrganizationTypeRORL.tt</DependentUpon>
-      </Compile>
-      <None Update="Organization\OrganizationECL.tt">
-        <Generator>TextTemplatingFileGenerator</Generator>
-        <LastGenOutput>OrganizationECL.cs</LastGenOutput>
-      </None>
-      <None Update="Organization\OrganizationER.tt">
-        <Generator>TextTemplatingFileGenerator</Generator>
-        <LastGenOutput>OrganizationER.cs</LastGenOutput>
-      </None>
-      <Compile Update="Organization\OrganizationER.cs">
-        <AutoGen>True</AutoGen>
-        <DesignTime>True</DesignTime>
-        <DependentUpon>OrganizationER.tt</DependentUpon>
-      </Compile>
-      <None Update="Organization\OrganizationERL.tt">
-        <Generator>TextTemplatingFileGenerator</Generator>
-        <LastGenOutput>OrganizationERL.cs</LastGenOutput>
-      </None>
-      <Compile Update="Organization\OrganizationERL.cs">
-        <AutoGen>True</AutoGen>
-        <DesignTime>True</DesignTime>
-        <DependentUpon>OrganizationERL.tt</DependentUpon>
-      </Compile>
-      <None Update="Organization\OrganizationROC.tt">
-        <Generator>TextTemplatingFileGenerator</Generator>
-        <LastGenOutput>OrganizationROC.cs</LastGenOutput>
-      </None>
-      <Compile Update="Organization\OrganizationROC.cs">
-        <AutoGen>True</AutoGen>
-        <DesignTime>True</DesignTime>
-        <DependentUpon>OrganizationROC.tt</DependentUpon>
-      </Compile>
-      <None Update="Organization\OrganizationROCL.tt">
-        <Generator>TextTemplatingFileGenerator</Generator>
-        <LastGenOutput>OrganizationROCL.cs</LastGenOutput>
-      </None>
-      <None Update="Organization\OrganizationROR.tt">
-        <Generator>TextTemplatingFileGenerator</Generator>
-        <LastGenOutput>OrganizationROR.cs</LastGenOutput>
-      </None>
-      <Compile Update="Organization\OrganizationROR.cs">
-        <AutoGen>True</AutoGen>
-        <DesignTime>True</DesignTime>
-        <DependentUpon>OrganizationROR.tt</DependentUpon>
-      </Compile>
-      <None Update="Organization\OrganizationRORL.tt">
-        <Generator>TextTemplatingFileGenerator</Generator>
-        <LastGenOutput>OrganizationRORL.cs</LastGenOutput>
-      </None>
-      <Compile Update="Organization\OrganizationRORL.cs">
-        <AutoGen>True</AutoGen>
-        <DesignTime>True</DesignTime>
-        <DependentUpon>OrganizationRORL.tt</DependentUpon>
       </Compile>
       <Compile Update="OrganizationType\OrganizationTypeECL.cs">
         <AutoGen>True</AutoGen>
@@ -539,11 +477,6 @@
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>OrganizationECL.cs</LastGenOutput>
       </None>
-      <Compile Update="Organization\OrganizationECL.cs">
-        <AutoGen>True</AutoGen>
-        <DesignTime>True</DesignTime>
-        <DependentUpon>OrganizationECL.tt</DependentUpon>
-      </Compile>
       <None Update="Address\AddressECL.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>AddressECL.cs</LastGenOutput>
@@ -1209,9 +1142,6 @@
       </None>
       <Compile Update="Office\OfficeER.cs">
         <DependentUpon>OfficeER.tt</DependentUpon>
-      </Compile>
-      <Compile Update="Organization\OrganizationROCL.cs">
-        <DependentUpon>OrganizationROCL.tt</DependentUpon>
       </Compile>
     </ItemGroup>
 

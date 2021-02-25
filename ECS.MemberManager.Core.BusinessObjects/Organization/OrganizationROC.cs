@@ -1,6 +1,5 @@
 ﻿
 
-
 using System;
 using System.Collections.Generic; 
 using System.Threading.Tasks;
@@ -12,10 +11,11 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class OrganizationROC : BusinessBase<OrganizationROC>
+    public partial class OrganizationROC : ReadOnlyBase<OrganizationROC>
     {
-        #region Business Methods 
-         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
+        #region Business Methods
+ 
+        public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
         public virtual int Id 
         {
             get => GetProperty(IdProperty); //1-2

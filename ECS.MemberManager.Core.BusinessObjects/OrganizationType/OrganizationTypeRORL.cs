@@ -1,29 +1,33 @@
 ﻿
 
 
-using System;
-using System.Collections.Generic;
+using System; 
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
-using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class OrganizationTypeRORL : ReadOnlyListBase<OrganizationTypeRORL, OrganizationTypeROC>
+    public partial class OrganizationTypeRORL : ReadOnlyListBase<OrganizationTypeRORL,OrganizationTypeROC>
     {
-        public static void AddObjectAuthorizationRules()
+        #region Factory Methods
+
+        public static async Task<OrganizationTypeRORL> NewOrganizationTypeRORL()
         {
-            // TODO: add object-level authorization rules
+            return await DataPortal.CreateAsync<OrganizationTypeRORL>();
         }
 
-        internal static async Task<OrganizationTypeRORL> GetOrganizationTypeRORL()
+        public static async Task<OrganizationTypeRORL> GetOrganizationTypeRORL( )
         {
             return await DataPortal.FetchAsync<OrganizationTypeRORL>();
         }
 
+        #endregion
+
+        #region Data Access
+ 
         [Fetch]
         private async Task Fetch()
         {
@@ -33,13 +37,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
             using (LoadListMode)
             {
-                foreach (var objectToFetch in childData)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var objectToAdd = await OrganizationTypeROC.GetOrganizationTypeROC(objectToFetch);
+                    var objectToAdd = await OrganizationTypeROC.GetOrganizationTypeROC(domainObjToAdd);
                     Add(objectToAdd);
                 }
             }
         }
-    }
-}
 
+        #endregion
+
+     }
+}

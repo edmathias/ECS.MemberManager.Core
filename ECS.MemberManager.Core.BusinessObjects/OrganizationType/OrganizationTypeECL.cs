@@ -1,7 +1,7 @@
 ﻿
 
 
-using System;
+using System; 
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
@@ -12,41 +12,45 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class OrganizationTypeECL : BusinessListBase<OrganizationTypeECL, OrganizationTypeEC>
+    public partial class OrganizationTypeECL : BusinessListBase<OrganizationTypeECL,OrganizationTypeEC>
     {
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
+        #region Factory Methods
 
         internal static async Task<OrganizationTypeECL> NewOrganizationTypeECL()
         {
-            return await DataPortal.CreateAsync<OrganizationTypeECL>();
+            return await DataPortal.CreateChildAsync<OrganizationTypeECL>();
         }
 
         internal static async Task<OrganizationTypeECL> GetOrganizationTypeECL(List<OrganizationType> childData)
         {
-            return await DataPortal.FetchAsync<OrganizationTypeECL>(childData);
+            return await DataPortal.FetchChildAsync<OrganizationTypeECL>(childData);
         }
 
-        [Fetch]
+        #endregion
+
+        #region Data Access
+ 
+        [FetchChild]
         private async Task Fetch(List<OrganizationType> childData)
         {
+
             using (LoadListMode)
             {
-                foreach (var OrganizationType in childData)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var OrganizationTypeToAdd = await OrganizationTypeEC.GetOrganizationTypeEC(OrganizationType);
-                    Add(OrganizationTypeToAdd);
+                    var objectToAdd = await OrganizationTypeEC.GetOrganizationTypeEC(domainObjToAdd);
+                    Add(objectToAdd);
                 }
             }
         }
-
+       
         [Update]
         private void Update()
         {
             Child_Update();
         }
-    }
-}
 
+        #endregion
+
+     }
+}
