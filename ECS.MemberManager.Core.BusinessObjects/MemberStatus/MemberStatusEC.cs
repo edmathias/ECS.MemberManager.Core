@@ -18,31 +18,31 @@ namespace ECS.MemberManager.Core.BusinessObjects
          public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
         public virtual int Id 
         {
-            get => GetProperty(IdProperty); //1-2
-            private set => LoadProperty(IdProperty, value); //2-3   
+            get => GetProperty(IdProperty); 
+            private set => LoadProperty(IdProperty, value);    
         }
 
         public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(o => o.Description);
         public virtual string Description 
         {
-            get => GetProperty(DescriptionProperty); //1-2
-            set => SetProperty(DescriptionProperty, value); //2-4
+            get => GetProperty(DescriptionProperty); 
+            set => SetProperty(DescriptionProperty, value); 
    
         }
 
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
         public virtual string Notes 
         {
-            get => GetProperty(NotesProperty); //1-2
-            set => SetProperty(NotesProperty, value); //2-4
+            get => GetProperty(NotesProperty); 
+            set => SetProperty(NotesProperty, value); 
    
         }
 
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
         public virtual byte[] RowVersion 
         {
-            get => GetProperty(RowVersionProperty); //1-2
-            set => SetProperty(RowVersionProperty, value); //2-4
+            get => GetProperty(RowVersionProperty); 
+            set => SetProperty(RowVersionProperty, value); 
    
         }
 

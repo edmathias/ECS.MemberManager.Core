@@ -69,7 +69,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(person);
             Assert.True(isObjectValidInit);
             Assert.False(person.IsValid);
-            Assert.Equal("LastName",person.BrokenRulesCollection[0].OriginProperty);
+            Assert.Equal("LastName",person.BrokenRulesCollection[0].Property);
         }
 
         [Fact]
@@ -86,7 +86,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(personType);
             Assert.True(isObjectValidInit);
             Assert.False(personType.IsValid);
-            Assert.Equal("LastName",personType.BrokenRulesCollection[0].OriginProperty);
+            Assert.Equal("LastName",personType.BrokenRulesCollection[0].Property);
         }
        
         [Fact]
@@ -100,7 +100,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(personType);
             Assert.True(isObjectValidInit);
             Assert.False(personType.IsValid);
-            Assert.Equal("LastUpdatedBy",personType.BrokenRulesCollection[0].OriginProperty);
+            Assert.Equal("LastUpdatedBy",personType.BrokenRulesCollection[0].Property);
         }
 
         [Fact]
@@ -117,7 +117,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(personType);
             Assert.True(isObjectValidInit);
             Assert.False(personType.IsValid);
-            Assert.Equal("LastUpdatedBy",personType.BrokenRulesCollection[0].OriginProperty);
+            Assert.Equal("LastUpdatedBy",personType.BrokenRulesCollection[0].Property);
         }
         
         private async Task BuildPersonEC(PersonEC personToBuild)

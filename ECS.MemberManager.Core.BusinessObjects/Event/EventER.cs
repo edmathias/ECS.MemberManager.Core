@@ -18,71 +18,71 @@ namespace ECS.MemberManager.Core.BusinessObjects
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
         public virtual int Id 
         {
-            get => GetProperty(IdProperty); //1-2
-            private set => LoadProperty(IdProperty, value); //2-3   
+            get => GetProperty(IdProperty); 
+            private set => LoadProperty(IdProperty, value);    
         }
 
         public static readonly PropertyInfo<string> EventNameProperty = RegisterProperty<string>(o => o.EventName);
         public virtual string EventName 
         {
-            get => GetProperty(EventNameProperty); //1-2
-            set => SetProperty(EventNameProperty, value); //2-4
+            get => GetProperty(EventNameProperty); 
+            set => SetProperty(EventNameProperty, value); 
    
         }
 
         public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(o => o.Description);
         public virtual string Description 
         {
-            get => GetProperty(DescriptionProperty); //1-2
-            set => SetProperty(DescriptionProperty, value); //2-4
+            get => GetProperty(DescriptionProperty); 
+            set => SetProperty(DescriptionProperty, value); 
    
         }
 
         public static readonly PropertyInfo<bool> IsOneTimeProperty = RegisterProperty<bool>(o => o.IsOneTime);
         public virtual bool IsOneTime 
         {
-            get => GetProperty(IsOneTimeProperty); //1-2
-            set => SetProperty(IsOneTimeProperty, value); //2-4
+            get => GetProperty(IsOneTimeProperty); 
+            set => SetProperty(IsOneTimeProperty, value); 
    
         }
 
         public static readonly PropertyInfo<SmartDate> NextDateProperty = RegisterProperty<SmartDate>(o => o.NextDate);
         public virtual SmartDate NextDate 
         {
-            get => GetProperty(NextDateProperty); //1-2
-            set => SetProperty(NextDateProperty, value); //2-4
+            get => GetProperty(NextDateProperty); 
+            set => SetProperty(NextDateProperty, value); 
    
         }
 
         public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(o => o.LastUpdatedBy);
         public virtual string LastUpdatedBy 
         {
-            get => GetProperty(LastUpdatedByProperty); //1-2
-            set => SetProperty(LastUpdatedByProperty, value); //2-4
+            get => GetProperty(LastUpdatedByProperty); 
+            set => SetProperty(LastUpdatedByProperty, value); 
    
         }
 
         public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(o => o.LastUpdatedDate);
         public virtual SmartDate LastUpdatedDate 
         {
-            get => GetProperty(LastUpdatedDateProperty); //1-2
-            set => SetProperty(LastUpdatedDateProperty, value); //2-4
+            get => GetProperty(LastUpdatedDateProperty); 
+            set => SetProperty(LastUpdatedDateProperty, value); 
    
         }
 
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
         public virtual string Notes 
         {
-            get => GetProperty(NotesProperty); //1-2
-            set => SetProperty(NotesProperty, value); //2-4
+            get => GetProperty(NotesProperty); 
+            set => SetProperty(NotesProperty, value); 
    
         }
 
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
         public virtual byte[] RowVersion 
         {
-            get => GetProperty(RowVersionProperty); //1-2
-            set => SetProperty(RowVersionProperty, value); //2-4
+            get => GetProperty(RowVersionProperty); 
+            set => SetProperty(RowVersionProperty, value); 
    
         }
 

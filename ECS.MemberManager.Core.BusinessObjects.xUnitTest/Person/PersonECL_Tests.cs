@@ -62,65 +62,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.Equal(3, listToTest.Count);
         }
 
-        [Fact]
-        private async void PersonECL_TestDeletePersonEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPersonDal>();
-            var childData = await dal.Fetch();
-
-            var personEditList = await PersonECL.GetPersonECL(childData);
-
-            var person = personEditList.First(a => a.Id == 99);
-
-            // remove is deferred delete
-            personEditList.Remove(person);
-
-            var personListAfterDelete = await personEditList.SaveAsync();
-
-            Assert.NotEqual(childData.Count, personListAfterDelete.Count);
-        }
-
-        [Fact]
-        private async void PersonECL_TestUpdatePersonEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPersonDal>();
-            var childData = await dal.Fetch();
-
-            var personList = await PersonECL.GetPersonECL(childData);
-            var countBeforeUpdate = personList.Count;
-            var idToUpdate = personList.Min(a => a.Id);
-            var personToUpdate = personList.First(a => a.Id == idToUpdate);
-
-            personToUpdate.Notes = "This was updated";
-            await personList.SaveAsync();
-
-            var updatedList = await dal.Fetch();
-            var updatedPersonsList = await PersonECL.GetPersonECL(updatedList);
-
-            Assert.Equal("This was updated", updatedPersonsList.First(a => a.Id == idToUpdate).Notes);
-            Assert.Equal(countBeforeUpdate, updatedPersonsList.Count);
-        }
-
-        [Fact]
-        private async void PersonECL_TestAddPersonEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPersonDal>();
-            var childData = await dal.Fetch();
-
-            var personList = await PersonECL.GetPersonECL(childData);
-            var countBeforeAdd = personList.Count;
-
-            var personToAdd = personList.AddNew();
-            await BuildPersonEC(personToAdd);
-
-            var personEditList = await personList.SaveAsync();
-
-            Assert.NotEqual(countBeforeAdd, personEditList.Count);
-        }
-
         private async Task BuildPersonEC(PersonEC personToBuild)
         {
             personToBuild.LastName = "lastname";

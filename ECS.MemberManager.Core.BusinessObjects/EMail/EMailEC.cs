@@ -18,39 +18,39 @@ namespace ECS.MemberManager.Core.BusinessObjects
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
         public virtual int Id 
         {
-            get => GetProperty(IdProperty); //1-2
-            private set => LoadProperty(IdProperty, value); //2-3   
+            get => GetProperty(IdProperty); 
+            private set => LoadProperty(IdProperty, value);    
         }
 
         public static readonly PropertyInfo<string> EMailAddressProperty = RegisterProperty<string>(o => o.EMailAddress);
         public virtual string EMailAddress 
         {
-            get => GetProperty(EMailAddressProperty); //1-2
-            set => SetProperty(EMailAddressProperty, value); //2-4
+            get => GetProperty(EMailAddressProperty); 
+            set => SetProperty(EMailAddressProperty, value); 
    
         }
 
         public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(o => o.LastUpdatedBy);
         public virtual string LastUpdatedBy 
         {
-            get => GetProperty(LastUpdatedByProperty); //1-2
-            set => SetProperty(LastUpdatedByProperty, value); //2-4
+            get => GetProperty(LastUpdatedByProperty); 
+            set => SetProperty(LastUpdatedByProperty, value); 
    
         }
 
         public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(o => o.LastUpdatedDate);
         public virtual SmartDate LastUpdatedDate 
         {
-            get => GetProperty(LastUpdatedDateProperty); //1-2
-            set => SetProperty(LastUpdatedDateProperty, value); //2-4
+            get => GetProperty(LastUpdatedDateProperty); 
+            set => SetProperty(LastUpdatedDateProperty, value); 
    
         }
 
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
         public virtual string Notes 
         {
-            get => GetProperty(NotesProperty); //1-2
-            set => SetProperty(NotesProperty, value); //2-4
+            get => GetProperty(NotesProperty); 
+            set => SetProperty(NotesProperty, value); 
    
         }
 
@@ -58,15 +58,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
         public static readonly PropertyInfo<EMailTypeEC> EMailTypeProperty = RegisterProperty<EMailTypeEC>(o => o.EMailType);
         public EMailTypeEC EMailType  
         {
-            get => GetProperty(EMailTypeProperty); //1-1
-            set => SetProperty(EMailTypeProperty, value); //2-2
+            get => GetProperty(EMailTypeProperty); 
+            set => SetProperty(EMailTypeProperty, value); 
         }    
  
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
         public virtual byte[] RowVersion 
         {
-            get => GetProperty(RowVersionProperty); //1-2
-            set => SetProperty(RowVersionProperty, value); //2-4
+            get => GetProperty(RowVersionProperty); 
+            set => SetProperty(RowVersionProperty, value); 
    
         }
 

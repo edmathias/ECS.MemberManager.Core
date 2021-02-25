@@ -18,68 +18,68 @@ namespace ECS.MemberManager.Core.BusinessObjects
          public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
         public virtual int Id 
         {
-            get => GetProperty(IdProperty); //1-2
-            private set => LoadProperty(IdProperty, value); //2-3   
+            get => GetProperty(IdProperty); 
+            private set => LoadProperty(IdProperty, value);    
         }
 
 
         public static readonly PropertyInfo<EventROC> EventProperty = RegisterProperty<EventROC>(o => o.Event);
         public EventROC Event  
         {
-            get => GetProperty(EventProperty); //1-1
+            get => GetProperty(EventProperty); 
         
-            private set => LoadProperty(EventProperty, value); //2-1
+            private set => LoadProperty(EventProperty, value); 
         }    
  
         public static readonly PropertyInfo<string> DocumentNameProperty = RegisterProperty<string>(o => o.DocumentName);
         public virtual string DocumentName 
         {
-            get => GetProperty(DocumentNameProperty); //1-2
-            private set => LoadProperty(DocumentNameProperty, value); //2-3   
+            get => GetProperty(DocumentNameProperty); 
+            private set => LoadProperty(DocumentNameProperty, value);    
         }
 
 
         public static readonly PropertyInfo<DocumentTypeROC> DocumentTypeProperty = RegisterProperty<DocumentTypeROC>(o => o.DocumentType);
         public DocumentTypeROC DocumentType  
         {
-            get => GetProperty(DocumentTypeProperty); //1-1
+            get => GetProperty(DocumentTypeProperty); 
         
-            private set => LoadProperty(DocumentTypeProperty, value); //2-1
+            private set => LoadProperty(DocumentTypeProperty, value); 
         }    
  
         public static readonly PropertyInfo<string> PathAndFileNameProperty = RegisterProperty<string>(o => o.PathAndFileName);
         public virtual string PathAndFileName 
         {
-            get => GetProperty(PathAndFileNameProperty); //1-2
-            private set => LoadProperty(PathAndFileNameProperty, value); //2-3   
+            get => GetProperty(PathAndFileNameProperty); 
+            private set => LoadProperty(PathAndFileNameProperty, value);    
         }
 
         public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(o => o.LastUpdatedBy);
         public virtual string LastUpdatedBy 
         {
-            get => GetProperty(LastUpdatedByProperty); //1-2
-            private set => LoadProperty(LastUpdatedByProperty, value); //2-3   
+            get => GetProperty(LastUpdatedByProperty); 
+            private set => LoadProperty(LastUpdatedByProperty, value);    
         }
 
         public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(o => o.LastUpdatedDate);
         public virtual SmartDate LastUpdatedDate 
         {
-            get => GetProperty(LastUpdatedDateProperty); //1-2
-            private set => LoadProperty(LastUpdatedDateProperty, value); //2-3   
+            get => GetProperty(LastUpdatedDateProperty); 
+            private set => LoadProperty(LastUpdatedDateProperty, value);    
         }
 
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
         public virtual string Notes 
         {
-            get => GetProperty(NotesProperty); //1-2
-            private set => LoadProperty(NotesProperty, value); //2-3   
+            get => GetProperty(NotesProperty); 
+            private set => LoadProperty(NotesProperty, value);    
         }
 
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
         public virtual byte[] RowVersion 
         {
-            get => GetProperty(RowVersionProperty); //1-2
-            private set => LoadProperty(RowVersionProperty, value); //2-3   
+            get => GetProperty(RowVersionProperty); 
+            private set => LoadProperty(RowVersionProperty, value);    
         }
 
         #endregion 

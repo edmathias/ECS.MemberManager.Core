@@ -18,38 +18,38 @@ namespace ECS.MemberManager.Core.BusinessObjects
          public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
         public virtual int Id 
         {
-            get => GetProperty(IdProperty); //1-2
-            private set => LoadProperty(IdProperty, value); //2-3   
+            get => GetProperty(IdProperty); 
+            private set => LoadProperty(IdProperty, value);    
         }
 
         public static readonly PropertyInfo<string> NameProperty = RegisterProperty<string>(o => o.Name);
         public virtual string Name 
         {
-            get => GetProperty(NameProperty); //1-2
-            private set => LoadProperty(NameProperty, value); //2-3   
+            get => GetProperty(NameProperty); 
+            private set => LoadProperty(NameProperty, value);    
         }
 
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
         public virtual string Notes 
         {
-            get => GetProperty(NotesProperty); //1-2
-            private set => LoadProperty(NotesProperty, value); //2-3   
+            get => GetProperty(NotesProperty); 
+            private set => LoadProperty(NotesProperty, value);    
         }
 
 
         public static readonly PropertyInfo<CategoryOfOrganizationROC> CategoryOfOrganizationProperty = RegisterProperty<CategoryOfOrganizationROC>(o => o.CategoryOfOrganization);
         public CategoryOfOrganizationROC CategoryOfOrganization  
         {
-            get => GetProperty(CategoryOfOrganizationProperty); //1-1
+            get => GetProperty(CategoryOfOrganizationProperty); 
         
-            private set => LoadProperty(CategoryOfOrganizationProperty, value); //2-1
+            private set => LoadProperty(CategoryOfOrganizationProperty, value); 
         }    
  
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
         public virtual byte[] RowVersion 
         {
-            get => GetProperty(RowVersionProperty); //1-2
-            private set => LoadProperty(RowVersionProperty, value); //2-3   
+            get => GetProperty(RowVersionProperty); 
+            private set => LoadProperty(RowVersionProperty, value);    
         }
 
         #endregion 

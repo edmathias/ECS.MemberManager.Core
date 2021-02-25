@@ -18,71 +18,71 @@ namespace ECS.MemberManager.Core.BusinessObjects
          public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
         public virtual int Id 
         {
-            get => GetProperty(IdProperty); //1-2
-            private set => LoadProperty(IdProperty, value); //2-3   
+            get => GetProperty(IdProperty); 
+            private set => LoadProperty(IdProperty, value);    
         }
 
         public static readonly PropertyInfo<string> Address1Property = RegisterProperty<string>(o => o.Address1);
         public virtual string Address1 
         {
-            get => GetProperty(Address1Property); //1-2
-            private set => LoadProperty(Address1Property, value); //2-3   
+            get => GetProperty(Address1Property); 
+            private set => LoadProperty(Address1Property, value);    
         }
 
         public static readonly PropertyInfo<string> Address2Property = RegisterProperty<string>(o => o.Address2);
         public virtual string Address2 
         {
-            get => GetProperty(Address2Property); //1-2
-            private set => LoadProperty(Address2Property, value); //2-3   
+            get => GetProperty(Address2Property); 
+            private set => LoadProperty(Address2Property, value);    
         }
 
         public static readonly PropertyInfo<string> CityProperty = RegisterProperty<string>(o => o.City);
         public virtual string City 
         {
-            get => GetProperty(CityProperty); //1-2
-            private set => LoadProperty(CityProperty, value); //2-3   
+            get => GetProperty(CityProperty); 
+            private set => LoadProperty(CityProperty, value);    
         }
 
         public static readonly PropertyInfo<string> StateProperty = RegisterProperty<string>(o => o.State);
         public virtual string State 
         {
-            get => GetProperty(StateProperty); //1-2
-            private set => LoadProperty(StateProperty, value); //2-3   
+            get => GetProperty(StateProperty); 
+            private set => LoadProperty(StateProperty, value);    
         }
 
         public static readonly PropertyInfo<string> PostCodeProperty = RegisterProperty<string>(o => o.PostCode);
         public virtual string PostCode 
         {
-            get => GetProperty(PostCodeProperty); //1-2
-            private set => LoadProperty(PostCodeProperty, value); //2-3   
+            get => GetProperty(PostCodeProperty); 
+            private set => LoadProperty(PostCodeProperty, value);    
         }
 
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
         public virtual string Notes 
         {
-            get => GetProperty(NotesProperty); //1-2
-            private set => LoadProperty(NotesProperty, value); //2-3   
+            get => GetProperty(NotesProperty); 
+            private set => LoadProperty(NotesProperty, value);    
         }
 
         public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(o => o.LastUpdatedBy);
         public virtual string LastUpdatedBy 
         {
-            get => GetProperty(LastUpdatedByProperty); //1-2
-            private set => LoadProperty(LastUpdatedByProperty, value); //2-3   
+            get => GetProperty(LastUpdatedByProperty); 
+            private set => LoadProperty(LastUpdatedByProperty, value);    
         }
 
         public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(o => o.LastUpdatedDate);
         public virtual SmartDate LastUpdatedDate 
         {
-            get => GetProperty(LastUpdatedDateProperty); //1-2
-            private set => LoadProperty(LastUpdatedDateProperty, value); //2-3   
+            get => GetProperty(LastUpdatedDateProperty); 
+            private set => LoadProperty(LastUpdatedDateProperty, value);    
         }
 
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
         public virtual byte[] RowVersion 
         {
-            get => GetProperty(RowVersionProperty); //1-2
-            private set => LoadProperty(RowVersionProperty, value); //2-3   
+            get => GetProperty(RowVersionProperty); 
+            private set => LoadProperty(RowVersionProperty, value);    
         }
 
         #endregion 

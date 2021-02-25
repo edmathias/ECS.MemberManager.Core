@@ -18,31 +18,31 @@ namespace ECS.MemberManager.Core.BusinessObjects
          public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
         public virtual int Id 
         {
-            get => GetProperty(IdProperty); //1-2
-            private set => LoadProperty(IdProperty, value); //2-3   
+            get => GetProperty(IdProperty); 
+            private set => LoadProperty(IdProperty, value);    
         }
 
 
         public static readonly PropertyInfo<PersonEC> PersonProperty = RegisterProperty<PersonEC>(o => o.Person);
         public PersonEC Person  
         {
-            get => GetProperty(PersonProperty); //1-1
-            set => SetProperty(PersonProperty, value); //2-2
+            get => GetProperty(PersonProperty); 
+            set => SetProperty(PersonProperty, value); 
         }    
  
         public static readonly PropertyInfo<string> MemberNumberProperty = RegisterProperty<string>(o => o.MemberNumber);
         public virtual string MemberNumber 
         {
-            get => GetProperty(MemberNumberProperty); //1-2
-            set => SetProperty(MemberNumberProperty, value); //2-4
+            get => GetProperty(MemberNumberProperty); 
+            set => SetProperty(MemberNumberProperty, value); 
    
         }
 
         public static readonly PropertyInfo<SmartDate> DateFirstJoinedProperty = RegisterProperty<SmartDate>(o => o.DateFirstJoined);
         public virtual SmartDate DateFirstJoined 
         {
-            get => GetProperty(DateFirstJoinedProperty); //1-2
-            set => SetProperty(DateFirstJoinedProperty, value); //2-4
+            get => GetProperty(DateFirstJoinedProperty); 
+            set => SetProperty(DateFirstJoinedProperty, value); 
    
         }
 
@@ -50,55 +50,55 @@ namespace ECS.MemberManager.Core.BusinessObjects
         public static readonly PropertyInfo<PrivacyLevelEC> PrivacyLevelProperty = RegisterProperty<PrivacyLevelEC>(o => o.PrivacyLevel);
         public PrivacyLevelEC PrivacyLevel  
         {
-            get => GetProperty(PrivacyLevelProperty); //1-1
-            set => SetProperty(PrivacyLevelProperty, value); //2-2
+            get => GetProperty(PrivacyLevelProperty); 
+            set => SetProperty(PrivacyLevelProperty, value); 
         }    
  
 
         public static readonly PropertyInfo<MemberStatusEC> MemberStatusProperty = RegisterProperty<MemberStatusEC>(o => o.MemberStatus);
         public MemberStatusEC MemberStatus  
         {
-            get => GetProperty(MemberStatusProperty); //1-1
-            set => SetProperty(MemberStatusProperty, value); //2-2
+            get => GetProperty(MemberStatusProperty); 
+            set => SetProperty(MemberStatusProperty, value); 
         }    
  
 
         public static readonly PropertyInfo<MembershipTypeEC> MembershipTypeProperty = RegisterProperty<MembershipTypeEC>(o => o.MembershipType);
         public MembershipTypeEC MembershipType  
         {
-            get => GetProperty(MembershipTypeProperty); //1-1
-            set => SetProperty(MembershipTypeProperty, value); //2-2
+            get => GetProperty(MembershipTypeProperty); 
+            set => SetProperty(MembershipTypeProperty, value); 
         }    
  
         public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(o => o.LastUpdatedBy);
         public virtual string LastUpdatedBy 
         {
-            get => GetProperty(LastUpdatedByProperty); //1-2
-            set => SetProperty(LastUpdatedByProperty, value); //2-4
+            get => GetProperty(LastUpdatedByProperty); 
+            set => SetProperty(LastUpdatedByProperty, value); 
    
         }
 
         public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(o => o.LastUpdatedDate);
         public virtual SmartDate LastUpdatedDate 
         {
-            get => GetProperty(LastUpdatedDateProperty); //1-2
-            set => SetProperty(LastUpdatedDateProperty, value); //2-4
+            get => GetProperty(LastUpdatedDateProperty); 
+            set => SetProperty(LastUpdatedDateProperty, value); 
    
         }
 
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
         public virtual string Notes 
         {
-            get => GetProperty(NotesProperty); //1-2
-            set => SetProperty(NotesProperty, value); //2-4
+            get => GetProperty(NotesProperty); 
+            set => SetProperty(NotesProperty, value); 
    
         }
 
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
         public virtual byte[] RowVersion 
         {
-            get => GetProperty(RowVersionProperty); //1-2
-            set => SetProperty(RowVersionProperty, value); //2-4
+            get => GetProperty(RowVersionProperty); 
+            set => SetProperty(RowVersionProperty, value); 
    
         }
 

@@ -1,12 +1,17 @@
-﻿<#@ template language="C#" #>
+﻿<#@ template language="C#" debug="true" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ output extension=".cs" #>
-<#@ include file="..\MyT4Utilities.tt" #>
+<#@ include file="..\CSLA_T4.tt" #>
 <#
     var objectName = "Person";
+    var stereoType = "ERL";
+    var isChild = false;
+    var isReadOnly = false;
+    var childStereo = GetChildStereoType(stereoType);
+    var cslaListType = (isReadOnly ? "ReadOnly" : "Business");
 #>
-using System;
+using System; 
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
@@ -17,44 +22,29 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class <#=objectName #>ERL : BusinessListBase<<#=objectName #>ERL, <#=objectName #>EC>
+    public partial class <#= objectName #><#= stereoType #> : <#=cslaListType #>ListBase<<#= objectName #><#= stereoType#>,<#= objectName#><#=childStereo #>>
     {
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
-        
-        public static async Task<<#= objectName #>ERL> New<#= objectName #>ERL()
-        {
-            return await DataPortal.CreateAsync<<#= objectName #>ERL>();
-        }
+        #region Factory Methods
 
-        internal static async Task<<#= objectName #>ERL> Get<#= objectName #>ERL()
-        {
-            return await DataPortal.FetchAsync<<#= objectName #>ERL>();
-        }
+<#
+        BuildFetchFactoryMethod( objectName, isChild, stereoType);
+#>
 
-        [Fetch]
-        private async Task Fetch()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<I<#= objectName #>Dal>();
-            var childData = await dal.Fetch();
+        #endregion
 
-            using (LoadListMode)
-            {
-                foreach (var domainObjToAdd in childData)
-                {
-                    var objectToAdd = await <#= objectName #>EC.Get<#= objectName #>EC(domainObjToAdd);
-                    Add(objectToAdd);
-                }
-            }
-        }
-
+        #region Data Access
+ 
+<#
+        BuildListFetch(  objectName,  isChild,  childStereo);
+#>
+       
         [Update]
         private void Update()
         {
             Child_Update();
         }
-    }
+
+        #endregion
+
+     }
 }

@@ -1,7 +1,7 @@
 ﻿
 
 
-using System;
+using System; 
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
@@ -12,30 +12,39 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class PersonROCL : ReadOnlyListBase<PersonROCL, PersonROC>
+    public partial class PersonROCL : ReadOnlyListBase<PersonROCL,PersonROC>
     {
-        public static void AddObjectAuthorizationRules()
+        #region Factory Methods
+
+        internal static async Task<PersonROCL> NewPersonROCL()
         {
-            // TODO: add object-level authorization rules
+            return await DataPortal.CreateChildAsync<PersonROCL>();
         }
 
         internal static async Task<PersonROCL> GetPersonROCL(List<Person> childData)
         {
-            return await DataPortal.FetchAsync<PersonROCL>(childData);
+            return await DataPortal.FetchChildAsync<PersonROCL>(childData);
         }
 
-        [Fetch]
+        #endregion
+
+        #region Data Access
+ 
+        [FetchChild]
         private async Task Fetch(List<Person> childData)
         {
+
             using (LoadListMode)
             {
-                foreach (var objectToFetch in childData)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var PersonToAdd = await PersonROC.GetPersonROC(objectToFetch);
-                    Add(PersonToAdd);
+                    var objectToAdd = await PersonROC.GetPersonROC(domainObjToAdd);
+                    Add(objectToAdd);
                 }
             }
         }
-    }
-}
 
+        #endregion
+
+     }
+}

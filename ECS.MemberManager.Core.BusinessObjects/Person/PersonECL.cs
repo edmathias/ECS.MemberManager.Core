@@ -1,7 +1,7 @@
 ﻿
 
 
-using System;
+using System; 
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
@@ -12,41 +12,45 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class PersonECL : BusinessListBase<PersonECL, PersonEC>
+    public partial class PersonECL : BusinessListBase<PersonECL,PersonEC>
     {
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
+        #region Factory Methods
 
         internal static async Task<PersonECL> NewPersonECL()
         {
-            return await DataPortal.CreateAsync<PersonECL>();
+            return await DataPortal.CreateChildAsync<PersonECL>();
         }
 
         internal static async Task<PersonECL> GetPersonECL(List<Person> childData)
         {
-            return await DataPortal.FetchAsync<PersonECL>(childData);
+            return await DataPortal.FetchChildAsync<PersonECL>(childData);
         }
 
-        [Fetch]
+        #endregion
+
+        #region Data Access
+ 
+        [FetchChild]
         private async Task Fetch(List<Person> childData)
         {
+
             using (LoadListMode)
             {
-                foreach (var Person in childData)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var PersonToAdd = await PersonEC.GetPersonEC(Person);
-                    Add(PersonToAdd);
+                    var objectToAdd = await PersonEC.GetPersonEC(domainObjToAdd);
+                    Add(objectToAdd);
                 }
             }
         }
-
+       
         [Update]
         private void Update()
         {
             Child_Update();
         }
-    }
-}
 
+        #endregion
+
+     }
+}
