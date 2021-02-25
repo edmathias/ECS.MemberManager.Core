@@ -58,65 +58,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.Equal(3, listToTest.Count);
         }
         
-        [Fact]
-        private async void PrivacyLevelECL_TestDeletePrivacyLevelEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPrivacyLevelDal>();
-            var childData = await dal.Fetch();
-            
-            var privacyLevelEditList = await PrivacyLevelECL.GetPrivacyLevelECL(childData);
-
-            var privacyLevel = privacyLevelEditList.First(a => a.Id == 99);
-
-            // remove is deferred delete
-            privacyLevelEditList.Remove(privacyLevel); 
-
-            var privacyLevelListAfterDelete = await privacyLevelEditList.SaveAsync();
-            
-            Assert.NotEqual(childData.Count,privacyLevelListAfterDelete.Count);
-        }
-
-        [Fact]
-        private async void PrivacyLevelECL_TestUpdatePrivacyLevelEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPrivacyLevelDal>();
-            var childData = await dal.Fetch();
-            
-            var privacyLevelList = await PrivacyLevelECL.GetPrivacyLevelECL(childData);
-            var countBeforeUpdate = privacyLevelList.Count;
-            var idToUpdate = privacyLevelList.Min(a => a.Id);
-            var privacyLevelToUpdate = privacyLevelList.First(a => a.Id == idToUpdate);
-
-            privacyLevelToUpdate.Description = "This was updated";
-            await privacyLevelList.SaveAsync();
-
-            var updatedList = await dal.Fetch();
-            var updatedPrivacyLevelsList = await PrivacyLevelECL.GetPrivacyLevelECL(updatedList);
-            
-            Assert.Equal("This was updated",updatedPrivacyLevelsList.First(a => a.Id == idToUpdate).Description);
-            Assert.Equal(countBeforeUpdate, updatedPrivacyLevelsList.Count);
-        }
-
-        [Fact]
-        private async void PrivacyLevelECL_TestAddPrivacyLevelEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPrivacyLevelDal>();
-            var childData = await dal.Fetch();
-
-            var privacyLevelList = await PrivacyLevelECL.GetPrivacyLevelECL(childData);
-            var countBeforeAdd = privacyLevelList.Count;
-            
-            var privacyLevelToAdd = privacyLevelList.AddNew();
-            BuildPrivacyLevel(privacyLevelToAdd); 
-
-            var privacyLevelEditList = await privacyLevelList.SaveAsync();
-            
-            Assert.NotEqual(countBeforeAdd, privacyLevelEditList.Count);
-        }
-
         private void BuildPrivacyLevel(PrivacyLevelEC privacyLevel)
         {
             privacyLevel.Description = "doc type description";

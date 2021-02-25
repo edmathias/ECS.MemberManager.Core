@@ -115,6 +115,16 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>PaymentRORL.tt</DependentUpon>
       </Compile>
+      <Compile Update="PrivacyLevel\PrivacyLevelROR.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>PrivacyLevelROR.tt</DependentUpon>
+      </Compile>
+      <Compile Update="PrivacyLevel\PrivacyLevelRORL.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>PrivacyLevelRORL.tt</DependentUpon>
+      </Compile>
       <Compile Update="TaskForEvent\TaskForEventERBase.cs">
         <AutoGen>True</AutoGen>
         <DesignTime>True</DesignTime>
@@ -1593,6 +1603,56 @@
         <DesignTime>True</DesignTime>
         <DependentUpon>PhoneRORL.tt</DependentUpon>
       </Compile>
+      <None Update="PrivacyLevel\PrivacyLevelEC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PrivacyLevelEC.cs</LastGenOutput>
+      </None>
+      <None Update="PrivacyLevel\PrivacyLevelECL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PrivacyLevelECL.cs</LastGenOutput>
+      </None>
+      <Compile Update="PrivacyLevel\PrivacyLevelECL.cs">
+        <DependentUpon>PrivacyLevelECL.tt</DependentUpon>
+      </Compile>
+      <Compile Update="PrivacyLevel\PrivacyLevelEC.cs">
+        <DependentUpon>PrivacyLevelEC.tt</DependentUpon>
+      </Compile>
+      <None Update="PrivacyLevel\PrivacyLevelER.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PrivacyLevelER.cs</LastGenOutput>
+      </None>
+      <Compile Update="PrivacyLevel\PrivacyLevelER.cs">
+        <DependentUpon>PrivacyLevelER.tt</DependentUpon>
+      </Compile>
+      <None Update="PrivacyLevel\PrivacyLevelERL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PrivacyLevelERL.cs</LastGenOutput>
+      </None>
+      <Compile Update="PrivacyLevel\PrivacyLevelERL.cs">
+        <DependentUpon>PrivacyLevelERL.tt</DependentUpon>
+      </Compile>
+      <None Update="PrivacyLevel\PrivacyLevelROC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PrivacyLevelROC.cs</LastGenOutput>
+      </None>
+      <Compile Update="PrivacyLevel\PrivacyLevelROC.cs">
+        <DependentUpon>PrivacyLevelROC.tt</DependentUpon>
+      </Compile>
+      <None Update="PrivacyLevel\PrivacyLevelROCL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PrivacyLevelROCL.cs</LastGenOutput>
+      </None>
+      <Compile Update="PrivacyLevel\PrivacyLevelROCL.cs">
+        <DependentUpon>PrivacyLevelROCL.tt</DependentUpon>
+      </Compile>
+      <None Update="PrivacyLevel\PrivacyLevelROR.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PrivacyLevelROR.cs</LastGenOutput>
+      </None>
+      <None Update="PrivacyLevel\PrivacyLevelRORL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PrivacyLevelRORL.cs</LastGenOutput>
+      </None>
     </ItemGroup>
 
     <ItemGroup>

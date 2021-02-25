@@ -117,9 +117,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             Assert.NotNull(privacyLevel);
             Assert.False(privacyLevel.IsValid);
-            Assert.Equal("The field Description must be a string or array type with a maximum length of '50'.",
-                privacyLevel.BrokenRulesCollection[0].Description);
- 
+            Assert.Equal("Description",privacyLevel.BrokenRulesCollection[0].Property);
+            Assert.Equal("Description can not exceed 255 characters",privacyLevel.BrokenRulesCollection[0].Description);
         }        
         // test exception if attempt to save in invalid state
 

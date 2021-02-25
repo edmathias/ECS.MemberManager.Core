@@ -1,38 +1,35 @@
-﻿using System;
+﻿
+
+
+using System; 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
+using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class PrivacyLevelERL : BusinessListBase<PrivacyLevelERL,PrivacyLevelEC>
+    public partial class PrivacyLevelERL : BusinessListBase<PrivacyLevelERL,PrivacyLevelEC>
     {
-        #region Authorization Rules
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
-
-        #endregion
-       
         #region Factory Methods
-        
+
         public static async Task<PrivacyLevelERL> NewPrivacyLevelERL()
         {
             return await DataPortal.CreateAsync<PrivacyLevelERL>();
         }
 
-        public static async Task<PrivacyLevelERL> GetPrivacyLevelERL()
+        public static async Task<PrivacyLevelERL> GetPrivacyLevelERL( )
         {
             return await DataPortal.FetchAsync<PrivacyLevelERL>();
         }
-       
+
         #endregion
-        
+
         #region Data Access
-        
+ 
         [Fetch]
         private async Task Fetch()
         {
@@ -42,21 +39,21 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
             using (LoadListMode)
             {
-                foreach (var PrivacyLevel in childData)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var PrivacyLevelToAdd = 
-                        await PrivacyLevelEC.GetPrivacyLevelEC(PrivacyLevel);
-                    Add(PrivacyLevelToAdd);
+                    var objectToAdd = await PrivacyLevelEC.GetPrivacyLevelEC(domainObjToAdd);
+                    Add(objectToAdd);
                 }
             }
         }
-        
+       
         [Update]
         private void Update()
         {
             Child_Update();
         }
-        
+
         #endregion
-    }
+
+     }
 }

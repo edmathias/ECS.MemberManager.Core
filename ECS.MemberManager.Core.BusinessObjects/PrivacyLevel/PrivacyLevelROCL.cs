@@ -1,47 +1,50 @@
-using System;
+﻿
+
+
+using System; 
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
+using ECS.MemberManager.Core.DataAccess;
+using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class PrivacyLevelROCL : ReadOnlyListBase<PrivacyLevelROCL,PrivacyLevelROC>
+    public partial class PrivacyLevelROCL : ReadOnlyListBase<PrivacyLevelROCL,PrivacyLevelROC>
     {
-        #region Business Rules
-        
-        public static void AddObjectAuthorizationRules()
+        #region Factory Methods
+
+        internal static async Task<PrivacyLevelROCL> NewPrivacyLevelROCL()
         {
-            // TODO: add object-level authorization rules
+            return await DataPortal.CreateChildAsync<PrivacyLevelROCL>();
         }
 
-        #endregion
-        
-        #region Factory Methods
-        
-        internal static async Task<PrivacyLevelROCL> GetPrivacyLevelROCL(IList<PrivacyLevel> childData)
+        internal static async Task<PrivacyLevelROCL> GetPrivacyLevelROCL(List<PrivacyLevel> childData)
         {
             return await DataPortal.FetchChildAsync<PrivacyLevelROCL>(childData);
         }
 
-        #endregion 
-       
+        #endregion
+
         #region Data Access
-        
+ 
         [FetchChild]
-        private async Task FetchChild(List<PrivacyLevel> childData)
+        private async Task Fetch(List<PrivacyLevel> childData)
         {
+
             using (LoadListMode)
             {
-                foreach (var privacyLevel in childData)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var statusToAdd = await PrivacyLevelROC.GetPrivacyLevelROC(privacyLevel);
-                    Add(statusToAdd);             
+                    var objectToAdd = await PrivacyLevelROC.GetPrivacyLevelROC(domainObjToAdd);
+                    Add(objectToAdd);
                 }
             }
         }
-       
+
         #endregion
-    }
+
+     }
 }

@@ -1,4 +1,7 @@
-using System;
+﻿
+
+
+using System; 
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -7,28 +10,24 @@ using ECS.MemberManager.Core.DataAccess.Dal;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class PrivacyLevelRORL : ReadOnlyListBase<PrivacyLevelRORL,PrivacyLevelROC>
+    public partial class PrivacyLevelRORL : ReadOnlyListBase<PrivacyLevelRORL,PrivacyLevelROC>
     {
-        #region Business Methods
-        
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
-        
-        #endregion
-        
         #region Factory Methods
 
-        public static async Task<PrivacyLevelRORL> GetPrivacyLevelRORL()
+        public static async Task<PrivacyLevelRORL> NewPrivacyLevelRORL()
+        {
+            return await DataPortal.CreateAsync<PrivacyLevelRORL>();
+        }
+
+        public static async Task<PrivacyLevelRORL> GetPrivacyLevelRORL( )
         {
             return await DataPortal.FetchAsync<PrivacyLevelRORL>();
         }
-        
-        #endregion
-        
-        #region Data Access
 
+        #endregion
+
+        #region Data Access
+ 
         [Fetch]
         private async Task Fetch()
         {
@@ -38,14 +37,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
             using (LoadListMode)
             {
-                foreach (var privacyLevel in childData)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var privacyLevelToAdd = await PrivacyLevelROC.GetPrivacyLevelROC(privacyLevel);
-                    Add(privacyLevelToAdd);
+                    var objectToAdd = await PrivacyLevelROC.GetPrivacyLevelROC(domainObjToAdd);
+                    Add(objectToAdd);
                 }
             }
         }
-        
+
         #endregion
-    }
+
+     }
 }

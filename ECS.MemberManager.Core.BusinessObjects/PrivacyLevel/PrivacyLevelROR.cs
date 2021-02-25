@@ -1,85 +1,71 @@
-﻿using System;
-using System.ComponentModel;
+﻿
+
+
+using System;
+using System.Collections.Generic; 
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
+using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class PrivacyLevelROR : BusinessBase<PrivacyLevelROR>
+    public partial class PrivacyLevelROR : BusinessBase<PrivacyLevelROR>
     {
-        #region Business Methods
-        
-        public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
-        public int Id
+        #region Business Methods 
+         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
+        public virtual int Id 
         {
-            get => GetProperty(IdProperty);
-            private set => LoadProperty(IdProperty, value);
+            get => GetProperty(IdProperty); 
+            private set => LoadProperty(IdProperty, value);    
         }
 
-        public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(p => p.Description);
-        public string Description
+        public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(o => o.Description);
+        public virtual string Description 
         {
-            get => GetProperty(DescriptionProperty);
-            private set => LoadProperty(DescriptionProperty, value);
-        }
-       
-        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
-        public string Notes
-        {
-            get => GetProperty(NotesProperty);
-            private set => LoadProperty(NotesProperty, value);
-        }
-       
-        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
-        public byte[] RowVersion
-        {
-            get => GetProperty(RowVersionProperty);
-            private set => LoadProperty(RowVersionProperty, value);
+            get => GetProperty(DescriptionProperty); 
+            private set => LoadProperty(DescriptionProperty, value);    
         }
 
-        protected override void AddBusinessRules()
+        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
+        public virtual string Notes 
         {
-            base.AddBusinessRules();
-
-            // TODO: add business rules
+            get => GetProperty(NotesProperty); 
+            private set => LoadProperty(NotesProperty, value);    
         }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public static void AddObjectAuthorizationRules()
+        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
+        public virtual byte[] RowVersion 
         {
-            // TODO: add object-level authorization rules
+            get => GetProperty(RowVersionProperty); 
+            private set => LoadProperty(RowVersionProperty, value);    
         }
 
-        #endregion
+        #endregion 
 
         #region Factory Methods
-
         public static async Task<PrivacyLevelROR> GetPrivacyLevelROR(int id)
         {
             return await DataPortal.FetchAsync<PrivacyLevelROR>(id);
-        }
+        }  
+
 
         #endregion
 
         #region Data Access Methods
- 
+
         [Fetch]
         private async Task Fetch(int id)
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IPrivacyLevelDal>();
             var data = await dal.Fetch(id);
-
-            using (BypassPropertyChecks)
-            {
                 Id = data.Id;
                 Description = data.Description;
                 Notes = data.Notes;
                 RowVersion = data.RowVersion;
-            }
         }
 
         #endregion

@@ -1,46 +1,56 @@
-using System;
+﻿
+
+
+using System; 
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
+using ECS.MemberManager.Core.DataAccess;
+using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class PrivacyLevelECL : BusinessListBase<PrivacyLevelECL, PrivacyLevelEC>
+    public partial class PrivacyLevelECL : BusinessListBase<PrivacyLevelECL,PrivacyLevelEC>
     {
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
+        #region Factory Methods
 
         internal static async Task<PrivacyLevelECL> NewPrivacyLevelECL()
         {
-            return await DataPortal.CreateAsync<PrivacyLevelECL>();
+            return await DataPortal.CreateChildAsync<PrivacyLevelECL>();
         }
 
         internal static async Task<PrivacyLevelECL> GetPrivacyLevelECL(List<PrivacyLevel> childData)
         {
-            return await DataPortal.FetchAsync<PrivacyLevelECL>(childData);
+            return await DataPortal.FetchChildAsync<PrivacyLevelECL>(childData);
         }
 
-        [Fetch]
+        #endregion
+
+        #region Data Access
+ 
+        [FetchChild]
         private async Task Fetch(List<PrivacyLevel> childData)
         {
+
             using (LoadListMode)
             {
-                foreach (var PrivacyLevel in childData)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var PrivacyLevelToAdd = await PrivacyLevelEC.GetPrivacyLevelEC(PrivacyLevel);
-                    Add(PrivacyLevelToAdd);
+                    var objectToAdd = await PrivacyLevelEC.GetPrivacyLevelEC(domainObjToAdd);
+                    Add(objectToAdd);
                 }
             }
         }
-
+       
         [Update]
         private void Update()
         {
             Child_Update();
         }
-    }
+
+        #endregion
+
+     }
 }
