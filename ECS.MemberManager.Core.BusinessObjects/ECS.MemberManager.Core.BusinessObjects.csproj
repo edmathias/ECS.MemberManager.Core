@@ -16,8 +16,6 @@
 
     <ItemGroup>
       <Compile Remove="EMail\EMailTypeInfoList.cs" />
-      <Compile Remove="Sponsor\SponsorEC.cs" />
-      <Compile Remove="Sponsor\SponsorER.cs" />
       <Compile Remove="Person\PersonEdit.cs" />
       <Compile Remove="EMailType\EMailTypeEdit.cs" />
       <Compile Remove="EMailType\EMailTypeEditList.cs" />
@@ -124,6 +122,11 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>PrivacyLevelRORL.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Sponsor\SponsorERL.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>SponsorERL.tt</DependentUpon>
       </Compile>
       <Compile Update="TaskForEvent\TaskForEventERBase.cs">
         <AutoGen>True</AutoGen>
@@ -1653,10 +1656,76 @@
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>PrivacyLevelRORL.cs</LastGenOutput>
       </None>
+      <None Update="Sponsor\SponsorEC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>SponsorEC.cs</LastGenOutput>
+      </None>
+      <Compile Update="Sponsor\SponsorEC.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>SponsorEC.tt</DependentUpon>
+      </Compile>
+      <None Update="Sponsor\SponsorECL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>SponsorECL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Sponsor\SponsorECL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>SponsorECL.tt</DependentUpon>
+      </Compile>
+      <None Update="Sponsor\SponsorER.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>SponsorER.cs</LastGenOutput>
+      </None>
+      <Compile Update="Sponsor\SponsorER.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>SponsorER.tt</DependentUpon>
+      </Compile>
+      <None Update="Sponsor\SponsorERL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>SponsorERL.cs</LastGenOutput>
+      </None>
+      <None Update="Sponsor\SponsorROC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>SponsorROC.cs</LastGenOutput>
+      </None>
+      <Compile Update="Sponsor\SponsorROC.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>SponsorROC.tt</DependentUpon>
+      </Compile>
+      <None Update="Sponsor\SponsorROCL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>SponsorROCL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Sponsor\SponsorROCL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>SponsorROCL.tt</DependentUpon>
+      </Compile>
+      <None Update="Sponsor\SponsorROR.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>SponsorROR.cs</LastGenOutput>
+      </None>
+      <Compile Update="Sponsor\SponsorROR.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>SponsorROR.tt</DependentUpon>
+      </Compile>
+      <None Update="Sponsor\SponsorRORL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>SponsorRORL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Sponsor\SponsorRORL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>SponsorRORL.tt</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Sponsor" />
       <Folder Include="TermInOffice" />
     </ItemGroup>
 
