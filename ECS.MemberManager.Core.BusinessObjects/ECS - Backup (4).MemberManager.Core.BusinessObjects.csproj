@@ -1566,33 +1566,6 @@
         <DesignTime>True</DesignTime>
         <DependentUpon>PhoneROC.tt</DependentUpon>
       </Compile>
-      <None Update="Phone\PhoneROCL.tt">
-        <Generator>TextTemplatingFileGenerator</Generator>
-        <LastGenOutput>PhoneROCL.cs</LastGenOutput>
-      </None>
-      <Compile Update="Phone\PhoneROCL.cs">
-        <AutoGen>True</AutoGen>
-        <DesignTime>True</DesignTime>
-        <DependentUpon>PhoneROCL.tt</DependentUpon>
-      </Compile>
-      <None Update="Phone\PhoneROR.tt">
-        <Generator>TextTemplatingFileGenerator</Generator>
-        <LastGenOutput>PhoneROR.cs</LastGenOutput>
-      </None>
-      <Compile Update="Phone\PhoneROR.cs">
-        <AutoGen>True</AutoGen>
-        <DesignTime>True</DesignTime>
-        <DependentUpon>PhoneROR.tt</DependentUpon>
-      </Compile>
-      <None Update="Phone\PhoneRORL.tt">
-        <Generator>TextTemplatingFileGenerator</Generator>
-        <LastGenOutput>PhoneRORL.cs</LastGenOutput>
-      </None>
-      <Compile Update="Phone\PhoneRORL.cs">
-        <AutoGen>True</AutoGen>
-        <DesignTime>True</DesignTime>
-        <DependentUpon>PhoneRORL.tt</DependentUpon>
-      </Compile>
     </ItemGroup>
 
     <ItemGroup>
