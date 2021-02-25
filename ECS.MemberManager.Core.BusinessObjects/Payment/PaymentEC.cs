@@ -11,7 +11,7 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class PaymentER : BusinessBase<PaymentER>
+    public partial class PaymentEC : BusinessBase<PaymentEC>
     {
         #region Business Methods
  
@@ -105,32 +105,24 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #endregion 
 
         #region Factory Methods
-        public static async Task<PaymentER> NewPaymentER()
+        internal static async Task<PaymentEC> NewPaymentEC()
         {
-            return await DataPortal.CreateAsync<PaymentER>();
+            return await DataPortal.CreateChildAsync<PaymentEC>();
         }
 
-        public static async Task<PaymentER> GetPaymentER(int id)
+        internal static async Task<PaymentEC> GetPaymentEC(Payment childData)
         {
-            return await DataPortal.FetchAsync<PaymentER>(id);
+            return await DataPortal.FetchChildAsync<PaymentEC>(childData);
         }  
-
-        public static async Task DeletePaymentER(int id)
-        {
-            await DataPortal.DeleteAsync<PaymentER>(id);
-        } 
 
 
         #endregion
 
         #region Data Access Methods
 
-        [Fetch]
-        private async Task Fetch(int id)
+        [FetchChild]
+        private async Task Fetch(Payment data)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPaymentDal>();
-            var data = await dal.Fetch(id);
             using(BypassPropertyChecks)
             {
                 Id = data.Id;
@@ -146,7 +138,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 RowVersion = data.RowVersion;
             }            
         }
-        [Insert]
+        [InsertChild]
         private async Task Insert()
         {
             using var dalManager = DalFactory.GetManager();
@@ -172,7 +164,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             RowVersion = insertedObj.RowVersion;
         }
 
-       [Update]
+       [UpdateChild]
         private async Task Update()
         {
             using var dalManager = DalFactory.GetManager();

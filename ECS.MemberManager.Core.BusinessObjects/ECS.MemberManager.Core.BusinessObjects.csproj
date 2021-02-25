@@ -16,7 +16,6 @@
 
     <ItemGroup>
       <Compile Remove="EMail\EMailTypeInfoList.cs" />
-      <Compile Remove="Payment\PaymentER.cs" />
       <Compile Remove="Sponsor\SponsorEC.cs" />
       <Compile Remove="Sponsor\SponsorER.cs" />
       <Compile Remove="Person\PersonEdit.cs" />
@@ -95,6 +94,21 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>EventRORL.tt</DependentUpon>
+      </Compile>
+      <Compile Update="PaymentType\PaymentTypeERL.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>PaymentTypeERL.tt</DependentUpon>
+      </Compile>
+      <Compile Update="PaymentType\PaymentTypeRORL.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>PaymentTypeRORL.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Payment\PaymentRORL.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>PaymentRORL.tt</DependentUpon>
       </Compile>
       <Compile Update="TaskForEvent\TaskForEventERBase.cs">
         <AutoGen>True</AutoGen>
@@ -1213,10 +1227,184 @@
       <Compile Update="Organization\OrganizationROCL.cs">
         <DependentUpon>OrganizationROCL.tt</DependentUpon>
       </Compile>
+      <None Update="Payment\PaymentEC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PaymentEC.cs</LastGenOutput>
+      </None>
+      <Compile Update="Payment\PaymentEC.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>PaymentEC.tt</DependentUpon>
+      </Compile>
+      <None Update="Payment\PaymentECL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PaymentECL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Payment\PaymentECL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>PaymentECL.tt</DependentUpon>
+      </Compile>
+      <None Update="Payment\PaymentER.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PaymentER.cs</LastGenOutput>
+      </None>
+      <Compile Update="Payment\PaymentER.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>PaymentER.tt</DependentUpon>
+      </Compile>
+      <None Update="Payment\PaymentERL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PaymentERL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Payment\PaymentERL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>PaymentERL.tt</DependentUpon>
+      </Compile>
+      <None Update="Payment\PaymentROC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PaymentROC.cs</LastGenOutput>
+      </None>
+      <Compile Update="Payment\PaymentROC.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>PaymentROC.tt</DependentUpon>
+      </Compile>
+      <None Update="Payment\PaymentROCL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PaymentROCL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Payment\PaymentROCL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>PaymentROCL.tt</DependentUpon>
+      </Compile>
+      <None Update="Payment\PaymentROR.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PaymentROR.cs</LastGenOutput>
+      </None>
+      <Compile Update="Payment\PaymentROR.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>PaymentROR.tt</DependentUpon>
+      </Compile>
+      <None Update="Payment\PaymentRORL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PaymentRORL.cs</LastGenOutput>
+      </None>
+      <None Update="PaymentSource\PaymentSourceEC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PaymentSourceEC.cs</LastGenOutput>
+      </None>
+      <Compile Update="PaymentSource\PaymentSourceEC.cs">
+        <DependentUpon>PaymentSourceEC.tt</DependentUpon>
+      </Compile>
+      <None Update="PaymentSource\PaymentSourceECL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PaymentSourceECL.cs</LastGenOutput>
+      </None>
+      <Compile Update="PaymentSource\PaymentSourceECL.cs">
+        <DependentUpon>PaymentSourceECL.tt</DependentUpon>
+      </Compile>
+      <None Update="PaymentSource\PaymentSourceER.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PaymentSourceER.cs</LastGenOutput>
+      </None>
+      <Compile Update="PaymentSource\PaymentSourceER.cs">
+        <DependentUpon>PaymentSourceER.tt</DependentUpon>
+      </Compile>
+      <None Update="PaymentSource\PaymentSourceERL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PaymentSourceERL.cs</LastGenOutput>
+      </None>
+      <Compile Update="PaymentSource\PaymentSourceERL.cs">
+        <DependentUpon>PaymentSourceERL.tt</DependentUpon>
+      </Compile>
+      <None Update="PaymentSource\PaymentSourceROC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PaymentSourceROC.cs</LastGenOutput>
+      </None>
+      <Compile Update="PaymentSource\PaymentSourceROC.cs">
+        <DependentUpon>PaymentSourceROC.tt</DependentUpon>
+      </Compile>
+      <None Update="PaymentSource\PaymentSourceROCL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PaymentSourceROCL.cs</LastGenOutput>
+      </None>
+      <Compile Update="PaymentSource\PaymentSourceROCL.cs">
+        <DependentUpon>PaymentSourceROCL.tt</DependentUpon>
+      </Compile>
+      <None Update="PaymentSource\PaymentSourceROR.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PaymentSourceROR.cs</LastGenOutput>
+      </None>
+      <Compile Update="PaymentSource\PaymentSourceROR.cs">
+        <DependentUpon>PaymentSourceROR.tt</DependentUpon>
+      </Compile>
+      <None Update="PaymentSource\PaymentSourceRORL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PaymentSourceRORL.cs</LastGenOutput>
+      </None>
+      <Compile Update="PaymentSource\PaymentSourceRORL.cs">
+        <DependentUpon>PaymentSourceRORL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+      </Compile>
+      <None Update="PaymentType\PaymentTypeEC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PaymentTypeEC.cs</LastGenOutput>
+      </None>
+      <Compile Update="PaymentType\PaymentTypeEC.cs">
+        <DependentUpon>PaymentTypeEC.tt</DependentUpon>
+      </Compile>
+      <None Update="PaymentType\PaymentTypeECL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PaymentTypeECL.cs</LastGenOutput>
+      </None>
+      <Compile Update="PaymentType\PaymentTypeECL.cs">
+        <DependentUpon>PaymentTypeECL.tt</DependentUpon>
+      </Compile>
+      <None Update="PaymentType\PaymentTypeER.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PaymentTypeER.cs</LastGenOutput>
+      </None>
+      <Compile Update="PaymentType\PaymentTypeER.cs">
+        <DependentUpon>PaymentTypeER.tt</DependentUpon>
+      </Compile>
+      <None Update="PaymentType\PaymentTypeERL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PaymentTypeERL.cs</LastGenOutput>
+      </None>
+      <None Update="PaymentType\PaymentTypeROC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PaymentTypeROC.cs</LastGenOutput>
+      </None>
+      <Compile Update="PaymentType\PaymentTypeROC.cs">
+        <DependentUpon>PaymentTypeROC.tt</DependentUpon>
+      </Compile>
+      <None Update="PaymentType\PaymentTypeROCL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PaymentTypeROCL.cs</LastGenOutput>
+      </None>
+      <Compile Update="PaymentType\PaymentTypeROCL.cs">
+        <DependentUpon>PaymentTypeROCL.tt</DependentUpon>
+      </Compile>
+      <None Update="PaymentType\PaymentTypeROR.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PaymentTypeROR.cs</LastGenOutput>
+      </None>
+      <Compile Update="PaymentType\PaymentTypeROR.cs">
+        <DependentUpon>PaymentTypeROR.tt</DependentUpon>
+      </Compile>
+      <None Update="PaymentType\PaymentTypeRORL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PaymentTypeRORL.cs</LastGenOutput>
+      </None>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Payment" />
       <Folder Include="Phone" />
       <Folder Include="Sponsor" />
       <Folder Include="TermInOffice" />

@@ -12,18 +12,18 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class PaymentTypeECL : BusinessListBase<PaymentTypeECL,PaymentTypeEC>
+    public partial class PaymentROCL : ReadOnlyListBase<PaymentROCL,PaymentROC>
     {
         #region Factory Methods
 
-        internal static async Task<PaymentTypeECL> NewPaymentTypeECL()
+        internal static async Task<PaymentROCL> NewPaymentROCL()
         {
-            return await DataPortal.CreateChildAsync<PaymentTypeECL>();
+            return await DataPortal.CreateChildAsync<PaymentROCL>();
         }
 
-        internal static async Task<PaymentTypeECL> GetPaymentTypeECL(List<PaymentType> childData)
+        internal static async Task<PaymentROCL> GetPaymentROCL(List<Payment> childData)
         {
-            return await DataPortal.FetchChildAsync<PaymentTypeECL>(childData);
+            return await DataPortal.FetchChildAsync<PaymentROCL>(childData);
         }
 
         #endregion
@@ -31,23 +31,17 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access
  
         [FetchChild]
-        private async Task Fetch(List<PaymentType> childData)
+        private async Task Fetch(List<Payment> childData)
         {
 
             using (LoadListMode)
             {
                 foreach (var domainObjToAdd in childData)
                 {
-                    var objectToAdd = await PaymentTypeEC.GetPaymentTypeEC(domainObjToAdd);
+                    var objectToAdd = await PaymentROC.GetPaymentROC(domainObjToAdd);
                     Add(objectToAdd);
                 }
             }
-        }
-       
-        [Update]
-        private void Update()
-        {
-            Child_Update();
         }
 
         #endregion

@@ -101,6 +101,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(paymentType);
             Assert.True(isObjectValidInit);
             Assert.False(paymentType.IsValid);
+            Assert.Equal("Description", paymentType.BrokenRulesCollection[0].Property);
+            Assert.Equal("Description required",paymentType.BrokenRulesCollection[0].Description);
         }
        
         [Fact]
@@ -117,8 +119,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             Assert.NotNull(paymentType);
             Assert.False(paymentType.IsValid);
-            Assert.Equal("The field Description must be a string or array type with a maximum length of '50'.",
-                paymentType.BrokenRulesCollection[0].Description);
+            Assert.Equal("Description", paymentType.BrokenRulesCollection[0].Property);
+            Assert.Equal("Description can not exceed 50 characters",paymentType.BrokenRulesCollection[0].Description);
  
         }        
         // test exception if attempt to save in invalid state

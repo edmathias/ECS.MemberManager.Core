@@ -12,18 +12,18 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class PaymentSourceECL : BusinessListBase<PaymentSourceECL,PaymentSourceEC>
+    public partial class PaymentECL : BusinessListBase<PaymentECL,PaymentEC>
     {
         #region Factory Methods
 
-        internal static async Task<PaymentSourceECL> NewPaymentSourceECL()
+        internal static async Task<PaymentECL> NewPaymentECL()
         {
-            return await DataPortal.CreateChildAsync<PaymentSourceECL>();
+            return await DataPortal.CreateChildAsync<PaymentECL>();
         }
 
-        internal static async Task<PaymentSourceECL> GetPaymentSourceECL(List<PaymentSource> childData)
+        internal static async Task<PaymentECL> GetPaymentECL(List<Payment> childData)
         {
-            return await DataPortal.FetchChildAsync<PaymentSourceECL>(childData);
+            return await DataPortal.FetchChildAsync<PaymentECL>(childData);
         }
 
         #endregion
@@ -31,14 +31,14 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access
  
         [FetchChild]
-        private async Task Fetch(List<PaymentSource> childData)
+        private async Task Fetch(List<Payment> childData)
         {
 
             using (LoadListMode)
             {
                 foreach (var domainObjToAdd in childData)
                 {
-                    var objectToAdd = await PaymentSourceEC.GetPaymentSourceEC(domainObjToAdd);
+                    var objectToAdd = await PaymentEC.GetPaymentEC(domainObjToAdd);
                     Add(objectToAdd);
                 }
             }

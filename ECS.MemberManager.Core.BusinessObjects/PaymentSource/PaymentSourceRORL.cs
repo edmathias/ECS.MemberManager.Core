@@ -1,4 +1,7 @@
-using System;
+﻿
+
+
+using System; 
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -7,28 +10,24 @@ using ECS.MemberManager.Core.DataAccess.Dal;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class PaymentSourceRORL : ReadOnlyListBase<PaymentSourceRORL,PaymentSourceROC>
+    public partial class PaymentSourceRORL : ReadOnlyListBase<PaymentSourceRORL,PaymentSourceROC>
     {
-        #region Business Methods
-        
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
-        
-        #endregion
-        
         #region Factory Methods
 
-        public static async Task<PaymentSourceRORL> GetPaymentSourceRORL()
+        public static async Task<PaymentSourceRORL> NewPaymentSourceRORL()
+        {
+            return await DataPortal.CreateAsync<PaymentSourceRORL>();
+        }
+
+        public static async Task<PaymentSourceRORL> GetPaymentSourceRORL( )
         {
             return await DataPortal.FetchAsync<PaymentSourceRORL>();
         }
-        
-        #endregion
-        
-        #region Data Access
 
+        #endregion
+
+        #region Data Access
+ 
         [Fetch]
         private async Task Fetch()
         {
@@ -38,14 +37,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
             using (LoadListMode)
             {
-                foreach (var paymentSource in childData)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var paymentSourceToAdd = await PaymentSourceROC.GetPaymentSourceROC(paymentSource);
-                    Add(paymentSourceToAdd);
+                    var objectToAdd = await PaymentSourceROC.GetPaymentSourceROC(domainObjToAdd);
+                    Add(objectToAdd);
                 }
             }
         }
-        
+
         #endregion
-    }
+
+     }
 }

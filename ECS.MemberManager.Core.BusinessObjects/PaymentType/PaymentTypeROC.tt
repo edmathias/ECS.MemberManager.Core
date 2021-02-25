@@ -1,0 +1,64 @@
+﻿<#@ template language="C#" debug="true" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+<#@ include file="..\CSLA_T4.tt" #><#@ import namespace="System.Threading" #>
+<#
+    var isChild = true;
+    var isReadOnly = true;
+    var objectName = "PaymentType";
+    var pluralObjectName = Pluralize(objectName);
+    var stereoType = "ROC";
+    var baseClass = (isReadOnly ? "ReadOnly" : "Business");
+#>
+using System;
+using System.Collections.Generic; 
+using System.Threading.Tasks;
+using Csla;
+using ECS.MemberManager.Core.DataAccess;
+using ECS.MemberManager.Core.DataAccess.Dal;
+using ECS.MemberManager.Core.EF.Domain;
+
+namespace ECS.MemberManager.Core.BusinessObjects
+{
+    [Serializable]
+    public partial class <#= objectName #><#= stereoType #> : <#=baseClass #>Base<<#= objectName #><#= stereoType#>>
+    {
+        #region Business Methods
+ 
+<#
+    var columnList = BuildColumnList(pluralObjectName);
+
+    foreach(var columnData in columnList ) 
+    {
+        BuildCSLAProperties(columnData,stereoType,isReadOnly);
+    }
+#>
+        #endregion 
+
+        #region Factory Methods
+<#
+        BuildFactoryMethods(objectName,stereoType,isChild,isReadOnly);
+#>
+
+        #endregion
+
+        #region Data Access Methods
+
+<#
+        BuildFetch(columnList,objectName,stereoType,isChild,isReadOnly);
+
+        if (!isReadOnly)
+        {
+            BuildInsert(columnList,objectName,stereoType,isChild);
+
+            BuildUpdate(columnList,objectName, stereoType, isChild);
+        
+            BuildDeleteMethods(objectName);
+        }
+
+#>
+
+        #endregion
+    }
+}

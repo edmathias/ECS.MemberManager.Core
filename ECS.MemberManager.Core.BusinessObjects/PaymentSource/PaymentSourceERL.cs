@@ -1,38 +1,35 @@
-﻿using System;
+﻿
+
+
+using System; 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
+using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class PaymentSourceERL : BusinessListBase<PaymentSourceERL,PaymentSourceEC>
+    public partial class PaymentSourceERL : BusinessListBase<PaymentSourceERL,PaymentSourceEC>
     {
-        #region Authorization Rules
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
-
-        #endregion
-       
         #region Factory Methods
-        
+
         public static async Task<PaymentSourceERL> NewPaymentSourceERL()
         {
             return await DataPortal.CreateAsync<PaymentSourceERL>();
         }
 
-        public static async Task<PaymentSourceERL> GetPaymentSourceERL()
+        public static async Task<PaymentSourceERL> GetPaymentSourceERL( )
         {
             return await DataPortal.FetchAsync<PaymentSourceERL>();
         }
-       
+
         #endregion
-        
+
         #region Data Access
-        
+ 
         [Fetch]
         private async Task Fetch()
         {
@@ -42,21 +39,21 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
             using (LoadListMode)
             {
-                foreach (var PaymentSource in childData)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var PaymentSourceToAdd = 
-                        await PaymentSourceEC.GetPaymentSourceEC(PaymentSource);
-                    Add(PaymentSourceToAdd);
+                    var objectToAdd = await PaymentSourceEC.GetPaymentSourceEC(domainObjToAdd);
+                    Add(objectToAdd);
                 }
             }
         }
-        
+       
         [Update]
         private void Update()
         {
             Child_Update();
         }
-        
+
         #endregion
-    }
+
+     }
 }

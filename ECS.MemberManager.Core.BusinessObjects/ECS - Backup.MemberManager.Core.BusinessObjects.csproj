@@ -16,7 +16,6 @@
 
     <ItemGroup>
       <Compile Remove="EMail\EMailTypeInfoList.cs" />
-      <Compile Remove="Payment\PaymentER.cs" />
       <Compile Remove="Sponsor\SponsorEC.cs" />
       <Compile Remove="Sponsor\SponsorER.cs" />
       <Compile Remove="Person\PersonEdit.cs" />
@@ -95,6 +94,11 @@
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>EventRORL.tt</DependentUpon>
+      </Compile>
+      <Compile Update="Payment\PaymentRORL.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>PaymentRORL.tt</DependentUpon>
       </Compile>
       <Compile Update="TaskForEvent\TaskForEventERBase.cs">
         <AutoGen>True</AutoGen>
@@ -180,6 +184,15 @@
         <DesignTime>True</DesignTime>
         <DependentUpon>TaskForEventRORL.tt</DependentUpon>
       </Compile>
+      <None Update="Organization\OrganizationEC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>OrganizationEC.cs</LastGenOutput>
+      </None>
+      <Compile Update="Organization\OrganizationEC.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>OrganizationEC.tt</DependentUpon>
+      </Compile>
       <None Update="OrganizationType\OrganizationTypeEC.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>OrganizationTypeEC.cs</LastGenOutput>
@@ -251,6 +264,59 @@
         <AutoGen>True</AutoGen>
         <DesignTime>True</DesignTime>
         <DependentUpon>OrganizationTypeRORL.tt</DependentUpon>
+      </Compile>
+      <None Update="Organization\OrganizationECL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>OrganizationECL.cs</LastGenOutput>
+      </None>
+      <None Update="Organization\OrganizationER.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>OrganizationER.cs</LastGenOutput>
+      </None>
+      <Compile Update="Organization\OrganizationER.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>OrganizationER.tt</DependentUpon>
+      </Compile>
+      <None Update="Organization\OrganizationERL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>OrganizationERL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Organization\OrganizationERL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>OrganizationERL.tt</DependentUpon>
+      </Compile>
+      <None Update="Organization\OrganizationROC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>OrganizationROC.cs</LastGenOutput>
+      </None>
+      <Compile Update="Organization\OrganizationROC.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>OrganizationROC.tt</DependentUpon>
+      </Compile>
+      <None Update="Organization\OrganizationROCL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>OrganizationROCL.cs</LastGenOutput>
+      </None>
+      <None Update="Organization\OrganizationROR.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>OrganizationROR.cs</LastGenOutput>
+      </None>
+      <Compile Update="Organization\OrganizationROR.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>OrganizationROR.tt</DependentUpon>
+      </Compile>
+      <None Update="Organization\OrganizationRORL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>OrganizationRORL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Organization\OrganizationRORL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>OrganizationRORL.tt</DependentUpon>
       </Compile>
       <Compile Update="OrganizationType\OrganizationTypeECL.cs">
         <AutoGen>True</AutoGen>
@@ -477,6 +543,11 @@
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>OrganizationECL.cs</LastGenOutput>
       </None>
+      <Compile Update="Organization\OrganizationECL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>OrganizationECL.tt</DependentUpon>
+      </Compile>
       <None Update="Address\AddressECL.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>AddressECL.cs</LastGenOutput>
@@ -1143,10 +1214,86 @@
       <Compile Update="Office\OfficeER.cs">
         <DependentUpon>OfficeER.tt</DependentUpon>
       </Compile>
+      <Compile Update="Organization\OrganizationROCL.cs">
+        <DependentUpon>OrganizationROCL.tt</DependentUpon>
+      </Compile>
+      <None Update="Payment\PaymentEC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PaymentEC.cs</LastGenOutput>
+      </None>
+      <Compile Update="Payment\PaymentEC.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>PaymentEC.tt</DependentUpon>
+      </Compile>
+      <None Update="Payment\PaymentECL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PaymentECL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Payment\PaymentECL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>PaymentECL.tt</DependentUpon>
+      </Compile>
+      <None Update="Payment\PaymentER.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PaymentER.cs</LastGenOutput>
+      </None>
+      <Compile Update="Payment\PaymentER.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>PaymentER.tt</DependentUpon>
+      </Compile>
+      <None Update="Payment\PaymentERL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PaymentERL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Payment\PaymentERL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>PaymentERL.tt</DependentUpon>
+      </Compile>
+      <None Update="Payment\PaymentROC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PaymentROC.cs</LastGenOutput>
+      </None>
+      <Compile Update="Payment\PaymentROC.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>PaymentROC.tt</DependentUpon>
+      </Compile>
+      <None Update="Payment\PaymentROCL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PaymentROCL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Payment\PaymentROCL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>PaymentROCL.tt</DependentUpon>
+      </Compile>
+      <None Update="Payment\PaymentROR.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PaymentROR.cs</LastGenOutput>
+      </None>
+      <Compile Update="Payment\PaymentROR.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>PaymentROR.tt</DependentUpon>
+      </Compile>
+      <None Update="Payment\PaymentRORL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PaymentRORL.cs</LastGenOutput>
+      </None>
+      <None Update="PaymentSource\PaymentSourceEC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PaymentSourceEC.cs</LastGenOutput>
+      </None>
+      <Compile Update="PaymentSource\PaymentSourceEC.cs">
+        <DependentUpon>PaymentSourceEC.tt</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Payment" />
       <Folder Include="Phone" />
       <Folder Include="Sponsor" />
       <Folder Include="TermInOffice" />

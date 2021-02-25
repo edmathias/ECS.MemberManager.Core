@@ -1,47 +1,50 @@
-using System;
+﻿
+
+
+using System; 
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
+using ECS.MemberManager.Core.DataAccess;
+using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class PaymentTypeROCL : ReadOnlyListBase<PaymentTypeROCL,PaymentTypeROC>
+    public partial class PaymentTypeROCL : ReadOnlyListBase<PaymentTypeROCL,PaymentTypeROC>
     {
-        #region Business Rules
-        
-        public static void AddObjectAuthorizationRules()
+        #region Factory Methods
+
+        internal static async Task<PaymentTypeROCL> NewPaymentTypeROCL()
         {
-            // TODO: add object-level authorization rules
+            return await DataPortal.CreateChildAsync<PaymentTypeROCL>();
         }
 
-        #endregion
-        
-        #region Factory Methods
-        
-        internal static async Task<PaymentTypeROCL> GetPaymentTypeROCL(IList<PaymentType> childData)
+        internal static async Task<PaymentTypeROCL> GetPaymentTypeROCL(List<PaymentType> childData)
         {
             return await DataPortal.FetchChildAsync<PaymentTypeROCL>(childData);
         }
 
-        #endregion 
-       
+        #endregion
+
         #region Data Access
-        
+ 
         [FetchChild]
-        private async Task FetchChild(List<PaymentType> childData)
+        private async Task Fetch(List<PaymentType> childData)
         {
+
             using (LoadListMode)
             {
-                foreach (var paymentType in childData)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var statusToAdd = await PaymentTypeROC.GetPaymentTypeROC(paymentType);
-                    Add(statusToAdd);             
+                    var objectToAdd = await PaymentTypeROC.GetPaymentTypeROC(domainObjToAdd);
+                    Add(objectToAdd);
                 }
             }
         }
-       
+
         #endregion
-    }
+
+     }
 }

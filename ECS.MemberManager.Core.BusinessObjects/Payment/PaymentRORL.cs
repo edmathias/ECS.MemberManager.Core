@@ -2,28 +2,26 @@
 
 
 using System; 
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
-using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class PaymentTypeERL : BusinessListBase<PaymentTypeERL,PaymentTypeEC>
+    public partial class PaymentRORL : ReadOnlyListBase<PaymentRORL,PaymentROC>
     {
         #region Factory Methods
 
-        public static async Task<PaymentTypeERL> NewPaymentTypeERL()
+        public static async Task<PaymentRORL> NewPaymentRORL()
         {
-            return await DataPortal.CreateAsync<PaymentTypeERL>();
+            return await DataPortal.CreateAsync<PaymentRORL>();
         }
 
-        public static async Task<PaymentTypeERL> GetPaymentTypeERL( )
+        public static async Task<PaymentRORL> GetPaymentRORL( )
         {
-            return await DataPortal.FetchAsync<PaymentTypeERL>();
+            return await DataPortal.FetchAsync<PaymentRORL>();
         }
 
         #endregion
@@ -34,23 +32,17 @@ namespace ECS.MemberManager.Core.BusinessObjects
         private async Task Fetch()
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPaymentTypeDal>();
+            var dal = dalManager.GetProvider<IPaymentDal>();
             var childData = await dal.Fetch();
 
             using (LoadListMode)
             {
                 foreach (var domainObjToAdd in childData)
                 {
-                    var objectToAdd = await PaymentTypeEC.GetPaymentTypeEC(domainObjToAdd);
+                    var objectToAdd = await PaymentROC.GetPaymentROC(domainObjToAdd);
                     Add(objectToAdd);
                 }
             }
-        }
-       
-        [Update]
-        private void Update()
-        {
-            Child_Update();
         }
 
         #endregion

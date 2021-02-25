@@ -1,80 +1,70 @@
-﻿using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿
+
+using System;
+using System.Collections.Generic; 
 using System.Threading.Tasks;
 using Csla;
+using ECS.MemberManager.Core.DataAccess;
+using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class PaymentTypeROC : ReadOnlyBase<PaymentTypeROC>
+    public partial class PaymentTypeROC : ReadOnlyBase<PaymentTypeROC>
     {
         #region Business Methods
-
-        public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
-        public int Id
+ 
+        public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
+        public virtual int Id 
         {
-            get => GetProperty(IdProperty);
-            private set => LoadProperty(IdProperty, value);
+            get => GetProperty(IdProperty); //1-2
+            private set => LoadProperty(IdProperty, value); //2-3   
         }
 
-        public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(p => p.Description);
-        public string Description
+        public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(o => o.Description);
+        public virtual string Description 
         {
-            get => GetProperty(DescriptionProperty);
-            private set => LoadProperty(DescriptionProperty, value);
+            get => GetProperty(DescriptionProperty); //1-2
+            private set => LoadProperty(DescriptionProperty, value); //2-3   
         }
 
-        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
-        public string Notes
+        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
+        public virtual string Notes 
         {
-            get => GetProperty(NotesProperty);
-            private set => LoadProperty(NotesProperty, value);
+            get => GetProperty(NotesProperty); //1-2
+            private set => LoadProperty(NotesProperty, value); //2-3   
         }
 
-        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
-        public byte[] RowVersion
+        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
+        public virtual byte[] RowVersion 
         {
-            get => GetProperty(RowVersionProperty);
-            private set => LoadProperty(RowVersionProperty, value);
-        }
-        
-        protected override void AddBusinessRules()
-        {
-            base.AddBusinessRules();
-
-            // TODO: add business rules
+            get => GetProperty(RowVersionProperty); //1-2
+            private set => LoadProperty(RowVersionProperty, value); //2-3   
         }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
-
-        #endregion
+        #endregion 
 
         #region Factory Methods
-
         internal static async Task<PaymentTypeROC> GetPaymentTypeROC(PaymentType childData)
         {
             return await DataPortal.FetchChildAsync<PaymentTypeROC>(childData);
-        }
+        }  
+
 
         #endregion
 
         #region Data Access Methods
 
         [FetchChild]
-        private void Fetch(PaymentType childData)
+        private async Task Fetch(PaymentType data)
         {
-            Id = childData.Id;
-            Description = childData.Description;
-            Notes = childData.Notes;
-            RowVersion = childData.RowVersion;
+                Id = data.Id;
+                Description = data.Description;
+                Notes = data.Notes;
+                RowVersion = data.RowVersion;
         }
 
-         #endregion
+        #endregion
     }
 }
