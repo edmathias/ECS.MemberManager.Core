@@ -1,29 +1,33 @@
 ﻿
 
 
-using System;
-using System.Collections.Generic;
+using System; 
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
-using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class TaskForEventRORL : ReadOnlyListBase<TaskForEventRORL, TaskForEventROC>
+    public partial class TaskForEventRORL : ReadOnlyListBase<TaskForEventRORL,TaskForEventROC>
     {
-        public static void AddObjectAuthorizationRules()
+        #region Factory Methods
+
+        public static async Task<TaskForEventRORL> NewTaskForEventRORL()
         {
-            // TODO: add object-level authorization rules
+            return await DataPortal.CreateAsync<TaskForEventRORL>();
         }
 
-        internal static async Task<TaskForEventRORL> GetTaskForEventRORL()
+        public static async Task<TaskForEventRORL> GetTaskForEventRORL( )
         {
             return await DataPortal.FetchAsync<TaskForEventRORL>();
         }
 
+        #endregion
+
+        #region Data Access
+ 
         [Fetch]
         private async Task Fetch()
         {
@@ -33,13 +37,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
             using (LoadListMode)
             {
-                foreach (var objectToFetch in childData)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var objectToAdd = await TaskForEventROC.GetTaskForEventROC(objectToFetch);
+                    var objectToAdd = await TaskForEventROC.GetTaskForEventROC(domainObjToAdd);
                     Add(objectToAdd);
                 }
             }
         }
-    }
-}
 
+        #endregion
+
+     }
+}

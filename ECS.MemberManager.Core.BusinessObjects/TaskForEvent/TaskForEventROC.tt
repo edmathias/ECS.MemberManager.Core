@@ -1,12 +1,18 @@
-﻿<#@ template language="C#" #>
+﻿<#@ template language="C#" debug="true" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ output extension=".cs" #>
-<#@ include file="..\MyT4Utilities.tt" #>
+<#@ include file="..\CSLA_T4.tt" #><#@ import namespace="System.Threading" #>
 <#
+    var isChild = true;
+    var isReadOnly = true;
     var objectName = "TaskForEvent";
+    var pluralObjectName = Pluralize(objectName);
+    var stereoType = "ROC";
+    var baseClass = (isReadOnly ? "ReadOnly" : "Business");
 #>
 using System;
+using System.Collections.Generic; 
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -16,108 +22,42 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class <#= objectName #>ROC : ReadOnlyBase<<#= objectName #>ROC>
+    public partial class <#= objectName #><#= stereoType #> : <#=baseClass #>Base<<#= objectName #><#= stereoType#>>
     {
-        #region Business Methods 
-
- <#
-    var connectionString =
-        "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ECSMemberManager;Integrated Security=True;Connect Timeout=30";
-
-    string columnquery = BuildColumnQueryString(Pluralize(objectName));
-
-    List<ColumnData> columnList = new List<ColumnData>();
-
-    using (SqlConnection connection = new SqlConnection(connectionString))
-    {
-        SqlCommand command = new SqlCommand(columnquery, connection);
-        connection.Open();
-        SqlDataReader reader = command.ExecuteReader();
-
-        columnList = GetColumnData(reader);
-    }
+        #region Business Methods
+ 
+<#
+    var columnList = BuildColumnList(pluralObjectName);
 
     foreach(var columnData in columnList ) 
     {
-        var outputName = columnData.columnName;
-        if(columnData.isForeignKey)
-        {
-            var newOutputName = ConvertForeignKeyColumn(outputName);
-            var objType = newOutputName.Replace(".Id", string.Empty);
-#>
-        public static readonly PropertyInfo<<#= objType #>ROC> <#= objType #>Property = RegisterProperty<<#= objType #>ROC>(o => o.<#= objType #>);
-        public <#= objType #>ROC <#= objType  #> 
-        {
-            get => GetProperty(<#= objType #>Property); 
-            private set => LoadProperty(<#= objType  #>Property, value); 
-        }        
-<#            
-        } // end if 
-        else
-        { 
-#>
-
-        public static readonly PropertyInfo<<#= columnData.dotNetType #>> <#= columnData.columnName #>Property = RegisterProperty<<#= columnData.dotNetType	 #>>(o => o.<#= columnData.columnName #>);
-        public <#= columnData.dotNetType #> <#= columnData.columnName #> 
-        {
-            get => GetProperty(<#= columnData.columnName #>Property); 
-<#
-            if (columnData.isPrimaryKey)
-            { 
-#>
-            private set => LoadProperty(<#= columnData.columnName #>Property, value); 
-<#                
-            }
-            else
-            {
-#>
-            private set => LoadProperty(<#= columnData.columnName #>Property, value); 
-<#                
-            }
-#>   
-        }        
-<#  
-        }  // end else
-    } // end foreach 
+        BuildCSLAProperties(columnData,stereoType,isReadOnly);
+    }
 #>
         #endregion 
 
         #region Factory Methods
-
-        public static async Task<<#= objectName #>ROC> Get<#= objectName #>ROC(<#=objectName#> childData)
-        {
-            return await DataPortal.FetchChildAsync<<#= objectName #>ROC>(childData);
-        }
+<#
+        BuildFactoryMethods(objectName,stereoType,isChild,isReadOnly);
+#>
 
         #endregion
 
         #region Data Access Methods
 
-        [FetchChild]
-        private async Task Fetch(<#= objectName #> childData)
-        {
 <#
-    foreach (var columnData in columnList)
-    {
-        if (columnData.isForeignKey)
+        BuildFetch(columnList,objectName,stereoType,isChild,isReadOnly);
+
+        if (!isReadOnly)
         {
-            var objName = columnData.columnName.Replace("Id", string.Empty);
-#>
-            if(childData.<#= objName #> != null )
-            {
-                <#= objName #> = await <#= objName #>ROC.Get<#= objName#>ROC(childData.<#= objName #>);
-            }
-<#
+            BuildInsert(columnList,objectName,stereoType,isChild);
+
+            BuildUpdate(columnList,objectName, stereoType, isChild);
+        
+            BuildDeleteMethods(objectName);
         }
-        else
-        {
+
 #>
-            <#= columnData.columnName #> = childData.<#= columnData.columnName #>;
-<#
-        }
-    }
-#>
-        }
 
         #endregion
     }

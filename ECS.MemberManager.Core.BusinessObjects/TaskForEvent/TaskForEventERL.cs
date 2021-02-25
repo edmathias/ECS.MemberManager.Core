@@ -1,7 +1,7 @@
 ﻿
 
 
-using System;
+using System; 
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
@@ -12,23 +12,24 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class TaskForEventERL : BusinessListBase<TaskForEventERL, TaskForEventEC>
+    public partial class TaskForEventERL : BusinessListBase<TaskForEventERL,TaskForEventEC>
     {
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
-        
+        #region Factory Methods
+
         public static async Task<TaskForEventERL> NewTaskForEventERL()
         {
             return await DataPortal.CreateAsync<TaskForEventERL>();
         }
 
-        internal static async Task<TaskForEventERL> GetTaskForEventERL()
+        public static async Task<TaskForEventERL> GetTaskForEventERL( )
         {
             return await DataPortal.FetchAsync<TaskForEventERL>();
         }
 
+        #endregion
+
+        #region Data Access
+ 
         [Fetch]
         private async Task Fetch()
         {
@@ -45,13 +46,14 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 }
             }
         }
-
+       
         [Update]
         private void Update()
         {
             Child_Update();
         }
-        
-    }
-}
 
+        #endregion
+
+     }
+}
