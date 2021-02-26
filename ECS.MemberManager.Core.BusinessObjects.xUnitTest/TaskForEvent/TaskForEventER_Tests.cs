@@ -139,7 +139,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             Assert.NotNull(eventObj);
             Assert.False(eventObj.IsValid);
-            Assert.Equal("TaskName can not exceed 25 characters",
+            Assert.Equal("TaskName can not exceed 50 characters",
                 eventObj.BrokenRulesCollection[0].Description);
         }        
         // test exception if attempt to save in invalid state

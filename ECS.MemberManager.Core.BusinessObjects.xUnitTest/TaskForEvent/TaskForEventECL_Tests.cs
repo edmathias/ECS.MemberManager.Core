@@ -61,65 +61,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(listToTest);
             Assert.Equal(3, listToTest.Count);
         }
-        
-        [Fact]
-        private async void TaskForEventECL_TestDeleteTaskForEventEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ITaskForEventDal>();
-            var childData = await dal.Fetch();
-            
-            var eventObjEditList = await TaskForEventECL.GetTaskForEventECL(childData);
-
-            var eventObj = eventObjEditList.First(a => a.Id == 99);
-
-            // remove is deferred delete
-            eventObjEditList.Remove(eventObj); 
-
-            var eventObjListAfterDelete = await eventObjEditList.SaveAsync();
-            
-            Assert.NotEqual(childData.Count,eventObjListAfterDelete.Count);
-        }
-
-        [Fact]
-        private async void TaskForEventECL_TestUpdateTaskForEventEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ITaskForEventDal>();
-            var childData = await dal.Fetch();
-            
-            var eventObjList = await TaskForEventECL.GetTaskForEventECL(childData);
-            var countBeforeUpdate = eventObjList.Count;
-            var idToUpdate = eventObjList.Min(a => a.Id);
-            var eventObjToUpdate = eventObjList.First(a => a.Id == idToUpdate);
-
-            eventObjToUpdate.TaskName = "This was updated";
-            await eventObjList.SaveAsync();
-
-            var updatedList = await dal.Fetch();
-            var updatedTaskForEventsList = await TaskForEventECL.GetTaskForEventECL(updatedList);
-            
-            Assert.Equal("This was updated",updatedTaskForEventsList.First(a => a.Id == idToUpdate).TaskName);
-            Assert.Equal(countBeforeUpdate, updatedTaskForEventsList.Count);
-        }
-
-        [Fact]
-        private async void TaskForEventECL_TestAddTaskForEventEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ITaskForEventDal>();
-            var childData = await dal.Fetch();
-
-            var eventObjList = await TaskForEventECL.GetTaskForEventECL(childData);
-            var countBeforeAdd = eventObjList.Count;
-            
-            var eventObjToAdd = eventObjList.AddNew();
-            await BuildTaskForEvent(eventObjToAdd); 
-
-            var eventObjEditList = await eventObjList.SaveAsync();
-            
-            Assert.NotEqual(countBeforeAdd, eventObjEditList.Count);
-        }
 
         private async Task BuildTaskForEvent(TaskForEventEC eventToBuild)
         {
