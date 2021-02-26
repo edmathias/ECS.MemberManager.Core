@@ -96,22 +96,25 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         
         // test invalid state 
         [Fact]
-        public async Task TitleER_TestDescriptionRequired() 
+        public async Task TitleER_TestAbbreviationRequired() 
         {
             var title = await TitleER.NewTitleER();
-            title.Description = "make valid";
+            title.Abbreviation = "Mr.";
             var isObjectValidInit = title.IsValid;
-            title.Description = string.Empty;
+            title.Abbreviation = string.Empty;
 
             Assert.NotNull(title);
             Assert.True(isObjectValidInit);
             Assert.False(title.IsValid);
+            Assert.Equal("Abbreviation",title.BrokenRulesCollection[0].Property);
+            Assert.Equal("Abbreviation required",title.BrokenRulesCollection[0].Description);
         }
        
         [Fact]
         public async Task TitleER_TestDescriptionExceedsMaxLengthOf50()
         {
             var title = await TitleER.NewTitleER();
+            title.Abbreviation = "Mr.";
             title.Description = "valid length";
             Assert.True(title.IsValid);
             
@@ -122,7 +125,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             Assert.NotNull(title);
             Assert.False(title.IsValid);
-            Assert.Equal("The field Description must be a string or array type with a maximum length of '50'.",
+            Assert.Equal("Description can not exceed 50 characters",
                 title.BrokenRulesCollection[0].Description);
  
         }        

@@ -65,17 +65,18 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestTitleEC_DescriptionRequired()
+        public async Task TestTitleEC_AbbreviationRequired()
         {
             var titleToTest = BuildTitle();
             var title = await TitleEC.GetTitleEC(titleToTest);
             var isObjectValidInit = title.IsValid;
-            title.Description = string.Empty;
+            title.Abbreviation = string.Empty;
 
             Assert.NotNull(title);
             Assert.True(isObjectValidInit);
             Assert.False(title.IsValid);
-            Assert.Equal("Description",title.BrokenRulesCollection[0].Property);
+            Assert.Equal("Abbreviation",title.BrokenRulesCollection[0].Property);
+            Assert.Equal("Abbreviation required",title.BrokenRulesCollection[0].Description);
         }
 
         [Fact]

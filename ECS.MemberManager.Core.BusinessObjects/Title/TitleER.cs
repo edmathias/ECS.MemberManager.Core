@@ -1,6 +1,7 @@
-﻿using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿
+
+using System;
+using System.Collections.Generic; 
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -10,64 +11,52 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class TitleER : BusinessBase<TitleER>
+    public partial class TitleER : BusinessBase<TitleER>
     {
         #region Business Methods
-        
-        public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
-        public int Id
+ 
+        public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
+        public virtual int Id 
         {
-            get => GetProperty(IdProperty);
-            private set => LoadProperty(IdProperty, value);
-        }
-        
-        [Required,MaxLength(11)]
-        public static readonly PropertyInfo<string> AbbreviationProperty = RegisterProperty<string>(p => p.Abbreviation);
-        public string Abbreviation
-        {
-            get => GetProperty(AbbreviationProperty);
-            set => SetProperty(AbbreviationProperty, value);
+            get => GetProperty(IdProperty); 
+            private set => LoadProperty(IdProperty, value);    
         }
 
-        public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(p => p.Description);
-        [Required, MaxLength(50)]
-        public string Description
+        public static readonly PropertyInfo<string> AbbreviationProperty = RegisterProperty<string>(o => o.Abbreviation);
+        public virtual string Abbreviation 
         {
-            get => GetProperty(DescriptionProperty);
-            set => SetProperty(DescriptionProperty, value);
+            get => GetProperty(AbbreviationProperty); 
+            set => SetProperty(AbbreviationProperty, value); 
+   
         }
 
-        public static readonly PropertyInfo<int> DisplayOrderProperty = RegisterProperty<int>(p => p.DisplayOrder);
-        public int DisplayOrder
+        public static readonly PropertyInfo<string> DescriptionProperty = RegisterProperty<string>(o => o.Description);
+        public virtual string Description 
         {
-            get => GetProperty(DisplayOrderProperty);
-            set => SetProperty(DisplayOrderProperty, value);
+            get => GetProperty(DescriptionProperty); 
+            set => SetProperty(DescriptionProperty, value); 
+   
         }
 
-        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
-        public byte[] RowVersion
+        public static readonly PropertyInfo<int> DisplayOrderProperty = RegisterProperty<int>(o => o.DisplayOrder);
+        public virtual int DisplayOrder 
         {
-            get => GetProperty(RowVersionProperty);
-            private set => LoadProperty(RowVersionProperty, value);
+            get => GetProperty(DisplayOrderProperty); 
+            set => SetProperty(DisplayOrderProperty, value); 
+   
         }
 
-        protected override void AddBusinessRules()
+        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
+        public virtual byte[] RowVersion 
         {
-            base.AddBusinessRules();
-
-            // TODO: add business rules
+            get => GetProperty(RowVersionProperty); 
+            set => SetProperty(RowVersionProperty, value); 
+   
         }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
-
-        #endregion
+        #endregion 
 
         #region Factory Methods
-
         public static async Task<TitleER> NewTitleER()
         {
             return await DataPortal.CreateAsync<TitleER>();
@@ -76,34 +65,33 @@ namespace ECS.MemberManager.Core.BusinessObjects
         public static async Task<TitleER> GetTitleER(int id)
         {
             return await DataPortal.FetchAsync<TitleER>(id);
-        }
+        }  
 
         public static async Task DeleteTitleER(int id)
         {
             await DataPortal.DeleteAsync<TitleER>(id);
-        }
+        } 
+
 
         #endregion
 
         #region Data Access Methods
- 
+
         [Fetch]
         private async Task Fetch(int id)
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<ITitleDal>();
             var data = await dal.Fetch(id);
-
-            using (BypassPropertyChecks)
+            using(BypassPropertyChecks)
             {
                 Id = data.Id;
                 Abbreviation = data.Abbreviation;
                 Description = data.Description;
                 DisplayOrder = data.DisplayOrder;
                 RowVersion = data.RowVersion;
-            }
+            }            
         }
-
         [Insert]
         private async Task Insert()
         {
@@ -111,24 +99,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             var dal = dalManager.GetProvider<ITitleDal>();
             var data = new Title()
             {
-                Abbreviation = Abbreviation,
-                Description = Description,
-                DisplayOrder = DisplayOrder
-            };
 
-            var insertedTitle = await dal.Insert(data);
-            Id = insertedTitle.Id;
-            RowVersion = insertedTitle.RowVersion;
-        }
-
-        [Update]
-        private async Task Update()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ITitleDal>();
-
-            var emailTypeToUpdate = new Title()
-            {
                 Id = Id,
                 Abbreviation = Abbreviation,
                 Description = Description,
@@ -136,16 +107,38 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 RowVersion = RowVersion,
             };
 
-            var updatedEmail = await dal.Update(emailTypeToUpdate);
-            RowVersion = updatedEmail.RowVersion;
+            var insertedObj = await dal.Insert(data);
+            Id = insertedObj.Id;
+            RowVersion = insertedObj.RowVersion;
         }
 
-        [DeleteSelf]
+       [Update]
+        private async Task Update()
+        {
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<ITitleDal>();
+            var data = new Title()
+            {
+
+                Id = Id,
+                Abbreviation = Abbreviation,
+                Description = Description,
+                DisplayOrder = DisplayOrder,
+                RowVersion = RowVersion,
+            };
+
+            var insertedObj = await dal.Update(data);
+            Id = insertedObj.Id;
+            RowVersion = insertedObj.RowVersion;
+        }
+
+       
+        [DeleteSelfChild]
         private async Task DeleteSelf()
         {
             await Delete(Id);
         }
-        
+       
         [Delete]
         private async Task Delete(int id)
         {

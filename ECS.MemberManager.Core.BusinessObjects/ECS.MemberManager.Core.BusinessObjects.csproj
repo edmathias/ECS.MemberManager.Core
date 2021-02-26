@@ -1793,6 +1793,62 @@
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>TermInOfficeRORL.cs</LastGenOutput>
       </None>
+      <None Update="Title\TitleEC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>TitleEC.cs</LastGenOutput>
+      </None>
+      <Compile Update="Title\TitleEC.cs">
+        <DependentUpon>TitleEC.tt</DependentUpon>
+      </Compile>
+      <None Update="Title\TitleECL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>TitleECL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Title\TitleECL.cs">
+        <DependentUpon>TitleECL.tt</DependentUpon>
+      </Compile>
+      <None Update="Title\TitleER.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>TitleER.cs</LastGenOutput>
+      </None>
+      <Compile Update="Title\TitleER.cs">
+        <DependentUpon>TitleER.tt</DependentUpon>
+      </Compile>
+      <None Update="Title\TitleERL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>TitleERL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Title\TitleERL.cs">
+        <DependentUpon>TitleERL.tt</DependentUpon>
+      </Compile>
+      <None Update="Title\TitleROC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>TitleROC.cs</LastGenOutput>
+      </None>
+      <Compile Update="Title\TitleROC.cs">
+        <DependentUpon>TitleROC.tt</DependentUpon>
+      </Compile>
+      <None Update="Title\TitleROCL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>TitleROCL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Title\TitleROCL.cs">
+        <DependentUpon>TitleROCL.tt</DependentUpon>
+      </Compile>
+      <None Update="Title\TitleROR.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>TitleROR.cs</LastGenOutput>
+      </None>
+      <Compile Update="Title\TitleROR.cs">
+        <DependentUpon>TitleROR.tt</DependentUpon>
+      </Compile>
+      <None Update="Title\TitleRORL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>TitleRORL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Title\TitleRORL.cs">
+        <DependentUpon>TitleRORL.tt</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

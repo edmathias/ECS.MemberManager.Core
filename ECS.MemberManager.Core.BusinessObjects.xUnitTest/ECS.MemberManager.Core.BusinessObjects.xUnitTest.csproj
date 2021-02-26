@@ -37,6 +37,7 @@
       <Folder Include="Organization" />
       <Folder Include="Payment" />
       <Folder Include="Phone" />
+      <Folder Include="TermInOffice" />
     </ItemGroup>
 
     <ItemGroup>

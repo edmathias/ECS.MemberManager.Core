@@ -59,65 +59,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(listToTest);
             Assert.Equal(3, listToTest.Count);
         }
-        
-        [Fact]
-        private async void TitleECL_TestDeleteTitleEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ITitleDal>();
-            var childData = await dal.Fetch();
-            
-            var titleEditList = await TitleECL.GetTitleECL(childData);
-
-            var title = titleEditList.First(a => a.Id == 99);
-
-            // remove is deferred delete
-            titleEditList.Remove(title); 
-
-            var titleListAfterDelete = await titleEditList.SaveAsync();
-            
-            Assert.NotEqual(childData.Count,titleListAfterDelete.Count);
-        }
-
-        [Fact]
-        private async void TitleECL_TestUpdateTitleEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ITitleDal>();
-            var childData = await dal.Fetch();
-            
-            var titleList = await TitleECL.GetTitleECL(childData);
-            var countBeforeUpdate = titleList.Count;
-            var idToUpdate = titleList.Min(a => a.Id);
-            var titleToUpdate = titleList.First(a => a.Id == idToUpdate);
-
-            titleToUpdate.Description = "This was updated";
-            await titleList.SaveAsync();
-
-            var updatedList = await dal.Fetch();
-            var updatedTitlesList = await TitleECL.GetTitleECL(updatedList);
-            
-            Assert.Equal("This was updated",updatedTitlesList.First(a => a.Id == idToUpdate).Description);
-            Assert.Equal(countBeforeUpdate, updatedTitlesList.Count);
-        }
-
-        [Fact]
-        private async void TitleECL_TestAddTitleEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ITitleDal>();
-            var childData = await dal.Fetch();
-
-            var titleList = await TitleECL.GetTitleECL(childData);
-            var countBeforeAdd = titleList.Count;
-            
-            var titleToAdd = titleList.AddNew();
-            BuildTitle(titleToAdd); 
-
-            var titleEditList = await titleList.SaveAsync();
-            
-            Assert.NotEqual(countBeforeAdd, titleEditList.Count);
-        }
 
         private void BuildTitle(TitleEC title)
         {

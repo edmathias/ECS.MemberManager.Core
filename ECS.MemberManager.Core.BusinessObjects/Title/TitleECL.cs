@@ -1,46 +1,56 @@
-using System;
+﻿
+
+
+using System; 
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
+using ECS.MemberManager.Core.DataAccess;
+using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class TitleECL : BusinessListBase<TitleECL, TitleEC>
+    public partial class TitleECL : BusinessListBase<TitleECL,TitleEC>
     {
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
+        #region Factory Methods
 
         internal static async Task<TitleECL> NewTitleECL()
         {
-            return await DataPortal.CreateAsync<TitleECL>();
+            return await DataPortal.CreateChildAsync<TitleECL>();
         }
 
         internal static async Task<TitleECL> GetTitleECL(List<Title> childData)
         {
-            return await DataPortal.FetchAsync<TitleECL>(childData);
+            return await DataPortal.FetchChildAsync<TitleECL>(childData);
         }
 
-        [Fetch]
+        #endregion
+
+        #region Data Access
+ 
+        [FetchChild]
         private async Task Fetch(List<Title> childData)
         {
+
             using (LoadListMode)
             {
-                foreach (var title in childData)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var titleToAdd = await TitleEC.GetTitleEC(title);
-                    Add(titleToAdd);
+                    var objectToAdd = await TitleEC.GetTitleEC(domainObjToAdd);
+                    Add(objectToAdd);
                 }
             }
         }
-
+       
         [Update]
         private void Update()
         {
             Child_Update();
         }
-    }
+
+        #endregion
+
+     }
 }
