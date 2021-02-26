@@ -133,6 +133,11 @@
         <DesignTime>True</DesignTime>
         <DependentUpon>TaskForEventERBase.tt</DependentUpon>
       </Compile>
+      <Compile Update="TermInOffice\TermInOfficeRORL.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>TermInOfficeRORL.tt</DependentUpon>
+      </Compile>
       <None Update="TaskForEvent\TaskForEventER.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
         <LastGenOutput>TaskForEventER.cs</LastGenOutput>
@@ -1723,10 +1728,71 @@
         <DesignTime>True</DesignTime>
         <DependentUpon>SponsorRORL.tt</DependentUpon>
       </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="TermInOffice" />
+      <None Update="TermInOffice\TermInOfficeEC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>TermInOfficeEC.cs</LastGenOutput>
+      </None>
+      <Compile Update="TermInOffice\TermInOfficeEC.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>TermInOfficeEC.tt</DependentUpon>
+      </Compile>
+      <None Update="TermInOffice\TermInOfficeECL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>TermInOfficeECL.cs</LastGenOutput>
+      </None>
+      <Compile Update="TermInOffice\TermInOfficeECL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>TermInOfficeECL.tt</DependentUpon>
+      </Compile>
+      <None Update="TermInOffice\TermInOfficeER.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>TermInOfficeER.cs</LastGenOutput>
+      </None>
+      <Compile Update="TermInOffice\TermInOfficeER.cs">
+        <DependentUpon>TermInOfficeER.tt</DependentUpon>
+      </Compile>
+      <None Update="TermInOffice\TermInOfficeERL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>TermInOfficeERL.cs</LastGenOutput>
+      </None>
+      <Compile Update="TermInOffice\TermInOfficeERL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>TermInOfficeERL.tt</DependentUpon>
+      </Compile>
+      <None Update="TermInOffice\TermInOfficeROC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>TermInOfficeROC.cs</LastGenOutput>
+      </None>
+      <Compile Update="TermInOffice\TermInOfficeROC.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>TermInOfficeROC.tt</DependentUpon>
+      </Compile>
+      <None Update="TermInOffice\TermInOfficeROCL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>TermInOfficeROCL.cs</LastGenOutput>
+      </None>
+      <Compile Update="TermInOffice\TermInOfficeROCL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>TermInOfficeROCL.tt</DependentUpon>
+      </Compile>
+      <None Update="TermInOffice\TermInOfficeROR.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>TermInOfficeROR.cs</LastGenOutput>
+      </None>
+      <Compile Update="TermInOffice\TermInOfficeROR.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>TermInOfficeROR.tt</DependentUpon>
+      </Compile>
+      <None Update="TermInOffice\TermInOfficeRORL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>TermInOfficeRORL.cs</LastGenOutput>
+      </None>
     </ItemGroup>
 
     <ItemGroup>
