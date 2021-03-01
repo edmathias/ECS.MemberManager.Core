@@ -1,11 +1,13 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.DataAccess.Mock;
+using ECS.MemberManager.Core.EF.Domain;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Xunit;
@@ -13,12 +15,12 @@ using DalManager = ECS.MemberManager.Core.DataAccess.ADO.DalManager;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class OrganizationEditList_Tests
+    public class OrganizationERL_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
 
-        public OrganizationEditList_Tests()
+        public OrganizationERL_Tests()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -40,27 +42,27 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        private async void OrganizationEditList_TestNewOrganizationList()
+        private async void OrganizationERL_TestNewOrganizationList()
         {
-            var organizationEdit = await OrganizationEditList.NewOrganizationEditList();
+            var organizationEdit = await OrganizationERL.NewOrganizationERL();
 
             Assert.NotNull(organizationEdit);
-            Assert.IsType<OrganizationEditList>(organizationEdit);
+            Assert.IsType<OrganizationERL>(organizationEdit);
         }
         
         [Fact]
-        private async void OrganizationEditList_TestGetOrganizationEditList()
+        private async void OrganizationERL_TestGetOrganizationERL()
         {
-            var organizationEdit = await OrganizationEditList.GetOrganizationEditList();
+            var organizationEdit = await OrganizationERL.GetOrganizationERL();
 
             Assert.NotNull(organizationEdit);
             Assert.Equal(3, organizationEdit.Count);
         }
         
         [Fact]
-        private async void OrganizationEditList_TestDeleteOrganizationsEntry()
+        private async void OrganizationERL_TestDeleteOrganizationsEntry()
         {
-            var organizationEdit = await OrganizationEditList.GetOrganizationEditList();
+            var organizationEdit = await OrganizationERL.GetOrganizationERL();
             var listCount = organizationEdit.Count;
             var organizationToDelete = organizationEdit.First(et => et.Id == 99);
 
@@ -70,17 +72,17 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var organizationListAfterDelete = await organizationEdit.SaveAsync();
 
             Assert.NotNull(organizationListAfterDelete);
-            Assert.IsType<OrganizationEditList>(organizationListAfterDelete);
+            Assert.IsType<OrganizationERL>(organizationListAfterDelete);
             Assert.True(isDeleted);
             Assert.NotEqual(listCount,organizationListAfterDelete.Count);
         }
 
         [Fact]
-        private async void OrganizationEditList_TestUpdateOrganizationsEntry()
+        private async void OrganizationERL_TestUpdateOrganizationsEntry()
         {
             const int idToUpdate = 1;
             
-            var organizationEditList = await OrganizationEditList.GetOrganizationEditList();
+            var organizationEditList = await OrganizationERL.GetOrganizationERL();
             var countBeforeUpdate = organizationEditList.Count;
             var organizationToUpdate = organizationEditList.First(a => a.Id == idToUpdate);
             organizationToUpdate.Name = "This was updated";
@@ -92,9 +94,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        private async void OrganizationEditList_TestAddOrganizationsEntry()
+        private async void OrganizationERL_TestAddOrganizationsEntry()
         {
-            var organizationEditList = await OrganizationEditList.GetOrganizationEditList();
+            var organizationEditList = await OrganizationERL.GetOrganizationERL();
             var countBeforeAdd = organizationEditList.Count;
             
             var organizationToAdd = organizationEditList.AddNew();
@@ -105,10 +107,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotEqual(countBeforeAdd, updatedOrganizationsList.Count);
         }
 
-        private void BuildOrganization(OrganizationEdit organizationToBuild)
+        private async Task BuildOrganization(OrganizationEC organizationToBuild)
         {
             organizationToBuild.Name = "organization name";
-            organizationToBuild.OrganizationTypeId = 1;
+            organizationToBuild.OrganizationType = await OrganizationTypeEC.GetOrganizationTypeEC(new OrganizationType() {Id = 1});
             organizationToBuild.Notes = "notes for org";
             organizationToBuild.LastUpdatedBy = "edm";
             organizationToBuild.LastUpdatedDate = DateTime.Now;

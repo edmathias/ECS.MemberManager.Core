@@ -40,13 +40,37 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
 
         public async Task<List<Organization>> Fetch()
         {
-            var titles =await _db.GetAllAsync<Organization>();
-            return titles.ToList();
+            var sql = "select * from Organizations org " +
+                      "inner join OrganizationTypes ot on org.OrganizationTypeId = ot.Id "; 
+            
+            var organizations = await _db.QueryAsync<Organization, OrganizationType, Organization>(sql,
+                (organization, organizationType ) =>
+                {
+                    organization.OrganizationType = organizationType;
+
+                    return organization ;
+                }
+            );
+
+            return organizations.ToList();
         }
 
         public async Task<Organization> Fetch(int id)
         {
-            return await _db.GetAsync<Organization>(id);
+            var sql = "select * from Organizations org "+
+                      "inner join OrganizationTypes ot on org.OrganizationTypeId = ot.Id "+
+                       $"WHERE org.Id = {id}";
+            var organizations = await _db.QueryAsync<Organization, OrganizationType,  Organization>(sql,
+                (organization, organizationType ) =>
+                {
+                    organization.OrganizationType = organizationType;
+
+                    return organization ;
+                }
+            );
+
+            
+            return organizations.FirstOrDefault();
         }
 
         public async Task<Organization> Insert(Organization organizationToInsert)
@@ -54,7 +78,15 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             var sql = "INSERT INTO dbo.Organizations (Name, OrganizationTypeId, DateOfFirstContact, LastUpdatedBy, LastUpdatedDate, Notes) "+
                         "SELECT @Name, @OrganizationTypeId, @DateOfFirstContact, @LastUpdatedBy, @LastUpdatedDate, @Notes " +
                         "SELECT SCOPE_IDENTITY()";
-            organizationToInsert.Id = await _db.ExecuteScalarAsync<int>(sql,organizationToInsert);
+            organizationToInsert.Id = await _db.ExecuteScalarAsync<int>(sql, new
+            {
+                Name = organizationToInsert.Name,
+                OrganizationTypeId = organizationToInsert.OrganizationType.Id,
+                DateOfFirstContact = organizationToInsert.DateOfFirstContact,
+                LastUpdatedBy = organizationToInsert.LastUpdatedBy,
+                LastUpdatedDate = organizationToInsert.LastUpdatedDate,
+                Notes = organizationToInsert.Notes,
+            });
 
             //reretrieve organization to get rowversion
             var insertedOffice = await _db.GetAsync<Organization>(organizationToInsert.Id);
@@ -75,7 +107,18 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             "OUTPUT inserted.RowVersion " +
             "WHERE  Id = @Id AND RowVersion = @RowVersion ";
 
-            var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql,organizationToUpdate);
+            var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql, new 
+            {
+                Id = organizationToUpdate.Id,
+                Name = organizationToUpdate.Name,
+                OrganizationTypeId = organizationToUpdate.OrganizationType.Id,
+                DateOfFirstContact = organizationToUpdate.DateOfFirstContact,
+                LastUpdatedBy = organizationToUpdate.LastUpdatedBy,
+                LastUpdatedDate = organizationToUpdate.LastUpdatedDate,
+                Notes = organizationToUpdate.Notes,
+                RowVersion = organizationToUpdate.RowVersion
+            });
+            
             if (rowVersion == null)
                 throw new DBConcurrencyException("Entity has been updated since last read. Try again!");
             organizationToUpdate.RowVersion = rowVersion;

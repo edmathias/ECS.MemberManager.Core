@@ -33,7 +33,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Organization" />
       <Folder Include="Payment" />
       <Folder Include="Phone" />
       <Folder Include="TermInOffice" />
@@ -41,7 +40,6 @@
 
     <ItemGroup>
       <Compile Remove="Payment\PaymentER_Tests.cs" />
-      <Compile Remove="Organization\OrganizationER_Tests.cs" />
       <Compile Remove="Address\AddressEditChild_Tests.cs" />
       <Compile Remove="Address\AddressInfoChildTests.cs" />
       <Compile Remove="EMailType\EMailTypeEdit_Tests.cs" />
@@ -83,8 +81,6 @@
       <Compile Remove="Office\OfficeEditList_Tests.cs" />
       <Compile Remove="Office\OfficeInfo_Tests.cs" />
       <Compile Remove="Office\OfficeInfoList_Tests.cs" />
-      <Compile Remove="Organization\OrganizationEdit_Tests.cs" />
-      <Compile Remove="Organization\OrganizationEditList_Tests.cs" />
       <Compile Remove="Organization\OrganizationInfo_Tests.cs" />
       <Compile Remove="Organization\OrganizationInfoList_Tests.cs" />
       <Compile Remove="OrganizationType\OrganizationTypeEditList_Tests.cs" />
@@ -101,6 +97,14 @@
       <Compile Remove="EventDocument\EventROR_Tests.cs" />
       <Compile Remove="EventDocument\EventRORL_Tests.cs" />
       <Compile Remove="ContactForSponsor\DocumentTypeERL_Tests.cs" />
+      <Compile Remove="Organization\DocumentTypeECL_Tests.cs" />
+      <Compile Remove="Organization\DocumentTypeER_Tests.cs" />
+      <Compile Remove="Organization\DocumentTypeERL_Tests.cs" />
+      <Compile Remove="Organization\DocumentTypeROC_Tests.cs" />
+      <Compile Remove="Organization\DocumentTypeROCL_Tests.cs" />
+      <Compile Remove="Organization\DocumentTypeROR_Tests.cs" />
+      <Compile Remove="Organization\DocumentTypeRORL_Tests.cs" />
+      <Compile Remove="Organization\OrganizationER_Tests_old.cs" />
     </ItemGroup>
     
 

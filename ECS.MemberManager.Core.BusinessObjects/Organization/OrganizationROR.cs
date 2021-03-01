@@ -66,15 +66,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
             private set => LoadProperty(OrganizationTypeProperty, value); 
         }    
  
-
-        public static readonly PropertyInfo<CategoryOfOrganizationROC> CategoryOfOrganizationProperty = RegisterProperty<CategoryOfOrganizationROC>(o => o.CategoryOfOrganization);
-        public CategoryOfOrganizationROC CategoryOfOrganization  
-        {
-            get => GetProperty(CategoryOfOrganizationProperty); 
-        
-            private set => LoadProperty(CategoryOfOrganizationProperty, value); 
-        }    
- 
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
         public virtual byte[] RowVersion 
         {
@@ -108,7 +99,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 LastUpdatedDate = data.LastUpdatedDate;
                 Notes = data.Notes;
                 OrganizationType = (data.OrganizationType != null ? await OrganizationTypeROC.GetOrganizationTypeROC(data.OrganizationType) : null);
-                CategoryOfOrganization = (data.CategoryOfOrganization != null ? await CategoryOfOrganizationROC.GetCategoryOfOrganizationROC(data.CategoryOfOrganization) : null);
                 RowVersion = data.RowVersion;
         }
 

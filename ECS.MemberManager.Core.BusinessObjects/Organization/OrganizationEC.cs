@@ -70,14 +70,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(OrganizationTypeProperty, value); 
         }    
  
-
-        public static readonly PropertyInfo<CategoryOfOrganizationEC> CategoryOfOrganizationProperty = RegisterProperty<CategoryOfOrganizationEC>(o => o.CategoryOfOrganization);
-        public CategoryOfOrganizationEC CategoryOfOrganization  
-        {
-            get => GetProperty(CategoryOfOrganizationProperty); 
-            set => SetProperty(CategoryOfOrganizationProperty, value); 
-        }    
- 
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
         public virtual byte[] RowVersion 
         {
@@ -116,7 +108,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 LastUpdatedDate = data.LastUpdatedDate;
                 Notes = data.Notes;
                 OrganizationType = (data.OrganizationType != null ? await OrganizationTypeEC.GetOrganizationTypeEC(data.OrganizationType) : null);
-                CategoryOfOrganization = (data.CategoryOfOrganization != null ? await CategoryOfOrganizationEC.GetCategoryOfOrganizationEC(data.CategoryOfOrganization) : null);
                 RowVersion = data.RowVersion;
             }            
         }
@@ -135,7 +126,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 LastUpdatedDate = LastUpdatedDate,
                 Notes = Notes,
                 OrganizationType = (OrganizationType != null ? new OrganizationType() { Id = OrganizationType.Id } : null),
-                CategoryOfOrganization = (CategoryOfOrganization != null ? new CategoryOfOrganization() { Id = CategoryOfOrganization.Id } : null),
                 RowVersion = RowVersion,
             };
 
@@ -159,7 +149,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 LastUpdatedDate = LastUpdatedDate,
                 Notes = Notes,
                 OrganizationType = (OrganizationType != null ? new OrganizationType() { Id = OrganizationType.Id } : null),
-                CategoryOfOrganization = (CategoryOfOrganization != null ? new CategoryOfOrganization() { Id = CategoryOfOrganization.Id } : null),
                 RowVersion = RowVersion,
             };
 
