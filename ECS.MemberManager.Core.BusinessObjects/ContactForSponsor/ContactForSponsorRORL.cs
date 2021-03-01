@@ -1,6 +1,8 @@
-using System;
+﻿
+
+
+using System; 
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -10,28 +12,24 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class ContactForSponsorRORL : ReadOnlyListBase<ContactForSponsorRORL,ContactForSponsorROC>
+    public partial class ContactForSponsorRORL : ReadOnlyListBase<ContactForSponsorRORL,ContactForSponsorROC>
     {
-        #region Business Methods
-        
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
-        
-        #endregion
-        
         #region Factory Methods
 
-        public static async Task<ContactForSponsorRORL> GetContactForSponsorRORL()
+        public static async Task<ContactForSponsorRORL> NewContactForSponsorRORL()
+        {
+            return await DataPortal.CreateAsync<ContactForSponsorRORL>();
+        }
+
+        public static async Task<ContactForSponsorRORL> GetContactForSponsorRORL( )
         {
             return await DataPortal.FetchAsync<ContactForSponsorRORL>();
         }
-        
-        #endregion
-        
-        #region Data Access
 
+        #endregion
+
+        #region Data Access
+ 
         [Fetch]
         private async Task Fetch()
         {
@@ -41,14 +39,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
             using (LoadListMode)
             {
-                foreach (var address in childData)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var addressToAdd = await ContactForSponsorROC.GetContactForSponsorROC(address);
-                    Add(addressToAdd);
+                    var objectToAdd = await ContactForSponsorROC.GetContactForSponsorROC(domainObjToAdd);
+                    Add(objectToAdd);
                 }
             }
         }
-        
+
         #endregion
-    }
+
+     }
 }

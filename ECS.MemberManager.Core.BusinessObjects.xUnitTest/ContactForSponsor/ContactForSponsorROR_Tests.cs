@@ -6,16 +6,16 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class DocumentTypeROR_Tests
+    public class ContactForSponsorROR_Tests
     {
 
         [Fact]
-        public async void DocumentTypeROR_TestGetById()
+        public async void ContactForSponsorROR_TestGetById()
         {
-            var category = await DocumentTypeROR.GetDocumentTypeROR(1);
+            var category = await ContactForSponsorROR.GetContactForSponsorROR(1);
             
             Assert.NotNull(category);
-            Assert.IsType<DocumentTypeROR>(category);
+            Assert.IsType<ContactForSponsorROR>(category);
             Assert.Equal(1, category.Id);
         }
     }

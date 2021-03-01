@@ -38,8 +38,20 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
 
         public async Task<List<ContactForSponsor>> Fetch()
         {
-            var contactForSponsorTypes =await _db.GetAllAsync<ContactForSponsor>();
-            return contactForSponsorTypes.ToList();
+            StringBuilder sql = new StringBuilder();
+            sql.AppendLine("select * from ContactForSponsors cs");
+            sql.AppendLine("left join Sponsors s on cs.SponsorId = s.Id");
+            sql.AppendLine("left join Persons p on cs.PersonId = p.Id");
+             var result = await _db.QueryAsync<ContactForSponsor,Sponsor,Person,ContactForSponsor>(sql.ToString(),
+                (contact, sponsor, person) =>
+                {
+                    contact.Sponsor = sponsor;
+                    contact.Person = person;
+                    return contact;
+                }
+            );
+
+             return result.ToList();
         }
         public async Task<ContactForSponsor> Fetch(int id)
         {
@@ -64,9 +76,9 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
         {
             var sql = new StringBuilder();
             sql.AppendLine("INSERT INTO ContactForSponsors (SponsorId,DateWhenContacted,Purpose,RecordOfDiscussion,");
-            sql.AppendLine("PersonId,Notes, LastUpdatedBy,LastUpdatedDate");
+            sql.AppendLine("PersonId,Notes, LastUpdatedBy,LastUpdatedDate)");
             sql.AppendLine("VALUES(@SponsorId,@DateWhenContacted,@Purpose,@RecordOfDiscussion,@PersonId,");
-            sql.AppendLine("@Notes,@LastUpdatedBy,@LastUpdatedDate);");
+            sql.AppendLine("@Notes,@LastUpdatedBy,@LastUpdatedDate) ");
             sql.AppendLine("SELECT SCOPE_IDENTITY()");
 
             contactForSponsorToInsert.Id = await _db.ExecuteScalarAsync<int>(sql.ToString(), new

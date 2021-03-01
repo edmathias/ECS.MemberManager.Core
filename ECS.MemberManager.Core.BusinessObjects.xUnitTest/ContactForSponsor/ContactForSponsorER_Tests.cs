@@ -4,11 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Csla;
 using Csla.Rules;
+using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.ADO;
+using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using ECS.MemberManager.Core.EF.Domain;
 using Microsoft.Extensions.Configuration;
 using Xunit;
+using DalManager = ECS.MemberManager.Core.DataAccess.ADO.DalManager;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
@@ -71,10 +74,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async Task ContactForSponsorER_TestInsertNewContactForSponsorER()
         {
-            var contactToInsert = BuildContactForSponsor();
             var contactForSponsor = await ContactForSponsorER.NewContactForSponsorER();
-            contactForSponsor.Sponsor = BuildSponsor();
-            contactForSponsor.Person = BuildPerson(); 
+            contactForSponsor.Sponsor = await BuildSponsorEC();
+            contactForSponsor.Person = await BuildPersonEC();
             contactForSponsor.DateWhenContacted = DateTime.Now;
             contactForSponsor.Purpose = "purpose for contact";
             contactForSponsor.RecordOfDiscussion = "this was discussed";
@@ -117,9 +119,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             Assert.NotNull(contactForSponsor);
             Assert.False(contactForSponsor.IsValid);
-            Assert.Equal("The field Description must be a string or array type with a maximum length of '50'.",
-                contactForSponsor.BrokenRulesCollection[0].Description);
- 
+            Assert.Equal("Purpose",contactForSponsor.BrokenRulesCollection[0].Property);
+            Assert.Equal("Purpose can not exceed 255 characters",contactForSponsor.BrokenRulesCollection[0].Description);
         }        
         // test exception if attempt to save in invalid state
 
@@ -138,8 +139,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             var contactForSponsor = new ContactForSponsor();
             contactForSponsor.Id = 1;
-            contactForSponsor.Sponsor = BuildSponsor();
-            contactForSponsor.Person = BuildPerson(); 
+            contactForSponsor.Sponsor = new Sponsor() {Id = 1};
+            contactForSponsor.Person = new Person() {Id = 1};
             contactForSponsor.DateWhenContacted = DateTime.Now;
             contactForSponsor.Purpose = "purpose for contact";
             contactForSponsor.RecordOfDiscussion = "this was discussed";
@@ -151,20 +152,26 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             return contactForSponsor;
         }
 
-        private Sponsor BuildSponsor()
+        private async Task<SponsorEC> BuildSponsorEC()
         {
-            return new Sponsor()
-            {
-                Id = 1
-            };
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<ISponsorDal>();
+
+            var sponsors = await dal.Fetch();
+            var sponsor = sponsors.First();
+
+            return await SponsorEC.GetSponsorEC(sponsor);
         }
 
-        private Person BuildPerson()
+        private async Task<PersonEC> BuildPersonEC()
         {
-            return new Person()
-            {
-                Id = 1
-            };
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IPersonDal>();
+
+            var persons = await dal.Fetch();
+            var sponsor = persons.First();
+
+            return await PersonEC.GetPersonEC(sponsor);
         }
         
         

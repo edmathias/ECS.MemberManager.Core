@@ -1,4 +1,7 @@
-﻿using System;
+﻿
+
+
+using System; 
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
@@ -9,32 +12,24 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class ContactForSponsorERL : BusinessListBase<ContactForSponsorERL,ContactForSponsorEC>
+    public partial class ContactForSponsorERL : BusinessListBase<ContactForSponsorERL,ContactForSponsorEC>
     {
-        #region Authorization Rules
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
-
-        #endregion
-       
         #region Factory Methods
-        
+
         public static async Task<ContactForSponsorERL> NewContactForSponsorERL()
         {
             return await DataPortal.CreateAsync<ContactForSponsorERL>();
         }
 
-        public static async Task<ContactForSponsorERL> GetContactForSponsorERL()
+        public static async Task<ContactForSponsorERL> GetContactForSponsorERL( )
         {
             return await DataPortal.FetchAsync<ContactForSponsorERL>();
         }
-       
+
         #endregion
-        
+
         #region Data Access
-        
+ 
         [Fetch]
         private async Task Fetch()
         {
@@ -44,21 +39,21 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
             using (LoadListMode)
             {
-                foreach (var contactForSponsor in childData)
+                foreach (var domainObjToAdd in childData)
                 {
-                    var contactForSponsorToAdd = 
-                        await ContactForSponsorEC.GetContactForSponsorEC(contactForSponsor);
-                    Add(contactForSponsorToAdd);
+                    var objectToAdd = await ContactForSponsorEC.GetContactForSponsorEC(domainObjToAdd);
+                    Add(objectToAdd);
                 }
             }
         }
-        
+       
         [Update]
         private void Update()
         {
             Child_Update();
         }
-        
+
         #endregion
-    }
+
+     }
 }

@@ -61,66 +61,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(listToTest);
             Assert.Equal(3, listToTest.Count);
         }
-        
-        [Fact]
-        private async void ContactForSponsorECL_TestDeleteContactForSponsorEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IContactForSponsorDal>();
-            var childData = await dal.Fetch();
-            
-            var contactForSponsorEditList = await ContactForSponsorECL.GetContactForSponsorECL(childData);
-
-            var contactForSponsor = contactForSponsorEditList.First(a => a.Id == 99);
-
-            // remove is deferred delete
-            contactForSponsorEditList.Remove(contactForSponsor); 
-
-            var contactForSponsorListAfterDelete = await contactForSponsorEditList.SaveAsync();
-            
-            Assert.NotEqual(childData.Count,contactForSponsorListAfterDelete.Count);
-        }
-
-        [Fact]
-        private async void ContactForSponsorECL_TestUpdateContactForSponsorEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IContactForSponsorDal>();
-            var childData = await dal.Fetch();
-            
-            var contactForSponsorList = await ContactForSponsorECL.GetContactForSponsorECL(childData);
-            var countBeforeUpdate = contactForSponsorList.Count;
-            var idToUpdate = contactForSponsorList.Min(a => a.Id);
-            var contactForSponsorToUpdate = contactForSponsorList.First(a => a.Id == idToUpdate);
-
-            contactForSponsorToUpdate.Notes = "This was updated";
-            await contactForSponsorList.SaveAsync();
-
-            var updatedList = await dal.Fetch();
-            var updatedContactForSponsorsList = await ContactForSponsorECL.GetContactForSponsorECL(updatedList);
-            
-            Assert.Equal("This was updated",updatedContactForSponsorsList.First(a => a.Id == idToUpdate).Notes);
-            Assert.Equal(countBeforeUpdate, updatedContactForSponsorsList.Count);
-        }
-
-        [Fact]
-        private async void ContactForSponsorECL_TestAddContactForSponsorEntry()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IContactForSponsorDal>();
-            var childData = await dal.Fetch();
-            
-            var contactForSponsorList = await ContactForSponsorECL.GetContactForSponsorECL(childData);
-            var countBeforeAdd = contactForSponsorList.Count;
-            
-            var domainObj =await BuildContactForSponsor();
-            var contactEC = await ContactForSponsorEC.GetContactForSponsorEC(domainObj);
-            contactForSponsorList.Add(contactEC);
-            
-            var contactForSponsorEditList = await contactForSponsorList.SaveAsync();
-            
-            Assert.NotEqual(countBeforeAdd, contactForSponsorEditList.Count);
-        }
 
         private async Task<ContactForSponsor> BuildContactForSponsor()
         {

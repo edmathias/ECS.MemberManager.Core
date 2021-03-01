@@ -33,7 +33,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="ContactForSponsor" />
       <Folder Include="Organization" />
       <Folder Include="Payment" />
       <Folder Include="Phone" />
@@ -42,7 +41,6 @@
 
     <ItemGroup>
       <Compile Remove="Payment\PaymentER_Tests.cs" />
-      <Compile Remove="ContactForSponsor\ContactForSponsorERL_Tests.cs" />
       <Compile Remove="Organization\OrganizationER_Tests.cs" />
       <Compile Remove="Address\AddressEditChild_Tests.cs" />
       <Compile Remove="Address\AddressInfoChildTests.cs" />
@@ -74,14 +72,6 @@
       <Compile Remove="Event\EventEditList_Tests.cs" />
       <Compile Remove="Event\EventInfo_Tests.cs" />
       <Compile Remove="Event\EventInfoList_Tests.cs" />
-      <Compile Remove="ContactForSponsor\DocumentTypeERL_Tests.cs" />
-      <Compile Remove="ContactForSponsor\DocumentTypeROC_Tests.cs" />
-      <Compile Remove="ContactForSponsor\DocumentTypeROCL_Tests.cs" />
-      <Compile Remove="ContactForSponsor\DocumentTypeROR_Tests.cs" />
-      <Compile Remove="ContactForSponsor\DocumentTypeRORL_Tests.cs" />
-      <Compile Remove="ContactForSponsor\ContactForSponsorEC_Tests.cs" />
-      <Compile Remove="ContactForSponsor\ContactForSponsorECL_Tests.cs" />
-      <Compile Remove="ContactForSponsor\ContactForSponsorER_Tests.cs" />
       <Compile Remove="MembershipType\MembershipTypeEditList_Tests.cs" />
       <Compile Remove="MembershipType\MembershipTypeEditTests.cs" />
       <Compile Remove="MembershipType\MembershipTypeInfo_Tests.cs" />
@@ -110,6 +100,7 @@
       <Compile Remove="EventDocument\EventROCL_Tests.cs" />
       <Compile Remove="EventDocument\EventROR_Tests.cs" />
       <Compile Remove="EventDocument\EventRORL_Tests.cs" />
+      <Compile Remove="ContactForSponsor\DocumentTypeERL_Tests.cs" />
     </ItemGroup>
     
 

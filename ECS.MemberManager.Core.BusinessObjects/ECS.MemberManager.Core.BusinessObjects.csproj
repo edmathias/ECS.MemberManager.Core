@@ -1849,6 +1849,150 @@
       <Compile Update="Title\TitleRORL.cs">
         <DependentUpon>TitleRORL.tt</DependentUpon>
       </Compile>
+      <None Update="ContactForSponsor\CategoryOfPersonEC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>CategoryOfPersonEC.cs</LastGenOutput>
+      </None>
+      <Compile Update="ContactForSponsor\CategoryOfPersonEC.cs">
+        <DependentUpon>CategoryOfPersonEC.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+      </Compile>
+      <None Update="ContactForSponsor\CategoryOfPersonECL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>CategoryOfPersonECL.cs</LastGenOutput>
+      </None>
+      <Compile Update="ContactForSponsor\CategoryOfPersonECL.cs">
+        <DependentUpon>CategoryOfPersonECL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+      </Compile>
+      <None Update="ContactForSponsor\CategoryOfPersonER.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>CategoryOfPersonER.cs</LastGenOutput>
+      </None>
+      <Compile Update="ContactForSponsor\CategoryOfPersonER.cs">
+        <DependentUpon>CategoryOfPersonER.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+      </Compile>
+      <None Update="ContactForSponsor\CategoryOfPersonERL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>CategoryOfPersonERL.cs</LastGenOutput>
+      </None>
+      <Compile Update="ContactForSponsor\CategoryOfPersonERL.cs">
+        <DependentUpon>CategoryOfPersonERL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+      </Compile>
+      <None Update="ContactForSponsor\CategoryOfPersonROC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>CategoryOfPersonROC.cs</LastGenOutput>
+      </None>
+      <Compile Update="ContactForSponsor\CategoryOfPersonROC.cs">
+        <DependentUpon>CategoryOfPersonROC.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+      </Compile>
+      <None Update="ContactForSponsor\CategoryOfPersonROCL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>CategoryOfPersonROCL.cs</LastGenOutput>
+      </None>
+      <Compile Update="ContactForSponsor\CategoryOfPersonROCL.cs">
+        <DependentUpon>CategoryOfPersonROCL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+      </Compile>
+      <None Update="ContactForSponsor\CategoryOfPersonROR.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>CategoryOfPersonROR.cs</LastGenOutput>
+      </None>
+      <Compile Update="ContactForSponsor\CategoryOfPersonROR.cs">
+        <DependentUpon>CategoryOfPersonROR.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+      </Compile>
+      <None Update="ContactForSponsor\CategoryOfPersonRORL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>CategoryOfPersonRORL.cs</LastGenOutput>
+      </None>
+      <Compile Update="ContactForSponsor\CategoryOfPersonRORL.cs">
+        <DependentUpon>CategoryOfPersonRORL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+      </Compile>
+      <None Update="ContactForSponsor\ContactForSponsorEC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>ContactForSponsorEC.cs</LastGenOutput>
+      </None>
+      <Compile Update="ContactForSponsor\ContactForSponsorEC.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>ContactForSponsorEC.tt</DependentUpon>
+      </Compile>
+      <None Update="ContactForSponsor\ContactForSponsorECL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>ContactForSponsorECL.cs</LastGenOutput>
+      </None>
+      <Compile Update="ContactForSponsor\ContactForSponsorECL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>ContactForSponsorECL.tt</DependentUpon>
+      </Compile>
+      <None Update="ContactForSponsor\ContactForSponsorER.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>ContactForSponsorER.cs</LastGenOutput>
+      </None>
+      <Compile Update="ContactForSponsor\ContactForSponsorER.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>ContactForSponsorER.tt</DependentUpon>
+      </Compile>
+      <None Update="ContactForSponsor\ContactForSponsorERL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>ContactForSponsorERL.cs</LastGenOutput>
+      </None>
+      <Compile Update="ContactForSponsor\ContactForSponsorERL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>ContactForSponsorERL.tt</DependentUpon>
+      </Compile>
+      <None Update="ContactForSponsor\ContactForSponsorROC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>ContactForSponsorROC.cs</LastGenOutput>
+      </None>
+      <Compile Update="ContactForSponsor\ContactForSponsorROC.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>ContactForSponsorROC.tt</DependentUpon>
+      </Compile>
+      <None Update="ContactForSponsor\ContactForSponsorROCL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>ContactForSponsorROCL.cs</LastGenOutput>
+      </None>
+      <Compile Update="ContactForSponsor\ContactForSponsorROCL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>ContactForSponsorROCL.tt</DependentUpon>
+      </Compile>
+      <None Update="ContactForSponsor\ContactForSponsorROR.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>ContactForSponsorROR.cs</LastGenOutput>
+      </None>
+      <Compile Update="ContactForSponsor\ContactForSponsorROR.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>ContactForSponsorROR.tt</DependentUpon>
+      </Compile>
+      <None Update="ContactForSponsor\ContactForSponsorRORL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>ContactForSponsorRORL.cs</LastGenOutput>
+      </None>
+      <Compile Update="ContactForSponsor\ContactForSponsorRORL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>ContactForSponsorRORL.tt</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

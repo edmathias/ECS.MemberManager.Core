@@ -1,6 +1,7 @@
-﻿using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿
+
+using System;
+using System.Collections.Generic; 
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -10,134 +11,109 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public class ContactForSponsorROC : ReadOnlyBase<ContactForSponsorROC>
+    public partial class ContactForSponsorROC : ReadOnlyBase<ContactForSponsorROC>
     {
-        #region Business Methods
-
-        public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(p => p.Id);
-        public int Id
+        #region Business Methods 
+         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
+        public virtual int Id 
         {
-            get => GetProperty(IdProperty);
-            private set => LoadProperty(IdProperty, value);
+            get => GetProperty(IdProperty); 
+            private set => LoadProperty(IdProperty, value);    
         }
 
-        public static readonly PropertyInfo<Sponsor> SponsorProperty = RegisterProperty<Sponsor>(p => p.Sponsor);
-        public Sponsor Sponsor
+        public static readonly PropertyInfo<SmartDate> DateWhenContactedProperty = RegisterProperty<SmartDate>(o => o.DateWhenContacted);
+        public virtual SmartDate DateWhenContacted 
         {
-            get => GetProperty(SponsorProperty);
-            private set => LoadProperty(SponsorProperty, value);
+            get => GetProperty(DateWhenContactedProperty); 
+            private set => LoadProperty(DateWhenContactedProperty, value);    
         }
+
+        public static readonly PropertyInfo<string> PurposeProperty = RegisterProperty<string>(o => o.Purpose);
+        public virtual string Purpose 
+        {
+            get => GetProperty(PurposeProperty); 
+            private set => LoadProperty(PurposeProperty, value);    
+        }
+
+        public static readonly PropertyInfo<string> RecordOfDiscussionProperty = RegisterProperty<string>(o => o.RecordOfDiscussion);
+        public virtual string RecordOfDiscussion 
+        {
+            get => GetProperty(RecordOfDiscussionProperty); 
+            private set => LoadProperty(RecordOfDiscussionProperty, value);    
+        }
+
+        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
+        public virtual string Notes 
+        {
+            get => GetProperty(NotesProperty); 
+            private set => LoadProperty(NotesProperty, value);    
+        }
+
+        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(o => o.LastUpdatedBy);
+        public virtual string LastUpdatedBy 
+        {
+            get => GetProperty(LastUpdatedByProperty); 
+            private set => LoadProperty(LastUpdatedByProperty, value);    
+        }
+
+        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(o => o.LastUpdatedDate);
+        public virtual SmartDate LastUpdatedDate 
+        {
+            get => GetProperty(LastUpdatedDateProperty); 
+            private set => LoadProperty(LastUpdatedDateProperty, value);    
+        }
+
+
+        public static readonly PropertyInfo<SponsorROC> SponsorProperty = RegisterProperty<SponsorROC>(o => o.Sponsor);
+        public SponsorROC Sponsor  
+        {
+            get => GetProperty(SponsorProperty); 
         
-        public static readonly PropertyInfo<SmartDate> DateWhenContactedProperty =
-            RegisterProperty<SmartDate>(p => p.DateWhenContacted);
-        public SmartDate DateWhenContacted
+            private set => LoadProperty(SponsorProperty, value); 
+        }    
+ 
+
+        public static readonly PropertyInfo<PersonROC> PersonProperty = RegisterProperty<PersonROC>(o => o.Person);
+        public PersonROC Person  
         {
-            get => GetProperty(DateWhenContactedProperty);
-            private set => LoadProperty(DateWhenContactedProperty, value);
+            get => GetProperty(PersonProperty); 
+        
+            private set => LoadProperty(PersonProperty, value); 
+        }    
+ 
+        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
+        public virtual byte[] RowVersion 
+        {
+            get => GetProperty(RowVersionProperty); 
+            private set => LoadProperty(RowVersionProperty, value);    
         }
 
-        public static readonly PropertyInfo<string> PurposeProperty = RegisterProperty<string>(p => p.Purpose);
-        [MaxLength(255)]
-        public string Purpose
-        {
-            get => GetProperty(PurposeProperty);
-            private set => LoadProperty(PurposeProperty, value);
-        }
-
-        public static readonly PropertyInfo<string> RecordOfDiscussionProperty =
-            RegisterProperty<string>(p => p.RecordOfDiscussion);
-        public string RecordOfDiscussion
-        {
-            get => GetProperty(RecordOfDiscussionProperty);
-            private set => LoadProperty(RecordOfDiscussionProperty, value);
-        }
-
-        public static readonly PropertyInfo<Person> PersonProperty = RegisterProperty<Person>(p => p.Person);
-        public Person Person
-        {
-            get => GetProperty(PersonProperty);
-            private set => LoadProperty(PersonProperty, value);
-        }
-
-        public static readonly PropertyInfo<int> ContactForSponsorTypeIdProperty =
-            RegisterProperty<int>(p => p.ContactForSponsorTypeId);
-        public int ContactForSponsorTypeId
-        {
-            get => GetProperty(ContactForSponsorTypeIdProperty);
-            private set => LoadProperty(ContactForSponsorTypeIdProperty, value);
-        }
-
-        public static readonly PropertyInfo<string> LastUpdatedByProperty =
-            RegisterProperty<string>(p => p.LastUpdatedBy);
-        [Required, MaxLength(255)]
-        public string LastUpdatedBy
-        {
-            get => GetProperty(LastUpdatedByProperty);
-            private set => LoadProperty(LastUpdatedByProperty, value);
-        }
-
-        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty =
-            RegisterProperty<SmartDate>(p => p.LastUpdatedDate);
-        [Required]
-        public SmartDate LastUpdatedDate
-        {
-            get => GetProperty(LastUpdatedDateProperty);
-            private set => LoadProperty(LastUpdatedDateProperty, value);
-        }
-
-        public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(p => p.Notes);
-        public string Notes
-        {
-            get => GetProperty(NotesProperty);
-            private set => LoadProperty(NotesProperty, value);
-        }
-
-        public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(p => p.RowVersion);
-        public byte[] RowVersion
-        {
-            get => GetProperty(RowVersionProperty);
-            private set => LoadProperty(RowVersionProperty, value);
-        }
-
-        protected override void AddBusinessRules()
-        {
-            base.AddBusinessRules();
-
-            // TODO: add business rules
-        }
-
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public static void AddObjectAuthorizationRules()
-        {
-            // TODO: add object-level authorization rules
-        }
-
-        #endregion
+        #endregion 
 
         #region Factory Methods
-
-        public static async Task<ContactForSponsorROC> GetContactForSponsorROC(ContactForSponsor childData)
+        internal static async Task<ContactForSponsorROC> GetContactForSponsorROC(ContactForSponsor childData)
         {
             return await DataPortal.FetchChildAsync<ContactForSponsorROC>(childData);
-        }
+        }  
+
 
         #endregion
 
         #region Data Access Methods
 
         [FetchChild]
-        private void Fetch(ContactForSponsor childData)
+        private async Task Fetch(ContactForSponsor data)
         {
-            Id = childData.Id;
-            Sponsor = childData.Sponsor;
-            DateWhenContacted = childData.DateWhenContacted;
-            Purpose = childData.Purpose;
-            RecordOfDiscussion = childData.RecordOfDiscussion;
-            Person = childData.Person;
-            LastUpdatedBy = childData.LastUpdatedBy;
-            LastUpdatedDate = childData.LastUpdatedDate;
-            Notes = childData.Notes;
-            RowVersion = childData.RowVersion;
+                Id = data.Id;
+                DateWhenContacted = data.DateWhenContacted;
+                Purpose = data.Purpose;
+                RecordOfDiscussion = data.RecordOfDiscussion;
+                Notes = data.Notes;
+                LastUpdatedBy = data.LastUpdatedBy;
+                LastUpdatedDate = data.LastUpdatedDate;
+                Sponsor = (data.Sponsor != null ? await SponsorROC.GetSponsorROC(data.Sponsor) : null);
+                Person = (data.Person != null ? await PersonROC.GetPersonROC(data.Person) : null);
+                RowVersion = data.RowVersion;
         }
 
         #endregion

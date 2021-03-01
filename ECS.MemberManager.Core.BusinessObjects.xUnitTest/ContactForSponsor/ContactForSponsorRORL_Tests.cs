@@ -7,12 +7,12 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class DocumentTypeRORL_Tests
+    public class ContactForSponsorRORL_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
 
-        public DocumentTypeRORL_Tests()
+        public ContactForSponsorRORL_Tests()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -34,9 +34,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        private async void DocumentTypeRORL_TestGetDocumentTypeRORL()
+        private async void ContactForSponsorRORL_TestGetContactForSponsorRORL()
         {
-            var categoryOfPersonTypeInfoList = await DocumentTypeRORL.GetDocumentTypeRORL();
+            var categoryOfPersonTypeInfoList = await ContactForSponsorRORL.GetContactForSponsorRORL();
             
             Assert.NotNull(categoryOfPersonTypeInfoList);
             Assert.True(categoryOfPersonTypeInfoList.IsReadOnly);

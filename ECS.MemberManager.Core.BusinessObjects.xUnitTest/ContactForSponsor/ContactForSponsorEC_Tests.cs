@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Csla;
 using Csla.Rules;
+using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.ADO;
+using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using ECS.MemberManager.Core.EF.Domain;
 using Microsoft.Extensions.Configuration;
@@ -39,7 +41,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestContactForSponsorEC_NewContactForSponsorEC()
+        public async Task ContactForSponsorEC_NewContactForSponsorEC()
         {
             var category = await ContactForSponsorEC.NewContactForSponsorEC();
 
@@ -49,9 +51,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
         
         [Fact]
-        public async Task TestContactForSponsorEC_GetContactForSponsorEC()
+        public async Task ContactForSponsorEC_GetContactForSponsorEC()
         {
-            var contactForSponsorToLoad = BuildContactForSponsor();
+            var contactForSponsorToLoad = await BuildContactForSponsor();
             var contactForSponsor = await ContactForSponsorEC.GetContactForSponsorEC(contactForSponsorToLoad);
 
             Assert.NotNull(contactForSponsor);
@@ -66,23 +68,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestContactForSponsorEC_DescriptionRequired()
+        public async Task ContactForSponsorEC_PurposeLessThan255Chars()
         {
-            var categoryToTest = BuildContactForSponsor();
-            var category = await ContactForSponsorEC.GetContactForSponsorEC(categoryToTest);
-            var isObjectValidInit = category.IsValid;
-            category.LastUpdatedBy = string.Empty;
-
-            Assert.NotNull(category);
-            Assert.True(isObjectValidInit);
-            Assert.False(category.IsValid);
-            Assert.Equal("LastUpdatedBy",category.BrokenRulesCollection[0].Property);
-        }
-
-        [Fact]
-        public async Task TestContactForSponsorEC_PurposeLessThan255Chars()
-        {
-            var categoryToTest = BuildContactForSponsor();
+            var categoryToTest = await BuildContactForSponsor();
             var category = await ContactForSponsorEC.GetContactForSponsorEC(categoryToTest);
             var isObjectValidInit = category.IsValid;
             category.Purpose = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
@@ -97,9 +85,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestContactForSponsorEC_LastUpdatedByRequired()
+        public async Task ContactForSponsorEC_LastUpdatedByRequired()
         {
-            var categoryToTest = BuildContactForSponsor();
+            var categoryToTest = await BuildContactForSponsor();
             var category = await ContactForSponsorEC.GetContactForSponsorEC(categoryToTest);
             var isObjectValidInit = category.IsValid;
             category.LastUpdatedBy = string.Empty;
@@ -108,14 +96,17 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.True(isObjectValidInit);
             Assert.False(category.IsValid);
             Assert.Equal("LastUpdatedBy",category.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy required",category.BrokenRulesCollection[0].Description);
         }
-      
-        private ContactForSponsor BuildContactForSponsor()
+    
+                
+        
+        private async Task<ContactForSponsor> BuildContactForSponsor()
         {
             var contactForSponsor = new ContactForSponsor();
             contactForSponsor.Id = 1;
-            contactForSponsor.Sponsor = BuildSponsor();
-            contactForSponsor.Person = BuildPerson(); 
+            contactForSponsor.Sponsor = await BuildSponsor();
+            contactForSponsor.Person = await BuildPerson(); 
             contactForSponsor.DateWhenContacted = DateTime.Now;
             contactForSponsor.Purpose = "purpose for contact";
             contactForSponsor.RecordOfDiscussion = "this was discussed";
@@ -127,16 +118,22 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             return contactForSponsor;
         }
 
-        private Sponsor BuildSponsor()
+        private async Task<Sponsor> BuildSponsor()
         {
-            var sponsors = MockDb.Sponsors;
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<ISponsorDal>();
+
+            var sponsors = await dal.Fetch();
 
             return sponsors.First();
         }
 
-        private Person BuildPerson()
+        private async Task<Person> BuildPerson()
         {
-            var persons = MockDb.Persons;
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<IPersonDal>();
+
+            var persons = await dal.Fetch();
 
             return persons.First();
         }

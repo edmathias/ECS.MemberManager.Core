@@ -63,7 +63,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestCategoryOfPersonEC_CategoryRequired()
+        public async Task TestCategoryOfPersonEC_PurposeRequired()
         {
             var categoryToTest = BuildCategoryOfPerson();
             var category = await CategoryOfPersonEC.GetCategoryOfPersonEC(categoryToTest);
@@ -73,6 +73,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(category);
             Assert.True(isObjectValidInit);
             Assert.False(category.IsValid);
+            Assert.Equal("Category",category.BrokenRulesCollection[0].Property);
             Assert.Equal("Category",category.BrokenRulesCollection[0].Property);
         }
 

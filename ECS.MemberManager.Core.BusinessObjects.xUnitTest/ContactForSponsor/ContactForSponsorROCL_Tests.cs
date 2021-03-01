@@ -8,12 +8,12 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class DocumentTypeROCL_Tests
+    public class ContactForSponsorROCL_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
 
-        public DocumentTypeROCL_Tests()
+        public ContactForSponsorROCL_Tests()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -35,17 +35,17 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
         
         [Fact]
-        private async void DocumentTypeInfoList_TestGetDocumentTypeInfoList()
+        private async void ContactForSponsorROCL_TestGetContactForSponsorROCL()
         {
             using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IDocumentTypeDal>();
+            var dal = dalManager.GetProvider<IContactForSponsorDal>();
             var childData = await dal.Fetch();
 
-            var eMailTypeInfoList = await DocumentTypeROCL.GetDocumentTypeROCL(childData);
+            var eMailTypeROCL = await ContactForSponsorROCL.GetContactForSponsorROCL(childData);
             
-            Assert.NotNull(eMailTypeInfoList);
-            Assert.True(eMailTypeInfoList.IsReadOnly);
-            Assert.Equal(3, eMailTypeInfoList.Count);
+            Assert.NotNull(eMailTypeROCL);
+            Assert.True(eMailTypeROCL.IsReadOnly);
+            Assert.Equal(3, eMailTypeROCL.Count);
         }
       
     }

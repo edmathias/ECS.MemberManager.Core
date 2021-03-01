@@ -6,7 +6,7 @@ namespace ECS.MemberManager.Core.EF.Domain
     public class ContactForSponsor : EntityBase
     {
         public DateTime DateWhenContacted { get; set; }
-        [MaxLength(255)]
+        [Required,MaxLength(255)]
         public string Purpose { get; set; }
         public string RecordOfDiscussion { get; set; }
         public string Notes { get; set; }
