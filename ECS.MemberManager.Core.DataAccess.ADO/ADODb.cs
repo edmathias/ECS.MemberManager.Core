@@ -77,7 +77,27 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             InsertTasksForEvents();
 
             InsertMemberInfo();
+            
+            InsertPayment();
 
+        }
+
+        private static void InsertPayment()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("SET IDENTITY_INSERT dbo.Payments ON;");
+            sb.AppendLine(
+                "INSERT INTO [dbo].[Payments]([Id], [PersonId], [Amount], [PaymentDate], [PaymentExpirationDate], [PaymentSourceId], [PaymentTypeId], [LastUpdatedBy], [LastUpdatedDate], [Notes])");
+            sb.AppendLine(
+                "SELECT 1, 1, 79, '20210101 00:00:00.000', '20220101 00:00:00.000', 1, 2, N'edm', '20210301 00:00:00.000', N'notes for payment 1' UNION ALL");
+            sb.AppendLine(
+                "SELECT 2, 2, 83.65, '20201231 00:00:00.000', '20211231 00:00:00.000', 2, 1, N'joe', '20210101 00:00:00.000', N'notes for 2' UNION ALL");
+            sb.AppendLine(
+                "SELECT 99, 99, 101.21, '20201015 00:00:00.000', '20211015 00:00:00.000', 2, 1, N'edm', '20210115 00:00:00.000', N'notes to delete'");
+            sb.AppendLine("SET IDENTITY_INSERT dbo.Payments OFF;");
+            sb.AppendLine("DBCC CHECKIDENT ('Payments', RESEED, 2)");
+            
+            _db.Execute(sb.ToString());            
         }
 
         private static void InsertMemberInfo()

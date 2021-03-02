@@ -1,4 +1,5 @@
-﻿using Csla.Rules.CommonRules;
+﻿using Csla;
+using Csla.Rules.CommonRules;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
@@ -9,7 +10,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             base.AddBusinessRules();
             
             BusinessRules.AddRule(new MaxLength(NotesProperty,255));
-            BusinessRules.AddRule(new MinValue<decimal>(AmountProperty,0.01M));
+            BusinessRules.AddRule(new MinValue<double>(AmountProperty,0.01));
             BusinessRules.AddRule(new Required(LastUpdatedByProperty));
             BusinessRules.AddRule(new MaxLength(LastUpdatedByProperty,255));
         }

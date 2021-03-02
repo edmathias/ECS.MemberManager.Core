@@ -33,13 +33,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Payment" />
       <Folder Include="Phone" />
       <Folder Include="TermInOffice" />
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Remove="Payment\PaymentER_Tests.cs" />
       <Compile Remove="Address\AddressEditChild_Tests.cs" />
       <Compile Remove="Address\AddressInfoChildTests.cs" />
       <Compile Remove="EMailType\EMailTypeEdit_Tests.cs" />

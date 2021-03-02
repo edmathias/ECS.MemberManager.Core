@@ -40,13 +40,45 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
 
         public async Task<List<Payment>> Fetch()
         {
-            var titles =await _db.GetAllAsync<Payment>();
-            return titles.ToList();
+            var sql = "select * from Payments pmt " +
+                      "inner join Persons per on pmt.PersonId = per.Id " +
+                      "inner join PaymentSources ps on pmt.PaymentSourceId = ps.Id " +
+                      "inner join PaymentTypes pt on pmt.PaymentTypeId = pt.Id ";
+            
+            var payments = await _db.QueryAsync<Payment, Person, PaymentSource,PaymentType, Payment>(sql,
+                (payment, person, paymentSource, paymentType ) =>
+                {
+                    payment.Person = person;
+                    payment.PaymentSource = paymentSource;
+                    payment.PaymentType = paymentType;
+                    
+                    return payment;
+                }
+            );
+
+            return payments.ToList();
         }
 
         public async Task<Payment> Fetch(int id)
         {
-            return await _db.GetAsync<Payment>(id);
+            var sql = "select * from Payments pmt " +
+                      "inner join Persons per on pmt.PersonId = per.Id " +
+                      "inner join PaymentSources ps on pmt.PaymentSourceId = ps.Id " +
+                      "inner join PaymentTypes pt on pmt.PaymentTypeId = pt.Id " +
+                      $"WHERE pmt.Id = {id}";
+            
+            var payments = await _db.QueryAsync<Payment, Person, PaymentSource,PaymentType, Payment>(sql,
+                (payment, person, paymentSource, paymentType ) =>
+                {
+                    payment.Person = person;
+                    payment.PaymentSource = paymentSource;
+                    payment.PaymentType = paymentType;
+                    
+                    return payment;
+                }
+            );
+
+            return payments.FirstOrDefault();
         }
 
         public async Task<Payment> Insert(Payment paymentToInsert)
@@ -56,10 +88,21 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                         "SELECT @PersonId, @Amount, @PaymentDate, @PaymentExpirationDate, @PaymentSourceId, "+
                         "@PaymentTypeId, @LastUpdatedBy, @LastUpdatedDate, @Notes " +
                         "SELECT SCOPE_IDENTITY()";
-            paymentToInsert.Id = await _db.ExecuteScalarAsync<int>(sql,paymentToInsert);
+            paymentToInsert.Id = await _db.ExecuteScalarAsync<int>(sql,new
+            {
+                PersonId = paymentToInsert.Person.Id,
+                Amount = paymentToInsert.Amount,
+                PaymentDate = paymentToInsert.PaymentDate,
+                PaymentExpirationDate = paymentToInsert.PaymentExpirationDate,
+                PaymentSourceId = paymentToInsert.PaymentSource.Id,
+                PaymentTypeId = paymentToInsert.PaymentType.Id,
+                LastUpdatedBy = paymentToInsert.LastUpdatedBy,
+                LastUpdatedDate = paymentToInsert.LastUpdatedDate,
+                Notes = paymentToInsert.Notes
+            });
 
             //reretrieve payment to get rowversion
-            var insertedOffice = await _db.GetAsync<Payment>(paymentToInsert.Id);
+            var insertedOffice = await Fetch(paymentToInsert.Id);
             paymentToInsert.RowVersion = insertedOffice.RowVersion;
             
             return paymentToInsert;            
@@ -80,7 +123,21 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                         "OUTPUT inserted.RowVersion " +
                         "WHERE  Id = @Id AND RowVersion = @RowVersion ";
 
-            var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql,paymentToUpdate);
+            var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql,new
+            {
+                Id = paymentToUpdate.Id,
+                PersonId = paymentToUpdate.Person.Id,
+                Amount = paymentToUpdate.Amount,
+                PaymentDate = paymentToUpdate.PaymentDate,
+                PaymentExpirationDate = paymentToUpdate.PaymentExpirationDate,
+                PaymentSourceId = paymentToUpdate.PaymentSource.Id,
+                PaymentTypeId = paymentToUpdate.PaymentType.Id,
+                LastUpdatedBy = paymentToUpdate.LastUpdatedBy,
+                LastUpdatedDate = paymentToUpdate.LastUpdatedDate,
+                Notes = paymentToUpdate.Notes,
+                RowVersion = paymentToUpdate.RowVersion
+            });
+            
             if (rowVersion == null)
                 throw new DBConcurrencyException("Entity has been updated since last read. Try again!");
             paymentToUpdate.RowVersion = rowVersion;
