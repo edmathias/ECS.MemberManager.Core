@@ -37,6 +37,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
 <#
         BuildListFetch(  objectName,  isChild,  childStereo);
 #>
+       
+        [Update]
+        private void Update()
+        {
+            Child_Update();
+        }
 
         #endregion
 

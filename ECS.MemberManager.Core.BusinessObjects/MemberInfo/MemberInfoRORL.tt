@@ -9,7 +9,7 @@
     var isChild = false;
     var isReadOnly = true;
     var childStereo = GetChildStereoType(stereoType);
-    var cslaListType = (isReadOnly ? "ReadOnly" : "Business");    
+    var cslaListType = (isReadOnly ? "ReadOnly" : "Business");
 #>
 using System; 
 using System.Collections.Generic;

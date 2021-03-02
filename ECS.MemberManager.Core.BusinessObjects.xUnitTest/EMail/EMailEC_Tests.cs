@@ -107,7 +107,22 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.False(eMail.IsValid);
             Assert.Equal("LastUpdatedBy",eMail.BrokenRulesCollection[0].Property);
         }
-      
+     
+        [Fact]
+        public async Task TestEMailEC_LastUpdatedByExceeds255Characters()
+        {
+            var eMailToTest = BuildEMail();
+            var eMail = await EMailEC.GetEMailEC(eMailToTest);
+            var isObjectValidInit = eMail.IsValid;
+            eMail.LastUpdatedBy = string.Empty;
+
+            Assert.NotNull(eMail);
+            Assert.True(isObjectValidInit);
+            Assert.False(eMail.IsValid);
+            Assert.Equal("LastUpdatedBy",eMail.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy can not exceed 255 characters",eMail.BrokenRulesCollection[0].Description);
+        }
+        
         private EMail BuildEMail()
         {
             var eMail = new EMail();

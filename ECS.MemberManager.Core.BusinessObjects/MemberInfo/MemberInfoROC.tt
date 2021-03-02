@@ -2,14 +2,14 @@
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ output extension=".cs" #>
-<#@ include file="..\CSLA_T4.tt" #>
+<#@ include file="..\CSLA_T4.tt" #><#@ import namespace="System.Threading" #>
 <#
+    var isChild = true;
+    var isReadOnly = true;
     var objectName = "MemberInfo";
     var pluralObjectName = "MemberInfo";
     var stereoType = "ROC";
-    var isChild = true;
-    var isReadOnly = true;
-    var isListStereo = true;
+    var baseClass = (isReadOnly ? "ReadOnly" : "Business");
 #>
 using System;
 using System.Collections.Generic; 
@@ -22,10 +22,11 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class <#= objectName #><#= stereoType #> : BusinessBase<<#= objectName #><#= stereoType#>>
+    public partial class <#= objectName #><#= stereoType #> : <#=baseClass #>Base<<#= objectName #><#= stereoType#>>
     {
-        #region Business Methods 
- <#
+        #region Business Methods
+ 
+<#
     var columnList = BuildColumnList(pluralObjectName);
 
     foreach(var columnData in columnList ) 
