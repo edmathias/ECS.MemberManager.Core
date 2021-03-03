@@ -9,7 +9,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             base.AddBusinessRules();
             
             BusinessRules.AddRule(new Required(CategoryProperty));
-            BusinessRules.AddRule(new MaxLength(CategoryProperty,35));
+            BusinessRules.AddRule(new MaxLength(CategoryProperty,50));
         }        
     }
 }

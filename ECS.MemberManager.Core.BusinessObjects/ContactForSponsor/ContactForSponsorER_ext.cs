@@ -12,6 +12,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             BusinessRules.AddRule(new MaxLength(PurposeProperty,255));
             BusinessRules.AddRule(new Required(LastUpdatedByProperty));
             BusinessRules.AddRule(new MaxLength(LastUpdatedByProperty,255));
+            BusinessRules.AddRule(new Required(LastUpdatedDateProperty));;
         }            
     }
 }

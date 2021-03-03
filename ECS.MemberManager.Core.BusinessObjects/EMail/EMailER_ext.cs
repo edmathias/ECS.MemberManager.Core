@@ -8,10 +8,10 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             base.AddBusinessRules();
             
+            BusinessRules.AddRule(new Required(EMailAddressProperty));
+            BusinessRules.AddRule(new MaxLength	(EMailAddressProperty,255));            
             BusinessRules.AddRule(new Required(LastUpdatedByProperty));
             BusinessRules.AddRule(new MaxLength	(LastUpdatedByProperty,255));
-            BusinessRules.AddRule(new Required(EMailAddressProperty));
-            BusinessRules.AddRule(new MaxLength	(EMailAddressProperty,255));
         }        
     }
 }
