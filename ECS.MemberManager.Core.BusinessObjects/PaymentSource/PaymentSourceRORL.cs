@@ -1,6 +1,13 @@
 ﻿
 
 
+//******************************************************************************
+// This file has been generated via text template.
+// Do not make changes as they will be automatically overwritten.
+//
+// Generated on 03/02/2021 21:54:08
+//******************************************************************************    
+
 using System; 
 using System.Threading.Tasks;
 using Csla;

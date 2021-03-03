@@ -381,4 +381,18 @@ if(!isReadOnly)
     }
 #>
 
+<#+
+    void CreateBuildHeader()
+    { 
+ #>
+//******************************************************************************
+// This file has been generated via text template.
+// Do not make changes as they will be automatically overwritten.
+//
+// Generated on <#= DateTime.Now #>
+//******************************************************************************    
+<#+
+    }
+#>
+
 

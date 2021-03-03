@@ -9,7 +9,9 @@
     var stereoType = "ROR";
     var isChild = false;
     var isReadOnly = true;
+    CreateBuildHeader();    
 #>
+
 using System;
 using System.Collections.Generic; 
 using System.Threading.Tasks;

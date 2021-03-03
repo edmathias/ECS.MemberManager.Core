@@ -1553,6 +1553,8 @@
       </None>
       <Compile Update="Phone\PhoneEC.cs">
         <DependentUpon>PhoneEC.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <Compile Update="Phone\PhoneECL.cs">
         <AutoGen>True</AutoGen>
@@ -1574,6 +1576,8 @@
       </Compile>
       <Compile Update="Phone\PhoneERL.cs">
         <DependentUpon>PhoneERL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="Phone\PhoneROC.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -1621,9 +1625,13 @@
       </None>
       <Compile Update="PrivacyLevel\PrivacyLevelECL.cs">
         <DependentUpon>PrivacyLevelECL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <Compile Update="PrivacyLevel\PrivacyLevelEC.cs">
         <DependentUpon>PrivacyLevelEC.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="PrivacyLevel\PrivacyLevelER.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -1631,6 +1639,8 @@
       </None>
       <Compile Update="PrivacyLevel\PrivacyLevelER.cs">
         <DependentUpon>PrivacyLevelER.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="PrivacyLevel\PrivacyLevelERL.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -1638,6 +1648,8 @@
       </None>
       <Compile Update="PrivacyLevel\PrivacyLevelERL.cs">
         <DependentUpon>PrivacyLevelERL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="PrivacyLevel\PrivacyLevelROC.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -1645,6 +1657,8 @@
       </None>
       <Compile Update="PrivacyLevel\PrivacyLevelROC.cs">
         <DependentUpon>PrivacyLevelROC.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="PrivacyLevel\PrivacyLevelROCL.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -1652,6 +1666,8 @@
       </None>
       <Compile Update="PrivacyLevel\PrivacyLevelROCL.cs">
         <DependentUpon>PrivacyLevelROCL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="PrivacyLevel\PrivacyLevelROR.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -1752,6 +1768,8 @@
       </None>
       <Compile Update="TermInOffice\TermInOfficeER.cs">
         <DependentUpon>TermInOfficeER.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="TermInOffice\TermInOfficeERL.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -1799,6 +1817,8 @@
       </None>
       <Compile Update="Title\TitleEC.cs">
         <DependentUpon>TitleEC.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="Title\TitleECL.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -1806,6 +1826,8 @@
       </None>
       <Compile Update="Title\TitleECL.cs">
         <DependentUpon>TitleECL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="Title\TitleER.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -1813,6 +1835,8 @@
       </None>
       <Compile Update="Title\TitleER.cs">
         <DependentUpon>TitleER.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="Title\TitleERL.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -1820,6 +1844,8 @@
       </None>
       <Compile Update="Title\TitleERL.cs">
         <DependentUpon>TitleERL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="Title\TitleROC.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -1827,6 +1853,8 @@
       </None>
       <Compile Update="Title\TitleROC.cs">
         <DependentUpon>TitleROC.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="Title\TitleROCL.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -1834,6 +1862,8 @@
       </None>
       <Compile Update="Title\TitleROCL.cs">
         <DependentUpon>TitleROCL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="Title\TitleROR.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -1841,6 +1871,8 @@
       </None>
       <Compile Update="Title\TitleROR.cs">
         <DependentUpon>TitleROR.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="Title\TitleRORL.tt">
         <Generator>TextTemplatingFileGenerator</Generator>
@@ -1848,6 +1880,8 @@
       </None>
       <Compile Update="Title\TitleRORL.cs">
         <DependentUpon>TitleRORL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
       </Compile>
       <None Update="ContactForSponsor\CategoryOfPersonEC.tt">
         <Generator>TextTemplatingFileGenerator</Generator>

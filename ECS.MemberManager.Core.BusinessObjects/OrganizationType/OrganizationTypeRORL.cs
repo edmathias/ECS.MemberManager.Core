@@ -1,7 +1,14 @@
 ﻿
 
 
-using System; 
+//******************************************************************************
+// This file has been generated via text template.
+// Do not make changes as they will be automatically overwritten.
+//
+// Generated on 03/02/2021 21:50:25
+//******************************************************************************    
+
+using System;
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;

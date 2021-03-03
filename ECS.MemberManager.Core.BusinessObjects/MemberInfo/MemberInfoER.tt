@@ -10,7 +10,9 @@
     var pluralObjectName = "MemberInfo";
     var stereoType = "ER";
     var baseClass = (isReadOnly ? "ReadOnly" : "Business");
+    CreateBuildHeader();    
 #>
+
 using System;
 using System.Collections.Generic; 
 using System.Threading.Tasks;

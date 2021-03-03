@@ -10,7 +10,10 @@
     var isReadOnly = false;
     var childStereo = GetChildStereoType(stereoType);
     var cslaListType = (isReadOnly ? "ReadOnly" : "Business");
+
+    CreateBuildHeader();    
 #>
+
 using System; 
 using System.Collections.Generic;
 using System.Threading.Tasks;
