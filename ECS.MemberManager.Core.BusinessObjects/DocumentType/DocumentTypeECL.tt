@@ -28,7 +28,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Factory Methods
 
 <#
-        BuildFetchFactoryMethod( objectName, isChild, stereoType);
+        BuildListFactoryMethods( objectName, stereoType, isChild, isReadOnly);
 #>
 
         #endregion

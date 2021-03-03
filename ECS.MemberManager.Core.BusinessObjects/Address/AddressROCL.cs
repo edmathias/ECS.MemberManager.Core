@@ -16,10 +16,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
     {
         #region Factory Methods
 
-        internal static async Task<AddressROCL> NewAddressROCL()
-        {
-            return await DataPortal.CreateChildAsync<AddressROCL>();
-        }
 
         internal static async Task<AddressROCL> GetAddressROCL(List<Address> childData)
         {

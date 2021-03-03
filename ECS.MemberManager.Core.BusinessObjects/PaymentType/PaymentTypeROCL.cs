@@ -16,10 +16,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
     {
         #region Factory Methods
 
-        internal static async Task<PaymentTypeROCL> NewPaymentTypeROCL()
-        {
-            return await DataPortal.CreateChildAsync<PaymentTypeROCL>();
-        }
 
         internal static async Task<PaymentTypeROCL> GetPaymentTypeROCL(List<PaymentType> childData)
         {

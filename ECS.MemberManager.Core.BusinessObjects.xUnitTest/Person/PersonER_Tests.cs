@@ -84,16 +84,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(savedPerson.RowVersion);
         }
 
-        [Fact]
-        public async Task TestPersonER_Delete()
-        {
-            await PersonER.DeletePersonER(99);
-
-            await Assert.ThrowsAsync<Csla.DataPortalException>
-                (() => PersonER.GetPersonER(99));
-        }
-
-
           // test exception if attempt to save in invalid state
 
         [Fact]

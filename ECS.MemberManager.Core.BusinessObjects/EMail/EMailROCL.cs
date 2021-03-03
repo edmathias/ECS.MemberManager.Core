@@ -16,10 +16,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
     {
         #region Factory Methods
 
-        internal static async Task<EMailROCL> NewEMailROCL()
-        {
-            return await DataPortal.CreateChildAsync<EMailROCL>();
-        }
 
         internal static async Task<EMailROCL> GetEMailROCL(List<EMail> childData)
         {

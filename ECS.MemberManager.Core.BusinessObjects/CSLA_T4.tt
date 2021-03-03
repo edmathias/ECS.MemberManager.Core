@@ -355,18 +355,23 @@
 #>
 
 <#+
-    void BuildFetchFactoryMethod(string objectName, bool isChild, string stereo)
+    void BuildListFactoryMethods(string objectName, string stereo, bool isChild, bool isReadOnly)
     {
         var visibility = (isChild ? "internal" : "public");
         var childDesig = (isChild ? "Child" : string.Empty);
         var childParam = (isChild ? "childData" : string.Empty);
         var childList = (isChild ? "List<" + objectName + ">" : string.Empty);
         
+if(!isReadOnly)
+    {
 #>
         <#=visibility #> static async Task<<#=objectName #><#=stereo #>> New<#=objectName#><#=stereo #>()
         {
             return await DataPortal.Create<#=childDesig#>Async<<#=objectName #><#=stereo #>>();
         }
+<#+
+    }
+#>
 
         <#=visibility #> static async Task<<#=objectName #><#=stereo #>> Get<#=objectName#><#=stereo #>(<#=childList #> <#=childParam#>)
         {

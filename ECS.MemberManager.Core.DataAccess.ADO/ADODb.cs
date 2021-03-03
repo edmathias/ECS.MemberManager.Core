@@ -80,6 +80,23 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             
             InsertPayment();
 
+            InsertTermInOffice();
+
+        }
+
+        private static void InsertTermInOffice()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("SET IDENTITY_INSERT dbo.TermInOffices ON;");
+            sb.AppendLine(
+                "INSERT INTO [dbo].[TermInOffices]([Id], [PersonId], [OfficeId], [StartDate], [LastUpdatedBy], [LastUpdatedDate], [Notes])");
+            sb.AppendLine("SELECT 1, 1, 1, '20210101 00:00:00.000', N'edm', '20210115 00:00:00.000', N'notes for 1' UNION ALL");
+            sb.AppendLine("SELECT 2, 2, 2, '20201030 00:00:00.000', N'joe', '20210101 00:00:00.000', N'notes for 2' UNION ALL");
+            sb.AppendLine("SELECT 99, 2, 1, '20200101 00:00:00.000', N'edm', '20201231 00:00:00.000', N'delete this'");
+            sb.AppendLine("SET IDENTITY_INSERT dbo.TermInOffices OFF;");
+            sb.AppendLine("DBCC CHECKIDENT ('TermInOffices', RESEED, 2)");
+            
+            _db.Execute(sb.ToString());            
         }
 
         private static void InsertPayment()

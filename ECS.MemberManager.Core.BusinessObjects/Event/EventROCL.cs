@@ -16,10 +16,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
     {
         #region Factory Methods
 
-        internal static async Task<EventROCL> NewEventROCL()
-        {
-            return await DataPortal.CreateChildAsync<EventROCL>();
-        }
 
         internal static async Task<EventROCL> GetEventROCL(List<Event> childData)
         {

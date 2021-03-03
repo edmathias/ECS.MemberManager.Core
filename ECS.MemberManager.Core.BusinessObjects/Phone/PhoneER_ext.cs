@@ -9,8 +9,11 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             base.AddBusinessRules();
 
+            BusinessRules.AddRule(new Required(PhoneTypeProperty));
+            BusinessRules.AddRule(new Required(AreaCodeProperty));
+            BusinessRules.AddRule(new Required(NumberProperty));
             BusinessRules.AddRule(new Required(LastUpdatedByProperty));
-            BusinessRules.AddRule(new MaxLength(LastUpdatedByProperty,255));            
+            BusinessRules.AddRule(new MaxLength(LastUpdatedByProperty,255));           
         }
     }
 }

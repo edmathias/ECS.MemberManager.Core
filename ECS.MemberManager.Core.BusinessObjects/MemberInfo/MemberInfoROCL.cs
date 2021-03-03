@@ -16,10 +16,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
     {
         #region Factory Methods
 
-        internal static async Task<MemberInfoROCL> NewMemberInfoROCL()
-        {
-            return await DataPortal.CreateChildAsync<MemberInfoROCL>();
-        }
 
         internal static async Task<MemberInfoROCL> GetMemberInfoROCL(List<MemberInfo> childData)
         {

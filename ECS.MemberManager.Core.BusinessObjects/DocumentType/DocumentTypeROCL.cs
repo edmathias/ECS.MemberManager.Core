@@ -16,10 +16,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
     {
         #region Factory Methods
 
-        internal static async Task<DocumentTypeROCL> NewDocumentTypeROCL()
-        {
-            return await DataPortal.CreateChildAsync<DocumentTypeROCL>();
-        }
 
         internal static async Task<DocumentTypeROCL> GetDocumentTypeROCL(List<DocumentType> childData)
         {

@@ -14,10 +14,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
     {
         #region Factory Methods
 
-        public static async Task<SponsorRORL> NewSponsorRORL()
-        {
-            return await DataPortal.CreateAsync<SponsorRORL>();
-        }
 
         public static async Task<SponsorRORL> GetSponsorRORL( )
         {

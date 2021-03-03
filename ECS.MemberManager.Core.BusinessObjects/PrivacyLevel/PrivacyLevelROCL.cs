@@ -16,10 +16,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
     {
         #region Factory Methods
 
-        internal static async Task<PrivacyLevelROCL> NewPrivacyLevelROCL()
-        {
-            return await DataPortal.CreateChildAsync<PrivacyLevelROCL>();
-        }
 
         internal static async Task<PrivacyLevelROCL> GetPrivacyLevelROCL(List<PrivacyLevel> childData)
         {

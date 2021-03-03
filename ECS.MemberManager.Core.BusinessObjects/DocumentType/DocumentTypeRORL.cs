@@ -16,10 +16,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
     {
         #region Factory Methods
 
-        public static async Task<DocumentTypeRORL> NewDocumentTypeRORL()
-        {
-            return await DataPortal.CreateAsync<DocumentTypeRORL>();
-        }
 
         public static async Task<DocumentTypeRORL> GetDocumentTypeRORL( )
         {

@@ -14,10 +14,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
     {
         #region Factory Methods
 
-        public static async Task<PaymentSourceRORL> NewPaymentSourceRORL()
-        {
-            return await DataPortal.CreateAsync<PaymentSourceRORL>();
-        }
 
         public static async Task<PaymentSourceRORL> GetPaymentSourceRORL( )
         {

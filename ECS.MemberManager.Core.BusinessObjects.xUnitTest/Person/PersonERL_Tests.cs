@@ -58,24 +58,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
         
         [Fact]
-        private async void PersonERL_TestDeletePersonEditChildEntry()
-        {
-            var personErl = await PersonERL.GetPersonERL();
-            var listCount = personErl.Count;
-            var personToDelete = personErl.First(et => et.Id == 99);
-
-            // remove is deferred delete
-            var isDeleted = personErl.Remove(personToDelete); 
-
-            var personListAfterDelete = await personErl.SaveAsync();
-
-            Assert.NotNull(personListAfterDelete);
-            Assert.IsType<PersonERL>(personListAfterDelete);
-            Assert.True(isDeleted);
-            Assert.NotEqual(listCount,personListAfterDelete.Count);
-        }
-
-        [Fact]
         private async void PersonERL_TestUpdatePersonEditChildEntry()
         {
             const int idToUpdate = 1;

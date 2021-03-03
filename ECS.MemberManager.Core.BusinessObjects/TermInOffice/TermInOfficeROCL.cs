@@ -16,10 +16,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
     {
         #region Factory Methods
 
-        internal static async Task<TermInOfficeROCL> NewTermInOfficeROCL()
-        {
-            return await DataPortal.CreateChildAsync<TermInOfficeROCL>();
-        }
 
         internal static async Task<TermInOfficeROCL> GetTermInOfficeROCL(List<TermInOffice> childData)
         {

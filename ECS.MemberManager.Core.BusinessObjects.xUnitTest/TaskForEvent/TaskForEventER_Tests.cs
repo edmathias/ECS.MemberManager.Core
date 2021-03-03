@@ -152,7 +152,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             TaskForEventER savedTaskForEvent = null;
                 
             Assert.False(eventObj.IsValid);
-            Assert.Throws<Csla.Rules.ValidationException>(() => savedTaskForEvent =  eventObj.Save() );
+            Assert.Throws<Csla.Rules.ValidationException>(() =>  eventObj.Save());
         }
     }
 }

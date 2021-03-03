@@ -114,7 +114,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var eMailToTest = BuildEMail();
             var eMail = await EMailEC.GetEMailEC(eMailToTest);
             var isObjectValidInit = eMail.IsValid;
-            eMail.LastUpdatedBy = string.Empty;
+            eMail.LastUpdatedBy = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempo" +
+                                  "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud" +
+                                  "exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure" +
+                                  "dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.";
 
             Assert.NotNull(eMail);
             Assert.True(isObjectValidInit);

@@ -36,22 +36,39 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
 
         public async Task<List<TermInOffice>> Fetch()
         {
-            var sql =
-                "SELECT [Id], [PersonId], [OfficeId], [StartDate], [LastUpdatedBy], [LastUpdatedDate], [Notes], [RowVersion] " +
-                "FROM   [dbo].[TermInOffices] ";
-            var term = await _db.QueryAsync<TermInOffice>(sql);
-            
-            return term.ToList();
+            var sql = "select * from TermInOffices tio " +
+                      "left join Persons p on tio.PersonId = p.Id " +
+                      "left join Offices o on tio.OfficeId = o.Id "; 
+                      
+            var result = await _db.QueryAsync<TermInOffice,Person,Office,TermInOffice>(sql,
+                (term, person, office) =>
+                {
+                    term.Person = person;
+                    term.Office = office;
+                    return term;
+                }
+            );
+
+            return result.ToList();
         }
 
         public async Task<TermInOffice> Fetch(int id)
         {
-            var sql =
-                "SELECT [Id], [PersonId], [OfficeId], [StartDate], [LastUpdatedBy], [LastUpdatedDate], [Notes], [RowVersion] " +
-                $"FROM   [dbo].[TermInOffices] WHERE Id = {id}";
-            var term = await _db.QueryAsync<TermInOffice>(sql);
+            var sql = "select * from TermInOffices tio " +
+                      "left join Persons p on tio.PersonId = p.Id " +
+                      "left join Offices o on tio.OfficeId = o.Id " +
+                      $"WHERE tio.Id = {id}";
+                      
+            var result = await _db.QueryAsync<TermInOffice,Person,Office,TermInOffice>(sql,
+                (term, person, office) =>
+                {
+                    term.Person = person;
+                    term.Office = office;
+                    return term;
+                }
+            );
 
-            return term.First();
+            return result.FirstOrDefault();
         }
 
         public async Task<TermInOffice> Insert(TermInOffice eventToInsert)
@@ -80,16 +97,15 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
 
         public async Task<TermInOffice> Update(TermInOffice eventToUpdate)
         {
-            var sql = 	"UPDATE [dbo].[TermInOffices] "+
-                        "SET [PersonId] = @PersonId, "+
-                        "[OfficeId] = @OfficeId, "+
-                        "[StartDate] = @StartDate, "+
-                        "[LastUpdatedBy] = @LastUpdatedBy, "+
-                        "[LastUpdatedDate] = @LastUpdatedDate, "+
-                        "[Notes] = @Notes "+
-                        "WHERE  [Id] = @Id AND RowVersion = @RowVersion "+
-                        "OUTPUT inserted.RowVersion " +
-                        "WHERE Id = @Id AND RowVersion = @RowVersion ";
+            var sql = "UPDATE [dbo].[TermInOffices] " +
+                      "SET [PersonId] = @PersonId, " +
+                      "[OfficeId] = @OfficeId, " +
+                      "[StartDate] = @StartDate, " +
+                      "[LastUpdatedBy] = @LastUpdatedBy, " +
+                      "[LastUpdatedDate] = @LastUpdatedDate, " +
+                      "[Notes] = @Notes " +
+                      "OUTPUT inserted.RowVersion " +
+                      "WHERE  [Id] = @Id AND RowVersion = @RowVersion ";
 
             var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql, new 
             {

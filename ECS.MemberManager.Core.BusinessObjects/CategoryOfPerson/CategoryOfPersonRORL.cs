@@ -16,10 +16,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
     {
         #region Factory Methods
 
-        public static async Task<CategoryOfPersonRORL> NewCategoryOfPersonRORL()
-        {
-            return await DataPortal.CreateAsync<CategoryOfPersonRORL>();
-        }
 
         public static async Task<CategoryOfPersonRORL> GetCategoryOfPersonRORL( )
         {

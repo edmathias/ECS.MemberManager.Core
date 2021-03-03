@@ -16,10 +16,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
     {
         #region Factory Methods
 
-        public static async Task<EMailTypeRORL> NewEMailTypeRORL()
-        {
-            return await DataPortal.CreateAsync<EMailTypeRORL>();
-        }
 
         public static async Task<EMailTypeRORL> GetEMailTypeRORL( )
         {

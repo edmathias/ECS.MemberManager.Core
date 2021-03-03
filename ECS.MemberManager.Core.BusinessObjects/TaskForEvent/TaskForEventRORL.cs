@@ -14,10 +14,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
     {
         #region Factory Methods
 
-        public static async Task<TaskForEventRORL> NewTaskForEventRORL()
-        {
-            return await DataPortal.CreateAsync<TaskForEventRORL>();
-        }
 
         public static async Task<TaskForEventRORL> GetTaskForEventRORL( )
         {

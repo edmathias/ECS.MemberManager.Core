@@ -16,10 +16,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
     {
         #region Factory Methods
 
-        internal static async Task<SponsorROCL> NewSponsorROCL()
-        {
-            return await DataPortal.CreateChildAsync<SponsorROCL>();
-        }
 
         internal static async Task<SponsorROCL> GetSponsorROCL(List<Sponsor> childData)
         {

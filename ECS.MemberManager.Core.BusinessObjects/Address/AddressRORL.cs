@@ -16,10 +16,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
     {
         #region Factory Methods
 
-        public static async Task<AddressRORL> NewAddressRORL()
-        {
-            return await DataPortal.CreateAsync<AddressRORL>();
-        }
 
         public static async Task<AddressRORL> GetAddressRORL( )
         {

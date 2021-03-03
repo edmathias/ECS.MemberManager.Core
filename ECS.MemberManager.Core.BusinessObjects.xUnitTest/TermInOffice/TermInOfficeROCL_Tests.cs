@@ -2,32 +2,31 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Csla;
+using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.DataAccess.Mock;
-using Microsoft.Data.SqlClient;
+using ECS.MemberManager.Core.EF.Domain;
 using Microsoft.Extensions.Configuration;
 using Xunit;
-using DalManager = ECS.MemberManager.Core.DataAccess.ADO.DalManager;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class PhoneInfoChildList_Tests
+    public class TermInOfficeROCL_Tests 
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
 
-        public PhoneInfoChildList_Tests()
+        public TermInOfficeROCL_Tests()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var testLibrary = _config.GetValue<string>("TestLibrary");
-
-            if (testLibrary == "Mock")
+            
+            if(testLibrary == "Mock")
                 MockDb.ResetMockDb();
             else
             {
@@ -40,13 +39,20 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             }
         }
 
+        
         [Fact]
-        private async void PhoneInfoChildList_TestGetPhoneInfoChildList()
+        private async void TermInOfficeROCL_TestGetTermInOfficeROCL()
         {
-            var phoneEdit = await PhoneInfoChildList.GetPhoneInfoChildList();
-
-            Assert.NotNull(phoneEdit);
-            Assert.Equal(3, phoneEdit.Count);
+            using var dalManager = DalFactory.GetManager();
+            var dal = dalManager.GetProvider<ITermInOfficeDal>();
+            var childData = await dal.Fetch();
+            
+            var listToTest = await TermInOfficeROCL.GetTermInOfficeROCL(childData);
+            
+            Assert.NotNull(listToTest);
+            Assert.Equal(3, listToTest.Count);
         }
+
+  
     }
 }

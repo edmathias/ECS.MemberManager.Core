@@ -33,11 +33,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Phone" />
-      <Folder Include="TermInOffice" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Compile Remove="Address\AddressEditChild_Tests.cs" />
       <Compile Remove="Address\AddressInfoChildTests.cs" />
       <Compile Remove="EMailType\EMailTypeEdit_Tests.cs" />
@@ -84,7 +79,6 @@
       <Compile Remove="OrganizationType\OrganizationTypeEditList_Tests.cs" />
       <Compile Remove="OrganizationType\OrganizationTypeInfo_Tests.cs" />
       <Compile Remove="OrganizationType\OrganizationTypeInfoList_Tests.cs" />
-      <Compile Remove="Phone\PhoneEdit_Tests.cs" />
       <Compile Remove="Phone\PhoneEditChild_Tests - Copy.cs" />
       <Compile Remove="Phone\PhoneEditChildList_Tests.cs" />
       <Compile Remove="Phone\PhoneInfo_Tests.cs" />

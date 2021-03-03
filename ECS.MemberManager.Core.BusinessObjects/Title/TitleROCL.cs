@@ -16,10 +16,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
     {
         #region Factory Methods
 
-        internal static async Task<TitleROCL> NewTitleROCL()
-        {
-            return await DataPortal.CreateChildAsync<TitleROCL>();
-        }
 
         internal static async Task<TitleROCL> GetTitleROCL(List<Title> childData)
         {
