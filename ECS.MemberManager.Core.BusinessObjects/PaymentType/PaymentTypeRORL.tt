@@ -12,7 +12,8 @@
     var cslaListType = (isReadOnly ? "ReadOnly" : "Business");
     CreateBuildHeader();    
 #>
- 
+
+using System; 
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;

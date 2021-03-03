@@ -112,7 +112,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
        
         [Fact]
-        public async Task DocumentTypeER_TestDescriptionExceedsMaxLengthOf255()
+        public async Task DocumentTypeER_TestDescriptionExceedsMaxLengthOf50()
         {
             var documentType = await DocumentTypeER.NewDocumentTypeER();
             documentType.LastUpdatedBy = "edm";
@@ -127,11 +127,48 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             Assert.NotNull(documentType);
             Assert.False(documentType.IsValid);
-            Assert.Equal("Description can not exceed 255 characters",documentType.BrokenRulesCollection[0].Description);
- 
+            Assert.Equal("Description",documentType.BrokenRulesCollection[0].Property);
+            Assert.Equal("Description can not exceed 50 characters",documentType.BrokenRulesCollection[0].Description);
         }        
         // test exception if attempt to save in invalid state
 
+        [Fact]
+        public async Task TestDocumentTypeEC_LastUpdatedByRequired()
+        {
+            var documentType = await DocumentTypeER.NewDocumentTypeER();
+            documentType.Description = "test description";
+            documentType.LastUpdatedBy = "edm";
+            documentType.LastUpdatedDate = DateTime.Now;
+            var isObjectValidInit = documentType.IsValid;
+            documentType.LastUpdatedBy = string.Empty;
+
+            Assert.NotNull(documentType);
+            Assert.True(isObjectValidInit);
+            Assert.False(documentType.IsValid);
+            Assert.Equal("LastUpdatedBy",documentType.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy required",documentType.BrokenRulesCollection[0].Description);
+        }
+ 
+        [Fact]
+        public async Task TestDocumentTypeER_LastUpdatedByLessThan255Chars()
+        {
+            var documentType = await DocumentTypeER.NewDocumentTypeER();
+            documentType.Description = "test description";
+            documentType.LastUpdatedBy = "edm";
+            documentType.LastUpdatedDate = DateTime.Now;
+            var isObjectValidInit = documentType.IsValid;
+            documentType.LastUpdatedBy = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+                                         "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                                         "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                                         "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis ";
+
+            Assert.NotNull(documentType);
+            Assert.True(isObjectValidInit);
+            Assert.False(documentType.IsValid);
+            Assert.Equal("LastUpdatedBy",documentType.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy can not exceed 255 characters",documentType.BrokenRulesCollection[0].Description);
+        }
+        
         [Fact]
         public async Task DocumentTypeER_TestInvalidSaveDocumentTypeER()
         {

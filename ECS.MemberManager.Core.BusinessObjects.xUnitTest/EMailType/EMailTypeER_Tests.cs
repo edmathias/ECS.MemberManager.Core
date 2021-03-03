@@ -103,6 +103,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(eMailType);
             Assert.True(isObjectValidInit);
             Assert.False(eMailType.IsValid);
+            Assert.Equal("Description",eMailType.BrokenRulesCollection[0].Property);
+            Assert.Equal("Description required",eMailType.BrokenRulesCollection[0].Description);
         }
        
         [Fact]

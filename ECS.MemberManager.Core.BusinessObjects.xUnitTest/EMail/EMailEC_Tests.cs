@@ -76,6 +76,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.True(isObjectValidInit);
             Assert.False(eMail.IsValid);
             Assert.Equal("EMailAddress",eMail.BrokenRulesCollection[0].Property);
+            Assert.Equal("EMailAddress required",eMail.BrokenRulesCollection[0].Description);
         }
 
         [Fact]
@@ -92,6 +93,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.True(isObjectValidInit);
             Assert.False(eMail.IsValid);
             Assert.Equal("EMailAddress",eMail.BrokenRulesCollection[0].Property);
+            Assert.Equal("EMailAddress can not exceed 255 characters",eMail.BrokenRulesCollection[0].Description);
         }
 
         [Fact]
@@ -106,6 +108,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.True(isObjectValidInit);
             Assert.False(eMail.IsValid);
             Assert.Equal("LastUpdatedBy",eMail.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy required",eMail.BrokenRulesCollection[0].Description);
         }
      
         [Fact]

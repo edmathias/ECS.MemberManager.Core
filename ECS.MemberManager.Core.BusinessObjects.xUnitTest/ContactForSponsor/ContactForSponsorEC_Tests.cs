@@ -98,9 +98,22 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.Equal("LastUpdatedBy",category.BrokenRulesCollection[0].Property);
             Assert.Equal("LastUpdatedBy required",category.BrokenRulesCollection[0].Description);
         }
-    
-                
-        
+   
+        [Fact]
+        public async Task ContactForSponsorEC_LastUpdatedDateRequired()
+        {
+            var categoryToTest = await BuildContactForSponsor();
+            var category = await ContactForSponsorEC.GetContactForSponsorEC(categoryToTest);
+            var isObjectValidInit = category.IsValid;
+            category.LastUpdatedDate = DateTime.MinValue;
+
+            Assert.NotNull(category);
+            Assert.True(isObjectValidInit);
+            Assert.False(category.IsValid);
+            Assert.Equal("LastUpdatedDate",category.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedDate required",category.BrokenRulesCollection[0].Description);
+        }
+
         private async Task<ContactForSponsor> BuildContactForSponsor()
         {
             var contactForSponsor = new ContactForSponsor();

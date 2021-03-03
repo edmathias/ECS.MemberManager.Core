@@ -67,6 +67,21 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
+        public async Task TestEventDocumentEC_EventRequired()
+        {
+            var eventDocumentObjToTest = BuildEventDocument();
+            var eventDocumentObj = await EventDocumentEC.GetEventDocumentEC(eventDocumentObjToTest);
+            var isObjectValidInit = eventDocumentObj.IsValid;
+            eventDocumentObj.Event = null; 
+            
+            Assert.NotNull(eventDocumentObj);
+            Assert.True(isObjectValidInit);
+            Assert.False(eventDocumentObj.IsValid);
+            Assert.Equal("Event",eventDocumentObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("Event required",eventDocumentObj.BrokenRulesCollection[0].Description);
+        }
+        
+        [Fact]
         public async Task TestEventDocumentEC_DocumentNameRequired()
         {
             var eventDocumentObjToTest = BuildEventDocument();
@@ -82,7 +97,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
         
         [Fact]
-        public async Task TestEventDocumentEC_DocumentNameLessThan255Chars()
+        public async Task TestEventDocumentEC_DocumentNameMaxLengthNotExceed50Chars()
         {
             var eventDocumentObjToTest = BuildEventDocument();
             var eventDocumentObj = await EventDocumentEC.GetEventDocumentEC(eventDocumentObjToTest);
@@ -99,6 +114,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.Equal("DocumentName can not exceed 50 characters",eventDocumentObj.BrokenRulesCollection[0].Description);
         }
 
+        
         [Fact]
         public async Task TestEventDocumentEC_LastUpdatedByRequired()
         {
@@ -111,8 +127,58 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.True(isObjectValidInit);
             Assert.False(eventDocumentObj.IsValid);
             Assert.Equal("LastUpdatedBy",eventDocumentObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy required",eventDocumentObj.BrokenRulesCollection[0].Description);
+            
         }
-      
+        
+        [Fact]
+        public async Task TestEventDocumentEC_LastUpdatedDateRequired()
+        {
+            var eventDocumentObjToTest = BuildEventDocument();
+            var eventDocumentObj = await EventDocumentEC.GetEventDocumentEC(eventDocumentObjToTest);
+            var isObjectValidInit = eventDocumentObj.IsValid;
+            eventDocumentObj.LastUpdatedDate = DateTime.MinValue;
+
+            Assert.NotNull(eventDocumentObj);
+            Assert.True(isObjectValidInit);
+            Assert.False(eventDocumentObj.IsValid);
+            Assert.Equal("LastUpdatedDate",eventDocumentObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedDate required",eventDocumentObj.BrokenRulesCollection[0].Description);
+        }
+
+        [Fact]
+        public async Task TestEventDocumentEC_PathAndFileNameRequired()
+        {
+            var eventDocumentObjToTest = BuildEventDocument();
+            var eventDocumentObj = await EventDocumentEC.GetEventDocumentEC(eventDocumentObjToTest);
+            var isObjectValidInit = eventDocumentObj.IsValid;
+            eventDocumentObj.PathAndFileName = string.Empty;
+
+            Assert.NotNull(eventDocumentObj);
+            Assert.True(isObjectValidInit);
+            Assert.False(eventDocumentObj.IsValid);
+            Assert.Equal("PathAndFileName",eventDocumentObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("PathAndFileName required",eventDocumentObj.BrokenRulesCollection[0].Description);
+        }
+
+        [Fact]
+        public async Task TestEventDocumentEC_PathAndFileNameNotExceed255Chars()
+        {
+            var eventDocumentObjToTest = BuildEventDocument();
+            var eventDocumentObj = await EventDocumentEC.GetEventDocumentEC(eventDocumentObjToTest);
+            var isObjectValidInit = eventDocumentObj.IsValid;
+            eventDocumentObj.PathAndFileName = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+                                            "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                                            "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                                            "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis ";
+
+            Assert.NotNull(eventDocumentObj);
+            Assert.True(isObjectValidInit);
+            Assert.False(eventDocumentObj.IsValid);
+            Assert.Equal("PathAndFileName",eventDocumentObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("PathAndFileName can not exceed 255 characters",eventDocumentObj.BrokenRulesCollection[0].Description);
+        }
+        
         private EventDocument BuildEventDocument()
         {
             var eventDocumentObj = new EventDocument();

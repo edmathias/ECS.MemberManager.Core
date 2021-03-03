@@ -121,8 +121,58 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.False(contactForSponsor.IsValid);
             Assert.Equal("Purpose",contactForSponsor.BrokenRulesCollection[0].Property);
             Assert.Equal("Purpose can not exceed 255 characters",contactForSponsor.BrokenRulesCollection[0].Description);
-        }        
+        }       
+
+        [Fact]
+        public async Task ContactForSponsorEC_LastUpdatedByRequired()
+        {
+            var contactToTest =  BuildContactForSponsor();
+            var contact = await ContactForSponsorEC.GetContactForSponsorEC(contactToTest);
+            var isObjectValidInit = contact.IsValid;
+            contact.LastUpdatedBy = string.Empty;
+
+            Assert.NotNull(contact);
+            Assert.True(isObjectValidInit);
+            Assert.False(contact.IsValid);
+            Assert.Equal("LastUpdatedBy",contact.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy required",contact.BrokenRulesCollection[0].Description);
+        }
+
+        [Fact]
+        public async Task ContactForSponsorER_TestLastUpdatedByExceedsMaxLengthOf255()
+        {
+            var contactForSponsor = await ContactForSponsorER.NewContactForSponsorER();
+            contactForSponsor.LastUpdatedBy = "edm";
+            contactForSponsor.LastUpdatedDate = DateTime.Now;
+            contactForSponsor.Purpose = "valid length";
+            var isObjectValidInit = contactForSponsor.IsValid;
+            contactForSponsor.LastUpdatedBy = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor "+
+                                              "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis "+
+                                              "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "+
+                                              "Duis aute irure dolor in reprehenderit";
+
+            Assert.NotNull(contactForSponsor);
+            Assert.True(isObjectValidInit);
+            Assert.False(contactForSponsor.IsValid);
+            Assert.Equal("LastUpdatedBy",contactForSponsor.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy can not exceed 255 characters",contactForSponsor.BrokenRulesCollection[0].Description);
+        }       
+        
         // test exception if attempt to save in invalid state
+        [Fact]
+        public async Task ContactForSponsorEC_LastUpdatedDateRequired()
+        {
+            var contactToTest = BuildContactForSponsor();
+            var contact = await ContactForSponsorEC.GetContactForSponsorEC(contactToTest);
+            var isObjectValidInit = contact.IsValid;
+            contact.LastUpdatedDate = DateTime.MinValue;
+
+            Assert.NotNull(contact);
+            Assert.True(isObjectValidInit);
+            Assert.False(contact.IsValid);
+            Assert.Equal("LastUpdatedDate",contact.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedDate required",contact.BrokenRulesCollection[0].Description);
+        }
 
         [Fact]
         public async Task ContactForSponsorER_TestInvalidSaveContactForSponsorER()

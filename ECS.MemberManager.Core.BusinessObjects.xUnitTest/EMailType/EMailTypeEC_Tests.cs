@@ -75,10 +75,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.True(isObjectValidInit);
             Assert.False(eMailType.IsValid);
             Assert.Equal("Description",eMailType.BrokenRulesCollection[0].Property);
+            Assert.Equal("Description required",eMailType.BrokenRulesCollection[0].Description);
         }
 
         [Fact]
-        public async Task TestEMailTypeEC_DescriptionLessThan50Chars()
+        public async Task TestEMailTypeEC_DescriptionGreaterThan50Chars()
         {
             var eMailTypeToTest = BuildEMailType();
             var eMailType = await EMailTypeEC.GetEMailTypeEC(eMailTypeToTest);
@@ -92,6 +93,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.True(isObjectValidInit);
             Assert.False(eMailType.IsValid);
             Assert.Equal("Description",eMailType.BrokenRulesCollection[0].Property);
+            Assert.Equal("Description can not exceed 50 characters",eMailType.BrokenRulesCollection[0].Description);
+            
         }
 
         private EMailType BuildEMailType()

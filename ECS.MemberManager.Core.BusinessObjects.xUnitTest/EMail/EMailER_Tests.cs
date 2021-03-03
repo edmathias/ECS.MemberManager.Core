@@ -155,7 +155,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(eMail);
             Assert.True(isObjectValidInit);
             Assert.False(eMail.IsValid);
-            Assert.Equal("EMailAddress",eMail.BrokenRulesCollection[0].OriginProperty);
+            Assert.Equal("EMailAddress",eMail.BrokenRulesCollection[0].Property);
+            Assert.Equal("EMailAddress required",eMail.BrokenRulesCollection[0].Description);
+            
         }
 
         [Fact]
@@ -172,7 +174,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(eMailType);
             Assert.True(isObjectValidInit);
             Assert.False(eMailType.IsValid);
-            Assert.Equal("EMailAddress",eMailType.BrokenRulesCollection[0].OriginProperty);
+            Assert.Equal("EMailAddress",eMailType.BrokenRulesCollection[0].Property);
+            Assert.Equal("EMailAddress can not exceed 255 characters",eMailType.BrokenRulesCollection[0].Description);
         }
        
         [Fact]
@@ -186,7 +189,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(eMailType);
             Assert.True(isObjectValidInit);
             Assert.False(eMailType.IsValid);
-            Assert.Equal("LastUpdatedBy",eMailType.BrokenRulesCollection[0].OriginProperty);
+            Assert.Equal("LastUpdatedBy",eMailType.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy required",eMailType.BrokenRulesCollection[0].Description);
         }
 
         [Fact]
@@ -203,7 +207,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(eMailType);
             Assert.True(isObjectValidInit);
             Assert.False(eMailType.IsValid);
-            Assert.Equal("LastUpdatedBy",eMailType.BrokenRulesCollection[0].OriginProperty);
+            Assert.Equal("LastUpdatedBy",eMailType.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy can not exceed 255 characters",eMailType.BrokenRulesCollection[0].Description);
         }
         
         private async Task BuildEMail(EMailER eMailToBuild)

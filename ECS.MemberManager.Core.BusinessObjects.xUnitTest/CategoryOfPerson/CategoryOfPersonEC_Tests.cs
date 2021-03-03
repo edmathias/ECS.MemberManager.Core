@@ -63,7 +63,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestCategoryOfPersonEC_PurposeRequired()
+        public async Task TestCategoryOfPersonEC_CategoryRequired()
         {
             var categoryToTest = BuildCategoryOfPerson();
             var category = await CategoryOfPersonEC.GetCategoryOfPersonEC(categoryToTest);
@@ -74,10 +74,26 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.True(isObjectValidInit);
             Assert.False(category.IsValid);
             Assert.Equal("Category",category.BrokenRulesCollection[0].Property);
-            Assert.Equal("Category",category.BrokenRulesCollection[0].Property);
+            Assert.Equal("Category required",category.BrokenRulesCollection[0].Description);
         }
 
-        
+        [Fact]
+        public async Task TestCategoryOfPersonEC_CategoryExceedsMaxLengthOf50()
+        {
+            var categoryToTest = BuildCategoryOfPerson();
+            var category = await CategoryOfPersonEC.GetCategoryOfPersonEC(categoryToTest);
+            var isObjectValidInit = category.IsValid;
+            category.Category =
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis ";
+
+            Assert.NotNull(category);
+            Assert.True(isObjectValidInit);
+            Assert.False(category.IsValid);
+            Assert.Equal("Category",category.BrokenRulesCollection[0].Property);
+            Assert.Equal("Category can not exceed 50 characters",category.BrokenRulesCollection[0].Description);
+        }
+
         private CategoryOfPerson BuildCategoryOfPerson()
         {
             var categoryToBuild = new CategoryOfPerson();

@@ -106,7 +106,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
        
         [Fact]
-        public async Task TestCategoryOfPersonER_CategoryExceedsMaxLengthOf35()
+        public async Task TestCategoryOfPersonER_CategoryExceedsMaxLengthOf50()
         {
             var categoryOfPerson = await CategoryOfPersonER.NewCategoryOfPersonER();
             categoryOfPerson.Category = "valid category";
@@ -119,7 +119,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(categoryOfPerson);
             Assert.False(categoryOfPerson.IsValid);
             Assert.Equal("Category",categoryOfPerson.BrokenRulesCollection[0].Property);
-            Assert.Equal("Category can not exceed 35 characters",categoryOfPerson.BrokenRulesCollection[0].Description);
+            Assert.Equal("Category can not exceed 50 characters",categoryOfPerson.BrokenRulesCollection[0].Description);
  
         }        
         // test exception if attempt to save in invalid state

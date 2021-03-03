@@ -102,170 +102,214 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
         // test invalid state 
         [Fact]
-        public async Task TestAddressER_Address1Required()
+        public async Task TestAddressEC_Address1Required()
         {
-            var address = await AddressER.NewAddressER();
-            BuildAddress(address);
-            address.Address1 = "make valid";
+            var addressToTest = BuildAddress();
+            var address = await AddressEC.GetAddressEC(addressToTest);
             var isObjectValidInit = address.IsValid;
             address.Address1 = string.Empty;
 
             Assert.NotNull(address);
             Assert.True(isObjectValidInit);
             Assert.False(address.IsValid);
+            Assert.Equal("Address1",address.BrokenRulesCollection[0].Property);
+            Assert.Equal("Address1 required",address.BrokenRulesCollection[0].Description);
         }
 
         [Fact]
-        public async Task TestAddressER_CityRequired()
+        public async Task TestAddressEC_CityRequired()
         {
-            var address = await AddressER.NewAddressER();
-            BuildAddress(address);
+            var addressToTest = BuildAddress();
+            var address = await AddressEC.GetAddressEC(addressToTest);
             var isObjectValidInit = address.IsValid;
             address.City = string.Empty;
 
             Assert.NotNull(address);
             Assert.True(isObjectValidInit);
             Assert.False(address.IsValid);
+            Assert.Equal("City",address.BrokenRulesCollection[0].Property);
+            Assert.Equal("City required",address.BrokenRulesCollection[0].Description);
         }
 
         [Fact]
-        public async Task TestAddressER_StateRequired()
+        public async Task TestAddressEC_StateRequired()
         {
-            var address = await AddressER.NewAddressER();
-            BuildAddress(address);
+            var addressToTest = BuildAddress();
+            var address = await AddressEC.GetAddressEC(addressToTest);
             var isObjectValidInit = address.IsValid;
             address.State = string.Empty;
 
             Assert.NotNull(address);
             Assert.True(isObjectValidInit);
             Assert.False(address.IsValid);
+            Assert.Equal("State",address.BrokenRulesCollection[0].Property);
+            Assert.Equal("State required",address.BrokenRulesCollection[0].Description);
         }
 
         [Fact]
-        public async Task TestAddressER_PostCodeRequired()
+        public async Task TestAddressEC_PostCodeRequired()
         {
-            var address = await AddressER.NewAddressER();
-            BuildAddress(address);
+            var addressToTest = BuildAddress();
+            var address = await AddressEC.GetAddressEC(addressToTest);
             var isObjectValidInit = address.IsValid;
             address.PostCode = string.Empty;
 
             Assert.NotNull(address);
             Assert.True(isObjectValidInit);
             Assert.False(address.IsValid);
+            Assert.Equal("PostCode",address.BrokenRulesCollection[0].Property);
+            Assert.Equal("PostCode required",address.BrokenRulesCollection[0].Description);
         }
 
-
         [Fact]
-        public async Task TestAddressER_Address1ExceedsMaxLengthOf35()
+        public async Task TestAddressEC_LastUpdatedByRequired()
         {
-            var address = await AddressER.NewAddressER();
-            BuildAddress(address);
+            var addressToTest = BuildAddress();
+            var address = await AddressEC.GetAddressEC(addressToTest);
+            var isObjectValidInit = address.IsValid;
+            address.LastUpdatedBy = string.Empty;
+
+            Assert.NotNull(address);
+            Assert.True(isObjectValidInit);
+            Assert.False(address.IsValid);
+            Assert.Equal("LastUpdatedBy",address.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy required",address.BrokenRulesCollection[0].Description);
+        }
+        
+        [Fact]
+        public async Task TestAddressEC_LastUpdatedDateRequired()
+        {
+            var addressToTest = BuildAddress();
+            var address = await AddressEC.GetAddressEC(addressToTest);
+            var isObjectValidInit = address.IsValid;
+            address.LastUpdatedDate = DateTime.MinValue;
+
+            Assert.NotNull(address);
+            Assert.True(isObjectValidInit);
+            Assert.False(address.IsValid);
+            Assert.Equal("LastUpdatedDate",address.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedDate required",address.BrokenRulesCollection[0].Description);
+        }
+        
+        [Fact]
+        public async Task TestAddressEC_Address1ExceedsMaxLengthOf35()
+        {
+            var addressToTest = BuildAddress();
+            var address = await AddressEC.GetAddressEC(addressToTest);
+            var isObjectValidInit = address.IsValid;
             address.Address1 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
                                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
                                "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
                                "Duis aute irure dolor in reprehenderit";
 
             Assert.NotNull(address);
+            Assert.True(isObjectValidInit);
             Assert.False(address.IsValid);
+            Assert.Equal("Address1",address.BrokenRulesCollection[0].Property);
             Assert.Equal("Address1 can not exceed 35 characters",address.BrokenRulesCollection[0].Description);
         }
 
         [Fact]
-        public async Task TestAddressER_Address2ExceedsMaxLengthOf35()
+        public async Task TestAddressEC_Address2ExceedsMaxLengthOf35()
         {
-            var address = await AddressER.NewAddressER();
-            BuildAddress(address);
+            var addressToTest = BuildAddress();
+            var address = await AddressEC.GetAddressEC(addressToTest);
+            var isObjectValidInit = address.IsValid;
             address.Address2 = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
                                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
                                "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
                                "Duis aute irure dolor in reprehenderit";
 
             Assert.NotNull(address);
+            Assert.True(isObjectValidInit);
             Assert.False(address.IsValid);
+            Assert.Equal("Address2",address.BrokenRulesCollection[0].Property);
             Assert.Equal("Address2 can not exceed 35 characters",address.BrokenRulesCollection[0].Description);
         }
 
         [Fact]
-        public async Task TestAddressER_CityExceedsMaxLengthOf50()
+        public async Task TestAddressEC_CityExceedsMaxLengthOf50()
         {
-            var address = await AddressER.NewAddressER();
-            BuildAddress(address);
+            var addressToTest = BuildAddress();
+            var address = await AddressEC.GetAddressEC(addressToTest);
+            var isObjectValidInit = address.IsValid;
             address.City = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
                            "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
                            "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
                            "Duis aute irure dolor in reprehenderit";
 
             Assert.NotNull(address);
+            Assert.True(isObjectValidInit);
             Assert.False(address.IsValid);
+            Assert.Equal("City",address.BrokenRulesCollection[0].Property);
             Assert.Equal("City can not exceed 50 characters",address.BrokenRulesCollection[0].Description);
         }
 
         [Fact]
-        public async Task TestAddressER_StateExceedsMaxLengthOf2()
+        public async Task TestAddressEC_StateExceedsMaxLengthOf2()
         {
-            var address = await AddressER.NewAddressER();
-            BuildAddress(address);
+            var addressToTest = BuildAddress();
+            var address = await AddressEC.GetAddressEC(addressToTest);
+            var isObjectValidInit = address.IsValid;
             address.State = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ";
 
             Assert.NotNull(address);
+            Assert.True(isObjectValidInit);
             Assert.False(address.IsValid);
+            Assert.Equal("State",address.BrokenRulesCollection[0].Property);
             Assert.Equal("State can not exceed 2 characters",address.BrokenRulesCollection[0].Description);
         }
 
         [Fact]
-        public async Task TestAddressER_PostCodeExceedsMaxLengthOf9()
+        public async Task TestAddressEC_PostCodeExceedsMaxLengthOf9()
         {
-            var address = await AddressER.NewAddressER();
-            BuildAddress(address);
+            var addressToTest = BuildAddress();
+            var address = await AddressEC.GetAddressEC(addressToTest);
+            var isObjectValidInit = address.IsValid;
             address.PostCode = "Lorem ipsum dolor sit amet";
 
             Assert.NotNull(address);
+            Assert.True(isObjectValidInit);
             Assert.False(address.IsValid);
+            Assert.Equal("PostCode",address.BrokenRulesCollection[0].Property);
             Assert.Equal("PostCode can not exceed 9 characters",address.BrokenRulesCollection[0].Description);
         }
 
         [Fact]
-        public async Task TestAddressER_TestInvalidSave()
+        public async Task TestAddressEC_NotesExceedsMaxLengthOf255()
         {
-            var Address = await AddressER.NewAddressER();
-            Address.Address1 = String.Empty;
-            AddressER savedAddress = null;
+            var addressToTest = BuildAddress();
+            var address = await AddressEC.GetAddressEC(addressToTest);
+            var isObjectValidInit = address.IsValid;
+            address.Notes = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
+                "Duis aute irure dolor in reprehenderit";
 
-            Assert.False(Address.IsValid);
-            Assert.Throws<Csla.Rules.ValidationException>(() => savedAddress = Address.Save());
+            Assert.NotNull(address);
+            Assert.True(isObjectValidInit);
+            Assert.False(address.IsValid);
+            Assert.Equal("Notes",address.BrokenRulesCollection[0].Property);
+            Assert.Equal("Notes can not exceed 255 characters",address.BrokenRulesCollection[0].Description);
         }
-
+       
         [Fact]
-        public async Task AddressER_TestSaveOutOfOrder()
+        public async Task TestAddressEC_LastUpdatedByExceedsMaxLengthOf255()
         {
-            var address1 = await AddressER.GetAddressER(1);
-            var address2 = await AddressER.GetAddressER(1);
-            address1.Notes = "set up timestamp issue"; // turn on IsDirty
-            address2.Notes = "set up timestamp issue";
+            var addressToTest = BuildAddress();
+            var address = await AddressEC.GetAddressEC(addressToTest);
+            var isObjectValidInit = address.IsValid;
+            address.LastUpdatedBy = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+                            "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                            "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
+                            "Duis aute irure dolor in reprehenderit";
 
-            var address2_2 = await address2.SaveAsync();
-            _testOutputHelper.WriteLine($"address 2 save first {address2_2.RowVersion}");
-            Assert.NotEqual(address2_2.RowVersion, address1.RowVersion);
-            Assert.Equal("set up timestamp issue", address2_2.Notes);
- 
-            Assert.NotEqual(address2_2.RowVersion, address1.RowVersion);
-            await Assert.ThrowsAsync<DataPortalException>(() => address1.SaveAsync());
-        }
-
-        [Fact]
-        public async Task AddressER_TestSubsequentSaves()
-        {
-            var address = await AddressER.GetAddressER(1);
-            address.Notes = "set up timestamp issue"; // turn on IsDirty
-
-            var address2 = await address.SaveAsync();
-            var rowVersion1 = address2.RowVersion;
-            address2.Notes = "another timestamp trigger";
-
-            var address3 = await address2.SaveAsync();
-
-            Assert.NotEqual(address2.RowVersion, address3.RowVersion);
-        }
+            Assert.NotNull(address);
+            Assert.True(isObjectValidInit);
+            Assert.False(address.IsValid);
+            Assert.Equal("LastUpdatedBy",address.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy can not exceed 255 characters",address.BrokenRulesCollection[0].Description);
+        }        
 
         [Fact]
         public async Task TestAddressER_InvalidGet()
@@ -284,5 +328,22 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             addressER.LastUpdatedBy = "edm";
             addressER.Notes = "This person is on standby";
         }
+        
+        private Address BuildAddress()
+        {
+            var address = new Address()
+            {
+                Address1 = "Address line 1",
+                Address2 = "Address line 2",
+                City = "City",
+                State = "CO",
+                PostCode = "80111",
+                LastUpdatedDate = DateTime.Now,
+                LastUpdatedBy = "edm",
+                Notes = "This person is on standby"
+            };
+
+            return address;
+        }        
     }
 }

@@ -77,10 +77,12 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.True(isObjectValidInit);
             Assert.False(category.IsValid);
             Assert.Equal("Description",category.BrokenRulesCollection[0].Property);
+            Assert.Equal("Description required",category.BrokenRulesCollection[0].Description);
+            
         }
 
         [Fact]
-        public async Task TestDocumentTypeEC_DescriptionLessThan255Chars()
+        public async Task TestDocumentTypeEC_DescriptionLessThan50Chars()
         {
             var categoryToTest = BuildDocumentType();
             var category = await DocumentTypeEC.GetDocumentTypeEC(categoryToTest);
@@ -94,6 +96,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.True(isObjectValidInit);
             Assert.False(category.IsValid);
             Assert.Equal("Description",category.BrokenRulesCollection[0].Property);
+            Assert.Equal("Description can not exceed 50 characters",category.BrokenRulesCollection[0].Description);
         }
 
         [Fact]
@@ -108,8 +111,27 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.True(isObjectValidInit);
             Assert.False(category.IsValid);
             Assert.Equal("LastUpdatedBy",category.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy required",category.BrokenRulesCollection[0].Description);
         }
-      
+ 
+        [Fact]
+        public async Task TestDocumentTypeEC_LastUpdatedByLessThan255Chars()
+        {
+            var categoryToTest = BuildDocumentType();
+            var category = await DocumentTypeEC.GetDocumentTypeEC(categoryToTest);
+            var isObjectValidInit = category.IsValid;
+            category.LastUpdatedBy = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+                                   "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                                   "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                                   "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis ";
+
+            Assert.NotNull(category);
+            Assert.True(isObjectValidInit);
+            Assert.False(category.IsValid);
+            Assert.Equal("LastUpdatedBy",category.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy can not exceed 255 characters",category.BrokenRulesCollection[0].Description);
+        }
+        
         private DocumentType BuildDocumentType()
         {
             var documentType = new DocumentType();

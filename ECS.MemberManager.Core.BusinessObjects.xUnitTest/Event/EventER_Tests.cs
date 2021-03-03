@@ -96,7 +96,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         
         // test invalid state 
         [Fact]
-        public async Task EventER_TestDescriptionRequired() 
+        public async Task EventER_TestEventNameRequired() 
         {
             var eventObj = await EventER.NewEventER();
             eventObj.EventName = "event name";
@@ -131,6 +131,24 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.Equal("EventName can not exceed 255 characters",eventObj.BrokenRulesCollection[0].Description);
         }        
         // test exception if attempt to save in invalid state
+
+        [Fact]
+        public async Task EventER_LastUpdatedDateRequired()
+        {
+            var eventObj = await EventER.NewEventER();
+            eventObj.LastUpdatedBy = "edm";
+            eventObj.LastUpdatedDate = DateTime.Now;
+            eventObj.EventName = "valid length";
+            
+            var isObjectValidInit = eventObj.IsValid;
+            eventObj.LastUpdatedDate = DateTime.MinValue; 
+
+            Assert.NotNull(eventObj);
+            Assert.True(isObjectValidInit);
+            Assert.False(eventObj.IsValid);
+            Assert.Equal("LastUpdatedDate",eventObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedDate required",eventObj.BrokenRulesCollection[0].Description);
+        }        
 
         [Fact]
         public async Task EventER_TestInvalidSaveEventER()

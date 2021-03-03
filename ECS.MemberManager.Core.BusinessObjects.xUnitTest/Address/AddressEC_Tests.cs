@@ -85,6 +85,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.True(isObjectValidInit);
             Assert.False(address.IsValid);
             Assert.Equal("Address1",address.BrokenRulesCollection[0].Property);
+            Assert.Equal("Address1 required",address.BrokenRulesCollection[0].Description);
         }
 
         [Fact]
@@ -99,6 +100,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.True(isObjectValidInit);
             Assert.False(address.IsValid);
             Assert.Equal("City",address.BrokenRulesCollection[0].Property);
+            Assert.Equal("City required",address.BrokenRulesCollection[0].Description);
         }
 
         [Fact]
@@ -113,6 +115,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.True(isObjectValidInit);
             Assert.False(address.IsValid);
             Assert.Equal("State",address.BrokenRulesCollection[0].Property);
+            Assert.Equal("State required",address.BrokenRulesCollection[0].Description);
         }
 
         [Fact]
@@ -127,9 +130,39 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.True(isObjectValidInit);
             Assert.False(address.IsValid);
             Assert.Equal("PostCode",address.BrokenRulesCollection[0].Property);
+            Assert.Equal("PostCode required",address.BrokenRulesCollection[0].Description);
         }
 
+        [Fact]
+        public async Task TestAddressEC_LastUpdatedByRequired()
+        {
+            var addressToTest = BuildAddress();
+            var address = await AddressEC.GetAddressEC(addressToTest);
+            var isObjectValidInit = address.IsValid;
+            address.LastUpdatedDate = DateTime.MinValue;
 
+            Assert.NotNull(address);
+            Assert.True(isObjectValidInit);
+            Assert.False(address.IsValid);
+            Assert.Equal("LastUpdatedDate",address.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedDate required",address.BrokenRulesCollection[0].Description);
+        }
+        
+        [Fact]
+        public async Task TestAddressEC_LastUpdatedDateRequired()
+        {
+            var addressToTest = BuildAddress();
+            var address = await AddressEC.GetAddressEC(addressToTest);
+            var isObjectValidInit = address.IsValid;
+            address.LastUpdatedDate = DateTime.MinValue;
+
+            Assert.NotNull(address);
+            Assert.True(isObjectValidInit);
+            Assert.False(address.IsValid);
+            Assert.Equal("LastUpdatedDate",address.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedDate required",address.BrokenRulesCollection[0].Description);
+        }
+        
         [Fact]
         public async Task TestAddressEC_Address1ExceedsMaxLengthOf35()
         {
@@ -210,9 +243,46 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(address);
             Assert.True(isObjectValidInit);
             Assert.False(address.IsValid);
+            Assert.Equal("PostCode",address.BrokenRulesCollection[0].Property);
             Assert.Equal("PostCode can not exceed 9 characters",address.BrokenRulesCollection[0].Description);
         }
 
+        [Fact]
+        public async Task TestAddressEC_NotesExceedsMaxLengthOf255()
+        {
+            var addressToTest = BuildAddress();
+            var address = await AddressEC.GetAddressEC(addressToTest);
+            var isObjectValidInit = address.IsValid;
+            address.Notes = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
+                "Duis aute irure dolor in reprehenderit";
+
+            Assert.NotNull(address);
+            Assert.True(isObjectValidInit);
+            Assert.False(address.IsValid);
+            Assert.Equal("Notes",address.BrokenRulesCollection[0].Property);
+            Assert.Equal("Notes can not exceed 255 characters",address.BrokenRulesCollection[0].Description);
+        }
+       
+        [Fact]
+        public async Task TestAddressEC_LastUpdatedByExceedsMaxLengthOf255()
+        {
+            var addressToTest = BuildAddress();
+            var address = await AddressEC.GetAddressEC(addressToTest);
+            var isObjectValidInit = address.IsValid;
+            address.LastUpdatedBy = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+                            "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                            "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
+                            "Duis aute irure dolor in reprehenderit";
+
+            Assert.NotNull(address);
+            Assert.True(isObjectValidInit);
+            Assert.False(address.IsValid);
+            Assert.Equal("LastUpdatedBy",address.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy can not exceed 255 characters",address.BrokenRulesCollection[0].Description);
+        }        
+        
         private Address BuildAddress()
         {
             var address = new Address()
