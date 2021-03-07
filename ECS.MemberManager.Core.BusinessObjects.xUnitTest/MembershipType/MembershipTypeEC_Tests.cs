@@ -64,7 +64,22 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestMembershipTypeEC_DescriptionLessThan50Chars()
+        public async Task TestMembershipTypeEC_DescriptionRequired()
+        {
+            var membershipTypeObjToTest = BuildMembershipType();
+            var membershipTypeObj = await MembershipTypeEC.GetMembershipTypeEC(membershipTypeObjToTest);
+            var isObjectValidInit = membershipTypeObj.IsValid;
+            membershipTypeObj.Description = string.Empty;
+
+            Assert.NotNull(membershipTypeObj);
+            Assert.True(isObjectValidInit);
+            Assert.False(membershipTypeObj.IsValid);
+            Assert.Equal("Description",membershipTypeObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("Description required",membershipTypeObj.BrokenRulesCollection[0].Description);
+        }        
+
+        [Fact]
+        public async Task TestMembershipTypeEC_DescriptionNotGreaterThan50Chars()
         {
             var membershipTypeObjToTest = BuildMembershipType();
             var membershipTypeObj = await MembershipTypeEC.GetMembershipTypeEC(membershipTypeObjToTest);
@@ -78,6 +93,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.True(isObjectValidInit);
             Assert.False(membershipTypeObj.IsValid);
             Assert.Equal("Description",membershipTypeObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("Description can not exceed 50 characters",membershipTypeObj.BrokenRulesCollection[0].Description);
         }
 
         [Fact]
@@ -92,8 +108,27 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.True(isObjectValidInit);
             Assert.False(membershipTypeObj.IsValid);
             Assert.Equal("LastUpdatedBy",membershipTypeObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy required",membershipTypeObj.BrokenRulesCollection[0].Description);
         }
-      
+
+        [Fact]
+        public async Task TestMembershipTypeEC_LastUpdatedByLengthNotGreaterThan255Characters()
+        {
+            var membershipTypeObjToTest = BuildMembershipType();
+            var membershipTypeObj = await MembershipTypeEC.GetMembershipTypeEC(membershipTypeObjToTest);
+            var isObjectValidInit = membershipTypeObj.IsValid;
+            membershipTypeObj.LastUpdatedBy = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+                                            "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                                            "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                                            "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis ";
+
+            Assert.NotNull(membershipTypeObj);
+            Assert.True(isObjectValidInit);
+            Assert.False(membershipTypeObj.IsValid);
+            Assert.Equal("LastUpdatedBy",membershipTypeObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy can not exceed 255 characters",membershipTypeObj.BrokenRulesCollection[0].Description);
+        }
+
         private MembershipType BuildMembershipType()
         {
             var membershipTypeObj = new MembershipType();

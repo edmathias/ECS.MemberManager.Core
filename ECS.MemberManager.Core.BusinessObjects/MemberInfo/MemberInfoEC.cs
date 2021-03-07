@@ -137,6 +137,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 Notes = data.Notes;
                 RowVersion = data.RowVersion;
             }            
+            
         }
         [InsertChild]
         private async Task Insert()

@@ -93,7 +93,18 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             await Assert.ThrowsAsync<DataPortalException>(() => MembershipTypeER.GetMembershipTypeER(ID_TO_DELETE));
         }
-        
+
+        [Fact]
+        public async Task MembershipTypeER_TestInvalidSaveMembershipTypeER()
+        {
+            var membershipTypeObj = await MembershipTypeER.NewMembershipTypeER();
+            membershipTypeObj.Description = String.Empty;
+            MembershipTypeER savedMembershipType = null;
+                
+            Assert.False(membershipTypeObj.IsValid);
+            Assert.Throws<Csla.Rules.ValidationException>(() => savedMembershipType =  membershipTypeObj.Save() );
+        }
+            
         // test invalid state 
         [Fact]
         public async Task MembershipTypeER_TestDescriptionRequired() 
@@ -131,15 +142,45 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }        
         // test exception if attempt to save in invalid state
 
+        // test invalid state 
         [Fact]
-        public async Task MembershipTypeER_TestInvalidSaveMembershipTypeER()
+        public async Task MembershipTypeER_TestLastUpdatedByRequired() 
         {
             var membershipTypeObj = await MembershipTypeER.NewMembershipTypeER();
-            membershipTypeObj.Description = String.Empty;
-            MembershipTypeER savedMembershipType = null;
-                
+            membershipTypeObj.Description = "make valid";
+            membershipTypeObj.LastUpdatedBy = "edm";
+            membershipTypeObj.LastUpdatedDate = DateTime.Now;
+            var isObjectValidInit = membershipTypeObj.IsValid;
+            membershipTypeObj.LastUpdatedBy = string.Empty;
+
+            Assert.NotNull(membershipTypeObj);
+            Assert.True(isObjectValidInit);
             Assert.False(membershipTypeObj.IsValid);
-            Assert.Throws<Csla.Rules.ValidationException>(() => savedMembershipType =  membershipTypeObj.Save() );
+            Assert.Equal("LastUpdatedBy",membershipTypeObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy required",membershipTypeObj.BrokenRulesCollection[0].Description);
+            
         }
+       
+        [Fact]
+        public async Task MembershipTypeER_TestLastUpdatedByCannotExceed50Characters()
+        {
+            var membershipTypeObj = await MembershipTypeER.NewMembershipTypeER();
+            membershipTypeObj.LastUpdatedBy = "edm";
+            membershipTypeObj.LastUpdatedDate = DateTime.Now;
+            membershipTypeObj.Description = "valid length";
+            Assert.True(membershipTypeObj.IsValid);
+            
+            membershipTypeObj.LastUpdatedBy = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor "+
+                                            "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis "+
+                                            "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "+
+                                            "Duis aute irure dolor in reprehenderit";
+
+            Assert.NotNull(membershipTypeObj);
+            Assert.False(membershipTypeObj.IsValid);
+            Assert.Equal("LastUpdatedBy",membershipTypeObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy can not exceed 255 characters",membershipTypeObj.BrokenRulesCollection[0].Description);
+        }        
+        
+ 
     }
 }

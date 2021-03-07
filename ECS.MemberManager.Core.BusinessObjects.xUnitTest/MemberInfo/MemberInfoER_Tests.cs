@@ -98,15 +98,26 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var categoryToCheck = await Assert.ThrowsAsync<Csla.DataPortalException>
                 (() => MemberInfoER.GetMemberInfoER(ID_TO_DELETE));        
         }
-/*       
-        // test invalid state 
+     
+        // test exception if attempt to save in invalid state
+
         [Fact]
-        public async Task MemberInfoER_NameRequired() 
+        public async Task MemberInfoER_TestInvalidSave()
         {
             var memberInfo = await MemberInfoER.NewMemberInfoER();
-            memberInfo.Name = "Make it valid";
+            memberInfo.MemberNumber = String.Empty;
+                
+            Assert.False(memberInfo.IsValid);
+            Assert.Throws<Csla.Rules.ValidationException>(() => memberInfo.Save());
+        }
+        // test invalid state 
+        [Fact]
+        public async Task MemberInfoER_MemberNumberRequired() 
+        {
+            var memberInfo = await MemberInfoER.NewMemberInfoER();
+            await BuildMemberInfoER(memberInfo);
             var isObjectValidInit = memberInfo.IsValid;
-            memberInfo.Name = String.Empty;
+            memberInfo.MemberNumber = String.Empty;
 
             Assert.NotNull(memberInfo);
             Assert.True(isObjectValidInit);
@@ -114,34 +125,121 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
        
         [Fact]
-        public async Task MemberInfoER_NameExceedsMaxLengthOf50()
+        public async Task MemberInfoER_MemberNumberExceedsMaxLengthOf35()
         {
             var memberInfo = await MemberInfoER.NewMemberInfoER();
-            memberInfo.Name = "valid name";
+            await BuildMemberInfoER(memberInfo);
             Assert.True(memberInfo.IsValid);
 
-            memberInfo.Name =
+            memberInfo.MemberNumber =
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
                 "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis ";
 
             Assert.NotNull(memberInfo);
             Assert.False(memberInfo.IsValid);
-            Assert.Equal("Name can not exceed 50 characters",
+            Assert.Equal("MemberNumber",memberInfo.BrokenRulesCollection[0].Property);
+            Assert.Equal("MemberNumber can not exceed 35 characters",
                 memberInfo.BrokenRulesCollection[0].Description);
  
         }        
-        // test exception if attempt to save in invalid state
+        
+        [Fact]
+        public async Task TestMemberInfoER_DateFirstJoinedRequired()
+        {
+            var memberInfoToTest = await BuildMemberInfo();
+            var memberInfo = await MemberInfoER.GetMemberInfoER(1);
+            var isObjectValidInit = memberInfo.IsValid;
+            memberInfo.DateFirstJoined = DateTime.MinValue;
+
+            Assert.NotNull(memberInfo);
+            Assert.True(isObjectValidInit);
+            Assert.False(memberInfo.IsValid);
+            Assert.Equal("DateFirstJoined",memberInfo.BrokenRulesCollection[0].Property);
+            Assert.Equal("DateFirstJoined required",memberInfo.BrokenRulesCollection[0].Description);
+            
+        }        
 
         [Fact]
-        public async Task MemberInfoER_TestInvalidSave()
+        public async Task TestMemberInfoER_MemberStatusRequired()
         {
-            var memberInfo = await MemberInfoER.NewMemberInfoER();
-            memberInfo.Name = String.Empty;
-                
+            var memberInfoToTest = await BuildMemberInfo();
+            var memberInfo = await MemberInfoER.GetMemberInfoER(1);
+            var isObjectValidInit = memberInfo.IsValid;
+            memberInfo.MemberStatus = null;
+
+            Assert.NotNull(memberInfo);
+            Assert.True(isObjectValidInit);
             Assert.False(memberInfo.IsValid);
-            Assert.Throws<Csla.Rules.ValidationException>(() => memberInfo.Save());
+            Assert.Equal("MemberStatus",memberInfo.BrokenRulesCollection[0].Property);
+            Assert.Equal("MemberStatus required",memberInfo.BrokenRulesCollection[0].Description);
+            
+        }             
+       
+        [Fact]
+        public async Task TestMemberInfoER_MembershipTypeRequired()
+        {
+            var memberInfoToTest = await BuildMemberInfo();
+            var memberInfo = await MemberInfoER.GetMemberInfoER(1);
+            var isObjectValidInit = memberInfo.IsValid;
+            memberInfo.MembershipType = null;
+
+            Assert.NotNull(memberInfo);
+            Assert.True(isObjectValidInit);
+            Assert.False(memberInfo.IsValid);
+            Assert.Equal("MembershipType",memberInfo.BrokenRulesCollection[0].Property);
+            Assert.Equal("MembershipType required",memberInfo.BrokenRulesCollection[0].Description);
+            
+        }            
+        [Fact]
+        public async Task TestMemberInfoER_LastUpdatedByRequired()
+        {
+            var memberInfoToTest = await BuildMemberInfo();
+            var memberInfo = await MemberInfoER.GetMemberInfoER(1);
+            var isObjectValidInit = memberInfo.IsValid;
+            memberInfo.LastUpdatedBy = string.Empty;
+
+            Assert.NotNull(memberInfo);
+            Assert.True(isObjectValidInit);
+            Assert.False(memberInfo.IsValid);
+            Assert.Equal("LastUpdatedBy",memberInfo.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy required",memberInfo.BrokenRulesCollection[0].Description);
+            
         }
-        */
+     
+        [Fact]
+        public async Task TestMemberInfoER_LastUpdatedByExceeds255Characters()
+        {
+            var memberInfoToTest = await BuildMemberInfo();
+            var memberInfo = await MemberInfoER.GetMemberInfoER(1);
+            var isObjectValidInit = memberInfo.IsValid;
+            memberInfo.LastUpdatedBy = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempo" +
+                                      "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud" +
+                                      "exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure" +
+                                      "dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.";
+
+            Assert.NotNull(memberInfo);
+            Assert.True(isObjectValidInit);
+            Assert.False(memberInfo.IsValid);
+            Assert.Equal("LastUpdatedBy",memberInfo.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy can not exceed 255 characters",memberInfo.BrokenRulesCollection[0].Description);
+        }
+
+        [Fact]
+        public async Task TestMemberInfoER_LastUpdatedDateRequired()
+        {
+            var memberInfoToTest = await BuildMemberInfo();
+            var memberInfo = await MemberInfoER.GetMemberInfoER(1);
+            var isObjectValidInit = memberInfo.IsValid;
+            memberInfo.LastUpdatedDate = DateTime.MinValue;
+
+            Assert.NotNull(memberInfo);
+            Assert.True(isObjectValidInit);
+            Assert.False(memberInfo.IsValid);
+            Assert.Equal("LastUpdatedDate",memberInfo.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedDate required",memberInfo.BrokenRulesCollection[0].Description);
+            
+        }        
+
 
         private async Task BuildMemberInfoER(MemberInfoER memberInfo )
         {
