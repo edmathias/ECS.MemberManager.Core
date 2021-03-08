@@ -101,10 +101,12 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(memberStatus);
             Assert.True(isObjectValidInit);
             Assert.False(memberStatus.IsValid);
+            Assert.Equal("Description",memberStatus.BrokenRulesCollection[0].Property);
+            Assert.Equal("Description required",memberStatus.BrokenRulesCollection[0].Description);
         }
        
         [Fact]
-        public async Task MemberStatusER_TestDescriptionExceedsMaxLengthOf50()
+        public async Task MemberStatusER_TestDescriptionCanNotExceed50Characters()
         {
             var memberStatus = await MemberStatusER.NewMemberStatusER();
             memberStatus.Description = "valid length";
@@ -117,8 +119,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             Assert.NotNull(memberStatus);
             Assert.False(memberStatus.IsValid);
-            Assert.Equal("Description can not exceed 50 characters",
-                memberStatus.BrokenRulesCollection[0].Description);
+            Assert.Equal("Description",memberStatus.BrokenRulesCollection[0].Property);
+            Assert.Equal("Description can not exceed 50 characters",memberStatus.BrokenRulesCollection[0].Description);
+            
  
         }        
         // test exception if attempt to save in invalid state

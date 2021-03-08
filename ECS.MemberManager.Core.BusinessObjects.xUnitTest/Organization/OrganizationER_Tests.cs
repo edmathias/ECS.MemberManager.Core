@@ -110,7 +110,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task OrganizationER_NameExceedsMaxLengthOf50()
+        public async Task OrganizationER_NameCanNotExceed50Characters()
         {
             var organization = await OrganizationER.NewOrganizationER();
             await BuildValidOrganization(organization);
@@ -124,8 +124,53 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.Equal("Name",organization.BrokenRulesCollection[0].Property);
             Assert.Equal("Name can not exceed 50 characters",organization.BrokenRulesCollection[0].Description);
         }
-        // test exception if attempt to save in invalid state
 
+        [Fact]
+        public async Task OrganizationER_LastUpdatedByRequired()
+        {
+            var organization = await OrganizationER.NewOrganizationER();
+            await BuildValidOrganization(organization);
+            var isObjectValidInit = organization.IsValid;
+            organization.LastUpdatedBy = string.Empty;
+
+            Assert.NotNull(organization);
+            Assert.True(isObjectValidInit);
+            Assert.False(organization.IsValid);
+            Assert.Equal("LastUpdatedBy",organization.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy required",organization.BrokenRulesCollection[0].Description);
+        }
+
+        [Fact]
+        public async Task OrganizationER_LastUpdatedByCanNotExceed50Characters()
+        {
+            var organization = await OrganizationER.NewOrganizationER();
+            await BuildValidOrganization(organization);
+            organization.LastUpdatedBy = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+                                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                                "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
+                                "Duis aute irure dolor in reprehenderit";
+
+            Assert.NotNull(organization);
+            Assert.False(organization.IsValid);
+            Assert.Equal("LastUpdatedBy",organization.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy can not exceed 255 characters",organization.BrokenRulesCollection[0].Description);
+        }
+  
+        [Fact]
+        public async Task OrganizationER_OrganizationTypeRequired()
+        {
+            var organization = await OrganizationER.NewOrganizationER();
+            await BuildValidOrganization(organization);
+            var isObjectValidInit = organization.IsValid;
+            organization.OrganizationType = null;
+
+            Assert.NotNull(organization);
+            Assert.True(isObjectValidInit);
+            Assert.False(organization.IsValid);
+            Assert.Equal("OrganizationType",organization.BrokenRulesCollection[0].Property);
+            Assert.Equal("OrganizationType required",organization.BrokenRulesCollection[0].Description);
+        }
+        
         [Fact]
         public async Task OrganizationER_TestInvalidSave()
         {

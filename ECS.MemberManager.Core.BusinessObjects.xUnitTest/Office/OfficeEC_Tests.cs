@@ -67,16 +67,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
         // test invalid state 
         [Fact]
-        public async Task OfficeEC_TestDescriptionRequired()
+        public async Task OfficeEC_TestNameRequired()
         {
-            var officeObj = await OfficeEC.NewOfficeEC();
-            officeObj.Term = 1;
-            officeObj.CalendarPeriod = "annual";
-            officeObj.Name = "office name";
-            officeObj.ChosenHow = 2;
-            officeObj.Appointer = "members";
-            officeObj.LastUpdatedBy = "edm";
-            officeObj.LastUpdatedDate = DateTime.Now;
+            var officeObj = await OfficeEC.GetOfficeEC(BuildOffice());
 
             var isObjectValidInit = officeObj.IsValid;
             officeObj.Name = string.Empty;
@@ -84,19 +77,14 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(officeObj);
             Assert.True(isObjectValidInit);
             Assert.False(officeObj.IsValid);
+            Assert.Equal("Name",officeObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("Name required",officeObj.BrokenRulesCollection[0].Description);
         }
        
         [Fact]
         public async Task OfficeEC_TestNameExceedsMaxLengthOf50()
         {
-            var officeObj = await OfficeEC.NewOfficeEC();
-            officeObj.Term = 1;
-            officeObj.CalendarPeriod = "annual";
-            officeObj.Name = "office name";
-            officeObj.ChosenHow = 2;
-            officeObj.Appointer = "members";
-            officeObj.LastUpdatedBy = "edm";
-            officeObj.LastUpdatedDate = DateTime.Now;
+            var officeObj = await OfficeEC.GetOfficeEC(BuildOffice());
             var isObjectValid = officeObj.IsValid;
             
             officeObj.Name = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor "+
@@ -110,6 +98,92 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.Equal("Name",officeObj.BrokenRulesCollection[0].Property);
             Assert.Equal("Name can not exceed 50 characters",officeObj.BrokenRulesCollection[0].Description);
         }        
+
+        [Fact]
+        public async Task OfficeEC_TestCalendarPeriodExceedsMaxLengthOf25()
+        {
+            var officeObj = await OfficeEC.GetOfficeEC(BuildOffice());
+            var isObjectValid = officeObj.IsValid;
+            
+            officeObj.CalendarPeriod = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor "+
+                             "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis "+
+                             "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "+
+                             "Duis aute irure dolor in reprehenderit";
+
+            Assert.NotNull(officeObj);
+            Assert.True(isObjectValid);
+            Assert.False(officeObj.IsValid);
+            Assert.Equal("CalendarPeriod",officeObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("CalendarPeriod can not exceed 25 characters",officeObj.BrokenRulesCollection[0].Description);
+        }     
+
+        [Fact]
+        public async Task OfficeEC_TestAppointerExceedsMaxLengthOf50()
+        {
+            var officeObj = await OfficeEC.GetOfficeEC(BuildOffice());
+            var isObjectValid = officeObj.IsValid;
+            
+            officeObj.Appointer = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor "+
+                                       "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis "+
+                                       "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "+
+                                       "Duis aute irure dolor in reprehenderit";
+
+            Assert.NotNull(officeObj);
+            Assert.True(isObjectValid);
+            Assert.False(officeObj.IsValid);
+            Assert.Equal("Appointer",officeObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("Appointer can not exceed 50 characters",officeObj.BrokenRulesCollection[0].Description);
+        }     
+        
+        [Fact]
+        public async Task OfficeEC_TestLastUpdatedByRequired()
+        {
+            var officeObj = await OfficeEC.GetOfficeEC(BuildOffice());
+
+            var isObjectValidInit = officeObj.IsValid;
+            officeObj.LastUpdatedBy = string.Empty;
+
+            Assert.NotNull(officeObj);
+            Assert.True(isObjectValidInit);
+            Assert.False(officeObj.IsValid);
+            Assert.Equal("LastUpdatedBy",officeObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy required",officeObj.BrokenRulesCollection[0].Description);
+        }
+
+        [Fact]
+        public async Task OfficeEC_TestLastUpdatedByCanNotExceed255Characters()
+        {
+            var officeObj = await OfficeEC.GetOfficeEC(BuildOffice());
+
+            var isObjectValidInit = officeObj.IsValid;
+            officeObj.LastUpdatedBy = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor "+
+                                  "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis "+
+                                  "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "+
+                                  "Duis aute irure dolor in reprehenderit";
+
+
+            Assert.NotNull(officeObj);
+            Assert.True(isObjectValidInit);
+            Assert.False(officeObj.IsValid);
+            Assert.Equal("LastUpdatedBy",officeObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy can not exceed 255 characters",officeObj.BrokenRulesCollection[0].Description);
+        }
+        
+        [Fact]
+        public async Task OfficeEC_TestLastUpdatedDateRequired()
+        {
+            var officeObj = await OfficeEC.GetOfficeEC(BuildOffice());
+
+            var isObjectValidInit = officeObj.IsValid;
+            officeObj.LastUpdatedDate = DateTime.MinValue;
+
+            Assert.NotNull(officeObj);
+            Assert.True(isObjectValidInit);
+            Assert.False(officeObj.IsValid);
+            Assert.Equal("LastUpdatedDate",officeObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedDate required",officeObj.BrokenRulesCollection[0].Description);
+        }
+        
         
         private Office BuildOffice()
         {

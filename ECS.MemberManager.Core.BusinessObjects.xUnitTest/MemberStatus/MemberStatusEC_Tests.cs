@@ -71,10 +71,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.True(isObjectValidInit);
             Assert.False(memberStatus.IsValid);
             Assert.Equal("Description",memberStatus.BrokenRulesCollection[0].Property);
+            Assert.Equal("Description required",memberStatus.BrokenRulesCollection[0].Description);
         }
 
         [Fact]
-        public async Task TestMemberStatusEC_DescriptionLessThan50Chars()
+        public async Task TestMemberStatusEC_DescriptionCanNotExceed50Chars()
         {
             var memberStatusToTest = BuildMemberStatus();
             var memberStatus = await MemberStatusEC.GetMemberStatusEC(memberStatusToTest);
@@ -88,6 +89,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.True(isObjectValidInit);
             Assert.False(memberStatus.IsValid);
             Assert.Equal("Description",memberStatus.BrokenRulesCollection[0].Property);
+            Assert.Equal("Description can not exceed 50 characters",memberStatus.BrokenRulesCollection[0].Description);
         }
 
         private MemberStatus BuildMemberStatus()

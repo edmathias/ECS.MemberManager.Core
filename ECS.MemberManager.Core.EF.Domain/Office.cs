@@ -13,7 +13,9 @@ namespace ECS.MemberManager.Core.EF.Domain
         public int ChosenHow { get; set; }
         [MaxLength(50)]
         public string Appointer { get; set; }
-        [MaxLength(255)] public string LastUpdatedBy { get; set; }
+        [Required,MaxLength(255)] 
+        public string LastUpdatedBy { get; set; }
+        [Required]
         public DateTime LastUpdatedDate { get; set; }
         public string Notes { get; set; }
     }

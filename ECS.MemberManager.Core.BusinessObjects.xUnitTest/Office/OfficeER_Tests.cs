@@ -71,14 +71,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async Task OfficeER_TestInsertNewOfficeER()
         {
-            var officeObj = await OfficeER.NewOfficeER();
-            officeObj.Term = 1;
-            officeObj.CalendarPeriod = "annual";
-            officeObj.Name = "office name";
-            officeObj.ChosenHow = 2;
-            officeObj.Appointer = "members";
-            officeObj.LastUpdatedBy = "edm";
-            officeObj.LastUpdatedDate = DateTime.Now;
+            var officeObj = await BuildOfficeER(); 
+
             var savedOffice = await officeObj.SaveAsync();
            
             Assert.NotNull(savedOffice);
@@ -98,42 +92,28 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         
         // test invalid state 
         [Fact]
-        public async Task OfficeER_TestDescriptionRequired()
+        public async Task OfficeER_TestNameRequired()
         {
-            var officeObj = await OfficeER.NewOfficeER();
-            officeObj.Term = 1;
-            officeObj.CalendarPeriod = "annual";
-            officeObj.Name = "office name";
-            officeObj.ChosenHow = 2;
-            officeObj.Appointer = "members";
-            officeObj.LastUpdatedBy = "edm";
-            officeObj.LastUpdatedDate = DateTime.Now;
-
+            var officeObj = await BuildOfficeER(); 
             var isObjectValidInit = officeObj.IsValid;
             officeObj.Name = string.Empty;
 
             Assert.NotNull(officeObj);
             Assert.True(isObjectValidInit);
             Assert.False(officeObj.IsValid);
+            Assert.Equal("Name",officeObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("Name required",officeObj.BrokenRulesCollection[0].Description);
         }
        
         [Fact]
         public async Task OfficeER_TestNameExceedsMaxLengthOf50()
         {
-            var officeObj = await OfficeER.NewOfficeER();
-            officeObj.Term = 1;
-            officeObj.CalendarPeriod = "annual";
-            officeObj.Name = "office name";
-            officeObj.ChosenHow = 2;
-            officeObj.Appointer = "members";
-            officeObj.LastUpdatedBy = "edm";
-            officeObj.LastUpdatedDate = DateTime.Now;
+            var officeObj = await BuildOfficeER(); 
             var isObjectValid = officeObj.IsValid;
-            
             officeObj.Name = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor "+
-                                     "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis "+
-                                     "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "+
-                                     "Duis aute irure dolor in reprehenderit";
+                             "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis "+
+                             "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "+
+                             "Duis aute irure dolor in reprehenderit";
 
             Assert.NotNull(officeObj);
             Assert.True(isObjectValid);
@@ -141,8 +121,69 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.Equal("Name",officeObj.BrokenRulesCollection[0].Property);
             Assert.Equal("Name can not exceed 50 characters",officeObj.BrokenRulesCollection[0].Description);
         }        
-        // test exception if attempt to save in invalid state
+        
+        [Fact]
+        public async Task OfficeER_TestAppointerExceedsMaxLengthOf50()
+        {
+            var officeObj = await BuildOfficeER(); 
+            var isObjectValid = officeObj.IsValid;
+            officeObj.Appointer = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor "+
+                             "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis "+
+                             "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "+
+                             "Duis aute irure dolor in reprehenderit";
 
+            Assert.NotNull(officeObj);
+            Assert.True(isObjectValid);
+            Assert.False(officeObj.IsValid);
+            Assert.Equal("Appointer",officeObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("Appointer can not exceed 50 characters",officeObj.BrokenRulesCollection[0].Description);
+        }        
+
+        [Fact]
+        public async Task OfficeER_TestLastUpdatedByRequired()
+        {
+            var officeObj = await BuildOfficeER(); 
+            var isObjectValidInit = officeObj.IsValid;
+            officeObj.LastUpdatedBy = string.Empty;
+
+            Assert.NotNull(officeObj);
+            Assert.True(isObjectValidInit);
+            Assert.False(officeObj.IsValid);
+            Assert.Equal("LastUpdatedBy",officeObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy required",officeObj.BrokenRulesCollection[0].Description);
+        }
+
+        [Fact]
+        public async Task OfficeER_TestLastUpdatedByExceedsMaxLengthOf255()
+        {
+            var officeObj = await BuildOfficeER(); 
+            var isObjectValid = officeObj.IsValid;
+            officeObj.LastUpdatedBy = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor "+
+                                  "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis "+
+                                  "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "+
+                                  "Duis aute irure dolor in reprehenderit";
+
+            Assert.NotNull(officeObj);
+            Assert.True(isObjectValid);
+            Assert.False(officeObj.IsValid);
+            Assert.Equal("LastUpdatedBy",officeObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy can not exceed 255 characters",officeObj.BrokenRulesCollection[0].Description);
+        }        
+       
+        [Fact]
+        public async Task OfficeER_TestLastUpdatedDateRequired()
+        {
+            var officeObj = await BuildOfficeER(); 
+            var isObjectValidInit = officeObj.IsValid;
+            officeObj.LastUpdatedDate = DateTime.MinValue;
+
+            Assert.NotNull(officeObj);
+            Assert.True(isObjectValidInit);
+            Assert.False(officeObj.IsValid);
+            Assert.Equal("LastUpdatedDate",officeObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedDate required",officeObj.BrokenRulesCollection[0].Description);
+        }  
+        
         [Fact]
         public async Task OfficeER_TestInvalidSaveOfficeER()
         {
@@ -191,10 +232,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             await Assert.ThrowsAsync<DataPortalException>(() => OfficeER.GetOfficeER(999));
         }
         
-        private Office BuildOffice()
+        private async Task<OfficeER> BuildOfficeER()
         {
-            var officeObj = new Office();
-            officeObj.Id = 1;
+            var officeObj = await OfficeER.NewOfficeER();
             officeObj.Term = 1;
             officeObj.CalendarPeriod = "annual";
             officeObj.Name = "office name";
@@ -202,6 +242,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             officeObj.Appointer = "members";
             officeObj.LastUpdatedBy = "edm";
             officeObj.LastUpdatedDate = DateTime.Now;
+            officeObj.Notes = "notes for office";
 
             return officeObj;
         }        
