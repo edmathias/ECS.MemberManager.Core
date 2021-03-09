@@ -45,7 +45,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             
             Assert.NotNull(eMailTypeInfoList);
             Assert.True(eMailTypeInfoList.IsReadOnly);
-            Assert.Equal(4, eMailTypeInfoList.Count);
+            Assert.Equal(3, eMailTypeInfoList.Count);
         }
       
     }
