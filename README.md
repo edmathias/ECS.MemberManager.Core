@@ -14,7 +14,8 @@ Other pertinent projects are described below:
 
 ECS.MemberManager.Core.DataAccess - Contains the DataAccessLayer (DAL) interfaces for the different data access layer projects.
 ECS.MemberManager.Core.DataAccess.ADO - Contains a Data Access Layer to access the SQL Server database.
-ECS.MemberManager.Core.DataAccess.Mock - Contains a Data Access Layer to access a local in-memory set of tables for testing the business objects.
+ECS.MemberManager.Core.DataAccess.Mock - Contains a Data Access Layer to access a local in-memory set of tables for testing the 
+business objects.
 ECS.MemberManager.Core.EF.Domain - Contains Entity Framework code-first domain objects used to construct the database.
 
 
