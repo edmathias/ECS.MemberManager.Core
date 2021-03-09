@@ -4,7 +4,7 @@
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/08/2021 16:56:45
+// Generated on 03/09/2021 14:34:17
 //******************************************************************************    
 
 using System;
@@ -138,19 +138,20 @@ namespace ECS.MemberManager.Core.BusinessObjects
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IMemberInfoDal>();
             var data = await dal.Fetch(id);
+
             using(BypassPropertyChecks)
             {
-                Id = data.Id;
-                Person = (data.Person != null ? await PersonEC.GetPersonEC(data.Person) : null);
-                MemberNumber = data.MemberNumber;
-                DateFirstJoined = data.DateFirstJoined;
-                PrivacyLevel = (data.PrivacyLevel != null ? await PrivacyLevelEC.GetPrivacyLevelEC(data.PrivacyLevel) : null);
-                MemberStatus = (data.MemberStatus != null ? await MemberStatusEC.GetMemberStatusEC(data.MemberStatus) : null);
-                MembershipType = (data.MembershipType != null ? await MembershipTypeEC.GetMembershipTypeEC(data.MembershipType) : null);
-                LastUpdatedBy = data.LastUpdatedBy;
-                LastUpdatedDate = data.LastUpdatedDate;
-                Notes = data.Notes;
-                RowVersion = data.RowVersion;
+            Id = data.Id;
+            Person = (data.Person != null ? await PersonEC.GetPersonEC(data.Person) : null);
+            MemberNumber = data.MemberNumber;
+            DateFirstJoined = data.DateFirstJoined;
+            PrivacyLevel = (data.PrivacyLevel != null ? await PrivacyLevelEC.GetPrivacyLevelEC(data.PrivacyLevel) : null);
+            MemberStatus = (data.MemberStatus != null ? await MemberStatusEC.GetMemberStatusEC(data.MemberStatus) : null);
+            MembershipType = (data.MembershipType != null ? await MembershipTypeEC.GetMembershipTypeEC(data.MembershipType) : null);
+            LastUpdatedBy = data.LastUpdatedBy;
+            LastUpdatedDate = data.LastUpdatedDate;
+            Notes = data.Notes;
+            RowVersion = data.RowVersion;
             }            
         }
         [Insert]

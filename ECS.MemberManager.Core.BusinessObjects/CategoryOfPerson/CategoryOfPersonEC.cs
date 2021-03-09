@@ -4,7 +4,7 @@
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/08/2021 16:56:24
+// Generated on 03/09/2021 14:33:56
 //******************************************************************************    
 
 using System;
@@ -76,10 +76,10 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             using(BypassPropertyChecks)
             {
-                Id = data.Id;
-                Category = data.Category;
-                DisplayOrder = data.DisplayOrder;
-                RowVersion = data.RowVersion;
+            Id = data.Id;
+            Category = data.Category;
+            DisplayOrder = data.DisplayOrder;
+            RowVersion = data.RowVersion;
             }            
         }
         [InsertChild]

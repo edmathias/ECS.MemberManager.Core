@@ -222,12 +222,6 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 },
                 new DocumentType()
                 {
-                    Id = 3, Description = "Document Type C", Notes = String.Empty,
-                    LastUpdatedBy = "edm", LastUpdatedDate = DateTime.Now,
-                    RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
-                },
-                new DocumentType()
-                {
                     Id = 99, Description = "Document Type to Delete", Notes = String.Empty,
                     LastUpdatedBy = "edm", LastUpdatedDate = DateTime.Now,
                     RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)

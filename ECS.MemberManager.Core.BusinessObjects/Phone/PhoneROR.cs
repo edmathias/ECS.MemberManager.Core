@@ -104,16 +104,17 @@ namespace ECS.MemberManager.Core.BusinessObjects
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IPhoneDal>();
             var data = await dal.Fetch(id);
-                Id = data.Id;
-                PhoneType = data.PhoneType;
-                AreaCode = data.AreaCode;
-                Number = data.Number;
-                Extension = data.Extension;
-                DisplayOrder = data.DisplayOrder;
-                LastUpdatedBy = data.LastUpdatedBy;
-                LastUpdatedDate = data.LastUpdatedDate;
-                Notes = data.Notes;
-                RowVersion = data.RowVersion;
+
+            Id = data.Id;
+            PhoneType = data.PhoneType;
+            AreaCode = data.AreaCode;
+            Number = data.Number;
+            Extension = data.Extension;
+            DisplayOrder = data.DisplayOrder;
+            LastUpdatedBy = data.LastUpdatedBy;
+            LastUpdatedDate = data.LastUpdatedDate;
+            Notes = data.Notes;
+            RowVersion = data.RowVersion;
         }
 
         #endregion

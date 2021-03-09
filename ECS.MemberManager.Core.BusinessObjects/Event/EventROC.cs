@@ -4,7 +4,7 @@
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/08/2021 16:56:40
+// Generated on 03/09/2021 14:34:12
 //******************************************************************************    
 
 using System;
@@ -101,15 +101,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [FetchChild]
         private async Task Fetch(Event data)
         {
-                Id = data.Id;
-                EventName = data.EventName;
-                Description = data.Description;
-                IsOneTime = data.IsOneTime;
-                NextDate = data.NextDate;
-                LastUpdatedBy = data.LastUpdatedBy;
-                LastUpdatedDate = data.LastUpdatedDate;
-                Notes = data.Notes;
-                RowVersion = data.RowVersion;
+            Id = data.Id;
+            EventName = data.EventName;
+            Description = data.Description;
+            IsOneTime = data.IsOneTime;
+            NextDate = data.NextDate;
+            LastUpdatedBy = data.LastUpdatedBy;
+            LastUpdatedDate = data.LastUpdatedDate;
+            Notes = data.Notes;
+            RowVersion = data.RowVersion;
         }
 
         #endregion

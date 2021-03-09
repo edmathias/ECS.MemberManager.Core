@@ -101,14 +101,14 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             using(BypassPropertyChecks)
             {
-                Id = data.Id;
-                Person = (data.Person != null ? await PersonEC.GetPersonEC(data.Person) : null);
-                Office = (data.Office != null ? await OfficeEC.GetOfficeEC(data.Office) : null);
-                StartDate = data.StartDate;
-                LastUpdatedBy = data.LastUpdatedBy;
-                LastUpdatedDate = data.LastUpdatedDate;
-                Notes = data.Notes;
-                RowVersion = data.RowVersion;
+            Id = data.Id;
+            Person = (data.Person != null ? await PersonEC.GetPersonEC(data.Person) : null);
+            Office = (data.Office != null ? await OfficeEC.GetOfficeEC(data.Office) : null);
+            StartDate = data.StartDate;
+            LastUpdatedBy = data.LastUpdatedBy;
+            LastUpdatedDate = data.LastUpdatedDate;
+            Notes = data.Notes;
+            RowVersion = data.RowVersion;
             }            
         }
         [InsertChild]

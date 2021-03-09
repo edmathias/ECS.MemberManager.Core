@@ -59,10 +59,10 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [FetchChild]
         private async Task Fetch(MemberStatus data)
         {
-                Id = data.Id;
-                Description = data.Description;
-                Notes = data.Notes;
-                RowVersion = data.RowVersion;
+            Id = data.Id;
+            Description = data.Description;
+            Notes = data.Notes;
+            RowVersion = data.RowVersion;
         }
 
         #endregion

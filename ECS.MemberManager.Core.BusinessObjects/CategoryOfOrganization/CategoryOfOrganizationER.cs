@@ -4,7 +4,7 @@
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/08/2021 16:56:22
+// Generated on 03/09/2021 14:33:54
 //******************************************************************************    
 
 using System;
@@ -82,12 +82,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<ICategoryOfOrganizationDal>();
             var data = await dal.Fetch(id);
+
             using(BypassPropertyChecks)
             {
-                Id = data.Id;
-                Category = data.Category;
-                DisplayOrder = data.DisplayOrder;
-                RowVersion = data.RowVersion;
+            Id = data.Id;
+            Category = data.Category;
+            DisplayOrder = data.DisplayOrder;
+            RowVersion = data.RowVersion;
             }            
         }
         [Insert]

@@ -68,11 +68,11 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [FetchChild]
         private async Task Fetch(OrganizationType data)
         {
-                Id = data.Id;
-                Name = data.Name;
-                Notes = data.Notes;
-                CategoryOfOrganization = (data.CategoryOfOrganization != null ? await CategoryOfOrganizationROC.GetCategoryOfOrganizationROC(data.CategoryOfOrganization) : null);
-                RowVersion = data.RowVersion;
+            Id = data.Id;
+            Name = data.Name;
+            Notes = data.Notes;
+            CategoryOfOrganization = (data.CategoryOfOrganization != null ? await CategoryOfOrganizationROC.GetCategoryOfOrganizationROC(data.CategoryOfOrganization) : null);
+            RowVersion = data.RowVersion;
         }
 
         #endregion

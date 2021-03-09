@@ -4,7 +4,7 @@
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/08/2021 16:56:27
+// Generated on 03/09/2021 14:33:59
 //******************************************************************************    
 
 using System;
@@ -124,16 +124,16 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             using(BypassPropertyChecks)
             {
-                Id = data.Id;
-                DateWhenContacted = data.DateWhenContacted;
-                Purpose = data.Purpose;
-                RecordOfDiscussion = data.RecordOfDiscussion;
-                Notes = data.Notes;
-                LastUpdatedBy = data.LastUpdatedBy;
-                LastUpdatedDate = data.LastUpdatedDate;
-                Sponsor = (data.Sponsor != null ? await SponsorEC.GetSponsorEC(data.Sponsor) : null);
-                Person = (data.Person != null ? await PersonEC.GetPersonEC(data.Person) : null);
-                RowVersion = data.RowVersion;
+            Id = data.Id;
+            DateWhenContacted = data.DateWhenContacted;
+            Purpose = data.Purpose;
+            RecordOfDiscussion = data.RecordOfDiscussion;
+            Notes = data.Notes;
+            LastUpdatedBy = data.LastUpdatedBy;
+            LastUpdatedDate = data.LastUpdatedDate;
+            Sponsor = (data.Sponsor != null ? await SponsorEC.GetSponsorEC(data.Sponsor) : null);
+            Person = (data.Person != null ? await PersonEC.GetPersonEC(data.Person) : null);
+            RowVersion = data.RowVersion;
             }            
         }
         [InsertChild]

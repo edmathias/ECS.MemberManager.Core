@@ -5,7 +5,7 @@
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/08/2021 16:56:29
+// Generated on 03/09/2021 14:34:01
 //******************************************************************************    
 
 using System;
@@ -115,16 +115,17 @@ namespace ECS.MemberManager.Core.BusinessObjects
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IContactForSponsorDal>();
             var data = await dal.Fetch(id);
-                Id = data.Id;
-                DateWhenContacted = data.DateWhenContacted;
-                Purpose = data.Purpose;
-                RecordOfDiscussion = data.RecordOfDiscussion;
-                Notes = data.Notes;
-                LastUpdatedBy = data.LastUpdatedBy;
-                LastUpdatedDate = data.LastUpdatedDate;
-                Sponsor = (data.Sponsor != null ? await SponsorROC.GetSponsorROC(data.Sponsor) : null);
-                Person = (data.Person != null ? await PersonROC.GetPersonROC(data.Person) : null);
-                RowVersion = data.RowVersion;
+
+            Id = data.Id;
+            DateWhenContacted = data.DateWhenContacted;
+            Purpose = data.Purpose;
+            RecordOfDiscussion = data.RecordOfDiscussion;
+            Notes = data.Notes;
+            LastUpdatedBy = data.LastUpdatedBy;
+            LastUpdatedDate = data.LastUpdatedDate;
+            Sponsor = (data.Sponsor != null ? await SponsorROC.GetSponsorROC(data.Sponsor) : null);
+            Person = (data.Person != null ? await PersonROC.GetPersonROC(data.Person) : null);
+            RowVersion = data.RowVersion;
         }
 
         #endregion

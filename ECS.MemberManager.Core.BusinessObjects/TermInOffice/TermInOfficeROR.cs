@@ -94,14 +94,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<ITermInOfficeDal>();
             var data = await dal.Fetch(id);
-                Id = data.Id;
-                Person = (data.Person != null ? await PersonROC.GetPersonROC(data.Person) : null);
-                Office = (data.Office != null ? await OfficeROC.GetOfficeROC(data.Office) : null);
-                StartDate = data.StartDate;
-                LastUpdatedBy = data.LastUpdatedBy;
-                LastUpdatedDate = data.LastUpdatedDate;
-                Notes = data.Notes;
-                RowVersion = data.RowVersion;
+
+            Id = data.Id;
+            Person = (data.Person != null ? await PersonROC.GetPersonROC(data.Person) : null);
+            Office = (data.Office != null ? await OfficeROC.GetOfficeROC(data.Office) : null);
+            StartDate = data.StartDate;
+            LastUpdatedBy = data.LastUpdatedBy;
+            LastUpdatedDate = data.LastUpdatedDate;
+            Notes = data.Notes;
+            RowVersion = data.RowVersion;
         }
 
         #endregion

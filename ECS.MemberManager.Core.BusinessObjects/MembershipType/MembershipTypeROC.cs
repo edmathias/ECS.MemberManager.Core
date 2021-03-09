@@ -101,16 +101,16 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [FetchChild]
         private async Task Fetch(Office data)
         {
-                Id = data.Id;
-                Name = data.Name;
-                Term = data.Term;
-                CalendarPeriod = data.CalendarPeriod;
-                ChosenHow = data.ChosenHow;
-                Appointer = data.Appointer;
-                LastUpdatedBy = data.LastUpdatedBy;
-                LastUpdatedDate = data.LastUpdatedDate;
-                Notes = data.Notes;
-                RowVersion = data.RowVersion;
+            Id = data.Id;
+            Name = data.Name;
+            Term = data.Term;
+            CalendarPeriod = data.CalendarPeriod;
+            ChosenHow = data.ChosenHow;
+            Appointer = data.Appointer;
+            LastUpdatedBy = data.LastUpdatedBy;
+            LastUpdatedDate = data.LastUpdatedDate;
+            Notes = data.Notes;
+            RowVersion = data.RowVersion;
         }
 
         #endregion

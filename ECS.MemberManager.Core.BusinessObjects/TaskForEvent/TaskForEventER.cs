@@ -4,7 +4,7 @@
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/08/2021 16:57:24
+// Generated on 03/09/2021 14:34:53
 //******************************************************************************    
 
 using System;
@@ -130,18 +130,19 @@ namespace ECS.MemberManager.Core.BusinessObjects
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<ITaskForEventDal>();
             var data = await dal.Fetch(id);
+
             using(BypassPropertyChecks)
             {
-                Id = data.Id;
-                Event = (data.Event != null ? await EventEC.GetEventEC(data.Event) : null);
-                TaskName = data.TaskName;
-                PlannedDate = data.PlannedDate;
-                ActualDate = data.ActualDate;
-                Information = data.Information;
-                LastUpdatedBy = data.LastUpdatedBy;
-                LastUpdatedDate = data.LastUpdatedDate;
-                Notes = data.Notes;
-                RowVersion = data.RowVersion;
+            Id = data.Id;
+            Event = (data.Event != null ? await EventEC.GetEventEC(data.Event) : null);
+            TaskName = data.TaskName;
+            PlannedDate = data.PlannedDate;
+            ActualDate = data.ActualDate;
+            Information = data.Information;
+            LastUpdatedBy = data.LastUpdatedBy;
+            LastUpdatedDate = data.LastUpdatedDate;
+            Notes = data.Notes;
+            RowVersion = data.RowVersion;
             }            
         }
         [Insert]

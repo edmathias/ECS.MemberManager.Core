@@ -4,7 +4,7 @@
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/08/2021 16:56:58
+// Generated on 03/09/2021 14:34:27
 //******************************************************************************    
 
 using System;
@@ -96,14 +96,14 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [FetchChild]
         private async Task Fetch(Organization data)
         {
-                Id = data.Id;
-                Name = data.Name;
-                DateOfFirstContact = data.DateOfFirstContact;
-                LastUpdatedBy = data.LastUpdatedBy;
-                LastUpdatedDate = data.LastUpdatedDate;
-                Notes = data.Notes;
-                OrganizationType = (data.OrganizationType != null ? await OrganizationTypeROC.GetOrganizationTypeROC(data.OrganizationType) : null);
-                RowVersion = data.RowVersion;
+            Id = data.Id;
+            Name = data.Name;
+            DateOfFirstContact = data.DateOfFirstContact;
+            LastUpdatedBy = data.LastUpdatedBy;
+            LastUpdatedDate = data.LastUpdatedDate;
+            Notes = data.Notes;
+            OrganizationType = (data.OrganizationType != null ? await OrganizationTypeROC.GetOrganizationTypeROC(data.OrganizationType) : null);
+            RowVersion = data.RowVersion;
         }
 
         #endregion

@@ -69,11 +69,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<ITitleDal>();
             var data = await dal.Fetch(id);
-                Id = data.Id;
-                Abbreviation = data.Abbreviation;
-                Description = data.Description;
-                DisplayOrder = data.DisplayOrder;
-                RowVersion = data.RowVersion;
+
+            Id = data.Id;
+            Abbreviation = data.Abbreviation;
+            Description = data.Description;
+            DisplayOrder = data.DisplayOrder;
+            RowVersion = data.RowVersion;
         }
 
         #endregion

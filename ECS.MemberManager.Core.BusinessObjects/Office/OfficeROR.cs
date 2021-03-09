@@ -5,7 +5,7 @@
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/08/2021 16:56:56
+// Generated on 03/09/2021 14:34:26
 //******************************************************************************    
 
 using System;
@@ -90,13 +90,14 @@ namespace ECS.MemberManager.Core.BusinessObjects
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IMembershipTypeDal>();
             var data = await dal.Fetch(id);
-                Id = data.Id;
-                Description = data.Description;
-                Level = data.Level;
-                LastUpdatedBy = data.LastUpdatedBy;
-                LastUpdatedDate = data.LastUpdatedDate;
-                Notes = data.Notes;
-                RowVersion = data.RowVersion;
+
+            Id = data.Id;
+            Description = data.Description;
+            Level = data.Level;
+            LastUpdatedBy = data.LastUpdatedBy;
+            LastUpdatedDate = data.LastUpdatedDate;
+            Notes = data.Notes;
+            RowVersion = data.RowVersion;
         }
 
         #endregion

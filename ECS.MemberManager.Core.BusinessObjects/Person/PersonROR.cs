@@ -5,7 +5,7 @@
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/08/2021 16:57:14
+// Generated on 03/09/2021 14:34:43
 //******************************************************************************    
 
 using System;
@@ -136,19 +136,20 @@ namespace ECS.MemberManager.Core.BusinessObjects
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IPersonDal>();
             var data = await dal.Fetch(id);
-                Id = data.Id;
-                Title = (data.Title != null ? await TitleROC.GetTitleROC(data.Title) : null);
-                LastName = data.LastName;
-                MiddleName = data.MiddleName;
-                FirstName = data.FirstName;
-                DateOfFirstContact = data.DateOfFirstContact;
-                BirthDate = data.BirthDate;
-                LastUpdatedBy = data.LastUpdatedBy;
-                LastUpdatedDate = data.LastUpdatedDate;
-                Code = data.Code;
-                Notes = data.Notes;
-                EMail = (data.EMail != null ? await EMailROC.GetEMailROC(data.EMail) : null);
-                RowVersion = data.RowVersion;
+
+            Id = data.Id;
+            Title = (data.Title != null ? await TitleROC.GetTitleROC(data.Title) : null);
+            LastName = data.LastName;
+            MiddleName = data.MiddleName;
+            FirstName = data.FirstName;
+            DateOfFirstContact = data.DateOfFirstContact;
+            BirthDate = data.BirthDate;
+            LastUpdatedBy = data.LastUpdatedBy;
+            LastUpdatedDate = data.LastUpdatedDate;
+            Code = data.Code;
+            Notes = data.Notes;
+            EMail = (data.EMail != null ? await EMailROC.GetEMailROC(data.EMail) : null);
+            RowVersion = data.RowVersion;
         }
 
         #endregion

@@ -77,11 +77,11 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             using(BypassPropertyChecks)
             {
-                Id = data.Id;
-                Abbreviation = data.Abbreviation;
-                Description = data.Description;
-                DisplayOrder = data.DisplayOrder;
-                RowVersion = data.RowVersion;
+            Id = data.Id;
+            Abbreviation = data.Abbreviation;
+            Description = data.Description;
+            DisplayOrder = data.DisplayOrder;
+            RowVersion = data.RowVersion;
             }            
         }
         [InsertChild]

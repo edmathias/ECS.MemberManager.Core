@@ -5,7 +5,7 @@
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/08/2021 16:56:20
+// Generated on 03/09/2021 14:33:53
 //******************************************************************************    
 
 using System;
@@ -111,16 +111,17 @@ namespace ECS.MemberManager.Core.BusinessObjects
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IAddressDal>();
             var data = await dal.Fetch(id);
-                Id = data.Id;
-                Address1 = data.Address1;
-                Address2 = data.Address2;
-                City = data.City;
-                State = data.State;
-                PostCode = data.PostCode;
-                Notes = data.Notes;
-                LastUpdatedBy = data.LastUpdatedBy;
-                LastUpdatedDate = data.LastUpdatedDate;
-                RowVersion = data.RowVersion;
+
+            Id = data.Id;
+            Address1 = data.Address1;
+            Address2 = data.Address2;
+            City = data.City;
+            State = data.State;
+            PostCode = data.PostCode;
+            Notes = data.Notes;
+            LastUpdatedBy = data.LastUpdatedBy;
+            LastUpdatedDate = data.LastUpdatedDate;
+            RowVersion = data.RowVersion;
         }
 
         #endregion

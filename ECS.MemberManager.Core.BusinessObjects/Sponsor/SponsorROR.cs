@@ -5,7 +5,7 @@
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/08/2021 16:57:22
+// Generated on 03/09/2021 14:34:51
 //******************************************************************************    
 
 using System;
@@ -143,20 +143,21 @@ namespace ECS.MemberManager.Core.BusinessObjects
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<ISponsorDal>();
             var data = await dal.Fetch(id);
-                Id = data.Id;
-                Person = (data.Person != null ? await PersonROC.GetPersonROC(data.Person) : null);
-                Organization = (data.Organization != null ? await OrganizationROC.GetOrganizationROC(data.Organization) : null);
-                Status = data.Status;
-                DateOfFirstContact = data.DateOfFirstContact;
-                ReferredBy = data.ReferredBy;
-                DateSponsorAccepted = data.DateSponsorAccepted;
-                TypeName = data.TypeName;
-                Details = data.Details;
-                SponsorUntilDate = data.SponsorUntilDate;
-                Notes = data.Notes;
-                LastUpdatedBy = data.LastUpdatedBy;
-                LastUpdatedDate = data.LastUpdatedDate;
-                RowVersion = data.RowVersion;
+
+            Id = data.Id;
+            Person = (data.Person != null ? await PersonROC.GetPersonROC(data.Person) : null);
+            Organization = (data.Organization != null ? await OrganizationROC.GetOrganizationROC(data.Organization) : null);
+            Status = data.Status;
+            DateOfFirstContact = data.DateOfFirstContact;
+            ReferredBy = data.ReferredBy;
+            DateSponsorAccepted = data.DateSponsorAccepted;
+            TypeName = data.TypeName;
+            Details = data.Details;
+            SponsorUntilDate = data.SponsorUntilDate;
+            Notes = data.Notes;
+            LastUpdatedBy = data.LastUpdatedBy;
+            LastUpdatedDate = data.LastUpdatedDate;
+            RowVersion = data.RowVersion;
         }
 
         #endregion

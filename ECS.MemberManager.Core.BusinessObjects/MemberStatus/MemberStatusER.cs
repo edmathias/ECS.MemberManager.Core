@@ -75,12 +75,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IMemberStatusDal>();
             var data = await dal.Fetch(id);
+
             using(BypassPropertyChecks)
             {
-                Id = data.Id;
-                Description = data.Description;
-                Notes = data.Notes;
-                RowVersion = data.RowVersion;
+            Id = data.Id;
+            Description = data.Description;
+            Notes = data.Notes;
+            RowVersion = data.RowVersion;
             }            
         }
         [Insert]

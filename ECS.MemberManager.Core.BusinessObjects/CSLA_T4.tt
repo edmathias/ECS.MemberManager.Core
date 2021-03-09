@@ -146,6 +146,7 @@
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<I<#= objectType #>Dal>();
             var data = await dal.Fetch(id);
+
 <#+
         }
         if (!isReadOnly)
@@ -301,13 +302,13 @@
             var objName = columnData.columnName.Replace("Id", string.Empty);
             var childStereoType =  GetChildStereoType(stereoType);
 #>
-                <#= objName #> = (data.<#=objName #> != null ? await <#= objName #><#=childStereoType#>.Get<#= objName #><#=childStereoType#>(data.<#= objName #>) : null);
+            <#= objName #> = (data.<#=objName #> != null ? await <#= objName #><#=childStereoType#>.Get<#= objName #><#=childStereoType#>(data.<#= objName #>) : null);
 <#+
         }
         else
         {
 #>
-                <#= columnData.columnName #> = data.<#= columnData.columnName #>;
+            <#= columnData.columnName #> = data.<#= columnData.columnName #>;
 <#+
         }
     }

@@ -125,17 +125,17 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             using(BypassPropertyChecks)
             {
-                Id = data.Id;
-                Person = (data.Person != null ? await PersonEC.GetPersonEC(data.Person) : null);
-                MemberNumber = data.MemberNumber;
-                DateFirstJoined = data.DateFirstJoined;
-                PrivacyLevel = (data.PrivacyLevel != null ? await PrivacyLevelEC.GetPrivacyLevelEC(data.PrivacyLevel) : null);
-                MemberStatus = (data.MemberStatus != null ? await MemberStatusEC.GetMemberStatusEC(data.MemberStatus) : null);
-                MembershipType = (data.MembershipType != null ? await MembershipTypeEC.GetMembershipTypeEC(data.MembershipType) : null);
-                LastUpdatedBy = data.LastUpdatedBy;
-                LastUpdatedDate = data.LastUpdatedDate;
-                Notes = data.Notes;
-                RowVersion = data.RowVersion;
+            Id = data.Id;
+            Person = (data.Person != null ? await PersonEC.GetPersonEC(data.Person) : null);
+            MemberNumber = data.MemberNumber;
+            DateFirstJoined = data.DateFirstJoined;
+            PrivacyLevel = (data.PrivacyLevel != null ? await PrivacyLevelEC.GetPrivacyLevelEC(data.PrivacyLevel) : null);
+            MemberStatus = (data.MemberStatus != null ? await MemberStatusEC.GetMemberStatusEC(data.MemberStatus) : null);
+            MembershipType = (data.MembershipType != null ? await MembershipTypeEC.GetMembershipTypeEC(data.MembershipType) : null);
+            LastUpdatedBy = data.LastUpdatedBy;
+            LastUpdatedDate = data.LastUpdatedDate;
+            Notes = data.Notes;
+            RowVersion = data.RowVersion;
             }            
         }
         [InsertChild]

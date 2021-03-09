@@ -69,10 +69,10 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             using(BypassPropertyChecks)
             {
-                Id = data.Id;
-                Description = data.Description;
-                Notes = data.Notes;
-                RowVersion = data.RowVersion;
+            Id = data.Id;
+            Description = data.Description;
+            Notes = data.Notes;
+            RowVersion = data.RowVersion;
             }            
         }
         [InsertChild]

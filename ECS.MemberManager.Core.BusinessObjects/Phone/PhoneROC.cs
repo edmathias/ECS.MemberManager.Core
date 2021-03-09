@@ -101,16 +101,16 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [FetchChild]
         private async Task Fetch(Phone data)
         {
-                Id = data.Id;
-                PhoneType = data.PhoneType;
-                AreaCode = data.AreaCode;
-                Number = data.Number;
-                Extension = data.Extension;
-                DisplayOrder = data.DisplayOrder;
-                LastUpdatedBy = data.LastUpdatedBy;
-                LastUpdatedDate = data.LastUpdatedDate;
-                Notes = data.Notes;
-                RowVersion = data.RowVersion;
+            Id = data.Id;
+            PhoneType = data.PhoneType;
+            AreaCode = data.AreaCode;
+            Number = data.Number;
+            Extension = data.Extension;
+            DisplayOrder = data.DisplayOrder;
+            LastUpdatedBy = data.LastUpdatedBy;
+            LastUpdatedDate = data.LastUpdatedDate;
+            Notes = data.Notes;
+            RowVersion = data.RowVersion;
         }
 
         #endregion

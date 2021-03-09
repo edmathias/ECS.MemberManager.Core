@@ -66,11 +66,11 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [FetchChild]
         private async Task Fetch(Title data)
         {
-                Id = data.Id;
-                Abbreviation = data.Abbreviation;
-                Description = data.Description;
-                DisplayOrder = data.DisplayOrder;
-                RowVersion = data.RowVersion;
+            Id = data.Id;
+            Abbreviation = data.Abbreviation;
+            Description = data.Description;
+            DisplayOrder = data.DisplayOrder;
+            RowVersion = data.RowVersion;
         }
 
         #endregion

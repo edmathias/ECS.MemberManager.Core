@@ -115,17 +115,18 @@ namespace ECS.MemberManager.Core.BusinessObjects
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEventDocumentDal>();
             var data = await dal.Fetch(id);
+
             using(BypassPropertyChecks)
             {
-                Id = data.Id;
-                Event = (data.Event != null ? await EventEC.GetEventEC(data.Event) : null);
-                DocumentName = data.DocumentName;
-                DocumentType = (data.DocumentType != null ? await DocumentTypeEC.GetDocumentTypeEC(data.DocumentType) : null);
-                PathAndFileName = data.PathAndFileName;
-                LastUpdatedBy = data.LastUpdatedBy;
-                LastUpdatedDate = data.LastUpdatedDate;
-                Notes = data.Notes;
-                RowVersion = data.RowVersion;
+            Id = data.Id;
+            Event = (data.Event != null ? await EventEC.GetEventEC(data.Event) : null);
+            DocumentName = data.DocumentName;
+            DocumentType = (data.DocumentType != null ? await DocumentTypeEC.GetDocumentTypeEC(data.DocumentType) : null);
+            PathAndFileName = data.PathAndFileName;
+            LastUpdatedBy = data.LastUpdatedBy;
+            LastUpdatedDate = data.LastUpdatedDate;
+            Notes = data.Notes;
+            RowVersion = data.RowVersion;
             }            
         }
         [Insert]

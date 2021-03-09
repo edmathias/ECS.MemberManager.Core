@@ -98,15 +98,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [FetchChild]
         private async Task Fetch(EventDocument data)
         {
-                Id = data.Id;
-                Event = (data.Event != null ? await EventROC.GetEventROC(data.Event) : null);
-                DocumentName = data.DocumentName;
-                DocumentType = (data.DocumentType != null ? await DocumentTypeROC.GetDocumentTypeROC(data.DocumentType) : null);
-                PathAndFileName = data.PathAndFileName;
-                LastUpdatedBy = data.LastUpdatedBy;
-                LastUpdatedDate = data.LastUpdatedDate;
-                Notes = data.Notes;
-                RowVersion = data.RowVersion;
+            Id = data.Id;
+            Event = (data.Event != null ? await EventROC.GetEventROC(data.Event) : null);
+            DocumentName = data.DocumentName;
+            DocumentType = (data.DocumentType != null ? await DocumentTypeROC.GetDocumentTypeROC(data.DocumentType) : null);
+            PathAndFileName = data.PathAndFileName;
+            LastUpdatedBy = data.LastUpdatedBy;
+            LastUpdatedDate = data.LastUpdatedDate;
+            Notes = data.Notes;
+            RowVersion = data.RowVersion;
         }
 
         #endregion
