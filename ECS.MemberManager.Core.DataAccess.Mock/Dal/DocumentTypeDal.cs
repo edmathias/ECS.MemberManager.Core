@@ -23,6 +23,8 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             var lastDocumentType = MockDb.DocumentTypes.ToList().OrderByDescending(dt => dt.Id).First();
             documentType.Id = 1+lastDocumentType.Id;
+            documentType.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
+            
             MockDb.DocumentTypes.Add(documentType);
             
             return documentType;
@@ -30,8 +32,15 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         public async Task<DocumentType> Update(DocumentType documentType)
         {
-            // mockdb in memory list reference already updated 
-            return documentType;
+            var documentTypeToUpdate =
+                MockDb.DocumentTypes.FirstOrDefault(em => em.Id == documentType.Id &&
+                                                               em.RowVersion.SequenceEqual(documentType.RowVersion));
+
+            if(documentTypeToUpdate == null)
+                throw new Csla.DataPortalException(null);
+           
+            documentTypeToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
+            return documentTypeToUpdate;
         }
 
         public async Task Delete(int id)

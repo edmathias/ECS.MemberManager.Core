@@ -263,7 +263,6 @@
             };
 
             var insertedObj = await dal.Update(data);
-            Id = insertedObj.Id;
             RowVersion = insertedObj.RowVersion;
         }
 

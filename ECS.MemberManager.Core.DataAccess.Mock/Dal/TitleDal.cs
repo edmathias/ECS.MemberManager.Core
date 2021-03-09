@@ -23,6 +23,8 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             var lastTitle = MockDb.Titles.ToList().OrderByDescending(dt => dt.Id).First();
             title.Id = 1+lastTitle.Id;
+            title.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
+            
             MockDb.Titles.Add(title);
             
             return title;
@@ -30,8 +32,15 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         public async Task<Title> Update(Title title)
         {
-            // mockdb in memory list reference already updated 
-            return title;
+            var titleToUpdate =
+                MockDb.Titles.FirstOrDefault(em => em.Id == title.Id &&
+                                                   em.RowVersion.SequenceEqual(title.RowVersion));
+
+            if(titleToUpdate == null)
+                throw new Csla.DataPortalException(null);
+           
+            titleToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
+            return titleToUpdate;
         }
 
         public async Task Delete(int id)

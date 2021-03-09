@@ -10,7 +10,7 @@ namespace ECS.MemberManager.Core.DataAccess.Dal
         Task<List<EventDocument>> Fetch();
         Task<EventDocument> Fetch(int id);
         Task<EventDocument> Insert(EventDocument eMailTypeToInsert);
-        Task<EventDocument> Update(EventDocument eMailTypeToUpdate);
+        Task<EventDocument> Update(EventDocument eventDocument);
         Task Delete(int id);
     }
 }

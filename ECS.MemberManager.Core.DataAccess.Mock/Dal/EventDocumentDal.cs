@@ -27,24 +27,25 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             var lastEventDocument = MockDb.EventDocuments.ToList().OrderByDescending(e =>e.Id).First();
             eventToInsert.Id = 1+lastEventDocument.Id;
+            eventToInsert.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
             
             MockDb.EventDocuments.Add(eventToInsert);
             return eventToInsert;        
         }
 
-        public async Task<EventDocument> Update(EventDocument eventUpdate)
+        public async Task<EventDocument> Update(EventDocument eventDocument)
         {
-            var eventToUpdate = MockDb.EventDocuments.FirstOrDefault(e => e.Id == eventUpdate.Id);
-            eventToUpdate.Id = eventUpdate.Id;
-            eventToUpdate.Notes = eventUpdate.Notes;
-            eventToUpdate.DocumentName = eventUpdate.DocumentName;
-            eventToUpdate.Event = eventUpdate.Event;
-            eventToUpdate.DocumentType = eventUpdate.DocumentType;
-            eventToUpdate.LastUpdatedBy = eventUpdate.LastUpdatedBy;
-            eventToUpdate.LastUpdatedDate = eventUpdate.LastUpdatedDate;
-            eventToUpdate.PathAndFileName = eventUpdate.PathAndFileName;
-            
-            return eventUpdate;
+            var eventDocumentToUpdate =
+                MockDb.EventDocuments.FirstOrDefault(em => em.Id == eventDocument.Id &&
+                                                               em.RowVersion.SequenceEqual(eventDocument.RowVersion));
+
+            if(eventDocumentToUpdate == null)
+                throw new Csla.DataPortalException(null);
+           
+            // update fields to satisfy unit tests.
+            eventDocumentToUpdate.DocumentName = eventDocument.DocumentName;
+            eventDocumentToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
+            return eventDocumentToUpdate;
         }
 
         public async Task Delete(int id)

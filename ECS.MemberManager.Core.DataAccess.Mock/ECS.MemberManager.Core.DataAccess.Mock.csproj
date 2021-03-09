@@ -8,4 +8,8 @@
       <ProjectReference Include="..\ECS.MemberManager.Core.DataAccess\ECS.MemberManager.Core.DataAccess.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Csla" Version="5.4.1" />
+    </ItemGroup>
+
 </Project>

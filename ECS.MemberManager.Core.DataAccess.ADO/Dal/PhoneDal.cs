@@ -44,18 +44,18 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             return await _db.GetAsync<Phone>(id);
         }
 
-        public async Task<Phone> Insert(Phone phoneToInsert)
+        public async Task<Phone> Insert(Phone phone)
         {
             var sql = "INSERT INTO [dbo].[Phones] ([PhoneType], [AreaCode], [Number], [Extension], [DisplayOrder], [LastUpdatedBy], [LastUpdatedDate], [Notes]) "+
                             "SELECT @PhoneType, @AreaCode, @Number, @Extension, @DisplayOrder, @LastUpdatedBy, @LastUpdatedDate, @Notes; " +
                             "SELECT SCOPE_IDENTITY()";
-            phoneToInsert.Id = await _db.ExecuteScalarAsync<int>(sql,phoneToInsert);
+            phone.Id = await _db.ExecuteScalarAsync<int>(sql,phone);
 
             //reretrieve Phone to get rowversion
-            var insertedEmail = await _db.GetAsync<Phone>(phoneToInsert.Id);
-            phoneToInsert.RowVersion = insertedEmail.RowVersion;
+            var insertedEmail = await _db.GetAsync<Phone>(phone.Id);
+            phone.RowVersion = insertedEmail.RowVersion;
             
-            return phoneToInsert;
+            return phone;
         }
 
         public async Task<Phone> Update(Phone phoneToUpdate)

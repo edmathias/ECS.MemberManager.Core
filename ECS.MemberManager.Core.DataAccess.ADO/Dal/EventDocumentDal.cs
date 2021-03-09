@@ -102,7 +102,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             return eventDocumentToInsert;
         }
 
-        public async Task<EventDocument> Update(EventDocument eventDocumentToUpdate)
+        public async Task<EventDocument> Update(EventDocument eventDocument)
         {
             var sql = "UPDATE [dbo].[EventDocuments] " +
                       "SET [EventId] = @EventId, " +
@@ -117,21 +117,21 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
 
             var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql,new
             {
-                Id = eventDocumentToUpdate.Id,
-                EventId = eventDocumentToUpdate.Event.Id,
-                DocumentName = eventDocumentToUpdate.DocumentName,
-                DocumentTypeId = eventDocumentToUpdate.DocumentType.Id,
-                PathAndFileName = eventDocumentToUpdate.PathAndFileName,
-                LastUpdatedBy = eventDocumentToUpdate.LastUpdatedBy,
-                LastUpdatedDate = eventDocumentToUpdate.LastUpdatedDate,
-                Notes = eventDocumentToUpdate.Notes,
-                RowVersion = eventDocumentToUpdate.RowVersion              
+                Id = eventDocument.Id,
+                EventId = eventDocument.Event.Id,
+                DocumentName = eventDocument.DocumentName,
+                DocumentTypeId = eventDocument.DocumentType.Id,
+                PathAndFileName = eventDocument.PathAndFileName,
+                LastUpdatedBy = eventDocument.LastUpdatedBy,
+                LastUpdatedDate = eventDocument.LastUpdatedDate,
+                Notes = eventDocument.Notes,
+                RowVersion = eventDocument.RowVersion              
             });
             if (rowVersion == null)
                 throw new DBConcurrencyException("Entity has been updated since last read. Try again!");
-            eventDocumentToUpdate.RowVersion = rowVersion;
+            eventDocument.RowVersion = rowVersion;
             
-            return eventDocumentToUpdate;
+            return eventDocument;
         }
 
         public async Task Delete(int id)

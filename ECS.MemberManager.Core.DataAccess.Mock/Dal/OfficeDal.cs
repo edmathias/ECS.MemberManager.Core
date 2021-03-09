@@ -22,8 +22,9 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         public async Task<Office> Insert(Office office)
         {
             var lastOffice = MockDb.Offices.ToList().OrderByDescending(o => o.Id).First();
-            
             office.Id = 1+lastOffice.Id;
+            office.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
+            
             MockDb.Offices.Add(office);
             
             return office;
@@ -31,7 +32,15 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         public async Task<Office> Update(Office office)
         {
-            return office;
+            var officeToUpdate =
+                MockDb.Offices.FirstOrDefault(em => em.Id == office.Id &&
+                                                    em.RowVersion.SequenceEqual(office.RowVersion));
+
+            if(officeToUpdate == null)
+                throw new Csla.DataPortalException(null);
+           
+            officeToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
+            return officeToUpdate;
         }
 
         public async Task Delete(int id)

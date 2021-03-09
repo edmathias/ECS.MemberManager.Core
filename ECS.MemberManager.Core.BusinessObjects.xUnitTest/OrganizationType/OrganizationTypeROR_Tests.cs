@@ -43,7 +43,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             var organizationType = await OrganizationTypeROR.GetOrganizationTypeROR(1);
 
-            Assert.NotNull(organizationType.CategoryOfOrganization);
+            Assert.NotNull(organizationType);
             Assert.Equal(1, organizationType.Id);
         }
     }

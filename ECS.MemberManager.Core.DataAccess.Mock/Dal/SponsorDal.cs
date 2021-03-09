@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ECS.MemberManager.Core.DataAccess.Dal;
@@ -26,6 +27,8 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             var lastSponsor = MockDb.Sponsors.ToList().OrderByDescending(p => p.Id).First();
             sponsor.Id = 1+lastSponsor.Id;
+            sponsor.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
+            
             MockDb.Sponsors.Add(sponsor);
             
             return sponsor;
@@ -33,8 +36,15 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         public async Task<Sponsor> Update(Sponsor sponsor)
         {
-            // mockdb in memory list reference already updated 
-            return sponsor;
+            var sponsorToUpdate =
+                MockDb.Sponsors.FirstOrDefault(em => em.Id == sponsor.Id &&
+                                                     em.RowVersion.SequenceEqual(sponsor.RowVersion));
+
+            if(sponsorToUpdate == null)
+                throw new Csla.DataPortalException(null);
+           
+            sponsorToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
+            return sponsorToUpdate;
         }
 
         public async Task Delete(int id)

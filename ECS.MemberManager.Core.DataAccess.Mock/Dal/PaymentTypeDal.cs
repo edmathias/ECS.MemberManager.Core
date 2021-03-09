@@ -23,6 +23,8 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             var lastPaymentType = MockDb.PaymentTypes.ToList().OrderByDescending(ms => ms.Id).First();
             paymentType.Id = 1+lastPaymentType.Id;
+            paymentType.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
+            
             MockDb.PaymentTypes.Add(paymentType);
             
             return paymentType;
@@ -30,7 +32,16 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         public async Task<PaymentType> Update(PaymentType paymentType)
         {
-            return paymentType;
+            var paymentTypeToUpdate =
+                MockDb.PaymentTypes.FirstOrDefault(em => em.Id == paymentType.Id &&
+                                                         em.RowVersion.SequenceEqual(paymentType.RowVersion));
+
+            if(paymentTypeToUpdate == null)
+                throw new Csla.DataPortalException(null);
+           
+            paymentTypeToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
+            return paymentTypeToUpdate;
+            
         }
 
         public async Task Delete(int id)

@@ -25,8 +25,10 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         public async Task<ContactForSponsor> Insert(ContactForSponsor contactOfPerson)
         {
-            var lastCategory = MockDb.ContactForSponsors.ToList().OrderByDescending( co => co.Id).First();
-            contactOfPerson.Id = lastCategory.Id + 1;
+            var lastContact = MockDb.ContactForSponsors.ToList().OrderByDescending( co => co.Id).First();
+            contactOfPerson.Id = lastContact.Id + 1;
+            contactOfPerson.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
+            
             MockDb.ContactForSponsors.Add(contactOfPerson);
             
             return contactOfPerson;
@@ -34,13 +36,15 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         public async Task<ContactForSponsor> Update(ContactForSponsor contactOfPerson)
         {
-            var contactToUpdate = MockDb.ContactForSponsors.FirstOrDefault(co => co.Id == contactOfPerson.Id);
+            var contactToUpdate =
+                MockDb.ContactForSponsors.FirstOrDefault(em => em.Id == contactOfPerson.Id &&
+                                                      em.RowVersion.SequenceEqual(contactOfPerson.RowVersion));
 
-            if (contactToUpdate == null) 
-                throw new Exception("Record not found");
-
+            if(contactToUpdate == null)
+                throw new Csla.DataPortalException(null);
+           
+            contactToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
             return contactToUpdate;
-
         }
 
         public async Task Delete(int id)

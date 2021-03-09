@@ -23,6 +23,8 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             var lastEMail = MockDb.EMails.ToList().OrderByDescending(ms => ms.Id).First();
             eMail.Id = lastEMail.Id+1;
+            eMail.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
+            
             MockDb.EMails.Add(eMail);
             
             return eMail;
@@ -30,8 +32,15 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         public async Task<EMail> Update(EMail eMail)
         {
-            // mockdb in memory list reference already updated
-            return eMail;
+            var emailToUpdate =
+                MockDb.EMails.FirstOrDefault(em => em.Id == eMail.Id &&
+                                                               em.RowVersion.SequenceEqual(eMail.RowVersion));
+
+            if(emailToUpdate == null)
+                throw new Csla.DataPortalException(null);
+           
+            emailToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
+            return emailToUpdate;
         }
 
         public async Task Delete(int id)

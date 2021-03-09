@@ -23,6 +23,8 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             var lastAddress = MockDb.Addresses.ToList().OrderByDescending(a =>a.Id).First();
             address.Id = lastAddress.Id+1;
+            address.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
+            
             MockDb.Addresses.Add(address);
             
             return address;
@@ -30,8 +32,15 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         public async Task<Address> Update(Address address)
         {
-            // in memory database already updated
-            return address;
+            var savedAddress =
+                MockDb.Addresses.FirstOrDefault(em => em.Id == address.Id &&
+                                                   em.RowVersion.SequenceEqual(address.RowVersion));
+
+            if(savedAddress == null)
+                throw new Csla.DataPortalException(null);
+           
+            savedAddress.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
+            return savedAddress;
         }
 
         public async Task Delete(int id)

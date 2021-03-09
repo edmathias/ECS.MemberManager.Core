@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ECS.MemberManager.Core.DataAccess.Dal;
@@ -26,6 +27,8 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             var lastPrivacyLevel = MockDb.PrivacyLevels.ToList().OrderByDescending(dt => dt.Id).First();
             privacyLevel.Id = 1+lastPrivacyLevel.Id;
+            privacyLevel.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
+            
             MockDb.PrivacyLevels.Add(privacyLevel);
             
             return privacyLevel;
@@ -33,7 +36,15 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         public async Task<PrivacyLevel> Update(PrivacyLevel privacyLevel)
         {
-            return privacyLevel;
+            var privacyLevelToUpdate =
+                MockDb.PrivacyLevels.FirstOrDefault(em => em.Id == privacyLevel.Id &&
+                                                          em.RowVersion.SequenceEqual(privacyLevel.RowVersion));
+
+            if(privacyLevelToUpdate == null)
+                throw new Csla.DataPortalException(null);
+           
+            privacyLevelToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
+            return privacyLevelToUpdate;
         }
 
         public async Task Delete(int id)

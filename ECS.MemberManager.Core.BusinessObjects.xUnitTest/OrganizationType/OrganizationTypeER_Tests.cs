@@ -43,7 +43,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             var organizationType = await OrganizationTypeER.GetOrganizationTypeER(1);
             
-            Assert.NotNull(organizationType.CategoryOfOrganization);
+            Assert.NotNull(organizationType);
             Assert.Equal(1, organizationType.Id);
             Assert.True(organizationType.IsValid);
         }
@@ -105,7 +105,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         public async Task OrganizationTypeER_NameRequired() 
         {
             var organizationType = await OrganizationTypeER.NewOrganizationTypeER();
-            organizationType.Name = "Make it valid";
+            organizationType.Name = "valid name";
+            organizationType.CategoryOfOrganization = await CategoryOfOrganizationEC.NewCategoryOfOrganizationEC();
+            organizationType.CategoryOfOrganization.Category = "category name";
             var isObjectValidInit = organizationType.IsValid;
             organizationType.Name = String.Empty;
 
@@ -119,14 +121,19 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             var organizationType = await OrganizationTypeER.NewOrganizationTypeER();
             organizationType.Name = "valid name";
-            Assert.True(organizationType.IsValid);
-
+            organizationType.CategoryOfOrganization = await CategoryOfOrganizationEC.NewCategoryOfOrganizationEC();
+            organizationType.CategoryOfOrganization.Category = "category name";
+            var isValidOrig = organizationType.IsValid;
+            
             organizationType.Name =
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
                 "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis ";
 
             Assert.NotNull(organizationType);
+            Assert.True(isValidOrig);
             Assert.False(organizationType.IsValid);
+            Assert.Equal("Name", organizationType.BrokenRulesCollection[0].Property);
+
             Assert.Equal("Name can not exceed 50 characters",
                 organizationType.BrokenRulesCollection[0].Description);
  

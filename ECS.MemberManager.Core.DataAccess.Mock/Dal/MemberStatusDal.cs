@@ -23,6 +23,8 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             var lastMemberStatus = MockDb.MemberStatuses.ToList().OrderByDescending(ms => ms.Id).First();
             memberStatus.Id = 1+lastMemberStatus.Id;
+            memberStatus.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
+            
             MockDb.MemberStatuses.Add(memberStatus);
             
             return memberStatus;
@@ -30,7 +32,15 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         public async Task<MemberStatus> Update(MemberStatus memberStatus)
         {
-            return memberStatus;
+            var memberStatusToUpdate =
+                MockDb.MemberStatuses.FirstOrDefault(em => em.Id == memberStatus.Id &&
+                                                           em.RowVersion.SequenceEqual(memberStatus.RowVersion));
+
+            if(memberStatusToUpdate == null)
+                throw new Csla.DataPortalException(null);
+           
+            memberStatusToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
+            return memberStatusToUpdate;        
         }
 
         public async Task Delete(int id)

@@ -82,7 +82,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(savedEMail);
             Assert.IsType<EMailER>(savedEMail);
             Assert.True(savedEMail.Id > 0);
-            Assert.NotNull(savedEMail.RowVersion);
         }
 
         [Fact]
@@ -113,6 +112,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             var emailType1 = await EMailER.GetEMailER(1);
             var emailType2 = await EMailER.GetEMailER(1);
+            
             emailType1.Notes = "set up timestamp issue"; // turn on IsDirty
             emailType2.Notes = "set up timestamp issue";
 

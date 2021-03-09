@@ -142,7 +142,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
             };
 
             var insertedObj = await dal.Update(data);
-            Id = insertedObj.Id;
             RowVersion = insertedObj.RowVersion;
         }
 

@@ -40,7 +40,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             
             Assert.NotNull(categoryOfPersonTypeInfoList);
             Assert.True(categoryOfPersonTypeInfoList.IsReadOnly);
-            Assert.Equal(3, categoryOfPersonTypeInfoList.Count);
+            Assert.Equal(4, categoryOfPersonTypeInfoList.Count);
         }
     }
 }

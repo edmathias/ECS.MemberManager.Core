@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ECS.MemberManager.Core.DataAccess.Dal;
@@ -26,6 +27,8 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             var lastPayment = MockDb.Payments.ToList().OrderByDescending(dt => dt.Id).First();
             payment.Id = 1+lastPayment.Id;
+            payment.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
+            
             MockDb.Payments.Add(payment);
             
             return payment;
@@ -33,8 +36,15 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         public async Task<Payment> Update(Payment payment)
         {
-            // mockdb in memory list reference already updated 
-            return payment;
+            var paymentToUpdate =
+                MockDb.Payments.FirstOrDefault(em => em.Id == payment.Id &&
+                                                     em.RowVersion.SequenceEqual(payment.RowVersion));
+
+            if(paymentToUpdate == null)
+                throw new Csla.DataPortalException(null);
+           
+            paymentToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
+            return paymentToUpdate;
         }
 
         public async Task Delete(int id)

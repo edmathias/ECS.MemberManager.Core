@@ -58,7 +58,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var listToTest = await DocumentTypeECL.GetDocumentTypeECL(childData);
             
             Assert.NotNull(listToTest);
-            Assert.Equal(3, listToTest.Count);
+            Assert.Equal(4, listToTest.Count);
         }
 
         private void BuildDocumentType(DocumentTypeEC documentType)

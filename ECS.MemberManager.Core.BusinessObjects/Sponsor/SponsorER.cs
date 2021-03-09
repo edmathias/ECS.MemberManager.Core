@@ -4,7 +4,7 @@
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/03/2021 13:28:02
+// Generated on 03/08/2021 16:57:21
 //******************************************************************************    
 
 using System;
@@ -234,7 +234,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
             };
 
             var insertedObj = await dal.Update(data);
-            Id = insertedObj.Id;
             RowVersion = insertedObj.RowVersion;
         }
 

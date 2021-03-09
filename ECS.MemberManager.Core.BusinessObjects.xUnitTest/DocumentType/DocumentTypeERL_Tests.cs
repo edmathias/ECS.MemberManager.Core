@@ -51,7 +51,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 await DocumentTypeERL.GetDocumentTypeERL();
 
             Assert.NotNull(categoryOfPersonEdit);
-            Assert.Equal(3, categoryOfPersonEdit.Count);
+            Assert.Equal(4, categoryOfPersonEdit.Count);
         }
         
         [Fact]

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using System.Threading.Tasks;
@@ -23,13 +24,23 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             var lastPerson = MockDb.Persons.ToList().OrderByDescending(p => p.Id).First();
             person.Id = 1+lastPerson.Id;
+            person.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
+            
             MockDb.Persons.Add(person);
             
             return person;
         }
 
-        public async Task<Person> Update(Person personToUpdate)
+        public async Task<Person> Update(Person person)
         {
+            var personToUpdate =
+                MockDb.Persons.FirstOrDefault(em => em.Id == person.Id &&
+                                                    em.RowVersion.SequenceEqual(person.RowVersion));
+
+            if(personToUpdate == null)
+                throw new Csla.DataPortalException(null);
+           
+            personToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
             return personToUpdate;
         }
 

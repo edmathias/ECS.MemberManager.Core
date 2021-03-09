@@ -19,18 +19,28 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             return MockDb.Phones.ToList();
         }
 
-        public async Task<Phone> Insert( Phone documentType)
+        public async Task<Phone> Insert( Phone phone)
         {
             var lastPhone = MockDb.Phones.ToList().OrderByDescending(dt => dt.Id).First();
-            documentType.Id = 1+lastPhone.Id;
-            MockDb.Phones.Add(documentType);
+            phone.Id = 1+lastPhone.Id;
+            phone.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
             
-            return documentType;
+            MockDb.Phones.Add(phone);
+            
+            return phone;
         }
 
         public async Task<Phone> Update(Phone phone)
         {
-            return phone;
+            var phoneToUpdate =
+                MockDb.Phones.FirstOrDefault(em => em.Id == phone.Id &&
+                                                   em.RowVersion.SequenceEqual(phone.RowVersion));
+
+            if(phoneToUpdate == null)
+                throw new Csla.DataPortalException(null);
+           
+            phoneToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
+            return phoneToUpdate;
         }
 
         public async Task Delete(int id)

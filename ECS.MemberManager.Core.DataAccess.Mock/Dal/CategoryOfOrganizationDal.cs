@@ -28,6 +28,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             var lastCategory = MockDb.CategoryOfOrganizations.ToList().OrderByDescending( co => co.Id).First();
             categoryOfOrganization.Id = lastCategory.Id + 1;
+            categoryOfOrganization.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
             MockDb.CategoryOfOrganizations.Add(categoryOfOrganization);
             
             return categoryOfOrganization;
@@ -35,15 +36,15 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         public async Task<CategoryOfOrganization> Update(CategoryOfOrganization categoryOfOrganization)
         {
-            var categoryToUpdate = MockDb.CategoryOfOrganizations.FirstOrDefault(co => co.Id == categoryOfOrganization.Id);
+            var savedCategoryOfOrganization =
+                MockDb.CategoryOfOrganizations.FirstOrDefault(em => em.Id == categoryOfOrganization.Id &&
+                                                      em.RowVersion.SequenceEqual(categoryOfOrganization.RowVersion));
 
-            if (categoryToUpdate == null) 
-                throw new Exception("Record not found");
-
-            categoryToUpdate.Category = categoryOfOrganization.Category;
-            categoryToUpdate.DisplayOrder = categoryOfOrganization.DisplayOrder;
-
-            return categoryToUpdate;
+            if(savedCategoryOfOrganization == null)
+                throw new Csla.DataPortalException(null);
+           
+            savedCategoryOfOrganization.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
+            return savedCategoryOfOrganization;
         }
 
         public async Task Delete(int id)
