@@ -34,6 +34,7 @@ namespace ECS.MemberManager.Core.EF.Data
         public DbSet<TaskForEvent> TaskForEvents { get; set; }
         public DbSet<TermInOffice> TermInOffices { get; set; }
         public DbSet<Title> Titles { get; set; }
+        public DbSet<Image> Images { get; set; }
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

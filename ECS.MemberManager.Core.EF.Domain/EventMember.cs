@@ -11,7 +11,7 @@ namespace ECS.MemberManager.Core.EF.Domain
         public Event Event { get; set; }
         
         [MaxLength(50)]
-        public string RoleId { get; set; }
+        public string Role { get; set; }
         [Required,MaxLength(255)] 
         public string LastUpdatedBy { get; set; }
         [Required]

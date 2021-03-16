@@ -82,6 +82,23 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
 
             InsertTermInOffice();
 
+            InsertEventMembers();
+
+        }
+
+        private static void InsertEventMembers()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("SET IDENTITY_INSERT dbo.EventMembers ON;");
+            sb.AppendLine(
+                "INSERT INTO [dbo].[EventMembers]([Id], [MemberInfoId], [EventId], [Role], [LastUpdatedBy], [LastUpdatedDate], [Notes])");
+            sb.AppendLine("SELECT 1, 1, 1, N'Organizer', N'edm', '20200403 00:00:00.000', N'notes for 1' UNION ALL");
+            sb.AppendLine("SELECT 2, 2, 2, N'Helper', N'joeb', '20201201 00:00:00.000', N'notes for 2' UNION ALL");
+            sb.AppendLine("SELECT 99, 1, 2, N'Delete this', N'edm', '20180101 00:00:00.000', N'delete this'");
+            sb.AppendLine("SET IDENTITY_INSERT dbo.EventMembers OFF;");
+            sb.AppendLine("DBCC CHECKIDENT ('EventMembers', RESEED, 2)");
+            
+            _db.Execute(sb.ToString());            
         }
 
         private static void InsertTermInOffice()

@@ -2027,6 +2027,150 @@
         <DesignTime>True</DesignTime>
         <DependentUpon>ContactForSponsorRORL.tt</DependentUpon>
       </Compile>
+      <None Update="EventMember\TermInOfficeEC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>TermInOfficeEC.cs</LastGenOutput>
+      </None>
+      <Compile Update="EventMember\TermInOfficeEC.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>TermInOfficeEC.tt</DependentUpon>
+      </Compile>
+      <None Update="EventMember\TermInOfficeECL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>TermInOfficeECL.cs</LastGenOutput>
+      </None>
+      <Compile Update="EventMember\TermInOfficeECL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>TermInOfficeECL.tt</DependentUpon>
+      </Compile>
+      <None Update="EventMember\TermInOfficeER.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>TermInOfficeER.cs</LastGenOutput>
+      </None>
+      <Compile Update="EventMember\TermInOfficeER.cs">
+        <DependentUpon>TermInOfficeER.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+      </Compile>
+      <None Update="EventMember\TermInOfficeERL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>TermInOfficeERL.cs</LastGenOutput>
+      </None>
+      <Compile Update="EventMember\TermInOfficeERL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>TermInOfficeERL.tt</DependentUpon>
+      </Compile>
+      <None Update="EventMember\TermInOfficeROC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>TermInOfficeROC.cs</LastGenOutput>
+      </None>
+      <Compile Update="EventMember\TermInOfficeROC.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>TermInOfficeROC.tt</DependentUpon>
+      </Compile>
+      <None Update="EventMember\TermInOfficeROCL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>TermInOfficeROCL.cs</LastGenOutput>
+      </None>
+      <Compile Update="EventMember\TermInOfficeROCL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>TermInOfficeROCL.tt</DependentUpon>
+      </Compile>
+      <None Update="EventMember\TermInOfficeROR.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>TermInOfficeROR.cs</LastGenOutput>
+      </None>
+      <Compile Update="EventMember\TermInOfficeROR.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>TermInOfficeROR.tt</DependentUpon>
+      </Compile>
+      <None Update="EventMember\TermInOfficeRORL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>TermInOfficeRORL.cs</LastGenOutput>
+      </None>
+      <Compile Update="EventMember\TermInOfficeRORL.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>TermInOfficeRORL.tt</DependentUpon>
+      </Compile>
+      <None Update="EventMember\EventMemberEC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>EventMemberEC.cs</LastGenOutput>
+      </None>
+      <Compile Update="EventMember\EventMemberEC.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>EventMemberEC.tt</DependentUpon>
+      </Compile>
+      <None Update="EventMember\EventMemberECL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>EventMemberECL.cs</LastGenOutput>
+      </None>
+      <Compile Update="EventMember\EventMemberECL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>EventMemberECL.tt</DependentUpon>
+      </Compile>
+      <None Update="EventMember\EventMemberER.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>EventMemberER.cs</LastGenOutput>
+      </None>
+      <Compile Update="EventMember\EventMemberER.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>EventMemberER.tt</DependentUpon>
+      </Compile>
+      <None Update="EventMember\EventMemberERL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>EventMemberERL.cs</LastGenOutput>
+      </None>
+      <Compile Update="EventMember\EventMemberERL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>EventMemberERL.tt</DependentUpon>
+      </Compile>
+      <None Update="EventMember\EventMemberROC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>EventMemberROC.cs</LastGenOutput>
+      </None>
+      <Compile Update="EventMember\EventMemberROC.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>EventMemberROC.tt</DependentUpon>
+      </Compile>
+      <None Update="EventMember\EventMemberROCL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>EventMemberROCL.cs</LastGenOutput>
+      </None>
+      <Compile Update="EventMember\EventMemberROCL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>EventMemberROCL.tt</DependentUpon>
+      </Compile>
+      <None Update="EventMember\EventMemberROR.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>EventMemberROR.cs</LastGenOutput>
+      </None>
+      <Compile Update="EventMember\EventMemberROR.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>EventMemberROR.tt</DependentUpon>
+      </Compile>
+      <None Update="EventMember\EventMemberRORL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>EventMemberRORL.cs</LastGenOutput>
+      </None>
+      <Compile Update="EventMember\EventMemberRORL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>EventMemberRORL.tt</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

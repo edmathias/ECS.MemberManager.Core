@@ -189,6 +189,7 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Purpose")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -252,12 +253,15 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                         .UseIdentityColumn();
 
                     b.Property<string>("EMailAddress")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<int?>("EMailTypeId")
                         .HasColumnType("int");
 
                     b.Property<string>("LastUpdatedBy")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -323,6 +327,7 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("LastUpdatedBy")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -397,17 +402,18 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<int>("EventId")
+                    b.Property<int?>("EventId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("LastUpdated")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("LastUpdatedBy")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<int>("MemberInfoId")
+                    b.Property<DateTime>("LastUpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("MemberInfoId")
                         .HasColumnType("int");
 
                     b.Property<string>("Notes")
@@ -423,6 +429,10 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                         .HasColumnType("rowversion");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EventId");
+
+                    b.HasIndex("MemberInfoId");
 
                     b.ToTable("EventMembers");
                 });
@@ -560,6 +570,7 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("LastUpdatedBy")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -601,6 +612,7 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("LastUpdatedBy")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -1256,6 +1268,21 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                     b.Navigation("DocumentType");
 
                     b.Navigation("Event");
+                });
+
+            modelBuilder.Entity("ECS.MemberManager.Core.EF.Domain.EventMember", b =>
+                {
+                    b.HasOne("ECS.MemberManager.Core.EF.Domain.Event", "Event")
+                        .WithMany()
+                        .HasForeignKey("EventId");
+
+                    b.HasOne("ECS.MemberManager.Core.EF.Domain.MemberInfo", "MemberInfo")
+                        .WithMany()
+                        .HasForeignKey("MemberInfoId");
+
+                    b.Navigation("Event");
+
+                    b.Navigation("MemberInfo");
                 });
 
             modelBuilder.Entity("ECS.MemberManager.Core.EF.Domain.MemberInfo", b =>
