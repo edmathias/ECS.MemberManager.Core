@@ -19,11 +19,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
-        private readonly ITestOutputHelper _testOutputHelper;
-        public AddressEC_Tests(ITestOutputHelper testOutputHelper)
+        public AddressEC_Tests()
         {
-            _testOutputHelper = testOutputHelper;
-            
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);

@@ -16,9 +16,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
+        private  readonly IAddressDal dal;
 
-        public AddressECL_Tests()
+        public AddressECL_Tests(IAddressDal _dal)
         {
+            dal = _dal;
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
@@ -50,8 +52,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         private async void AddressECL_TestGetAddressECL()
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IAddressDal>();
             var addresses = await dal.Fetch();
 
             var addressECL = await AddressECL.GetAddressECL(addresses);

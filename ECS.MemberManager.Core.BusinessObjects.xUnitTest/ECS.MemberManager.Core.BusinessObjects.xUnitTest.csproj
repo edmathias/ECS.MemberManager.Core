@@ -10,6 +10,7 @@
         <PackageReference Include="Csla" Version="5.4.1" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.8.3" />
         <PackageReference Include="xunit" Version="2.4.1" />
+        <PackageReference Include="Xunit.DependencyInjection" Version="7.1.0" />
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
@@ -23,6 +24,7 @@
     <ItemGroup>
       <ProjectReference Include="..\ECS.MemberManager.Core.BusinessObjects\ECS.MemberManager.Core.BusinessObjects.csproj" />
       <ProjectReference Include="..\ECS.MemberManager.Core.DataAccess.ADO\ECS.MemberManager.Core.DataAccess.ADO.csproj" />
+      <ProjectReference Include="..\ECS.MemberManager.Core.DataAccess.EF\ECS.MemberManager.Core.DataAccess.EF.csproj" />
       <ProjectReference Include="..\ECS.MemberManager.Core.DataAccess.Mock\ECS.MemberManager.Core.DataAccess.Mock.csproj" />
     </ItemGroup>
 

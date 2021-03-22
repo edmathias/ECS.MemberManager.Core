@@ -5,7 +5,7 @@
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/09/2021 14:34:49
+// Generated on 03/18/2021 16:28:38
 //******************************************************************************    
 
 using System; 
@@ -32,10 +32,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access
  
         [Fetch]
-        private async Task Fetch()
+        private async Task Fetch([Inject] IPrivacyLevelDal dal)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPrivacyLevelDal>();
             var childData = await dal.Fetch();
 
             using (LoadListMode)

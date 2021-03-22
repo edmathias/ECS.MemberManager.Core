@@ -2171,6 +2171,150 @@
         <DesignTime>True</DesignTime>
         <DependentUpon>EventMemberRORL.tt</DependentUpon>
       </Compile>
+      <None Update="Image\TitleEC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>TitleEC.cs</LastGenOutput>
+      </None>
+      <Compile Update="Image\TitleEC.cs">
+        <DependentUpon>TitleEC.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+      </Compile>
+      <None Update="Image\TitleECL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>TitleECL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Image\TitleECL.cs">
+        <DependentUpon>TitleECL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+      </Compile>
+      <None Update="Image\TitleER.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>TitleER.cs</LastGenOutput>
+      </None>
+      <Compile Update="Image\TitleER.cs">
+        <DependentUpon>TitleER.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+      </Compile>
+      <None Update="Image\TitleERL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>TitleERL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Image\TitleERL.cs">
+        <DependentUpon>TitleERL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+      </Compile>
+      <None Update="Image\TitleROC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>TitleROC.cs</LastGenOutput>
+      </None>
+      <Compile Update="Image\TitleROC.cs">
+        <DependentUpon>TitleROC.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+      </Compile>
+      <None Update="Image\TitleROCL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>TitleROCL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Image\TitleROCL.cs">
+        <DependentUpon>TitleROCL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+      </Compile>
+      <None Update="Image\TitleROR.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>TitleROR.cs</LastGenOutput>
+      </None>
+      <Compile Update="Image\TitleROR.cs">
+        <DependentUpon>TitleROR.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+      </Compile>
+      <None Update="Image\TitleRORL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>TitleRORL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Image\TitleRORL.cs">
+        <DependentUpon>TitleRORL.tt</DependentUpon>
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+      </Compile>
+      <None Update="Image\ImageEC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>ImageEC.cs</LastGenOutput>
+      </None>
+      <Compile Update="Image\ImageEC.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>ImageEC.tt</DependentUpon>
+      </Compile>
+      <None Update="Image\ImageER.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>ImageER.cs</LastGenOutput>
+      </None>
+      <Compile Update="Image\ImageER.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>ImageER.tt</DependentUpon>
+      </Compile>
+      <None Update="Image\ImageECL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>ImageECL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Image\ImageECL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>ImageECL.tt</DependentUpon>
+      </Compile>
+      <None Update="Image\ImageERL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>ImageERL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Image\ImageERL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>ImageERL.tt</DependentUpon>
+      </Compile>
+      <None Update="Image\ImageROC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>ImageROC.cs</LastGenOutput>
+      </None>
+      <Compile Update="Image\ImageROC.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>ImageROC.tt</DependentUpon>
+      </Compile>
+      <None Update="Image\ImageROCL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>ImageROCL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Image\ImageROCL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>ImageROCL.tt</DependentUpon>
+      </Compile>
+      <None Update="Image\ImageROR.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>ImageROR.cs</LastGenOutput>
+      </None>
+      <Compile Update="Image\ImageROR.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>ImageROR.tt</DependentUpon>
+      </Compile>
+      <None Update="Image\ImageRORL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>ImageRORL.cs</LastGenOutput>
+      </None>
+      <Compile Update="Image\ImageRORL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>ImageRORL.tt</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

@@ -4,7 +4,7 @@
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/09/2021 14:34:35
+// Generated on 03/18/2021 16:28:31
 //******************************************************************************    
 
 using System;
@@ -83,10 +83,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
             }            
         }
         [InsertChild]
-        private async Task Insert()
+        private async Task Insert([Inject] IPaymentSourceDal dal)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPaymentSourceDal>();
             var data = new PaymentSource()
             {
 
@@ -102,10 +100,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
        [UpdateChild]
-        private async Task Update()
+        private async Task Update([Inject] IPaymentSourceDal dal)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPaymentSourceDal>();
             var data = new PaymentSource()
             {
 
@@ -121,17 +117,14 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
        
         [DeleteSelfChild]
-        private async Task DeleteSelf()
+        private async Task DeleteSelf([Inject] IPaymentSourceDal dal)
         {
-            await Delete(Id);
+            await Delete(Id,dal);
         }
        
         [Delete]
-        private async Task Delete(int id)
+        private async Task Delete(int id, [Inject] IPaymentSourceDal dal)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPaymentSourceDal>();
-           
             await dal.Delete(id);
         }
 

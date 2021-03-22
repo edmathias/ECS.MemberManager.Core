@@ -64,10 +64,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access Methods
 
         [Fetch]
-        private async Task Fetch(int id)
+        private async Task Fetch(int id, [Inject] ITitleDal dal)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ITitleDal>();
             var data = await dal.Fetch(id);
 
             Id = data.Id;

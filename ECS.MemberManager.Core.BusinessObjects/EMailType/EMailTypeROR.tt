@@ -54,7 +54,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
             BuildUpdate(columnList,objectName, stereoType, isChild);
         
-            BuildDeleteMethods(objectName);
+            BuildDeleteMethods(objectName, isChild);
         }
 
 #>

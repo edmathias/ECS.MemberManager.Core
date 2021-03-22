@@ -102,10 +102,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access Methods
 
         [Fetch]
-        private async Task Fetch(int id)
+        private async Task Fetch(int id, [Inject] ITermInOfficeDal dal)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ITermInOfficeDal>();
             var data = await dal.Fetch(id);
 
             using(BypassPropertyChecks)
@@ -121,10 +119,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
             }            
         }
         [Insert]
-        private async Task Insert()
+        private async Task Insert([Inject] ITermInOfficeDal dal)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ITermInOfficeDal>();
             var data = new TermInOffice()
             {
 
@@ -144,10 +140,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
        [Update]
-        private async Task Update()
+        private async Task Update([Inject] ITermInOfficeDal dal)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ITermInOfficeDal>();
             var data = new TermInOffice()
             {
 
@@ -165,19 +159,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
             RowVersion = insertedObj.RowVersion;
         }
 
-       
-        [DeleteSelfChild]
-        private async Task DeleteSelf()
+        [DeleteSelf]
+        private async Task DeleteSelf([Inject] ITermInOfficeDal dal)
         {
-            await Delete(Id);
+            await Delete(Id,dal);
         }
        
         [Delete]
-        private async Task Delete(int id)
+        private async Task Delete(int id, [Inject] ITermInOfficeDal dal)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ITermInOfficeDal>();
-           
             await dal.Delete(id);
         }
 

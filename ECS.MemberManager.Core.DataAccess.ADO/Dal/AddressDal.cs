@@ -16,7 +16,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
     public class AddressDal : IAddressDal
     {
         private static IConfigurationRoot _config;
-        private SqlConnection _db = null;
+        private IDbConnection _db = null;
 
         public AddressDal()
         {
@@ -29,7 +29,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             _db = new SqlConnection(cnxnString);
         }
 
-        public AddressDal(SqlConnection cnxn)
+        public AddressDal(IDbConnection cnxn)
         {
             _db = cnxn;
         }

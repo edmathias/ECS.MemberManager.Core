@@ -103,10 +103,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
             }            
         }
         [InsertChild]
-        private async Task Insert()
+        private async Task Insert([Inject] IMembershipTypeDal dal)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IMembershipTypeDal>();
             var data = new MembershipType()
             {
 
@@ -125,10 +123,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
        [UpdateChild]
-        private async Task Update()
+        private async Task Update([Inject] IMembershipTypeDal dal)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IMembershipTypeDal>();
             var data = new MembershipType()
             {
 
@@ -147,17 +143,14 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
        
         [DeleteSelfChild]
-        private async Task DeleteSelf()
+        private async Task DeleteSelf([Inject] IMembershipTypeDal dal)
         {
-            await Delete(Id);
+            await Delete(Id,dal);
         }
        
         [Delete]
-        private async Task Delete(int id)
+        private async Task Delete(int id, [Inject] IMembershipTypeDal dal)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IMembershipTypeDal>();
-           
             await dal.Delete(id);
         }
 

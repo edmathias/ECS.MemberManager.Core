@@ -5,7 +5,7 @@
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/09/2021 14:34:01
+// Generated on 03/18/2021 16:28:09
 //******************************************************************************    
 
 using System;
@@ -110,10 +110,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access Methods
 
         [Fetch]
-        private async Task Fetch(int id)
+        private async Task Fetch(int id, [Inject] IContactForSponsorDal dal)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IContactForSponsorDal>();
             var data = await dal.Fetch(id);
 
             Id = data.Id;

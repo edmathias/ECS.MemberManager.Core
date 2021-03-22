@@ -139,10 +139,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
             }            
         }
         [InsertChild]
-        private async Task Insert()
+        private async Task Insert([Inject] IMemberInfoDal dal)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IMemberInfoDal>();
             var data = new MemberInfo()
             {
 
@@ -165,10 +163,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
        [UpdateChild]
-        private async Task Update()
+        private async Task Update([Inject] IMemberInfoDal dal)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IMemberInfoDal>();
             var data = new MemberInfo()
             {
 
@@ -191,17 +187,14 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
        
         [DeleteSelfChild]
-        private async Task DeleteSelf()
+        private async Task DeleteSelf([Inject] IMemberInfoDal dal)
         {
-            await Delete(Id);
+            await Delete(Id,dal);
         }
        
         [Delete]
-        private async Task Delete(int id)
+        private async Task Delete(int id, [Inject] IMemberInfoDal dal)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IMemberInfoDal>();
-           
             await dal.Delete(id);
         }
 

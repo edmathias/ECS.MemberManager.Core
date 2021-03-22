@@ -4,7 +4,7 @@
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/09/2021 14:34:50
+// Generated on 03/18/2021 16:28:39
 //******************************************************************************    
 
 using System;
@@ -157,10 +157,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access Methods
 
         [Fetch]
-        private async Task Fetch(int id)
+        private async Task Fetch(int id, [Inject] ISponsorDal dal)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ISponsorDal>();
             var data = await dal.Fetch(id);
 
             using(BypassPropertyChecks)
@@ -182,10 +180,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
             }            
         }
         [Insert]
-        private async Task Insert()
+        private async Task Insert([Inject] ISponsorDal dal)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ISponsorDal>();
             var data = new Sponsor()
             {
 
@@ -211,10 +207,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
        [Update]
-        private async Task Update()
+        private async Task Update([Inject] ISponsorDal dal)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ISponsorDal>();
             var data = new Sponsor()
             {
 
@@ -238,19 +232,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
             RowVersion = insertedObj.RowVersion;
         }
 
-       
-        [DeleteSelfChild]
-        private async Task DeleteSelf()
+        [DeleteSelf]
+        private async Task DeleteSelf([Inject] ISponsorDal dal)
         {
-            await Delete(Id);
+            await Delete(Id,dal);
         }
        
         [Delete]
-        private async Task Delete(int id)
+        private async Task Delete(int id, [Inject] ISponsorDal dal)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ISponsorDal>();
-           
             await dal.Delete(id);
         }
 

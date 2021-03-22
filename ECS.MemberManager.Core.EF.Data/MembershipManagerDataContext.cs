@@ -35,15 +35,21 @@ namespace ECS.MemberManager.Core.EF.Data
         public DbSet<TermInOffice> TermInOffices { get; set; }
         public DbSet<Title> Titles { get; set; }
         public DbSet<Image> Images { get; set; }
+
+
+        public MembershipManagerDataContext(DbContextOptions<MembershipManagerDataContext> options)
+            :base(options)
+        { }        
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+ /*           ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
             configurationBuilder.AddJsonFile($"appsettings.json", optional: true, reloadOnChange: true);
             var _configurationRoot    =  configurationBuilder.Build();
-            var cnxnString = _configurationRoot["ConnectionString"];
+            var cnxnString = _configurationRoot["ConnectionStrings:LocalDbConnection"];
             
             optionsBuilder.UseSqlServer(cnxnString);
+*/            
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

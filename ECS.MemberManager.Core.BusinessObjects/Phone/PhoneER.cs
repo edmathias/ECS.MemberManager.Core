@@ -118,10 +118,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access Methods
 
         [Fetch]
-        private async Task Fetch(int id)
+        private async Task Fetch(int id, [Inject] IPhoneDal dal)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPhoneDal>();
             var data = await dal.Fetch(id);
 
             using(BypassPropertyChecks)
@@ -139,10 +137,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
             }            
         }
         [Insert]
-        private async Task Insert()
+        private async Task Insert([Inject] IPhoneDal dal)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPhoneDal>();
             var data = new Phone()
             {
 
@@ -164,10 +160,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
        [Update]
-        private async Task Update()
+        private async Task Update([Inject] IPhoneDal dal)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPhoneDal>();
             var data = new Phone()
             {
 
@@ -187,19 +181,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
             RowVersion = insertedObj.RowVersion;
         }
 
-       
-        [DeleteSelfChild]
-        private async Task DeleteSelf()
+        [DeleteSelf]
+        private async Task DeleteSelf([Inject] IPhoneDal dal)
         {
-            await Delete(Id);
+            await Delete(Id,dal);
         }
        
         [Delete]
-        private async Task Delete(int id)
+        private async Task Delete(int id, [Inject] IPhoneDal dal)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPhoneDal>();
-           
             await dal.Delete(id);
         }
 

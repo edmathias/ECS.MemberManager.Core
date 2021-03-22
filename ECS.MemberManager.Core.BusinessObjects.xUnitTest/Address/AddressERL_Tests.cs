@@ -5,6 +5,7 @@ using System.Linq;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Dal;
+using ECS.MemberManager.Core.DataAccess.EF;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using ECS.MemberManager.Core.EF.Domain;
 using Microsoft.Extensions.Configuration;
@@ -27,7 +28,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             
             if(testLibrary == "Mock")
                 MockDb.ResetMockDb();
-            else
+            else if(testLibrary == "ADO")
             {
                 if (!IsDatabaseBuilt)
                 {
@@ -35,6 +36,15 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                     adoDb.BuildMemberManagerADODb();
                     IsDatabaseBuilt = true;
                 }
+            }
+            else if (testLibrary == "EF")
+            {
+                if (!IsDatabaseBuilt)
+                {
+                    var efDb = new EFDb();
+                    efDb.BuildMemberManagerEFDb();
+                    IsDatabaseBuilt = true;
+                }                
             }
         }
 
@@ -50,10 +60,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         private async void AddressERL_TestGetAddressERL()
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IAddressDal>();
-            var addresses = await dal.Fetch();
-
             var addressERL = await AddressERL.GetAddressERL();
 
             Assert.NotNull(addressERL);

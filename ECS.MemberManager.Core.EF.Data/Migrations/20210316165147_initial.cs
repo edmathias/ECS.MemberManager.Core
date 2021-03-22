@@ -91,25 +91,6 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EventMembers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    MemberInfoId = table.Column<int>(type: "int", nullable: false),
-                    EventId = table.Column<int>(type: "int", nullable: false),
-                    RoleId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    LastUpdatedBy = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    LastUpdated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EventMembers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Events",
                 columns: table => new
                 {
@@ -119,7 +100,7 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsOneTime = table.Column<bool>(type: "bit", nullable: false),
                     NextDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastUpdatedBy = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    LastUpdatedBy = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     LastUpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
@@ -127,6 +108,21 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Events", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Images",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImageFile = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Images", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -173,7 +169,7 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                     CalendarPeriod = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: true),
                     ChosenHow = table.Column<int>(type: "int", nullable: false),
                     Appointer = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    LastUpdatedBy = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    LastUpdatedBy = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     LastUpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
@@ -293,8 +289,8 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    EMailAddress = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LastUpdatedBy = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    EMailAddress = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    LastUpdatedBy = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     LastUpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     EMailTypeId = table.Column<int>(type: "int", nullable: true),
@@ -378,7 +374,7 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     DateOfFirstContact = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    LastUpdatedBy = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    LastUpdatedBy = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     LastUpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     OrganizationTypeId = table.Column<int>(type: "int", nullable: true),
@@ -787,13 +783,44 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "EventMembers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    MemberInfoId = table.Column<int>(type: "int", nullable: true),
+                    EventId = table.Column<int>(type: "int", nullable: true),
+                    Role = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    LastUpdatedBy = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    LastUpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EventMembers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EventMembers_Events_EventId",
+                        column: x => x.EventId,
+                        principalTable: "Events",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_EventMembers_MemberInfo_MemberInfoId",
+                        column: x => x.MemberInfoId,
+                        principalTable: "MemberInfo",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ContactForSponsors",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DateWhenContacted = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Purpose = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Purpose = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     RecordOfDiscussion = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastUpdatedBy = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
@@ -863,6 +890,16 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                 name: "IX_EventDocuments_EventId",
                 table: "EventDocuments",
                 column: "EventId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EventMembers_EventId",
+                table: "EventMembers",
+                column: "EventId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EventMembers_MemberInfoId",
+                table: "EventMembers",
+                column: "MemberInfoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EventPerson_PersonsId",
@@ -997,7 +1034,7 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                 name: "EventPerson");
 
             migrationBuilder.DropTable(
-                name: "MemberInfo");
+                name: "Images");
 
             migrationBuilder.DropTable(
                 name: "OrganizationPhone");
@@ -1030,13 +1067,7 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                 name: "DocumentTypes");
 
             migrationBuilder.DropTable(
-                name: "MembershipTypes");
-
-            migrationBuilder.DropTable(
-                name: "MemberStatuses");
-
-            migrationBuilder.DropTable(
-                name: "PrivacyLevels");
+                name: "MemberInfo");
 
             migrationBuilder.DropTable(
                 name: "PaymentSources");
@@ -1057,7 +1088,16 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                 name: "Organizations");
 
             migrationBuilder.DropTable(
+                name: "MembershipTypes");
+
+            migrationBuilder.DropTable(
+                name: "MemberStatuses");
+
+            migrationBuilder.DropTable(
                 name: "Persons");
+
+            migrationBuilder.DropTable(
+                name: "PrivacyLevels");
 
             migrationBuilder.DropTable(
                 name: "OrganizationTypes");

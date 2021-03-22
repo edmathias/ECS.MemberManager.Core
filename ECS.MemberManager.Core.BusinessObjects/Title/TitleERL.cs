@@ -31,10 +31,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access
  
         [Fetch]
-        private async Task Fetch()
+        private async Task Fetch([Inject] ITitleDal dal)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ITitleDal>();
             var childData = await dal.Fetch();
 
             using (LoadListMode)

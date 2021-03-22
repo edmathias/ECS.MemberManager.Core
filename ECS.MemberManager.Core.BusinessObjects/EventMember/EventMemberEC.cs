@@ -112,10 +112,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
             }            
         }
         [InsertChild]
-        private async Task Insert()
+        private async Task Insert([Inject] IEventMemberDal dal)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEventMemberDal>();
             var data = new EventMember()
             {
 
@@ -135,10 +133,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
        [UpdateChild]
-        private async Task Update()
+        private async Task Update([Inject] IEventMemberDal dal)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEventMemberDal>();
             var data = new EventMember()
             {
 
@@ -158,17 +154,14 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
        
         [DeleteSelfChild]
-        private async Task DeleteSelf()
+        private async Task DeleteSelf([Inject] IEventMemberDal dal)
         {
-            await Delete(Id);
+            await Delete(Id,dal);
         }
        
         [Delete]
-        private async Task Delete(int id)
+        private async Task Delete(int id, [Inject] IEventMemberDal dal)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEventMemberDal>();
-           
             await dal.Delete(id);
         }
 

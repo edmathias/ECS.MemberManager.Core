@@ -141,10 +141,8 @@
         else
         {
 #>
-        private async Task Fetch(int id)
+        private async Task Fetch(int id, [Inject] I<#=objectType #>Dal dal)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<I<#= objectType #>Dal>();
             var data = await dal.Fetch(id);
 
 <#+
@@ -180,10 +178,8 @@
         var childDesig = isChild ? "Child" : String.Empty;
 #>
         [Insert<#=childDesig #>]
-        private async Task Insert()
+        private async Task Insert([Inject] I<#=objectType #>Dal dal)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<I<#= objectType #>Dal>();
             var data = new <#= objectType #>()
             {
 
@@ -211,10 +207,8 @@
         {
 #>
         [Fetch]
-        private async Task Fetch()
+        private async Task Fetch([Inject] I<#=objectName #>Dal dal)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<I<#= objectName #>Dal>();
             var childData = await dal.Fetch();
 <#+
         }
@@ -248,10 +242,8 @@
         
 #>
        [Update<#=childDesig #>]
-        private async Task Update()
+        private async Task Update([Inject] I<#=objectType#>Dal dal)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<I<#= objectType #>Dal>();
             var data = new <#= objectType #>()
             {
 
@@ -272,22 +264,30 @@
 #>
 
 <#+
-    void BuildDeleteMethods(string objectType)
+    void BuildDeleteMethods(string objectType, bool isChild)
     {
 #>
-       
+<#+     if(isChild)
+        {  
+#>       
         [DeleteSelfChild]
-        private async Task DeleteSelf()
+<#+
+        }
+else
+{
+#>
+        [DeleteSelf]
+<#+
+}
+#>
+        private async Task DeleteSelf([Inject] I<#=objectType#>Dal dal)
         {
-            await Delete(Id);
+            await Delete(Id,dal);
         }
        
         [Delete]
-        private async Task Delete(int id)
+        private async Task Delete(int id, [Inject] I<#=objectType#>Dal dal)
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<I<#= objectType #>Dal>();
-           
             await dal.Delete(id);
         }
 <#+
