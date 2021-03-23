@@ -50,10 +50,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         private async void CategoryOfOrganizationECL_TestGetCategoryOfOrganizationECL()
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ICategoryOfOrganizationDal>();
-            var categoryOfOrganizations = await dal.Fetch();
-
+            var categoryOfOrganizations = BuildCategoryOfOrganizations();
             var categoryOfOrganizationECL = await CategoryOfOrganizationECL.GetCategoryOfOrganizationECL(categoryOfOrganizations);
 
             Assert.NotNull(categoryOfOrganizationECL);
@@ -65,7 +62,35 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             categoryOfOrganization.Category = "org category";
             categoryOfOrganization.DisplayOrder = 1;
         }
-        
+
+        private List<CategoryOfOrganization> BuildCategoryOfOrganizations()
+        {
+            return new List<CategoryOfOrganization>()
+            {
+                new CategoryOfOrganization()
+                {
+                    Id = 1,
+                    Category = "Org Category 1",
+                    DisplayOrder = 0,
+                    RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
+                },
+                new CategoryOfOrganization()
+                {
+                    Id = 2,
+                    Category = "Org Category 2",
+                    DisplayOrder = 1,
+                    RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
+                },
+                new CategoryOfOrganization()
+                {
+                    Id = 99,
+                    Category = "Org to delete",
+                    DisplayOrder = 1,
+                    RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
+                }
+            };
+            
+        }
  
     }
 }

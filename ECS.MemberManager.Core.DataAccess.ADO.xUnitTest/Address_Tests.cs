@@ -12,7 +12,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO.xUnitTest
         public void Address_TestFetchAll()
         {
             // arrange 
-            var mockSql = Mock.Create<IDbConnection>();
+ /*           var mockSql = Mock.Create<IDbConnection>();
             var dal = new AddressDal(mockSql);
             
             // act
@@ -20,7 +20,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO.xUnitTest
             
             // assert
             mockSql
-            
+ */           
         }
     }
 }

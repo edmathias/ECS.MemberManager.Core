@@ -11,7 +11,6 @@ using ECS.MemberManager.Core.EF.Domain;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Xunit;
-using DalManager = ECS.MemberManager.Core.DataAccess.ADO.DalManager;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {

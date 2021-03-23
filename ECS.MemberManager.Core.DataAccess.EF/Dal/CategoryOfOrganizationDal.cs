@@ -15,62 +15,62 @@ using Microsoft.Extensions.Configuration;
 
 namespace ECS.MemberManager.Core.DataAccess.EF
 {
-    public class AddressDal : IAddressDal
+    public class CategoryOfOrganizationDal : ICategoryOfOrganizationDal
     {
 
-        public async Task<List<Address>> Fetch()
+        public async Task<List<CategoryOfOrganization>> Fetch()
         {
-            List<Address> list;
+            List<CategoryOfOrganization> list;
 
             using (var context = new MembershipManagerDataContext())
             {
-                list = await context.Addresses.ToListAsync();
+                list = await context.CategoryOfOrganizations.ToListAsync();
             }
             
             return list;
         }
 
-        public async Task<Address> Fetch(int id)
+        public async Task<CategoryOfOrganization> Fetch(int id)
         {
-            List<Address> list = null;
+            List<CategoryOfOrganization> list = null;
             
-            Address address = null;
+            CategoryOfOrganization categoryOfOrganization = null;
             
             using (var context = new MembershipManagerDataContext())
             {
-                address = await context.Addresses.Where(a => a.Id == id).FirstAsync();
+                categoryOfOrganization = await context.CategoryOfOrganizations.Where(a => a.Id == id).FirstAsync();
             }
 
-            return address;
+            return categoryOfOrganization;
         }
 
-        public async Task<Address> Insert(Address addressToInsert)
+        public async Task<CategoryOfOrganization> Insert(CategoryOfOrganization categoryOfOrganizationToInsert)
         {
             using (var context = new MembershipManagerDataContext())
             {
-                await context.Addresses.AddAsync(addressToInsert);
+                await context.CategoryOfOrganizations.AddAsync(categoryOfOrganizationToInsert);
                 await context.SaveChangesAsync();
             };
             
-            return addressToInsert;
+            return categoryOfOrganizationToInsert;
         }
 
-        public async Task<Address> Update(Address addressToUpdate)
+        public async Task<CategoryOfOrganization> Update(CategoryOfOrganization categoryOfOrganizationToUpdate)
         {
             using (var context = new MembershipManagerDataContext())
             {
-                 context.Update(addressToUpdate);
+                 context.Update(categoryOfOrganizationToUpdate);
                  await context.SaveChangesAsync();
             }
 
-            return addressToUpdate;
+            return categoryOfOrganizationToUpdate;
         }
 
         public async Task Delete(int id)
         {
             using (var context = new MembershipManagerDataContext())
             {
-                context.Remove(await context.Addresses.SingleAsync(a => a.Id == id));
+                context.Remove(await context.CategoryOfOrganizations.SingleAsync(a => a.Id == id));
                 await context.SaveChangesAsync();
             }
         }
