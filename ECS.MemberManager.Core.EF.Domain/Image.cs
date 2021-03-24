@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace ECS.MemberManager.Core.EF.Domain
+﻿namespace ECS.MemberManager.Core.EF.Domain
 {
     public class Image : EntityBase
     {

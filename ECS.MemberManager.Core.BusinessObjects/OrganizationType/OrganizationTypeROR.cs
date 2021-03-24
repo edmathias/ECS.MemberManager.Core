@@ -1,72 +1,73 @@
-﻿
-
-
-//******************************************************************************
+﻿//******************************************************************************
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/18/2021 16:28:29
+// Generated on 03/23/2021 09:57:27
 //******************************************************************************    
 
 using System;
-using System.Collections.Generic; 
 using System.Threading.Tasks;
 using Csla;
-using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
-using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
     public partial class OrganizationTypeROR : BusinessBase<OrganizationTypeROR>
     {
-        #region Business Methods 
-         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
-        public virtual int Id 
+        #region Business Methods
+
+        public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
+
+        public virtual int Id
         {
-            get => GetProperty(IdProperty); 
-            private set => LoadProperty(IdProperty, value);    
+            get => GetProperty(IdProperty);
+            private set => LoadProperty(IdProperty, value);
         }
 
         public static readonly PropertyInfo<string> NameProperty = RegisterProperty<string>(o => o.Name);
-        public virtual string Name 
+
+        public virtual string Name
         {
-            get => GetProperty(NameProperty); 
-            private set => LoadProperty(NameProperty, value);    
+            get => GetProperty(NameProperty);
+            private set => LoadProperty(NameProperty, value);
         }
 
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
-        public virtual string Notes 
+
+        public virtual string Notes
         {
-            get => GetProperty(NotesProperty); 
-            private set => LoadProperty(NotesProperty, value);    
+            get => GetProperty(NotesProperty);
+            private set => LoadProperty(NotesProperty, value);
         }
 
 
-        public static readonly PropertyInfo<CategoryOfOrganizationROC> CategoryOfOrganizationProperty = RegisterProperty<CategoryOfOrganizationROC>(o => o.CategoryOfOrganization);
-        public CategoryOfOrganizationROC CategoryOfOrganization  
+        public static readonly PropertyInfo<CategoryOfOrganizationROC> CategoryOfOrganizationProperty =
+            RegisterProperty<CategoryOfOrganizationROC>(o => o.CategoryOfOrganization);
+
+        public CategoryOfOrganizationROC CategoryOfOrganization
         {
-            get => GetProperty(CategoryOfOrganizationProperty); 
-        
-            private set => LoadProperty(CategoryOfOrganizationProperty, value); 
-        }    
- 
+            get => GetProperty(CategoryOfOrganizationProperty);
+
+            private set => LoadProperty(CategoryOfOrganizationProperty, value);
+        }
+
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
-        public virtual byte[] RowVersion 
+
+        public virtual byte[] RowVersion
         {
-            get => GetProperty(RowVersionProperty); 
-            private set => LoadProperty(RowVersionProperty, value);    
+            get => GetProperty(RowVersionProperty);
+            private set => LoadProperty(RowVersionProperty, value);
         }
 
-        #endregion 
+        #endregion
 
         #region Factory Methods
+
         public static async Task<OrganizationTypeROR> GetOrganizationTypeROR(int id)
         {
             return await DataPortal.FetchAsync<OrganizationTypeROR>(id);
-        }  
-
+        }
 
         #endregion
 
@@ -80,7 +81,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
             Id = data.Id;
             Name = data.Name;
             Notes = data.Notes;
-            CategoryOfOrganization = (data.CategoryOfOrganization != null ? await CategoryOfOrganizationROC.GetCategoryOfOrganizationROC(data.CategoryOfOrganization) : null);
+            CategoryOfOrganization = (data.CategoryOfOrganization != null
+                ? await CategoryOfOrganizationROC.GetCategoryOfOrganizationROC(data.CategoryOfOrganization)
+                : null);
             RowVersion = data.RowVersion;
         }
 

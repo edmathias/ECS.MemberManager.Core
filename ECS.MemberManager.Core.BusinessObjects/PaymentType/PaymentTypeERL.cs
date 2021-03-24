@@ -1,25 +1,19 @@
-﻿
-
-
-//******************************************************************************
+﻿//******************************************************************************
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/18/2021 16:28:33
+// Generated on 03/23/2021 09:57:35
 //******************************************************************************    
 
-using System; 
-using System.Collections.Generic;
+using System;
 using System.Threading.Tasks;
 using Csla;
-using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
-using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class PaymentTypeERL : BusinessListBase<PaymentTypeERL,PaymentTypeEC>
+    public partial class PaymentTypeERL : BusinessListBase<PaymentTypeERL, PaymentTypeEC>
     {
         #region Factory Methods
 
@@ -28,7 +22,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             return await DataPortal.CreateAsync<PaymentTypeERL>();
         }
 
-        public static async Task<PaymentTypeERL> GetPaymentTypeERL( )
+        public static async Task<PaymentTypeERL> GetPaymentTypeERL()
         {
             return await DataPortal.FetchAsync<PaymentTypeERL>();
         }
@@ -36,7 +30,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #endregion
 
         #region Data Access
- 
+
         [Fetch]
         private async Task Fetch([Inject] IPaymentTypeDal dal)
         {
@@ -51,7 +45,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 }
             }
         }
-       
+
         [Update]
         private void Update()
         {
@@ -59,6 +53,5 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         #endregion
-
-     }
+    }
 }

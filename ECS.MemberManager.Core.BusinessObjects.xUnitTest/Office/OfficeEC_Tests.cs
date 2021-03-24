@@ -1,9 +1,7 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Csla;
-using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using ECS.MemberManager.Core.EF.Domain;
@@ -12,7 +10,7 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class OfficeEC_Tests 
+    public class OfficeEC_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
@@ -24,8 +22,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
+
+            if (testLibrary == "Mock")
                 MockDb.ResetMockDb();
             else
             {
@@ -46,14 +44,14 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             Assert.NotNull(officeObj);
             Assert.IsType<OfficeEC>(officeObj);
-            Assert.Equal(childData.Appointer,officeObj.Appointer);
-            Assert.Equal(childData.Name,officeObj.Name);
-            Assert.Equal(childData.Notes,officeObj.Notes);
-            Assert.Equal(childData.Term,officeObj.Term);
-            Assert.Equal(childData.CalendarPeriod,officeObj.CalendarPeriod);
-            Assert.Equal(childData.ChosenHow,officeObj.ChosenHow);
-            Assert.Equal(childData.LastUpdatedBy,officeObj.LastUpdatedBy);
-            Assert.Equal(new SmartDate(childData.LastUpdatedDate),officeObj.LastUpdatedDate);
+            Assert.Equal(childData.Appointer, officeObj.Appointer);
+            Assert.Equal(childData.Name, officeObj.Name);
+            Assert.Equal(childData.Notes, officeObj.Notes);
+            Assert.Equal(childData.Term, officeObj.Term);
+            Assert.Equal(childData.CalendarPeriod, officeObj.CalendarPeriod);
+            Assert.Equal(childData.ChosenHow, officeObj.ChosenHow);
+            Assert.Equal(childData.LastUpdatedBy, officeObj.LastUpdatedBy);
+            Assert.Equal(new SmartDate(childData.LastUpdatedDate), officeObj.LastUpdatedDate);
         }
 
         [Fact]
@@ -77,64 +75,65 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(officeObj);
             Assert.True(isObjectValidInit);
             Assert.False(officeObj.IsValid);
-            Assert.Equal("Name",officeObj.BrokenRulesCollection[0].Property);
-            Assert.Equal("Name required",officeObj.BrokenRulesCollection[0].Description);
+            Assert.Equal("Name", officeObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("Name required", officeObj.BrokenRulesCollection[0].Description);
         }
-       
+
         [Fact]
         public async Task OfficeEC_TestNameExceedsMaxLengthOf50()
         {
             var officeObj = await OfficeEC.GetOfficeEC(BuildOffice());
             var isObjectValid = officeObj.IsValid;
-            
-            officeObj.Name = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor "+
-                                     "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis "+
-                                     "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "+
-                                     "Duis aute irure dolor in reprehenderit";
+
+            officeObj.Name = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+                             "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                             "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
+                             "Duis aute irure dolor in reprehenderit";
 
             Assert.NotNull(officeObj);
             Assert.True(isObjectValid);
             Assert.False(officeObj.IsValid);
-            Assert.Equal("Name",officeObj.BrokenRulesCollection[0].Property);
-            Assert.Equal("Name can not exceed 50 characters",officeObj.BrokenRulesCollection[0].Description);
-        }        
+            Assert.Equal("Name", officeObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("Name can not exceed 50 characters", officeObj.BrokenRulesCollection[0].Description);
+        }
 
         [Fact]
         public async Task OfficeEC_TestCalendarPeriodExceedsMaxLengthOf25()
         {
             var officeObj = await OfficeEC.GetOfficeEC(BuildOffice());
             var isObjectValid = officeObj.IsValid;
-            
-            officeObj.CalendarPeriod = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor "+
-                             "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis "+
-                             "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "+
-                             "Duis aute irure dolor in reprehenderit";
+
+            officeObj.CalendarPeriod =
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
+                "Duis aute irure dolor in reprehenderit";
 
             Assert.NotNull(officeObj);
             Assert.True(isObjectValid);
             Assert.False(officeObj.IsValid);
-            Assert.Equal("CalendarPeriod",officeObj.BrokenRulesCollection[0].Property);
-            Assert.Equal("CalendarPeriod can not exceed 25 characters",officeObj.BrokenRulesCollection[0].Description);
-        }     
+            Assert.Equal("CalendarPeriod", officeObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("CalendarPeriod can not exceed 25 characters", officeObj.BrokenRulesCollection[0].Description);
+        }
 
         [Fact]
         public async Task OfficeEC_TestAppointerExceedsMaxLengthOf50()
         {
             var officeObj = await OfficeEC.GetOfficeEC(BuildOffice());
             var isObjectValid = officeObj.IsValid;
-            
-            officeObj.Appointer = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor "+
-                                       "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis "+
-                                       "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "+
-                                       "Duis aute irure dolor in reprehenderit";
+
+            officeObj.Appointer = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+                                  "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                                  "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
+                                  "Duis aute irure dolor in reprehenderit";
 
             Assert.NotNull(officeObj);
             Assert.True(isObjectValid);
             Assert.False(officeObj.IsValid);
-            Assert.Equal("Appointer",officeObj.BrokenRulesCollection[0].Property);
-            Assert.Equal("Appointer can not exceed 50 characters",officeObj.BrokenRulesCollection[0].Description);
-        }     
-        
+            Assert.Equal("Appointer", officeObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("Appointer can not exceed 50 characters", officeObj.BrokenRulesCollection[0].Description);
+        }
+
         [Fact]
         public async Task OfficeEC_TestLastUpdatedByRequired()
         {
@@ -146,8 +145,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(officeObj);
             Assert.True(isObjectValidInit);
             Assert.False(officeObj.IsValid);
-            Assert.Equal("LastUpdatedBy",officeObj.BrokenRulesCollection[0].Property);
-            Assert.Equal("LastUpdatedBy required",officeObj.BrokenRulesCollection[0].Description);
+            Assert.Equal("LastUpdatedBy", officeObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy required", officeObj.BrokenRulesCollection[0].Description);
         }
 
         [Fact]
@@ -156,19 +155,20 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var officeObj = await OfficeEC.GetOfficeEC(BuildOffice());
 
             var isObjectValidInit = officeObj.IsValid;
-            officeObj.LastUpdatedBy = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor "+
-                                  "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis "+
-                                  "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "+
-                                  "Duis aute irure dolor in reprehenderit";
+            officeObj.LastUpdatedBy =
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
+                "Duis aute irure dolor in reprehenderit";
 
 
             Assert.NotNull(officeObj);
             Assert.True(isObjectValidInit);
             Assert.False(officeObj.IsValid);
-            Assert.Equal("LastUpdatedBy",officeObj.BrokenRulesCollection[0].Property);
-            Assert.Equal("LastUpdatedBy can not exceed 255 characters",officeObj.BrokenRulesCollection[0].Description);
+            Assert.Equal("LastUpdatedBy", officeObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy can not exceed 255 characters", officeObj.BrokenRulesCollection[0].Description);
         }
-        
+
         [Fact]
         public async Task OfficeEC_TestLastUpdatedDateRequired()
         {
@@ -180,11 +180,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(officeObj);
             Assert.True(isObjectValidInit);
             Assert.False(officeObj.IsValid);
-            Assert.Equal("LastUpdatedDate",officeObj.BrokenRulesCollection[0].Property);
-            Assert.Equal("LastUpdatedDate required",officeObj.BrokenRulesCollection[0].Description);
+            Assert.Equal("LastUpdatedDate", officeObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedDate required", officeObj.BrokenRulesCollection[0].Description);
         }
-        
-        
+
+
         private Office BuildOffice()
         {
             var officeObj = new Office();
@@ -198,6 +198,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             officeObj.LastUpdatedDate = DateTime.Now;
             officeObj.Notes = "notes";
             return officeObj;
-        }        
+        }
     }
 }

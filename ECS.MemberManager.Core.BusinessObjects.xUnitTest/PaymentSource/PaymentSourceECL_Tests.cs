@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Linq;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Dal;
@@ -9,7 +8,7 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class PaymentSourceECL_Tests 
+    public class PaymentSourceECL_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
@@ -21,8 +20,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
+
+            if (testLibrary == "Mock")
                 MockDb.ResetMockDb();
             else
             {
@@ -34,7 +33,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 }
             }
         }
-        
+
         [Fact]
         private async void PaymentSourceECL_TestPaymentSourceECL()
         {
@@ -44,16 +43,16 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.IsType<PaymentSourceECL>(paymentSourceEdit);
         }
 
-        
+
         [Fact]
         private async void PaymentSourceECL_TestGetPaymentSourceECL()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IPaymentSourceDal>();
             var childData = await dal.Fetch();
-            
+
             var listToTest = await PaymentSourceECL.GetPaymentSourceECL(childData);
-            
+
             Assert.NotNull(listToTest);
             Assert.Equal(3, listToTest.Count);
         }
@@ -63,6 +62,5 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             paymentSource.Description = "doc type description";
             paymentSource.Notes = "document type notes";
         }
-        
     }
 }

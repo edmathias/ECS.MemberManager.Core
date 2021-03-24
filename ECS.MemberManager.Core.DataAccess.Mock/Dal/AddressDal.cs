@@ -11,7 +11,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
     {
         public async Task<Address> Fetch(int id)
         {
-            return MockDb.Addresses.FirstOrDefault( a => a.Id == id);
+            return MockDb.Addresses.FirstOrDefault(a => a.Id == id);
         }
 
         public async Task<List<Address>> Fetch()
@@ -19,14 +19,14 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             return MockDb.Addresses.ToList();
         }
 
-        public async Task<Address> Insert( Address address)
+        public async Task<Address> Insert(Address address)
         {
-            var lastAddress = MockDb.Addresses.ToList().OrderByDescending(a =>a.Id).First();
-            address.Id = lastAddress.Id+1;
+            var lastAddress = MockDb.Addresses.ToList().OrderByDescending(a => a.Id).First();
+            address.Id = lastAddress.Id + 1;
             address.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
-            
+
             MockDb.Addresses.Add(address);
-            
+
             return address;
         }
 
@@ -34,11 +34,11 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             var savedAddress =
                 MockDb.Addresses.FirstOrDefault(em => em.Id == address.Id &&
-                                                   em.RowVersion.SequenceEqual(address.RowVersion));
+                                                      em.RowVersion.SequenceEqual(address.RowVersion));
 
-            if(savedAddress == null)
+            if (savedAddress == null)
                 throw new Csla.DataPortalException(null);
-           
+
             savedAddress.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
             return savedAddress;
         }
@@ -47,7 +47,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             var addressToDelete = MockDb.Addresses.FirstOrDefault(a => a.Id == id);
             var listIndex = MockDb.Addresses.IndexOf(addressToDelete);
-            if(listIndex > -1)
+            if (listIndex > -1)
                 MockDb.Addresses.RemoveAt(listIndex);
         }
 

@@ -1,12 +1,7 @@
-using System;
-using System.Data;
 using System.IO;
 using System.Threading.Tasks;
-using Csla;
-using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Mock;
-using ECS.MemberManager.Core.EF.Domain;
 using Microsoft.Extensions.Configuration;
 using Xunit;
 
@@ -24,9 +19,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
-                   MockDb.ResetMockDb();
+
+            if (testLibrary == "Mock")
+                MockDb.ResetMockDb();
             else
             {
                 if (!IsDatabaseBuilt)
@@ -48,6 +43,5 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.Equal(1, organization.Id);
             Assert.True(organization.IsValid);
         }
-
     }
 }

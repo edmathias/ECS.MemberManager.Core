@@ -45,7 +45,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.IsType<EventMemberEC>(eventDocumentObj);
             Assert.False(eventDocumentObj.IsValid);
         }
-        
+
         [Fact]
         public async Task TestEventMemberEC_GetEventMemberEC()
         {
@@ -54,10 +54,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             Assert.NotNull(eventDocumentObj);
             Assert.IsType<EventMemberEC>(eventDocumentObj);
-            Assert.Equal(eventDocumentObjToLoad.Id,eventDocumentObj.Id);
+            Assert.Equal(eventDocumentObjToLoad.Id, eventDocumentObj.Id);
             Assert.Equal(eventDocumentObjToLoad.Event.Id, eventDocumentObj.Event.Id);
             Assert.Equal(eventDocumentObjToLoad.MemberInfo.Id, eventDocumentObj.MemberInfo.Id);
-            Assert.Equal(eventDocumentObjToLoad.Role,eventDocumentObj.Role);
+            Assert.Equal(eventDocumentObjToLoad.Role, eventDocumentObj.Role);
             Assert.Equal(eventDocumentObjToLoad.LastUpdatedBy, eventDocumentObj.LastUpdatedBy);
             Assert.Equal(new SmartDate(eventDocumentObjToLoad.LastUpdatedDate), eventDocumentObj.LastUpdatedDate);
             Assert.Equal(eventDocumentObjToLoad.Notes, eventDocumentObj.Notes);
@@ -71,15 +71,15 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var eventDocumentObjToTest = BuildEventMember();
             var eventDocumentObj = await EventMemberEC.GetEventMemberEC(eventDocumentObjToTest);
             var isObjectValidInit = eventDocumentObj.IsValid;
-            eventDocumentObj.Event = null; 
-           
+            eventDocumentObj.Event = null;
+
             Assert.NotNull(eventDocumentObj);
             Assert.True(isObjectValidInit);
             Assert.False(eventDocumentObj.IsValid);
-            Assert.Equal("Event",eventDocumentObj.BrokenRulesCollection[0].Property);
-            Assert.Equal("Event required",eventDocumentObj.BrokenRulesCollection[0].Description);
+            Assert.Equal("Event", eventDocumentObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("Event required", eventDocumentObj.BrokenRulesCollection[0].Description);
         }
-        
+
         [Fact]
         public async Task TestEventMemberEC_MemberInfoRequired()
         {
@@ -87,14 +87,14 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var eventDocumentObj = await EventMemberEC.GetEventMemberEC(eventDocumentObjToTest);
             var isObjectValidInit = eventDocumentObj.IsValid;
             eventDocumentObj.MemberInfo = null;
-            
+
             Assert.NotNull(eventDocumentObj);
             Assert.True(isObjectValidInit);
             Assert.False(eventDocumentObj.IsValid);
-            Assert.Equal("MemberInfo",eventDocumentObj.BrokenRulesCollection[0].Property);
-            Assert.Equal("MemberInfo required",eventDocumentObj.BrokenRulesCollection[0].Description);
+            Assert.Equal("MemberInfo", eventDocumentObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("MemberInfo required", eventDocumentObj.BrokenRulesCollection[0].Description);
         }
-        
+
         [Fact]
         public async Task TestEventMemberEC_RoleCannotExceed50Chars()
         {
@@ -105,15 +105,15 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                                     "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
                                     "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
                                     "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis ";
-           
+
             Assert.NotNull(eventDocumentObj);
             Assert.True(isObjectValidInit);
             Assert.False(eventDocumentObj.IsValid);
-            Assert.Equal("Role",eventDocumentObj.BrokenRulesCollection[0].Property);
-            Assert.Equal("Role can not exceed 50 characters",eventDocumentObj.BrokenRulesCollection[0].Description);
+            Assert.Equal("Role", eventDocumentObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("Role can not exceed 50 characters", eventDocumentObj.BrokenRulesCollection[0].Description);
         }
 
-        
+
         [Fact]
         public async Task TestEventMemberEC_LastUpdatedByRequired()
         {
@@ -125,11 +125,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(eventDocumentObj);
             Assert.True(isObjectValidInit);
             Assert.False(eventDocumentObj.IsValid);
-            Assert.Equal("LastUpdatedBy",eventDocumentObj.BrokenRulesCollection[0].Property);
-            Assert.Equal("LastUpdatedBy required",eventDocumentObj.BrokenRulesCollection[0].Description);
-            
+            Assert.Equal("LastUpdatedBy", eventDocumentObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy required", eventDocumentObj.BrokenRulesCollection[0].Description);
         }
-        
+
         [Fact]
         public async Task TestEventMemberEC_LastUpdatedDateRequired()
         {
@@ -141,11 +140,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(eventDocumentObj);
             Assert.True(isObjectValidInit);
             Assert.False(eventDocumentObj.IsValid);
-            Assert.Equal("LastUpdatedDate",eventDocumentObj.BrokenRulesCollection[0].Property);
-            Assert.Equal("LastUpdatedDate required",eventDocumentObj.BrokenRulesCollection[0].Description);
+            Assert.Equal("LastUpdatedDate", eventDocumentObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedDate required", eventDocumentObj.BrokenRulesCollection[0].Description);
         }
 
-         
+
         private EventMember BuildEventMember()
         {
             var eventDocumentObj = new EventMember();
@@ -158,6 +157,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             eventDocumentObj.Notes = "notes for doctype";
 
             return eventDocumentObj;
-        }        
+        }
     }
 }

@@ -1,17 +1,13 @@
-﻿
-
-//******************************************************************************
+﻿//******************************************************************************
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/18/2021 16:28:28
+// Generated on 03/23/2021 09:57:26
 //******************************************************************************    
 
 using System;
-using System.Collections.Generic; 
 using System.Threading.Tasks;
 using Csla;
-using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
@@ -21,49 +17,53 @@ namespace ECS.MemberManager.Core.BusinessObjects
     public partial class OrganizationTypeER : BusinessBase<OrganizationTypeER>
     {
         #region Business Methods
- 
+
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
-        public virtual int Id 
+
+        public virtual int Id
         {
-            get => GetProperty(IdProperty); 
-            private set => LoadProperty(IdProperty, value);    
+            get => GetProperty(IdProperty);
+            private set => LoadProperty(IdProperty, value);
         }
 
         public static readonly PropertyInfo<string> NameProperty = RegisterProperty<string>(o => o.Name);
-        public virtual string Name 
+
+        public virtual string Name
         {
-            get => GetProperty(NameProperty); 
-            set => SetProperty(NameProperty, value); 
-   
+            get => GetProperty(NameProperty);
+            set => SetProperty(NameProperty, value);
         }
 
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
-        public virtual string Notes 
+
+        public virtual string Notes
         {
-            get => GetProperty(NotesProperty); 
-            set => SetProperty(NotesProperty, value); 
-   
+            get => GetProperty(NotesProperty);
+            set => SetProperty(NotesProperty, value);
         }
 
 
-        public static readonly PropertyInfo<CategoryOfOrganizationEC> CategoryOfOrganizationProperty = RegisterProperty<CategoryOfOrganizationEC>(o => o.CategoryOfOrganization);
-        public CategoryOfOrganizationEC CategoryOfOrganization  
+        public static readonly PropertyInfo<CategoryOfOrganizationEC> CategoryOfOrganizationProperty =
+            RegisterProperty<CategoryOfOrganizationEC>(o => o.CategoryOfOrganization);
+
+        public CategoryOfOrganizationEC CategoryOfOrganization
         {
-            get => GetProperty(CategoryOfOrganizationProperty); 
-            set => SetProperty(CategoryOfOrganizationProperty, value); 
-        }    
- 
+            get => GetProperty(CategoryOfOrganizationProperty);
+            set => SetProperty(CategoryOfOrganizationProperty, value);
+        }
+
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
-        public virtual byte[] RowVersion 
+
+        public virtual byte[] RowVersion
         {
-            get => GetProperty(RowVersionProperty); 
-            set => SetProperty(RowVersionProperty, value); 
-   
+            get => GetProperty(RowVersionProperty);
+            set => SetProperty(RowVersionProperty, value);
         }
 
-        #endregion 
+        #endregion
 
         #region Factory Methods
+
         public static async Task<OrganizationTypeER> NewOrganizationTypeER()
         {
             return await DataPortal.CreateAsync<OrganizationTypeER>();
@@ -72,13 +72,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
         public static async Task<OrganizationTypeER> GetOrganizationTypeER(int id)
         {
             return await DataPortal.FetchAsync<OrganizationTypeER>(id);
-        }  
+        }
 
         public static async Task DeleteOrganizationTypeER(int id)
         {
             await DataPortal.DeleteAsync<OrganizationTypeER>(id);
-        } 
-
+        }
 
         #endregion
 
@@ -89,25 +88,29 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             var data = await dal.Fetch(id);
 
-            using(BypassPropertyChecks)
+            using (BypassPropertyChecks)
             {
-            Id = data.Id;
-            Name = data.Name;
-            Notes = data.Notes;
-            CategoryOfOrganization = (data.CategoryOfOrganization != null ? await CategoryOfOrganizationEC.GetCategoryOfOrganizationEC(data.CategoryOfOrganization) : null);
-            RowVersion = data.RowVersion;
-            }            
+                Id = data.Id;
+                Name = data.Name;
+                Notes = data.Notes;
+                CategoryOfOrganization = (data.CategoryOfOrganization != null
+                    ? await CategoryOfOrganizationEC.GetCategoryOfOrganizationEC(data.CategoryOfOrganization)
+                    : null);
+                RowVersion = data.RowVersion;
+            }
         }
+
         [Insert]
         private async Task Insert([Inject] IOrganizationTypeDal dal)
         {
             var data = new OrganizationType()
             {
-
                 Id = Id,
                 Name = Name,
                 Notes = Notes,
-                CategoryOfOrganization = (CategoryOfOrganization != null ? new CategoryOfOrganization() { Id = CategoryOfOrganization.Id } : null),
+                CategoryOfOrganization = (CategoryOfOrganization != null
+                    ? new CategoryOfOrganization() {Id = CategoryOfOrganization.Id}
+                    : null),
                 RowVersion = RowVersion,
             };
 
@@ -116,16 +119,17 @@ namespace ECS.MemberManager.Core.BusinessObjects
             RowVersion = insertedObj.RowVersion;
         }
 
-       [Update]
+        [Update]
         private async Task Update([Inject] IOrganizationTypeDal dal)
         {
             var data = new OrganizationType()
             {
-
                 Id = Id,
                 Name = Name,
                 Notes = Notes,
-                CategoryOfOrganization = (CategoryOfOrganization != null ? new CategoryOfOrganization() { Id = CategoryOfOrganization.Id } : null),
+                CategoryOfOrganization = (CategoryOfOrganization != null
+                    ? new CategoryOfOrganization() {Id = CategoryOfOrganization.Id}
+                    : null),
                 RowVersion = RowVersion,
             };
 
@@ -136,9 +140,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [DeleteSelf]
         private async Task DeleteSelf([Inject] IOrganizationTypeDal dal)
         {
-            await Delete(Id,dal);
+            await Delete(Id, dal);
         }
-       
+
         [Delete]
         private async Task Delete(int id, [Inject] IOrganizationTypeDal dal)
         {

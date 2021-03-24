@@ -1,6 +1,4 @@
-﻿using System;
-using Csla;
-using ECS.MemberManager.Core.EF.Domain;
+﻿using ECS.MemberManager.Core.EF.Domain;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
@@ -12,12 +10,12 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             var categoryToTest = BuildOrganizationType();
             var category = await OrganizationTypeROC.GetOrganizationTypeROC(categoryToTest);
-            
+
             Assert.NotNull(category);
             Assert.IsType<OrganizationTypeROC>(category);
-            Assert.Equal(categoryToTest.Id,category.Id);
-            Assert.Equal(categoryToTest.Name,category.Name);
-            Assert.Equal(categoryToTest.Notes,category.Notes);
+            Assert.Equal(categoryToTest.Id, category.Id);
+            Assert.Equal(categoryToTest.Name, category.Name);
+            Assert.Equal(categoryToTest.Notes, category.Notes);
         }
 
         private OrganizationType BuildOrganizationType()
@@ -26,11 +24,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             {
                 Id = 1,
                 Name = "org Name 1",
-                Notes = "organization notes" 
+                Notes = "organization notes"
             };
 
             return category;
-        }        
-        
+        }
     }
 }

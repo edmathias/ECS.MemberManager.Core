@@ -1,42 +1,12 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
-using ECS.MemberManager.Core.DataAccess;
-using ECS.MemberManager.Core.DataAccess.ADO;
-using ECS.MemberManager.Core.DataAccess.Dal;
-using ECS.MemberManager.Core.DataAccess.Mock;
+using System.Collections.Generic;
 using ECS.MemberManager.Core.EF.Domain;
-using Microsoft.Extensions.Configuration;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class CategoryOfPersonECL_Tests
+    public class CategoryOfPersonECL_Tests : CslaBaseTest
     {
-        private IConfigurationRoot _config = null;
-        private bool IsDatabaseBuilt = false;
-
-        public CategoryOfPersonECL_Tests()
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            _config = builder.Build();
-            var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
-                MockDb.ResetMockDb();
-            else
-            {
-                if (!IsDatabaseBuilt)
-                {
-                    var adoDb = new ADODb();
-                    adoDb.BuildMemberManagerADODb();
-                    IsDatabaseBuilt = true;
-                }
-            }
-        }
-
         [Fact]
         private async void CategoryOfPersonECL_TestNewCategoryOfPersonECL()
         {
@@ -45,13 +15,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(categoryOfPersonEdit);
             Assert.IsType<CategoryOfPersonECL>(categoryOfPersonEdit);
         }
-        
+
         [Fact]
         private async void CategoryOfPersonECL_TestGetCategoryOfPersonECL()
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ICategoryOfPersonDal>();
-            var childData = await dal.Fetch();
+            var childData = BuildCategoryOfPersonList();
             var categoryOfPersonEdit = await CategoryOfPersonECL.GetCategoryOfPersonECL(childData);
 
             Assert.NotNull(categoryOfPersonEdit);
@@ -62,6 +30,34 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             categoryToBuild.Category = "test";
             categoryToBuild.DisplayOrder = 1;
+        }
+
+        private List<CategoryOfPerson> BuildCategoryOfPersonList()
+        {
+            return new List<CategoryOfPerson>()
+            {
+                new CategoryOfPerson()
+                {
+                    Id = 1,
+                    Category = "Person Category 1",
+                    DisplayOrder = 0,
+                    RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
+                },
+                new CategoryOfPerson()
+                {
+                    Id = 2,
+                    Category = "Org Category 2",
+                    DisplayOrder = 1,
+                    RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
+                },
+                new CategoryOfPerson()
+                {
+                    Id = 99,
+                    Category = "Org Category 2",
+                    DisplayOrder = 1,
+                    RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
+                }
+            };
         }
     }
 }

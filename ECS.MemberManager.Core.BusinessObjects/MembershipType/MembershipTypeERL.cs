@@ -1,18 +1,12 @@
-﻿
-
-
-using System; 
-using System.Collections.Generic;
+﻿using System;
 using System.Threading.Tasks;
 using Csla;
-using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
-using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class OfficeERL : BusinessListBase<OfficeERL,OfficeEC>
+    public partial class OfficeERL : BusinessListBase<OfficeERL, OfficeEC>
     {
         #region Factory Methods
 
@@ -21,7 +15,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             return await DataPortal.CreateAsync<OfficeERL>();
         }
 
-        public static async Task<OfficeERL> GetOfficeERL( )
+        public static async Task<OfficeERL> GetOfficeERL()
         {
             return await DataPortal.FetchAsync<OfficeERL>();
         }
@@ -29,7 +23,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #endregion
 
         #region Data Access
- 
+
         [Fetch]
         private async Task Fetch([Inject] IOfficeDal dal)
         {
@@ -44,7 +38,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 }
             }
         }
-       
+
         [Update]
         private void Update()
         {
@@ -52,6 +46,5 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         #endregion
-
-     }
+    }
 }

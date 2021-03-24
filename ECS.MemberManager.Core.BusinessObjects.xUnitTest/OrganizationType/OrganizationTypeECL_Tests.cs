@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Threading.Tasks;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.ADO;
@@ -25,8 +22,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
+
+            if (testLibrary == "Mock")
                 MockDb.ResetMockDb();
             else
             {
@@ -47,7 +44,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(organizationTypeECL);
             Assert.IsType<OrganizationTypeECL>(organizationTypeECL);
         }
-        
+
         [Fact]
         private async void OrganizationTypeECL_TestGetOrganizationTypeECL()
         {
@@ -60,20 +57,18 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(organizationTypeECL);
             Assert.Equal(3, organizationTypeECL.Count);
         }
-        
+
         private async Task BuildValidOrganizationType(OrganizationTypeEC organizationType)
         {
             organizationType.Name = "org name";
             organizationType.Notes = "org notes";
-            organizationType.CategoryOfOrganization = await CategoryOfOrganizationEC.GetCategoryOfOrganizationEC( new CategoryOfOrganization
-            {
-              Id  = 1,
-              Category = "category name",
-              DisplayOrder = 1
-            });
-             
+            organizationType.CategoryOfOrganization = await CategoryOfOrganizationEC.GetCategoryOfOrganizationEC(
+                new CategoryOfOrganization
+                {
+                    Id = 1,
+                    Category = "category name",
+                    DisplayOrder = 1
+                });
         }
-        
- 
     }
 }

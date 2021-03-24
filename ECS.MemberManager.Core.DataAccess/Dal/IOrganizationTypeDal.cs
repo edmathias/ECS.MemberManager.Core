@@ -9,7 +9,7 @@ namespace ECS.MemberManager.Core.DataAccess.Dal
         Task<OrganizationType> Fetch(int id);
         Task<List<OrganizationType>> Fetch();
         Task<OrganizationType> Insert(OrganizationType organizationType);
-        Task<OrganizationType> Update(OrganizationType organizationType );
-        Task Delete(int id);        
+        Task<OrganizationType> Update(OrganizationType organizationType);
+        Task Delete(int id);
     }
 }

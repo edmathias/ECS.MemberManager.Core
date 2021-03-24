@@ -1,61 +1,13 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.Data;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Csla;
-using Csla.Rules;
-using ECS.MemberManager.Core.DataAccess.ADO;
-using ECS.MemberManager.Core.DataAccess.EF;
-using ECS.MemberManager.Core.DataAccess.Mock;
 using ECS.MemberManager.Core.EF.Domain;
-using Microsoft.Extensions.Configuration;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class AddressER_Tests
+    public class AddressER_Tests : CslaBaseTest
     {
-        private IConfigurationRoot _config = null;
-        private bool IsDatabaseBuilt = false;
-        private readonly ITestOutputHelper _testOutputHelper;
-
-        public AddressER_Tests(ITestOutputHelper testOutputHelper)
-        {
-            _testOutputHelper = testOutputHelper;
-
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            _config = builder.Build();
-            var testLibrary = _config.GetValue<string>("TestLibrary");
-
-            if (testLibrary == "Mock")
-            {
-                MockDb.ResetMockDb();
-            }
-            else if (testLibrary == "ADO")
-            {
-                if (!IsDatabaseBuilt)
-                {
-                    var adoDb = new ADODb();
-                    adoDb.BuildMemberManagerADODb();
-                }
-            }
-            else if (testLibrary == "EF")
-            {
-                if (!IsDatabaseBuilt)
-                {
-                    var efDb = new EFDb();
-                    efDb.BuildMemberManagerEFDb();
-                }
-            }
-
-            IsDatabaseBuilt = true;
-        }
-
         [Fact]
         public async Task TestAddressER_Get()
         {

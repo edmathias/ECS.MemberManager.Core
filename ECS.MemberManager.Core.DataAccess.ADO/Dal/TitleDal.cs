@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,7 +24,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var cnxnString = _config.GetConnectionString("LocalDbConnection");
-            
+
             _db = new SqlConnection(cnxnString);
         }
 
@@ -33,9 +32,10 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
         {
             _db = cnxn;
         }
+
         public async Task<List<Title>> Fetch()
         {
-            var titles =await _db.GetAllAsync<Title>();
+            var titles = await _db.GetAllAsync<Title>();
             return titles.ToList();
         }
 
@@ -49,12 +49,12 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             var sql = "INSERT INTO Titles (Abbreviation,Description,DisplayOrder ) " +
                       "VALUES(@Abbreviation, @Description, @DisplayOrder );" +
                       "SELECT SCOPE_IDENTITY()";
-            titleToInsert.Id = await _db.ExecuteScalarAsync<int>(sql,titleToInsert);
+            titleToInsert.Id = await _db.ExecuteScalarAsync<int>(sql, titleToInsert);
 
             //reretrieve Title to get rowversion
             var insertedOffice = await _db.GetAsync<Title>(titleToInsert.Id);
             titleToInsert.RowVersion = insertedOffice.RowVersion;
-            
+
             return titleToInsert;
         }
 
@@ -67,11 +67,11 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                       "OUTPUT inserted.RowVersion " +
                       "WHERE Id = @Id AND RowVersion = @RowVersion ";
 
-            var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql,titleToUpdate);
+            var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql, titleToUpdate);
             if (rowVersion == null)
                 throw new DBConcurrencyException("Entity has been updated since last read. Try again!");
             titleToUpdate.RowVersion = rowVersion;
-            
+
             return titleToUpdate;
         }
 
@@ -79,10 +79,10 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
         {
             await _db.DeleteAsync<Title>(new Title() {Id = id});
         }
-        
+
         public void Dispose()
         {
-            _db.Dispose(); 
+            _db.Dispose();
         }
     }
 }

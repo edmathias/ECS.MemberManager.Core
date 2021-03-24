@@ -1,43 +1,13 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Csla;
-using Csla.Rules;
-using ECS.MemberManager.Core.DataAccess.ADO;
-using ECS.MemberManager.Core.DataAccess.Mock;
 using ECS.MemberManager.Core.EF.Domain;
-using Microsoft.Extensions.Configuration;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class EMailEC_Tests
+    public class EMailEC_Tests : CslaBaseTest
     {
-        private IConfigurationRoot _config = null;
-        private bool IsDatabaseBuilt = false;
-
-        public EMailEC_Tests()
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            _config = builder.Build();
-            var testLibrary = _config.GetValue<string>("TestLibrary");
-
-            if (testLibrary == "Mock")
-                MockDb.ResetMockDb();
-            else
-            {
-                if (!IsDatabaseBuilt)
-                {
-                    var adoDb = new ADODb();
-                    adoDb.BuildMemberManagerADODb();
-                    IsDatabaseBuilt = true;
-                }
-            }
-        }
-
         [Fact]
         public async Task TestEMailEC_NewEMailEC()
         {
@@ -47,7 +17,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.IsType<EMailEC>(eMail);
             Assert.False(eMail.IsValid);
         }
-        
+
         [Fact]
         public async Task TestEMailEC_GetEMailEC()
         {
@@ -56,7 +26,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             Assert.NotNull(eMail);
             Assert.IsType<EMailEC>(eMail);
-            Assert.Equal(eMailToLoad.Id,eMail.Id);
+            Assert.Equal(eMailToLoad.Id, eMail.Id);
             Assert.Equal(eMailToLoad.LastUpdatedBy, eMail.LastUpdatedBy);
             Assert.Equal(new SmartDate(eMailToLoad.LastUpdatedDate), eMail.LastUpdatedDate);
             Assert.Equal(eMailToLoad.Notes, eMail.Notes);
@@ -75,8 +45,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(eMail);
             Assert.True(isObjectValidInit);
             Assert.False(eMail.IsValid);
-            Assert.Equal("EMailAddress",eMail.BrokenRulesCollection[0].Property);
-            Assert.Equal("EMailAddress required",eMail.BrokenRulesCollection[0].Description);
+            Assert.Equal("EMailAddress", eMail.BrokenRulesCollection[0].Property);
+            Assert.Equal("EMailAddress required", eMail.BrokenRulesCollection[0].Description);
         }
 
         [Fact]
@@ -92,8 +62,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(eMail);
             Assert.True(isObjectValidInit);
             Assert.False(eMail.IsValid);
-            Assert.Equal("EMailAddress",eMail.BrokenRulesCollection[0].Property);
-            Assert.Equal("EMailAddress can not exceed 255 characters",eMail.BrokenRulesCollection[0].Description);
+            Assert.Equal("EMailAddress", eMail.BrokenRulesCollection[0].Property);
+            Assert.Equal("EMailAddress can not exceed 255 characters", eMail.BrokenRulesCollection[0].Description);
         }
 
         [Fact]
@@ -107,10 +77,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(eMail);
             Assert.True(isObjectValidInit);
             Assert.False(eMail.IsValid);
-            Assert.Equal("LastUpdatedBy",eMail.BrokenRulesCollection[0].Property);
-            Assert.Equal("LastUpdatedBy required",eMail.BrokenRulesCollection[0].Description);
+            Assert.Equal("LastUpdatedBy", eMail.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy required", eMail.BrokenRulesCollection[0].Description);
         }
-     
+
         [Fact]
         public async Task TestEMailEC_LastUpdatedByExceeds255Characters()
         {
@@ -125,10 +95,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(eMail);
             Assert.True(isObjectValidInit);
             Assert.False(eMail.IsValid);
-            Assert.Equal("LastUpdatedBy",eMail.BrokenRulesCollection[0].Property);
-            Assert.Equal("LastUpdatedBy can not exceed 255 characters",eMail.BrokenRulesCollection[0].Description);
+            Assert.Equal("LastUpdatedBy", eMail.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy can not exceed 255 characters", eMail.BrokenRulesCollection[0].Description);
         }
-        
+
         private EMail BuildEMail()
         {
             var eMail = new EMail();
@@ -140,6 +110,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             eMail.Notes = "notes for doctype";
 
             return eMail;
-        }        
+        }
     }
 }

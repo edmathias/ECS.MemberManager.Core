@@ -10,7 +10,7 @@ namespace ECS.MemberManager.Core.DataAccess.Dal
         Task<Phone> Fetch(int id);
         Task<List<Phone>> Fetch();
         Task<Phone> Insert(Phone phone);
-        Task<Phone> Update(Phone documentType );
+        Task<Phone> Update(Phone documentType);
         Task Delete(int id);
     }
 }

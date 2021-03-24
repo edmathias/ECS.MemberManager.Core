@@ -10,7 +10,7 @@
     var isReadOnly = true;
     var childStereo = GetChildStereoType(stereoType);
     var cslaListType = (isReadOnly ? "ReadOnly" : "Business");
-    CreateBuildHeader();    
+    CreateBuildHeader();
 #>
 
 using System; 
@@ -24,12 +24,12 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class <#= objectName #><#= stereoType #> : <#=cslaListType #>ListBase<<#= objectName #><#= stereoType#>,<#= objectName#><#=childStereo #>>
+    public partial class <#= objectName #><#= stereoType #> : <#= cslaListType #>ListBase<<#= objectName #><#= stereoType #>,<#= objectName #><#= childStereo #>>
     {
         #region Factory Methods
 
 <#
-        BuildListFactoryMethods( objectName, stereoType, isChild, isReadOnly);
+    BuildListFactoryMethods(objectName, stereoType, isChild, isReadOnly);
 #>
 
         #endregion
@@ -37,7 +37,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access
  
 <#
-        BuildListFetch(  objectName,  isChild,  childStereo);
+    BuildListFetch(objectName, isChild, childStereo);
 #>
 
         #endregion

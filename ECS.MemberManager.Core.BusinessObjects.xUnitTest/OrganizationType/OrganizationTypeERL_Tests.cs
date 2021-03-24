@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using ECS.MemberManager.Core.DataAccess.ADO;
@@ -22,8 +21,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
+
+            if (testLibrary == "Mock")
                 MockDb.ResetMockDb();
             else
             {
@@ -44,64 +43,64 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(categoryOfOrganizationEdit);
             Assert.IsType<OrganizationTypeERL>(categoryOfOrganizationEdit);
         }
-        
+
         [Fact]
         private async void OrganizationTypeERL_TestGetOrganizationTypeERL()
         {
-            var categoryOfOrganizationEdit = 
+            var categoryOfOrganizationEdit =
                 await OrganizationTypeERL.GetOrganizationTypeERL();
 
             Assert.NotNull(categoryOfOrganizationEdit);
             Assert.Equal(3, categoryOfOrganizationEdit.Count);
         }
-        
+
         [Fact]
         private async void OrganizationTypeERL_TestDeleteOrganizationTypeERL()
         {
             const int ID_TO_DELETE = 99;
-            var categoryList = 
+            var categoryList =
                 await OrganizationTypeERL.GetOrganizationTypeERL();
             var listCount = categoryList.Count;
             var categoryToDelete = categoryList.First(cl => cl.Id == ID_TO_DELETE);
             // remove is deferred delete
-            var isDeleted = categoryList.Remove(categoryToDelete); 
+            var isDeleted = categoryList.Remove(categoryToDelete);
 
             var categoryOfOrganizationListAfterDelete = await categoryList.SaveAsync();
 
             Assert.NotNull(categoryOfOrganizationListAfterDelete);
             Assert.IsType<OrganizationTypeERL>(categoryOfOrganizationListAfterDelete);
             Assert.True(isDeleted);
-            Assert.NotEqual(listCount,categoryOfOrganizationListAfterDelete.Count);
+            Assert.NotEqual(listCount, categoryOfOrganizationListAfterDelete.Count);
         }
 
         [Fact]
         private async void OrganizationTypeERL_TestUpdateOrganizationTypeERL()
         {
             const int ID_TO_UPDATE = 1;
-            
-            var categoryList = 
+
+            var categoryList =
                 await OrganizationTypeERL.GetOrganizationTypeERL();
             var countBeforeUpdate = categoryList.Count;
             var categoryOfOrganizationToUpdate = categoryList.First(cl => cl.Id == ID_TO_UPDATE);
             categoryOfOrganizationToUpdate.Name = "Updated category";
-            
+
             var updatedList = await categoryList.SaveAsync();
-            
+
             Assert.Equal(countBeforeUpdate, updatedList.Count);
         }
 
         [Fact]
         private async void OrganizationTypeERL_TestAddOrganizationTypeERL()
         {
-            var categoryList = 
+            var categoryList =
                 await OrganizationTypeERL.GetOrganizationTypeERL();
             var countBeforeAdd = categoryList.Count;
-            
+
             var categoryOfOrganizationToAdd = categoryList.AddNew();
             await BuildOrganizationType(categoryOfOrganizationToAdd);
 
             var updatedCategoryList = await categoryList.SaveAsync();
-            
+
             Assert.NotEqual(countBeforeAdd, updatedCategoryList.Count);
         }
 
@@ -117,6 +116,5 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                     DisplayOrder = 1
                 });
         }
-        
     }
 }

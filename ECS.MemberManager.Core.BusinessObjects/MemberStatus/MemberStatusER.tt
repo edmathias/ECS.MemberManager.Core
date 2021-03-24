@@ -22,22 +22,22 @@ using ECS.MemberManager.Core.EF.Domain;
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class <#= objectName #><#= stereoType #> : BusinessBase<<#= objectName #><#= stereoType#>>
+    public partial class <#= objectName #><#= stereoType #> : BusinessBase<<#= objectName #><#= stereoType #>>
     {
         #region Business Methods 
  <#
     var columnList = BuildColumnList(pluralObjectName);
 
-    foreach(var columnData in columnList ) 
+    foreach (var columnData in columnList)
     {
-        BuildCSLAProperties(columnData,stereoType,isReadOnly);
+        BuildCSLAProperties(columnData, stereoType, isReadOnly);
     }
 #>
         #endregion 
 
         #region Factory Methods
 <#
-        BuildFactoryMethods(objectName,stereoType,isChild,isReadOnly);
+    BuildFactoryMethods(objectName, stereoType, isChild, isReadOnly);
 #>
 
         #endregion
@@ -45,17 +45,16 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access Methods
 
 <#
-        BuildFetch(columnList,objectName,stereoType,isChild, isReadOnly);
+    BuildFetch(columnList, objectName, stereoType, isChild, isReadOnly);
 
-        if (!isReadOnly)
-        {
-            BuildInsert(columnList,objectName,stereoType,isChild);
+    if (!isReadOnly)
+    {
+        BuildInsert(columnList, objectName, stereoType, isChild);
 
-            BuildUpdate(columnList,objectName, stereoType, isChild);
-        
-            BuildDeleteMethods(objectName, isChild);
-        }
+        BuildUpdate(columnList, objectName, stereoType, isChild);
 
+        BuildDeleteMethods(objectName, isChild);
+    }
 #>
 
         #endregion

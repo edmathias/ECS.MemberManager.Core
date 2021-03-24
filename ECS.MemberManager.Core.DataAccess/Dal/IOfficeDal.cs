@@ -10,6 +10,6 @@ namespace ECS.MemberManager.Core.DataAccess.Dal
         Task<List<Office>> Fetch();
         Task<Office> Insert(Office office);
         Task<Office> Update(Office office);
-        Task Delete(int id);        
+        Task Delete(int id);
     }
 }

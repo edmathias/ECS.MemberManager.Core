@@ -1,46 +1,16 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
-using Csla.Rules;
-using ECS.MemberManager.Core.DataAccess.ADO;
-using ECS.MemberManager.Core.DataAccess.Mock;
-using Microsoft.Extensions.Configuration;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class CategoryOfOrganizationER_Tests
+    public class CategoryOfOrganizationER_Tests : CslaBaseTest
     {
-        private IConfigurationRoot _config = null;
-        private bool IsDatabaseBuilt = false;
-
-        public CategoryOfOrganizationER_Tests()
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            _config = builder.Build();
-            var testLibrary = _config.GetValue<string>("TestLibrary");
-
-            if (testLibrary == "Mock")
-                MockDb.ResetMockDb();
-            else
-            {
-                if (!IsDatabaseBuilt)
-                {
-                    var adoDb = new ADODb();
-                    adoDb.BuildMemberManagerADODb();
-                    IsDatabaseBuilt = true;
-                }
-            }
-        }
-        
-       [Fact]
+        [Fact]
         public async void TestCategoryOfOrganizationER_Get()
         {
             var categoryOfOrganization = await CategoryOfOrganizationER.GetCategoryOfOrganizationER(1);
-    
+
             Assert.NotNull(categoryOfOrganization);
             Assert.Equal(1, categoryOfOrganization.Id);
             Assert.True(categoryOfOrganization.IsValid);
@@ -60,11 +30,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             var categoryOfOrganization = await CategoryOfOrganizationER.GetCategoryOfOrganizationER(1);
             categoryOfOrganization.DisplayOrder = 2;
-            
+
             var result = await categoryOfOrganization.SaveAsync();
 
             Assert.NotNull(result);
-            Assert.Equal(2,result.DisplayOrder);
+            Assert.Equal(2, result.DisplayOrder);
         }
 
         [Fact]
@@ -74,26 +44,26 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             categoryOfOrganization.Category = "Category 1";
 
             var savedCategoryOfOrganization = await categoryOfOrganization.SaveAsync();
-           
+
             Assert.NotNull(savedCategoryOfOrganization);
             Assert.IsType<CategoryOfOrganizationER>(savedCategoryOfOrganization);
-            Assert.True( savedCategoryOfOrganization.Id > 0 );
+            Assert.True(savedCategoryOfOrganization.Id > 0);
         }
 
         [Fact]
         public async Task TestCategoryOfOrganizationER_DeleteObjectFromDatabase()
         {
             var categoryToDelete = await CategoryOfOrganizationER.GetCategoryOfOrganizationER(99);
-            
+
             await CategoryOfOrganizationER.DeleteCategoryOfOrganizationER(categoryToDelete.Id);
-            
+
             var categoryToCheck = await Assert.ThrowsAsync<Csla.DataPortalException>
-                (() => CategoryOfOrganizationER.GetCategoryOfOrganizationER(categoryToDelete.Id));        
+                (() => CategoryOfOrganizationER.GetCategoryOfOrganizationER(categoryToDelete.Id));
         }
-        
+
         // test invalid state 
         [Fact]
-        public async Task TestCategoryOfOrganizationER_CategoryRequired() 
+        public async Task TestCategoryOfOrganizationER_CategoryRequired()
         {
             var categoryOfOrganization = await CategoryOfOrganizationER.NewCategoryOfOrganizationER();
             categoryOfOrganization.Category = "Valid category";
@@ -104,10 +74,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(categoryOfOrganization);
             Assert.True(isObjectValidInit);
             Assert.False(categoryOfOrganization.IsValid);
-            Assert.Equal("Category",categoryOfOrganization.BrokenRulesCollection[0].Property);
-            Assert.Equal("Category required",categoryOfOrganization.BrokenRulesCollection[0].Description);
+            Assert.Equal("Category", categoryOfOrganization.BrokenRulesCollection[0].Property);
+            Assert.Equal("Category required", categoryOfOrganization.BrokenRulesCollection[0].Description);
         }
-       
+
         [Fact]
         public async Task TestCategoryOfOrganizationER_CategoryExceedsMaxLengthOf35()
         {
@@ -121,10 +91,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             Assert.NotNull(categoryOfOrganization);
             Assert.False(categoryOfOrganization.IsValid);
-            Assert.Equal("Category",categoryOfOrganization.BrokenRulesCollection[0].Property);
-            Assert.Equal("Category can not exceed 35 characters",categoryOfOrganization.BrokenRulesCollection[0].Description);
- 
-        }        
+            Assert.Equal("Category", categoryOfOrganization.BrokenRulesCollection[0].Property);
+            Assert.Equal("Category can not exceed 35 characters",
+                categoryOfOrganization.BrokenRulesCollection[0].Description);
+        }
         // test exception if attempt to save in invalid state
 
         [Fact]
@@ -133,9 +103,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var categoryOfOrganization = await CategoryOfOrganizationER.NewCategoryOfOrganizationER();
             categoryOfOrganization.Category = String.Empty;
             CategoryOfOrganizationER savedCategoryOfOrganization = null;
-                
+
             Assert.False(categoryOfOrganization.IsValid);
-            Assert.Throws<Csla.Rules.ValidationException>(() => savedCategoryOfOrganization = categoryOfOrganization.Save());
+            Assert.Throws<Csla.Rules.ValidationException>(() =>
+                savedCategoryOfOrganization = categoryOfOrganization.Save());
         }
     }
 }

@@ -1,9 +1,7 @@
 using System;
-using System.Data;
 using System.IO;
 using System.Threading.Tasks;
 using Csla;
-using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using ECS.MemberManager.Core.EF.Domain;

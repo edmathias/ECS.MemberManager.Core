@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Threading.Tasks;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using Microsoft.Extensions.Configuration;
@@ -19,8 +18,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
+
+            if (testLibrary == "Mock")
                 MockDb.ResetMockDb();
             else
             {
@@ -37,7 +36,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         private async void PaymentTypeRORL_TestGetPaymentTypeRORL()
         {
             var paymentTypeTypeInfoList = await PaymentTypeRORL.GetPaymentTypeRORL();
-            
+
             Assert.NotNull(paymentTypeTypeInfoList);
             Assert.True(paymentTypeTypeInfoList.IsReadOnly);
             Assert.Equal(3, paymentTypeTypeInfoList.Count);

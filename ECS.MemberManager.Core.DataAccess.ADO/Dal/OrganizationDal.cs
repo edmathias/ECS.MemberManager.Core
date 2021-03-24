@@ -24,7 +24,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var cnxnString = _config.GetConnectionString("LocalDbConnection");
-            
+
             _db = new SqlConnection(cnxnString);
         }
 
@@ -32,7 +32,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
         {
             _db = cnxn;
         }
-        
+
         public void Dispose()
         {
             _db.Dispose();
@@ -41,14 +41,14 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
         public async Task<List<Organization>> Fetch()
         {
             var sql = "select * from Organizations org " +
-                      "inner join OrganizationTypes ot on org.OrganizationTypeId = ot.Id "; 
-            
+                      "inner join OrganizationTypes ot on org.OrganizationTypeId = ot.Id ";
+
             var organizations = await _db.QueryAsync<Organization, OrganizationType, Organization>(sql,
-                (organization, organizationType ) =>
+                (organization, organizationType) =>
                 {
                     organization.OrganizationType = organizationType;
 
-                    return organization ;
+                    return organization;
                 }
             );
 
@@ -57,27 +57,28 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
 
         public async Task<Organization> Fetch(int id)
         {
-            var sql = "select * from Organizations org "+
-                      "inner join OrganizationTypes ot on org.OrganizationTypeId = ot.Id "+
-                       $"WHERE org.Id = {id}";
-            var organizations = await _db.QueryAsync<Organization, OrganizationType,  Organization>(sql,
-                (organization, organizationType ) =>
+            var sql = "select * from Organizations org " +
+                      "inner join OrganizationTypes ot on org.OrganizationTypeId = ot.Id " +
+                      $"WHERE org.Id = {id}";
+            var organizations = await _db.QueryAsync<Organization, OrganizationType, Organization>(sql,
+                (organization, organizationType) =>
                 {
                     organization.OrganizationType = organizationType;
 
-                    return organization ;
+                    return organization;
                 }
             );
 
-            
+
             return organizations.FirstOrDefault();
         }
 
         public async Task<Organization> Insert(Organization organizationToInsert)
         {
-            var sql = "INSERT INTO dbo.Organizations (Name, OrganizationTypeId, DateOfFirstContact, LastUpdatedBy, LastUpdatedDate, Notes) "+
-                        "SELECT @Name, @OrganizationTypeId, @DateOfFirstContact, @LastUpdatedBy, @LastUpdatedDate, @Notes " +
-                        "SELECT SCOPE_IDENTITY()";
+            var sql =
+                "INSERT INTO dbo.Organizations (Name, OrganizationTypeId, DateOfFirstContact, LastUpdatedBy, LastUpdatedDate, Notes) " +
+                "SELECT @Name, @OrganizationTypeId, @DateOfFirstContact, @LastUpdatedBy, @LastUpdatedDate, @Notes " +
+                "SELECT SCOPE_IDENTITY()";
             organizationToInsert.Id = await _db.ExecuteScalarAsync<int>(sql, new
             {
                 Name = organizationToInsert.Name,
@@ -91,23 +92,23 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             //reretrieve organization to get rowversion
             var insertedOffice = await _db.GetAsync<Organization>(organizationToInsert.Id);
             organizationToInsert.RowVersion = insertedOffice.RowVersion;
-            
-            return organizationToInsert;            
+
+            return organizationToInsert;
         }
 
         public async Task<Organization> Update(Organization organizationToUpdate)
         {
             var sql = "UPDATE dbo.Organizations " +
-            "SET Name = @Name, "+
-            "OrganizationTypeId = @OrganizationTypeId, "+
-            "DateOfFirstContact = @DateOfFirstContact, "+
-            "LastUpdatedBy = @LastUpdatedBy, "+
-            "LastUpdatedDate = @LastUpdatedDate, "+
-            "Notes = @Notes " +
-            "OUTPUT inserted.RowVersion " +
-            "WHERE  Id = @Id AND RowVersion = @RowVersion ";
+                      "SET Name = @Name, " +
+                      "OrganizationTypeId = @OrganizationTypeId, " +
+                      "DateOfFirstContact = @DateOfFirstContact, " +
+                      "LastUpdatedBy = @LastUpdatedBy, " +
+                      "LastUpdatedDate = @LastUpdatedDate, " +
+                      "Notes = @Notes " +
+                      "OUTPUT inserted.RowVersion " +
+                      "WHERE  Id = @Id AND RowVersion = @RowVersion ";
 
-            var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql, new 
+            var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql, new
             {
                 Id = organizationToUpdate.Id,
                 Name = organizationToUpdate.Name,
@@ -118,17 +119,17 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                 Notes = organizationToUpdate.Notes,
                 RowVersion = organizationToUpdate.RowVersion
             });
-            
+
             if (rowVersion == null)
                 throw new DBConcurrencyException("Entity has been updated since last read. Try again!");
             organizationToUpdate.RowVersion = rowVersion;
-            
+
             return organizationToUpdate;
         }
 
         public async Task Delete(int id)
         {
-            await _db.DeleteAsync<Organization>(new () {Id = id});
+            await _db.DeleteAsync<Organization>(new() {Id = id});
         }
     }
 }

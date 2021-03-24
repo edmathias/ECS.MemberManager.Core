@@ -35,7 +35,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 }
             }
         }
-        
+
         [Fact]
         public async Task TestTermInOfficeROC_GetTermInOfficeROC()
         {
@@ -44,10 +44,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             Assert.NotNull(termObj);
             Assert.IsType<TermInOfficeROC>(termObj);
-            Assert.Equal(termObjToLoad.Id,termObj.Id);
+            Assert.Equal(termObjToLoad.Id, termObj.Id);
             Assert.Equal(termObjToLoad.Office.Id, termObj.Office.Id);
             Assert.Equal(termObjToLoad.Person.Id, termObj.Person.Id);
-            Assert.Equal(new SmartDate(termObjToLoad.StartDate),termObj.StartDate);
+            Assert.Equal(new SmartDate(termObjToLoad.StartDate), termObj.StartDate);
             Assert.Equal(termObjToLoad.LastUpdatedBy, termObj.LastUpdatedBy);
             Assert.Equal(new SmartDate(termObjToLoad.LastUpdatedDate), termObj.LastUpdatedDate);
             Assert.Equal(termObjToLoad.Notes, termObj.Notes);
@@ -66,6 +66,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             termObj.Notes = "notes for doctype";
 
             return termObj;
-        }        
+        }
     }
 }

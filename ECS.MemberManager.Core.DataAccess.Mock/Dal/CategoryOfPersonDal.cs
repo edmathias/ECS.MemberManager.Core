@@ -25,11 +25,11 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         public async Task<CategoryOfPerson> Insert(CategoryOfPerson categoryOfPerson)
         {
-            var lastCategory = MockDb.CategoryOfPersons.ToList().OrderByDescending( co => co.Id).First();
+            var lastCategory = MockDb.CategoryOfPersons.ToList().OrderByDescending(co => co.Id).First();
             categoryOfPerson.Id = lastCategory.Id + 1;
             categoryOfPerson.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
             MockDb.CategoryOfPersons.Add(categoryOfPerson);
-            
+
             return categoryOfPerson;
         }
 
@@ -37,11 +37,11 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             var savedCategoryOfPerson =
                 MockDb.CategoryOfPersons.FirstOrDefault(em => em.Id == categoryOfPerson.Id &&
-                                                                    em.RowVersion.SequenceEqual(categoryOfPerson.RowVersion));
+                                                              em.RowVersion.SequenceEqual(categoryOfPerson.RowVersion));
 
-            if(savedCategoryOfPerson == null)
+            if (savedCategoryOfPerson == null)
                 throw new Csla.DataPortalException(null);
-           
+
             savedCategoryOfPerson.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
             return savedCategoryOfPerson;
         }
@@ -50,7 +50,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             var categoryToDelete = MockDb.CategoryOfPersons.FirstOrDefault(co => co.Id == id);
             var listIndex = MockDb.CategoryOfPersons.IndexOf(categoryToDelete);
-            if(listIndex > -1)
+            if (listIndex > -1)
                 MockDb.CategoryOfPersons.RemoveAt(listIndex);
         }
     }

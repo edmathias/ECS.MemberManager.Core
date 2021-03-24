@@ -1,45 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using ECS.MemberManager.Core.DataAccess;
-using ECS.MemberManager.Core.DataAccess.ADO;
-using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.DataAccess.Mock;
-using ECS.MemberManager.Core.EF.Domain;
-using Microsoft.Extensions.Configuration;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class AddressECL_Tests
+    public class AddressECL_Tests : CslaBaseTest
     {
-        private IConfigurationRoot _config = null;
-        private bool IsDatabaseBuilt = false;
-        private  readonly IAddressDal dal;
-
-        public AddressECL_Tests(IAddressDal _dal)
-        {
-            dal = _dal;
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            _config = builder.Build();
-            var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
-                MockDb.ResetMockDb();
-            else
-            {
-                if (!IsDatabaseBuilt)
-                {
-                    var adoDb = new ADODb();
-                    adoDb.BuildMemberManagerADODb();
-                    IsDatabaseBuilt = true;
-                }
-            }
-        }
-
         [Fact]
         private async void AddressECL_TestNewAddressECL()
         {
@@ -48,18 +14,17 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(addressErl);
             Assert.IsType<AddressECL>(addressErl);
         }
-        
+
         [Fact]
         private async void AddressECL_TestGetAddressECL()
         {
-            var addresses = await dal.Fetch();
-
+            var addresses = MockDb.Addresses;
             var addressECL = await AddressECL.GetAddressECL(addresses);
 
             Assert.NotNull(addressECL);
             Assert.Equal(3, addressECL.Count);
         }
-        
+
 
         private void BuildValidAddress(AddressEC address)
         {
@@ -72,7 +37,5 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             address.LastUpdatedBy = "edm";
             address.LastUpdatedDate = DateTime.Now;
         }
-        
- 
     }
 }

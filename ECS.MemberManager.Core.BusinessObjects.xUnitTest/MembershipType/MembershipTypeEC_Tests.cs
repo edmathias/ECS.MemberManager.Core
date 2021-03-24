@@ -45,7 +45,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.IsType<MembershipTypeEC>(membershipTypeObj);
             Assert.False(membershipTypeObj.IsValid);
         }
-        
+
         [Fact]
         public async Task TestMembershipTypeEC_GetMembershipTypeEC()
         {
@@ -54,8 +54,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             Assert.NotNull(membershipTypeObj);
             Assert.IsType<MembershipTypeEC>(membershipTypeObj);
-            Assert.Equal(membershipTypeObjToLoad.Id,membershipTypeObj.Id);
-            Assert.Equal(membershipTypeObjToLoad.Description,membershipTypeObj.Description);
+            Assert.Equal(membershipTypeObjToLoad.Id, membershipTypeObj.Id);
+            Assert.Equal(membershipTypeObjToLoad.Description, membershipTypeObj.Description);
             Assert.Equal(membershipTypeObjToLoad.LastUpdatedBy, membershipTypeObj.LastUpdatedBy);
             Assert.Equal(new SmartDate(membershipTypeObjToLoad.LastUpdatedDate), membershipTypeObj.LastUpdatedDate);
             Assert.Equal(membershipTypeObjToLoad.Notes, membershipTypeObj.Notes);
@@ -74,9 +74,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(membershipTypeObj);
             Assert.True(isObjectValidInit);
             Assert.False(membershipTypeObj.IsValid);
-            Assert.Equal("Description",membershipTypeObj.BrokenRulesCollection[0].Property);
-            Assert.Equal("Description required",membershipTypeObj.BrokenRulesCollection[0].Description);
-        }        
+            Assert.Equal("Description", membershipTypeObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("Description required", membershipTypeObj.BrokenRulesCollection[0].Description);
+        }
 
         [Fact]
         public async Task TestMembershipTypeEC_DescriptionNotGreaterThan50Chars()
@@ -84,7 +84,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var membershipTypeObjToTest = BuildMembershipType();
             var membershipTypeObj = await MembershipTypeEC.GetMembershipTypeEC(membershipTypeObjToTest);
             var isObjectValidInit = membershipTypeObj.IsValid;
-            membershipTypeObj.Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+            membershipTypeObj.Description =
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
                 "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
                 "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
                 "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis ";
@@ -92,8 +93,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(membershipTypeObj);
             Assert.True(isObjectValidInit);
             Assert.False(membershipTypeObj.IsValid);
-            Assert.Equal("Description",membershipTypeObj.BrokenRulesCollection[0].Property);
-            Assert.Equal("Description can not exceed 50 characters",membershipTypeObj.BrokenRulesCollection[0].Description);
+            Assert.Equal("Description", membershipTypeObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("Description can not exceed 50 characters",
+                membershipTypeObj.BrokenRulesCollection[0].Description);
         }
 
         [Fact]
@@ -107,8 +109,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(membershipTypeObj);
             Assert.True(isObjectValidInit);
             Assert.False(membershipTypeObj.IsValid);
-            Assert.Equal("LastUpdatedBy",membershipTypeObj.BrokenRulesCollection[0].Property);
-            Assert.Equal("LastUpdatedBy required",membershipTypeObj.BrokenRulesCollection[0].Description);
+            Assert.Equal("LastUpdatedBy", membershipTypeObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy required", membershipTypeObj.BrokenRulesCollection[0].Description);
         }
 
         [Fact]
@@ -117,16 +119,18 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var membershipTypeObjToTest = BuildMembershipType();
             var membershipTypeObj = await MembershipTypeEC.GetMembershipTypeEC(membershipTypeObjToTest);
             var isObjectValidInit = membershipTypeObj.IsValid;
-            membershipTypeObj.LastUpdatedBy = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
-                                            "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
-                                            "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
-                                            "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis ";
+            membershipTypeObj.LastUpdatedBy =
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis ";
 
             Assert.NotNull(membershipTypeObj);
             Assert.True(isObjectValidInit);
             Assert.False(membershipTypeObj.IsValid);
-            Assert.Equal("LastUpdatedBy",membershipTypeObj.BrokenRulesCollection[0].Property);
-            Assert.Equal("LastUpdatedBy can not exceed 255 characters",membershipTypeObj.BrokenRulesCollection[0].Description);
+            Assert.Equal("LastUpdatedBy", membershipTypeObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy can not exceed 255 characters",
+                membershipTypeObj.BrokenRulesCollection[0].Description);
         }
 
         private MembershipType BuildMembershipType()
@@ -140,6 +144,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             membershipTypeObj.Notes = "notes for membership type";
 
             return membershipTypeObj;
-        }        
+        }
     }
 }

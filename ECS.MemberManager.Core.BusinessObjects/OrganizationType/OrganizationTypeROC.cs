@@ -1,11 +1,6 @@
-﻿
-
-using System;
-using System.Collections.Generic; 
+﻿using System;
 using System.Threading.Tasks;
 using Csla;
-using ECS.MemberManager.Core.DataAccess;
-using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
@@ -14,52 +9,58 @@ namespace ECS.MemberManager.Core.BusinessObjects
     public partial class OrganizationTypeROC : ReadOnlyBase<OrganizationTypeROC>
     {
         #region Business Methods
- 
+
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
-        public virtual int Id 
+
+        public virtual int Id
         {
-            get => GetProperty(IdProperty); 
-            private set => LoadProperty(IdProperty, value);    
+            get => GetProperty(IdProperty);
+            private set => LoadProperty(IdProperty, value);
         }
 
         public static readonly PropertyInfo<string> NameProperty = RegisterProperty<string>(o => o.Name);
-        public virtual string Name 
+
+        public virtual string Name
         {
-            get => GetProperty(NameProperty); 
-            private set => LoadProperty(NameProperty, value);    
+            get => GetProperty(NameProperty);
+            private set => LoadProperty(NameProperty, value);
         }
 
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
-        public virtual string Notes 
+
+        public virtual string Notes
         {
-            get => GetProperty(NotesProperty); 
-            private set => LoadProperty(NotesProperty, value);    
+            get => GetProperty(NotesProperty);
+            private set => LoadProperty(NotesProperty, value);
         }
 
 
-        public static readonly PropertyInfo<CategoryOfOrganizationROC> CategoryOfOrganizationProperty = RegisterProperty<CategoryOfOrganizationROC>(o => o.CategoryOfOrganization);
-        public CategoryOfOrganizationROC CategoryOfOrganization  
+        public static readonly PropertyInfo<CategoryOfOrganizationROC> CategoryOfOrganizationProperty =
+            RegisterProperty<CategoryOfOrganizationROC>(o => o.CategoryOfOrganization);
+
+        public CategoryOfOrganizationROC CategoryOfOrganization
         {
-            get => GetProperty(CategoryOfOrganizationProperty); 
-        
-            private set => LoadProperty(CategoryOfOrganizationProperty, value); 
-        }    
- 
+            get => GetProperty(CategoryOfOrganizationProperty);
+
+            private set => LoadProperty(CategoryOfOrganizationProperty, value);
+        }
+
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
-        public virtual byte[] RowVersion 
+
+        public virtual byte[] RowVersion
         {
-            get => GetProperty(RowVersionProperty); 
-            private set => LoadProperty(RowVersionProperty, value);    
+            get => GetProperty(RowVersionProperty);
+            private set => LoadProperty(RowVersionProperty, value);
         }
 
-        #endregion 
+        #endregion
 
         #region Factory Methods
+
         internal static async Task<OrganizationTypeROC> GetOrganizationTypeROC(OrganizationType childData)
         {
             return await DataPortal.FetchChildAsync<OrganizationTypeROC>(childData);
-        }  
-
+        }
 
         #endregion
 
@@ -71,7 +72,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
             Id = data.Id;
             Name = data.Name;
             Notes = data.Notes;
-            CategoryOfOrganization = (data.CategoryOfOrganization != null ? await CategoryOfOrganizationROC.GetCategoryOfOrganizationROC(data.CategoryOfOrganization) : null);
+            CategoryOfOrganization = (data.CategoryOfOrganization != null
+                ? await CategoryOfOrganizationROC.GetCategoryOfOrganizationROC(data.CategoryOfOrganization)
+                : null);
             RowVersion = data.RowVersion;
         }
 

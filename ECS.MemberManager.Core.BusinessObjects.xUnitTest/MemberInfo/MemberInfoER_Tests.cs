@@ -1,9 +1,7 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Csla;
-using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Dal;
@@ -14,7 +12,7 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class MemberInfoER_Tests 
+    public class MemberInfoER_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
@@ -39,8 +37,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 }
             }
         }
-        
-       [Fact]
+
+        [Fact]
         public async void MemberInfoER_Get()
         {
             var memberInfo = await MemberInfoER.GetMemberInfoER(1);
@@ -68,11 +66,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var newMemberNumber = "1234567890";
             var memberInfo = await MemberInfoER.GetMemberInfoER(1);
             memberInfo.MemberNumber = newMemberNumber;
-            
+
             var result = await memberInfo.SaveAsync();
 
             Assert.NotNull(result);
-            Assert.Equal(newMemberNumber,result.MemberNumber);
+            Assert.Equal(newMemberNumber, result.MemberNumber);
         }
 
         [Fact]
@@ -82,23 +80,23 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             await BuildMemberInfoER(memberInfo);
 
             var savedMemberInfo = await memberInfo.SaveAsync();
-           
+
             Assert.NotNull(savedMemberInfo);
             Assert.IsType<MemberInfoER>(savedMemberInfo);
-            Assert.True( savedMemberInfo.Id > 0 );
+            Assert.True(savedMemberInfo.Id > 0);
         }
 
         [Fact]
         public async Task MemberInfoER_DeleteObjectFromDatabase()
         {
             const int ID_TO_DELETE = 99;
-            
+
             await MemberInfoER.DeleteMemberInfoER(ID_TO_DELETE);
-            
+
             var categoryToCheck = await Assert.ThrowsAsync<Csla.DataPortalException>
-                (() => MemberInfoER.GetMemberInfoER(ID_TO_DELETE));        
+                (() => MemberInfoER.GetMemberInfoER(ID_TO_DELETE));
         }
-     
+
         // test exception if attempt to save in invalid state
 
         [Fact]
@@ -106,13 +104,14 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             var memberInfo = await MemberInfoER.NewMemberInfoER();
             memberInfo.MemberNumber = String.Empty;
-                
+
             Assert.False(memberInfo.IsValid);
             Assert.Throws<Csla.Rules.ValidationException>(() => memberInfo.Save());
         }
+
         // test invalid state 
         [Fact]
-        public async Task MemberInfoER_MemberNumberRequired() 
+        public async Task MemberInfoER_MemberNumberRequired()
         {
             var memberInfo = await MemberInfoER.NewMemberInfoER();
             await BuildMemberInfoER(memberInfo);
@@ -123,7 +122,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.True(isObjectValidInit);
             Assert.False(memberInfo.IsValid);
         }
-       
+
         [Fact]
         public async Task MemberInfoER_MemberNumberExceedsMaxLengthOf35()
         {
@@ -137,12 +136,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             Assert.NotNull(memberInfo);
             Assert.False(memberInfo.IsValid);
-            Assert.Equal("MemberNumber",memberInfo.BrokenRulesCollection[0].Property);
+            Assert.Equal("MemberNumber", memberInfo.BrokenRulesCollection[0].Property);
             Assert.Equal("MemberNumber can not exceed 35 characters",
                 memberInfo.BrokenRulesCollection[0].Description);
- 
-        }        
-        
+        }
+
         [Fact]
         public async Task TestMemberInfoER_DateFirstJoinedRequired()
         {
@@ -154,10 +152,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(memberInfo);
             Assert.True(isObjectValidInit);
             Assert.False(memberInfo.IsValid);
-            Assert.Equal("DateFirstJoined",memberInfo.BrokenRulesCollection[0].Property);
-            Assert.Equal("DateFirstJoined required",memberInfo.BrokenRulesCollection[0].Description);
-            
-        }        
+            Assert.Equal("DateFirstJoined", memberInfo.BrokenRulesCollection[0].Property);
+            Assert.Equal("DateFirstJoined required", memberInfo.BrokenRulesCollection[0].Description);
+        }
 
         [Fact]
         public async Task TestMemberInfoER_MemberStatusRequired()
@@ -170,11 +167,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(memberInfo);
             Assert.True(isObjectValidInit);
             Assert.False(memberInfo.IsValid);
-            Assert.Equal("MemberStatus",memberInfo.BrokenRulesCollection[0].Property);
-            Assert.Equal("MemberStatus required",memberInfo.BrokenRulesCollection[0].Description);
-            
-        }             
-       
+            Assert.Equal("MemberStatus", memberInfo.BrokenRulesCollection[0].Property);
+            Assert.Equal("MemberStatus required", memberInfo.BrokenRulesCollection[0].Description);
+        }
+
         [Fact]
         public async Task TestMemberInfoER_MembershipTypeRequired()
         {
@@ -186,10 +182,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(memberInfo);
             Assert.True(isObjectValidInit);
             Assert.False(memberInfo.IsValid);
-            Assert.Equal("MembershipType",memberInfo.BrokenRulesCollection[0].Property);
-            Assert.Equal("MembershipType required",memberInfo.BrokenRulesCollection[0].Description);
-            
-        }            
+            Assert.Equal("MembershipType", memberInfo.BrokenRulesCollection[0].Property);
+            Assert.Equal("MembershipType required", memberInfo.BrokenRulesCollection[0].Description);
+        }
+
         [Fact]
         public async Task TestMemberInfoER_LastUpdatedByRequired()
         {
@@ -201,11 +197,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(memberInfo);
             Assert.True(isObjectValidInit);
             Assert.False(memberInfo.IsValid);
-            Assert.Equal("LastUpdatedBy",memberInfo.BrokenRulesCollection[0].Property);
-            Assert.Equal("LastUpdatedBy required",memberInfo.BrokenRulesCollection[0].Description);
-            
+            Assert.Equal("LastUpdatedBy", memberInfo.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy required", memberInfo.BrokenRulesCollection[0].Description);
         }
-     
+
         [Fact]
         public async Task TestMemberInfoER_LastUpdatedByExceeds255Characters()
         {
@@ -213,15 +208,16 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var memberInfo = await MemberInfoER.GetMemberInfoER(1);
             var isObjectValidInit = memberInfo.IsValid;
             memberInfo.LastUpdatedBy = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempo" +
-                                      "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud" +
-                                      "exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure" +
-                                      "dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.";
+                                       "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud" +
+                                       "exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure" +
+                                       "dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.";
 
             Assert.NotNull(memberInfo);
             Assert.True(isObjectValidInit);
             Assert.False(memberInfo.IsValid);
-            Assert.Equal("LastUpdatedBy",memberInfo.BrokenRulesCollection[0].Property);
-            Assert.Equal("LastUpdatedBy can not exceed 255 characters",memberInfo.BrokenRulesCollection[0].Description);
+            Assert.Equal("LastUpdatedBy", memberInfo.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy can not exceed 255 characters",
+                memberInfo.BrokenRulesCollection[0].Description);
         }
 
         [Fact]
@@ -235,13 +231,12 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(memberInfo);
             Assert.True(isObjectValidInit);
             Assert.False(memberInfo.IsValid);
-            Assert.Equal("LastUpdatedDate",memberInfo.BrokenRulesCollection[0].Property);
-            Assert.Equal("LastUpdatedDate required",memberInfo.BrokenRulesCollection[0].Description);
-            
-        }        
+            Assert.Equal("LastUpdatedDate", memberInfo.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedDate required", memberInfo.BrokenRulesCollection[0].Description);
+        }
 
 
-        private async Task BuildMemberInfoER(MemberInfoER memberInfo )
+        private async Task BuildMemberInfoER(MemberInfoER memberInfo)
         {
             var domainInfo = await BuildMemberInfo();
             memberInfo.Notes = domainInfo.Notes;
@@ -253,7 +248,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             memberInfo.DateFirstJoined = new SmartDate(DateTime.Now);
             memberInfo.LastUpdatedBy = domainInfo.LastUpdatedBy;
             memberInfo.LastUpdatedDate = domainInfo.LastUpdatedDate;
-
         }
 
         private async Task<MemberInfo> BuildMemberInfo()
@@ -272,7 +266,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var dal4 = dalManager.GetProvider<IPrivacyLevelDal>();
             memberInfo.PrivacyLevel = await dal4.Fetch(1);
             memberInfo.LastUpdatedBy = "edm";
-            memberInfo.LastUpdatedDate = DateTime.Now	;
+            memberInfo.LastUpdatedDate = DateTime.Now;
 
             return memberInfo;
         }

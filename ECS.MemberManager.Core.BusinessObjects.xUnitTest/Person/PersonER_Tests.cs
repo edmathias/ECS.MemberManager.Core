@@ -84,7 +84,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(savedPerson.RowVersion);
         }
 
-          // test exception if attempt to save in invalid state
+        // test exception if attempt to save in invalid state
 
         [Fact]
         public async Task TestPersonER_TestInvalidSave()
@@ -140,11 +140,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             await BuildPerson(person);
             var isObjectValidInit = person.IsValid;
             person.LastName = string.Empty;
-            
+
             Assert.NotNull(person);
             Assert.True(isObjectValidInit);
             Assert.False(person.IsValid);
-            Assert.Equal("LastName",person.BrokenRulesCollection[0].OriginProperty);
+            Assert.Equal("LastName", person.BrokenRulesCollection[0].OriginProperty);
         }
 
         [Fact]
@@ -153,17 +153,17 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var personType = await PersonER.NewPersonER();
             await BuildPerson(personType);
             var isObjectValidInit = personType.IsValid;
-            personType.LastName =  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
-                                      "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
-                                      "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
-                                      "Duis aute irure dolor in reprehenderit";
+            personType.LastName = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+                                  "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                                  "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
+                                  "Duis aute irure dolor in reprehenderit";
 
             Assert.NotNull(personType);
             Assert.True(isObjectValidInit);
             Assert.False(personType.IsValid);
-            Assert.Equal("LastName",personType.BrokenRulesCollection[0].OriginProperty);
+            Assert.Equal("LastName", personType.BrokenRulesCollection[0].OriginProperty);
         }
-       
+
         [Fact]
         public async Task TestPersonER_LastUpdatedByRequired()
         {
@@ -175,7 +175,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(personType);
             Assert.True(isObjectValidInit);
             Assert.False(personType.IsValid);
-            Assert.Equal("LastUpdatedBy",personType.BrokenRulesCollection[0].OriginProperty);
+            Assert.Equal("LastUpdatedBy", personType.BrokenRulesCollection[0].OriginProperty);
         }
 
         [Fact]
@@ -184,17 +184,18 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var personType = await PersonER.NewPersonER();
             await BuildPerson(personType);
             var isObjectValidInit = personType.IsValid;
-            personType.LastUpdatedBy =  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
-                                      "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
-                                      "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
-                                      "Duis aute irure dolor in reprehenderit";
+            personType.LastUpdatedBy =
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
+                "Duis aute irure dolor in reprehenderit";
 
             Assert.NotNull(personType);
             Assert.True(isObjectValidInit);
             Assert.False(personType.IsValid);
-            Assert.Equal("LastUpdatedBy",personType.BrokenRulesCollection[0].OriginProperty);
+            Assert.Equal("LastUpdatedBy", personType.BrokenRulesCollection[0].OriginProperty);
         }
-        
+
         private async Task BuildPerson(PersonER personToBuild)
         {
             personToBuild.LastName = "lastname";
@@ -209,6 +210,5 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             personToBuild.EMail = await EMailEC.GetEMailEC(new EMail() {Id = 1});
             personToBuild.Title = await TitleEC.GetTitleEC(new Title() {Id = 1});
         }
-        
     }
 }

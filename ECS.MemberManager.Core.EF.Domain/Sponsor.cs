@@ -7,11 +7,9 @@ namespace ECS.MemberManager.Core.EF.Domain
     {
         public Person Person { get; set; }
         public Organization Organization { get; set; }
-        [MaxLength(50)]
-        public string Status { get; set; }
+        [MaxLength(50)] public string Status { get; set; }
         public DateTime DateOfFirstContact { get; set; }
-        [MaxLength(255)]
-        public string ReferredBy { get; set; }
+        [MaxLength(255)] public string ReferredBy { get; set; }
         public DateTime DateSponsorAccepted { get; set; }
         public string TypeName { get; set; }
         public string Details { get; set; }

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -47,7 +46,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
         public async Task<Image> Fetch(int id)
         {
             var sql = $"select * from Images tio WHERE tio.Id = {id}";
-                      
+
             var result = await _db.QueryAsync<Image>(sql);
 
             return result.FirstOrDefault();
@@ -56,8 +55,8 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
         public async Task<Image> Insert(Image imageToInsert)
         {
             var sql =
-                "INSERT INTO [dbo].[Images] ([PersonId], [OfficeId], [StartDate], [LastUpdatedBy], [LastUpdatedDate], [Notes]) "+
-                "SELECT @PersonId, @OfficeId, @StartDate, @LastUpdatedBy, @LastUpdatedDate, @Notes "+
+                "INSERT INTO [dbo].[Images] ([PersonId], [OfficeId], [StartDate], [LastUpdatedBy], [LastUpdatedDate], [Notes]) " +
+                "SELECT @PersonId, @OfficeId, @StartDate, @LastUpdatedBy, @LastUpdatedDate, @Notes " +
                 "SELECT SCOPE_IDENTITY()";
             imageToInsert.Id = await _db.ExecuteScalarAsync<int>(sql, new
             {
@@ -76,18 +75,18 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
         {
             var sql = "UPDATE [dbo].[Images] " +
                       "SET [ImagePath] = @ImagePath " +
-                      "[ImageFile] = @ImageFile "+
+                      "[ImageFile] = @ImageFile " +
                       "OUTPUT inserted.RowVersion " +
                       "WHERE  [Id] = @Id AND RowVersion = @RowVersion ";
 
-            var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql, new 
+            var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql, new
             {
                 Id = imageToInsert.Id,
                 ImagePath = imageToInsert.ImagePath,
                 ImageFile = imageToInsert.ImageFile,
                 RowVersion = imageToInsert.RowVersion
             });
-            
+
             if (rowVersion == null)
                 throw new DBConcurrencyException("Entity has been updated since last read. Try again!");
             imageToInsert.RowVersion = rowVersion;

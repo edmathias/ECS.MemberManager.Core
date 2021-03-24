@@ -1,7 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using Csla;
-using ECS.MemberManager.Core.EF.Domain;
+﻿using ECS.MemberManager.Core.EF.Domain;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
@@ -17,7 +14,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             buildPaymentType.Id = ID_VALUE;
 
             var paymentType = await PaymentTypeROC.GetPaymentTypeROC(buildPaymentType);
-            
+
             Assert.NotNull(paymentType);
             Assert.IsType<PaymentTypeROC>(paymentType);
             Assert.Equal(paymentType.Id, buildPaymentType.Id);
@@ -34,7 +31,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             paymentType.Notes = "notes for doctype";
 
             return paymentType;
-        }        
-
+        }
     }
 }

@@ -1,19 +1,15 @@
-﻿using System;
-using System.ComponentModel;
-using Csla;
-using ECS.MemberManager.Core.EF.Domain;
+﻿using ECS.MemberManager.Core.EF.Domain;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class CategoryOfPersonROC_Tests
+    public class CategoryOfPersonROC_Tests : CslaBaseTest
     {
-
         [Fact]
         public async void CategoryOfPersonROC_TestGetChild()
         {
             const int ID_VALUE = 999;
-            
+
             var categoryOfPersonType = new CategoryOfPerson()
             {
                 Id = ID_VALUE,
@@ -22,12 +18,12 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             };
 
             var categoryOfPersonTypeInfo = await CategoryOfPersonROC.GetCategoryOfPersonROC(categoryOfPersonType);
-            
+
             Assert.NotNull(categoryOfPersonTypeInfo);
             Assert.IsType<CategoryOfPersonROC>(categoryOfPersonTypeInfo);
             Assert.Equal(categoryOfPersonType.Id, categoryOfPersonTypeInfo.Id);
             Assert.Equal(categoryOfPersonType.Category, categoryOfPersonTypeInfo.Category);
             Assert.Equal(categoryOfPersonType.DisplayOrder, categoryOfPersonTypeInfo.DisplayOrder);
-         }
+        }
     }
 }

@@ -20,8 +20,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
+
+            if (testLibrary == "Mock")
                 MockDb.ResetMockDb();
             else
             {
@@ -33,7 +33,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 }
             }
         }
-        
+
         [Fact]
         private async void TitleInfoList_TestGetTitleInfoList()
         {
@@ -42,11 +42,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var childData = await dal.Fetch();
 
             var titleTypeInfoList = await TitleROCL.GetTitleROCL(childData);
-            
+
             Assert.NotNull(titleTypeInfoList);
             Assert.True(titleTypeInfoList.IsReadOnly);
             Assert.Equal(3, titleTypeInfoList.Count);
         }
-      
     }
 }

@@ -22,11 +22,11 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         public async Task<OrganizationType> Insert(OrganizationType organizationType)
         {
             var lastOrganizationType = MockDb.OrganizationTypes.ToList().OrderByDescending(ms => ms.Id).First();
-            organizationType.Id = 1+lastOrganizationType.Id;
+            organizationType.Id = 1 + lastOrganizationType.Id;
             organizationType.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
-            
+
             MockDb.OrganizationTypes.Add(organizationType);
-            
+
             return organizationType;
         }
 
@@ -34,21 +34,20 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             var organizationTypeToUpdate =
                 MockDb.OrganizationTypes.FirstOrDefault(em => em.Id == organizationType.Id &&
-                                                          em.RowVersion.SequenceEqual(organizationType.RowVersion));
+                                                              em.RowVersion.SequenceEqual(organizationType.RowVersion));
 
-            if(organizationTypeToUpdate == null)
+            if (organizationTypeToUpdate == null)
                 throw new Csla.DataPortalException(null);
-           
+
             organizationTypeToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
             return organizationTypeToUpdate;
-            
         }
 
         public async Task Delete(int id)
         {
             var organizationTypeToDelete = MockDb.OrganizationTypes.FirstOrDefault(ms => ms.Id == id);
             var listIndex = MockDb.OrganizationTypes.IndexOf(organizationTypeToDelete);
-            if(listIndex > -1)
+            if (listIndex > -1)
                 MockDb.OrganizationTypes.RemoveAt(listIndex);
         }
     }

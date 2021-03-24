@@ -1,9 +1,6 @@
 using System;
-using System.Data;
 using System.IO;
 using System.Threading.Tasks;
-using Csla;
-using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using ECS.MemberManager.Core.EF.Domain;
@@ -41,7 +38,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async Task OrganizationEC_Get()
         {
-            
             var organization = await OrganizationEC.GetOrganizationEC(BuildValidOrganization());
 
             Assert.NotNull(organization);
@@ -63,7 +59,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         public async Task OrganizationEC_NameRequired()
         {
             var organization = await OrganizationEC.GetOrganizationEC(BuildValidOrganization());
-            
+
             var isObjectValidInit = organization.IsValid;
             organization.Name = string.Empty;
 
@@ -79,7 +75,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             var organization = await OrganizationEC.GetOrganizationEC(BuildValidOrganization());
             var isObjectValidInit = organization.IsValid;
-            
+
             organization.Name = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
                                 "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
                                 "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
@@ -90,12 +86,12 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.Equal("Name", organization.BrokenRulesCollection[0].Property);
             Assert.Equal("Name can not exceed 50 characters", organization.BrokenRulesCollection[0].Description);
         }
-        
+
         [Fact]
         public async Task OrganizationEC_LastUpdatedByRequired()
         {
             var organization = await OrganizationEC.GetOrganizationEC(BuildValidOrganization());
-            
+
             var isObjectValidInit = organization.IsValid;
             organization.LastUpdatedBy = String.Empty;
 
@@ -105,29 +101,31 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.Equal("LastUpdatedBy", organization.BrokenRulesCollection[0].Property);
             Assert.Equal("LastUpdatedBy required", organization.BrokenRulesCollection[0].Description);
         }
-       
+
         [Fact]
         public async Task OrganizationEC_LastUpdatedByCanNotExceed255Characters()
         {
             var organization = await OrganizationEC.GetOrganizationEC(BuildValidOrganization());
             var isObjectValidInit = organization.IsValid;
-            
-            organization.LastUpdatedBy = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
-                                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
-                                "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
-                                "Duis aute irure dolor in reprehenderit";
+
+            organization.LastUpdatedBy =
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
+                "Duis aute irure dolor in reprehenderit";
 
             Assert.NotNull(organization);
             Assert.False(organization.IsValid);
             Assert.Equal("LastUpdatedBy", organization.BrokenRulesCollection[0].Property);
-            Assert.Equal("LastUpdatedBy can not exceed 255 characters", organization.BrokenRulesCollection[0].Description);
+            Assert.Equal("LastUpdatedBy can not exceed 255 characters",
+                organization.BrokenRulesCollection[0].Description);
         }
 
         [Fact]
         public async Task OrganizationEC_LastUpdatedDateRequired()
         {
             var organization = await OrganizationEC.GetOrganizationEC(BuildValidOrganization());
-            
+
             var isObjectValidInit = organization.IsValid;
             organization.LastUpdatedDate = DateTime.MinValue;
 
@@ -137,12 +135,12 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.Equal("LastUpdatedDate", organization.BrokenRulesCollection[0].Property);
             Assert.Equal("LastUpdatedDate required", organization.BrokenRulesCollection[0].Description);
         }
-        
+
         [Fact]
         public async Task OrganizationEC_OrganizationTypeRequired()
         {
             var organization = await OrganizationEC.GetOrganizationEC(BuildValidOrganization());
-            
+
             var isObjectValidInit = organization.IsValid;
             organization.OrganizationType = null;
 
@@ -154,7 +152,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
 
-        
         private Organization BuildValidOrganization()
         {
             var organization = new Organization()

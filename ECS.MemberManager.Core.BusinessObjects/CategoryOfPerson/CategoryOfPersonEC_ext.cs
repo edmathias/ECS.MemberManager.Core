@@ -7,9 +7,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
         protected override void AddBusinessRules()
         {
             base.AddBusinessRules();
-            
+
             BusinessRules.AddRule(new Required(CategoryProperty));
-            BusinessRules.AddRule(new MaxLength(CategoryProperty,50));
-        }        
+            BusinessRules.AddRule(new MaxLength(CategoryProperty, 50));
+        }
     }
 }

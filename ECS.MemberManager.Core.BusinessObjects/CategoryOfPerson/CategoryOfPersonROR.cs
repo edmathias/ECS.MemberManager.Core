@@ -1,63 +1,62 @@
-﻿
-
-
-//******************************************************************************
+﻿//******************************************************************************
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/18/2021 16:28:07
+// Generated on 03/23/2021 09:56:47
 //******************************************************************************    
 
 using System;
-using System.Collections.Generic; 
 using System.Threading.Tasks;
 using Csla;
-using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
-using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
     public partial class CategoryOfPersonROR : BusinessBase<CategoryOfPersonROR>
     {
-        #region Business Methods 
-         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
-        public virtual int Id 
+        #region Business Methods
+
+        public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
+
+        public virtual int Id
         {
-            get => GetProperty(IdProperty); 
-            private set => LoadProperty(IdProperty, value);    
+            get => GetProperty(IdProperty);
+            private set => LoadProperty(IdProperty, value);
         }
 
         public static readonly PropertyInfo<string> CategoryProperty = RegisterProperty<string>(o => o.Category);
-        public virtual string Category 
+
+        public virtual string Category
         {
-            get => GetProperty(CategoryProperty); 
-            private set => LoadProperty(CategoryProperty, value);    
+            get => GetProperty(CategoryProperty);
+            private set => LoadProperty(CategoryProperty, value);
         }
 
         public static readonly PropertyInfo<int> DisplayOrderProperty = RegisterProperty<int>(o => o.DisplayOrder);
-        public virtual int DisplayOrder 
+
+        public virtual int DisplayOrder
         {
-            get => GetProperty(DisplayOrderProperty); 
-            private set => LoadProperty(DisplayOrderProperty, value);    
+            get => GetProperty(DisplayOrderProperty);
+            private set => LoadProperty(DisplayOrderProperty, value);
         }
 
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
-        public virtual byte[] RowVersion 
+
+        public virtual byte[] RowVersion
         {
-            get => GetProperty(RowVersionProperty); 
-            private set => LoadProperty(RowVersionProperty, value);    
+            get => GetProperty(RowVersionProperty);
+            private set => LoadProperty(RowVersionProperty, value);
         }
 
-        #endregion 
+        #endregion
 
         #region Factory Methods
+
         public static async Task<CategoryOfPersonROR> GetCategoryOfPersonROR(int id)
         {
             return await DataPortal.FetchAsync<CategoryOfPersonROR>(id);
-        }  
-
+        }
 
         #endregion
 

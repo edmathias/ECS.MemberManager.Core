@@ -1,44 +1,13 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using Csla.Rules;
-using ECS.MemberManager.Core.DataAccess;
-using ECS.MemberManager.Core.DataAccess.ADO;
-using ECS.MemberManager.Core.DataAccess.Dal;
-using ECS.MemberManager.Core.DataAccess.Mock;
 using ECS.MemberManager.Core.EF.Domain;
-using Microsoft.Extensions.Configuration;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class EMailECL_Tests
+    public class EMailECL_Tests : CslaBaseTest
     {
-        private IConfigurationRoot _config = null;
-        private bool IsDatabaseBuilt = false;
-
-        public EMailECL_Tests()
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            _config = builder.Build();
-            var testLibrary = _config.GetValue<string>("TestLibrary");
-
-            if (testLibrary == "Mock")
-                MockDb.ResetMockDb();
-            else
-            {
-                if (!IsDatabaseBuilt)
-                {
-                    var adoDb = new ADODb();
-                    adoDb.BuildMemberManagerADODb();
-                    IsDatabaseBuilt = true;
-                }
-            }
-        }
-
         [Fact]
         private async void EMailECL_TestEMailECL()
         {
@@ -52,11 +21,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         private async void EMailECL_TestGetEMailECL()
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEMailDal>();
-            var childData = await dal.Fetch();
-
-            var listToTest = await EMailECL.GetEMailECL(childData);
+            var listToTest = await EMailECL.GetEMailECL(GetEmails());
 
             Assert.NotNull(listToTest);
             Assert.Equal(3, listToTest.Count);
@@ -76,6 +41,31 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             eMail.Notes = "document type notes";
             eMail.LastUpdatedBy = "edm";
             eMail.LastUpdatedDate = DateTime.Now;
+        }
+
+        private static IList<EMail> GetEmails()
+        {
+            return new List<EMail>()
+            {
+                new EMail()
+                {
+                    Id = 1, EMailType = new EMailType() {Id = 1},
+                    EMailAddress = "edm@ecs.com", LastUpdatedBy = "edm", LastUpdatedDate = DateTime.Now,
+                    Notes = "some notes", RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
+                },
+                new EMail()
+                {
+                    Id = 2, EMailType = new EMailType() {Id = 1},
+                    EMailAddress = "edm@ecs.com", LastUpdatedBy = "edm", LastUpdatedDate = DateTime.Now,
+                    Notes = "some notes", RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
+                },
+                new EMail()
+                {
+                    Id = 99, EMailType = new EMailType() {Id = 1},
+                    EMailAddress = "edm@ecs.com", LastUpdatedBy = "edm", LastUpdatedDate = DateTime.Now,
+                    Notes = "test the delete", RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
+                }
+            };
         }
     }
 }

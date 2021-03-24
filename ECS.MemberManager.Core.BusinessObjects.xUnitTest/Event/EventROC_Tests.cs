@@ -15,7 +15,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             docType.Id = ID_VALUE;
 
             var eventObj = await EventROC.GetEventROC(docType);
-            
+
             Assert.NotNull(eventObj);
             Assert.IsType<EventROC>(eventObj);
             Assert.Equal(eventObj.Id, eventObj.Id);
@@ -36,8 +36,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             eventObj.Notes = "notes for doctype";
 
             return eventObj;
-        }        
-        
-
+        }
     }
 }

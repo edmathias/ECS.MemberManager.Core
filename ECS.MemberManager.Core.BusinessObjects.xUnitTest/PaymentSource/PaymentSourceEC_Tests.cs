@@ -43,7 +43,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.IsType<PaymentSourceEC>(paymentSource);
             Assert.False(paymentSource.IsValid);
         }
-        
+
         [Fact]
         public async Task TestPaymentSourceEC_GetPaymentSourceEC()
         {
@@ -52,8 +52,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             Assert.NotNull(paymentSource);
             Assert.IsType<PaymentSourceEC>(paymentSource);
-            Assert.Equal(paymentSourceToLoad.Id,paymentSource.Id);
-            Assert.Equal(paymentSourceToLoad.Description,paymentSource.Description);
+            Assert.Equal(paymentSourceToLoad.Id, paymentSource.Id);
+            Assert.Equal(paymentSourceToLoad.Description, paymentSource.Description);
             Assert.Equal(paymentSourceToLoad.Notes, paymentSource.Notes);
             Assert.Equal(paymentSourceToLoad.RowVersion, paymentSource.RowVersion);
             Assert.True(paymentSource.IsValid);
@@ -70,7 +70,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(paymentSource);
             Assert.True(isObjectValidInit);
             Assert.False(paymentSource.IsValid);
-            Assert.Equal("Description",paymentSource.BrokenRulesCollection[0].Property);
+            Assert.Equal("Description", paymentSource.BrokenRulesCollection[0].Property);
         }
 
         [Fact]
@@ -79,7 +79,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var paymentSourceToTest = BuildPaymentSource();
             var paymentSource = await PaymentSourceEC.GetPaymentSourceEC(paymentSourceToTest);
             var isObjectValidInit = paymentSource.IsValid;
-            paymentSource.Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+            paymentSource.Description =
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
                 "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
                 "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
                 "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis ";
@@ -87,7 +88,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(paymentSource);
             Assert.True(isObjectValidInit);
             Assert.False(paymentSource.IsValid);
-            Assert.Equal("Description",paymentSource.BrokenRulesCollection[0].Property);
+            Assert.Equal("Description", paymentSource.BrokenRulesCollection[0].Property);
         }
 
         private PaymentSource BuildPaymentSource()
@@ -98,6 +99,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             paymentSource.Notes = "notes for doctype";
 
             return paymentSource;
-        }        
+        }
     }
 }

@@ -44,11 +44,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             Assert.NotNull(eventDocumentObj);
             Assert.IsType<EventDocumentROC>(eventDocumentObj);
-            Assert.Equal(eventDocumentObjToLoad.Id,eventDocumentObj.Id);
+            Assert.Equal(eventDocumentObjToLoad.Id, eventDocumentObj.Id);
             Assert.Equal(eventDocumentObjToLoad.Event.Id, eventDocumentObj.Event.Id);
             Assert.Equal(eventDocumentObjToLoad.DocumentType.Id, eventDocumentObj.DocumentType.Id);
-            Assert.Equal(eventDocumentObjToLoad.DocumentName,eventDocumentObj.DocumentName);
-            Assert.Equal(eventDocumentObjToLoad.PathAndFileName,eventDocumentObj.PathAndFileName);
+            Assert.Equal(eventDocumentObjToLoad.DocumentName, eventDocumentObj.DocumentName);
+            Assert.Equal(eventDocumentObjToLoad.PathAndFileName, eventDocumentObj.PathAndFileName);
             Assert.Equal(eventDocumentObjToLoad.LastUpdatedBy, eventDocumentObj.LastUpdatedBy);
             Assert.Equal(new SmartDate(eventDocumentObjToLoad.LastUpdatedDate), eventDocumentObj.LastUpdatedDate);
             Assert.Equal(eventDocumentObjToLoad.Notes, eventDocumentObj.Notes);
@@ -68,6 +68,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             eventDocumentObj.Notes = "notes for doctype";
 
             return eventDocumentObj;
-        }        
+        }
     }
 }

@@ -22,8 +22,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
+
+            if (testLibrary == "Mock")
                 MockDb.ResetMockDb();
             else
             {
@@ -44,64 +44,64 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(eventEdit);
             Assert.IsType<TaskForEventERL>(eventEdit);
         }
-        
+
         [Fact]
         private async void TaskForEventERL_TestGetTaskForEventERL()
         {
-            var eventEdit = 
+            var eventEdit =
                 await TaskForEventERL.GetTaskForEventERL();
 
             Assert.NotNull(eventEdit);
             Assert.Equal(3, eventEdit.Count);
         }
-        
+
         [Fact]
         private async void TaskForEventERL_TestDeleteTaskForEventERL()
         {
             const int ID_TO_DELETE = 99;
-            var eventList = 
+            var eventList =
                 await TaskForEventERL.GetTaskForEventERL();
             var listCount = eventList.Count;
             var eventToDelete = eventList.First(cl => cl.Id == ID_TO_DELETE);
             // remove is deferred delete
-            var isDeleted = eventList.Remove(eventToDelete); 
+            var isDeleted = eventList.Remove(eventToDelete);
 
             var eventListAfterDelete = await eventList.SaveAsync();
 
             Assert.NotNull(eventListAfterDelete);
             Assert.IsType<TaskForEventERL>(eventListAfterDelete);
             Assert.True(isDeleted);
-            Assert.NotEqual(listCount,eventListAfterDelete.Count);
+            Assert.NotEqual(listCount, eventListAfterDelete.Count);
         }
 
         [Fact]
         private async void TaskForEventERL_TestUpdateTaskForEventERL()
         {
             const int ID_TO_UPDATE = 1;
-            
-            var eventList = 
+
+            var eventList =
                 await TaskForEventERL.GetTaskForEventERL();
             var countBeforeUpdate = eventList.Count;
             var eventToUpdate = eventList.First(cl => cl.Id == ID_TO_UPDATE);
             eventToUpdate.Notes = "Updated Notes";
-            
+
             var updatedList = await eventList.SaveAsync();
-            
+
             Assert.Equal(countBeforeUpdate, updatedList.Count);
         }
 
         [Fact]
         private async void TaskForEventERL_TestAddTaskForEventERL()
         {
-            var eventList = 
+            var eventList =
                 await TaskForEventERL.GetTaskForEventERL();
             var countBeforeAdd = eventList.Count;
-            
+
             var eventToAdd = eventList.AddNew();
             await BuildTaskForEvent(eventToAdd);
 
             var updatedTaskForEventList = await eventList.SaveAsync();
-            
+
             Assert.NotEqual(countBeforeAdd, updatedTaskForEventList.Count);
         }
 
@@ -116,6 +116,5 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             eventToBuild.LastUpdatedDate = DateTime.Now;
             eventToBuild.Notes = "notes for doctype";
         }
-
     }
 }

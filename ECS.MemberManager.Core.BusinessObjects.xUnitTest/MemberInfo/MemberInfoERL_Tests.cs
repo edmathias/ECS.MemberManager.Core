@@ -24,8 +24,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
+
+            if (testLibrary == "Mock")
                 MockDb.ResetMockDb();
             else
             {
@@ -46,7 +46,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(memberInfoErl);
             Assert.IsType<MemberInfoERL>(memberInfoErl);
         }
-        
+
         [Fact]
         private async void MemberInfoERL_TestGetMemberInfoERL()
         {
@@ -55,7 +55,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(memberInfoEditList);
             Assert.Equal(3, memberInfoEditList.Count);
         }
-        
+
         [Fact]
         private async void MemberInfoERL_TestDeleteMemberInfosEntry()
         {
@@ -71,22 +71,22 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(memberInfoListAfterDelete);
             Assert.IsType<MemberInfoERL>(memberInfoListAfterDelete);
             Assert.True(isDeleted);
-            Assert.NotEqual(listCount,memberInfoListAfterDelete.Count);
+            Assert.NotEqual(listCount, memberInfoListAfterDelete.Count);
         }
 
         [Fact]
         private async void MemberInfoERL_TestUpdateMemberInfosEntry()
         {
             const int idToUpdate = 1;
-            
+
             var memberInfoEditList = await MemberInfoERL.GetMemberInfoERL();
             var countBeforeUpdate = memberInfoEditList.Count;
             var memberInfoToUpdate = memberInfoEditList.First(a => a.Id == idToUpdate);
             memberInfoToUpdate.Notes = "This was updated";
 
             var updatedList = await memberInfoEditList.SaveAsync();
-            
-            Assert.Equal("This was updated",updatedList.First(a => a.Id == idToUpdate).Notes);
+
+            Assert.Equal("This was updated", updatedList.First(a => a.Id == idToUpdate).Notes);
             Assert.Equal(countBeforeUpdate, updatedList.Count);
         }
 
@@ -97,13 +97,13 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var countBeforeAdd = memberInfoEditList.Count;
 
             var memberInfoToAdd = await MemberInfoEC.GetMemberInfoEC(await BuildMemberInfo());
-            
+
             memberInfoEditList.Add(memberInfoToAdd);
             var updatedMemberInfosList = await memberInfoEditList.SaveAsync();
-            
+
             Assert.NotEqual(countBeforeAdd, updatedMemberInfosList.Count);
         }
-        
+
         private async Task<MemberInfo> BuildMemberInfo()
         {
             using var dalManager = DalFactory.GetManager();
@@ -120,10 +120,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var dal4 = dalManager.GetProvider<IPrivacyLevelDal>();
             memberInfo.PrivacyLevel = await dal4.Fetch(1);
             memberInfo.LastUpdatedBy = "edm";
-            memberInfo.LastUpdatedDate = DateTime.Now	;
+            memberInfo.LastUpdatedDate = DateTime.Now;
 
             return memberInfo;
         }
-        
     }
 }

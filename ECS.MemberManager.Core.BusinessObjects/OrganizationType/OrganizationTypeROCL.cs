@@ -1,30 +1,24 @@
-﻿
-
-
-//******************************************************************************
+﻿//******************************************************************************
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/18/2021 16:28:29
+// Generated on 03/23/2021 09:57:27
 //******************************************************************************    
 
-using System; 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
-using ECS.MemberManager.Core.DataAccess;
-using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class OrganizationTypeROCL : ReadOnlyListBase<OrganizationTypeROCL,OrganizationTypeROC>
+    public partial class OrganizationTypeROCL : ReadOnlyListBase<OrganizationTypeROCL, OrganizationTypeROC>
     {
         #region Factory Methods
 
-
-        internal static async Task<OrganizationTypeROCL> GetOrganizationTypeROCL(List<OrganizationType> childData)
+        internal static async Task<OrganizationTypeROCL> GetOrganizationTypeROCL(IList<OrganizationType> childData)
         {
             return await DataPortal.FetchChildAsync<OrganizationTypeROCL>(childData);
         }
@@ -32,11 +26,10 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #endregion
 
         #region Data Access
- 
-        [FetchChild]
-        private async Task Fetch(List<OrganizationType> childData)
-        {
 
+        [FetchChild]
+        private async Task Fetch(IList<OrganizationType> childData)
+        {
             using (LoadListMode)
             {
                 foreach (var domainObjToAdd in childData)
@@ -48,6 +41,5 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         #endregion
-
-     }
+    }
 }

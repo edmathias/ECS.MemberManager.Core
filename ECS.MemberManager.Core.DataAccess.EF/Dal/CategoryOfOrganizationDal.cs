@@ -1,23 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Common;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Data;
 using ECS.MemberManager.Core.EF.Domain;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.Extensions.Configuration;
 
 namespace ECS.MemberManager.Core.DataAccess.EF
 {
     public class CategoryOfOrganizationDal : ICategoryOfOrganizationDal
     {
-
         public async Task<List<CategoryOfOrganization>> Fetch()
         {
             List<CategoryOfOrganization> list;
@@ -26,44 +18,46 @@ namespace ECS.MemberManager.Core.DataAccess.EF
             {
                 list = await context.CategoryOfOrganizations.ToListAsync();
             }
-            
+
             return list;
         }
 
         public async Task<CategoryOfOrganization> Fetch(int id)
         {
             List<CategoryOfOrganization> list = null;
-            
-            CategoryOfOrganization categoryOfOrganization = null;
-            
+
+            CategoryOfOrganization category = null;
+
             using (var context = new MembershipManagerDataContext())
             {
-                categoryOfOrganization = await context.CategoryOfOrganizations.Where(a => a.Id == id).FirstAsync();
+                category = await context.CategoryOfOrganizations.Where(a => a.Id == id).FirstAsync();
             }
 
-            return categoryOfOrganization;
+            return category;
         }
 
-        public async Task<CategoryOfOrganization> Insert(CategoryOfOrganization categoryOfOrganizationToInsert)
+        public async Task<CategoryOfOrganization> Insert(CategoryOfOrganization categoryToInsert)
         {
             using (var context = new MembershipManagerDataContext())
             {
-                await context.CategoryOfOrganizations.AddAsync(categoryOfOrganizationToInsert);
+                await context.CategoryOfOrganizations.AddAsync(categoryToInsert);
                 await context.SaveChangesAsync();
-            };
-            
-            return categoryOfOrganizationToInsert;
+            }
+
+            ;
+
+            return categoryToInsert;
         }
 
-        public async Task<CategoryOfOrganization> Update(CategoryOfOrganization categoryOfOrganizationToUpdate)
+        public async Task<CategoryOfOrganization> Update(CategoryOfOrganization categoryToUpdate)
         {
             using (var context = new MembershipManagerDataContext())
             {
-                 context.Update(categoryOfOrganizationToUpdate);
-                 await context.SaveChangesAsync();
+                context.Update(categoryToUpdate);
+                await context.SaveChangesAsync();
             }
 
-            return categoryOfOrganizationToUpdate;
+            return categoryToUpdate;
         }
 
         public async Task Delete(int id)
@@ -74,7 +68,7 @@ namespace ECS.MemberManager.Core.DataAccess.EF
                 await context.SaveChangesAsync();
             }
         }
-        
+
         public void Dispose()
         {
         }

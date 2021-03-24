@@ -10,7 +10,7 @@ namespace ECS.MemberManager.Core.DataAccess.Dal
         Task<CategoryOfOrganization> Fetch(int id);
         Task<List<CategoryOfOrganization>> Fetch();
         Task<CategoryOfOrganization> Insert(CategoryOfOrganization categoryOfOrganization);
-        Task<CategoryOfOrganization> Update(CategoryOfOrganization categoryOfOrganization );
+        Task<CategoryOfOrganization> Update(CategoryOfOrganization categoryOfOrganization);
         Task Delete(int id);
     }
 }

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Csla;
-using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Dal;
@@ -14,7 +12,7 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class MemberInfoEC_Tests 
+    public class MemberInfoEC_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
@@ -39,11 +37,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 }
             }
         }
-        
-       [Fact]
+
+        [Fact]
         public async void MemberInfoEC_Get()
         {
-            var memberInfoObj = await BuildMemberInfo(); 
+            var memberInfoObj = await BuildMemberInfo();
             var memberInfo = await MemberInfoEC.GetMemberInfoEC(memberInfoObj);
 
             Assert.NotNull(memberInfo.Person);
@@ -75,14 +73,14 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             var memberInfo = await MemberInfoEC.NewMemberInfoEC();
             memberInfo.MemberNumber = String.Empty;
-                
+
             Assert.False(memberInfo.IsValid);
             Assert.ThrowsAsync<Csla.Rules.ValidationException>(() => memberInfo.SaveAsync());
         }
 
         // test invalid state 
         [Fact]
-        public async Task MemberInfoEC_MemberNumberRequired() 
+        public async Task MemberInfoEC_MemberNumberRequired()
         {
             var memberInfo = await MemberInfoEC.NewMemberInfoEC();
             await BuildMemberInfoEC(memberInfo);
@@ -93,7 +91,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.True(isObjectValidInit);
             Assert.False(memberInfo.IsValid);
         }
-       
+
         [Fact]
         public async Task MemberInfoEC_MemberNumberExceedsMaxLengthOf35()
         {
@@ -107,12 +105,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             Assert.NotNull(memberInfo);
             Assert.False(memberInfo.IsValid);
-            Assert.Equal("MemberNumber",memberInfo.BrokenRulesCollection[0].Property);
+            Assert.Equal("MemberNumber", memberInfo.BrokenRulesCollection[0].Property);
             Assert.Equal("MemberNumber can not exceed 35 characters",
                 memberInfo.BrokenRulesCollection[0].Description);
- 
-        }        
-        
+        }
+
         [Fact]
         public async Task TestMemberInfoEC_DateFirstJoinedRequired()
         {
@@ -124,10 +121,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(memberInfo);
             Assert.True(isObjectValidInit);
             Assert.False(memberInfo.IsValid);
-            Assert.Equal("DateFirstJoined",memberInfo.BrokenRulesCollection[0].Property);
-            Assert.Equal("DateFirstJoined required",memberInfo.BrokenRulesCollection[0].Description);
-            
-        }        
+            Assert.Equal("DateFirstJoined", memberInfo.BrokenRulesCollection[0].Property);
+            Assert.Equal("DateFirstJoined required", memberInfo.BrokenRulesCollection[0].Description);
+        }
 
         [Fact]
         public async Task TestMemberInfoEC_MemberStatusRequired()
@@ -140,11 +136,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(memberInfo);
             Assert.True(isObjectValidInit);
             Assert.False(memberInfo.IsValid);
-            Assert.Equal("MemberStatus",memberInfo.BrokenRulesCollection[0].Property);
-            Assert.Equal("MemberStatus required",memberInfo.BrokenRulesCollection[0].Description);
-            
-        }             
-       
+            Assert.Equal("MemberStatus", memberInfo.BrokenRulesCollection[0].Property);
+            Assert.Equal("MemberStatus required", memberInfo.BrokenRulesCollection[0].Description);
+        }
+
         [Fact]
         public async Task TestMemberInfoEC_MembershipTypeRequired()
         {
@@ -156,10 +151,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(memberInfo);
             Assert.True(isObjectValidInit);
             Assert.False(memberInfo.IsValid);
-            Assert.Equal("MembershipType",memberInfo.BrokenRulesCollection[0].Property);
-            Assert.Equal("MembershipType required",memberInfo.BrokenRulesCollection[0].Description);
-            
-        }            
+            Assert.Equal("MembershipType", memberInfo.BrokenRulesCollection[0].Property);
+            Assert.Equal("MembershipType required", memberInfo.BrokenRulesCollection[0].Description);
+        }
+
         [Fact]
         public async Task TestMemberInfoEC_LastUpdatedByRequired()
         {
@@ -171,11 +166,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(memberInfo);
             Assert.True(isObjectValidInit);
             Assert.False(memberInfo.IsValid);
-            Assert.Equal("LastUpdatedBy",memberInfo.BrokenRulesCollection[0].Property);
-            Assert.Equal("LastUpdatedBy required",memberInfo.BrokenRulesCollection[0].Description);
-            
+            Assert.Equal("LastUpdatedBy", memberInfo.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy required", memberInfo.BrokenRulesCollection[0].Description);
         }
-     
+
         [Fact]
         public async Task TestMemberInfoEC_LastUpdatedByExceeds255Characters()
         {
@@ -183,15 +177,16 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var memberInfo = await MemberInfoEC.GetMemberInfoEC(memberInfoToTest);
             var isObjectValidInit = memberInfo.IsValid;
             memberInfo.LastUpdatedBy = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempo" +
-                                      "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud" +
-                                      "exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure" +
-                                      "dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.";
+                                       "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud" +
+                                       "exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure" +
+                                       "dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.";
 
             Assert.NotNull(memberInfo);
             Assert.True(isObjectValidInit);
             Assert.False(memberInfo.IsValid);
-            Assert.Equal("LastUpdatedBy",memberInfo.BrokenRulesCollection[0].Property);
-            Assert.Equal("LastUpdatedBy can not exceed 255 characters",memberInfo.BrokenRulesCollection[0].Description);
+            Assert.Equal("LastUpdatedBy", memberInfo.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy can not exceed 255 characters",
+                memberInfo.BrokenRulesCollection[0].Description);
         }
 
         [Fact]
@@ -205,13 +200,12 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(memberInfo);
             Assert.True(isObjectValidInit);
             Assert.False(memberInfo.IsValid);
-            Assert.Equal("LastUpdatedDate",memberInfo.BrokenRulesCollection[0].Property);
-            Assert.Equal("LastUpdatedDate required",memberInfo.BrokenRulesCollection[0].Description);
-            
-        }        
+            Assert.Equal("LastUpdatedDate", memberInfo.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedDate required", memberInfo.BrokenRulesCollection[0].Description);
+        }
 
-        
-        private async Task BuildMemberInfoEC(MemberInfoEC memberInfo )
+
+        private async Task BuildMemberInfoEC(MemberInfoEC memberInfo)
         {
             var domainInfo = await BuildMemberInfo();
             memberInfo.Notes = domainInfo.Notes;
@@ -223,7 +217,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             memberInfo.DateFirstJoined = new SmartDate(DateTime.Now);
             memberInfo.LastUpdatedBy = domainInfo.LastUpdatedBy;
             memberInfo.LastUpdatedDate = domainInfo.LastUpdatedDate;
-
         }
 
         private async Task<MemberInfo> BuildMemberInfo()
@@ -244,7 +237,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var dal4 = dalManager.GetProvider<IPrivacyLevelDal>();
             memberInfo.PrivacyLevel = await dal4.Fetch(1);
             memberInfo.LastUpdatedBy = "edm";
-            memberInfo.LastUpdatedDate = DateTime.Now	;
+            memberInfo.LastUpdatedDate = DateTime.Now;
 
             return memberInfo;
         }

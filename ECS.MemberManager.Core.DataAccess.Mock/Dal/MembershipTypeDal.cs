@@ -19,14 +19,14 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             return MockDb.MembershipTypes.ToList();
         }
 
-        public async Task<MembershipType> Insert( MembershipType membershipType)
+        public async Task<MembershipType> Insert(MembershipType membershipType)
         {
             var lastMembershipType = MockDb.MembershipTypes.ToList().OrderByDescending(dt => dt.Id).First();
-            membershipType.Id = 1+lastMembershipType.Id;
+            membershipType.Id = 1 + lastMembershipType.Id;
             membershipType.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
-            
+
             MockDb.MembershipTypes.Add(membershipType);
-            
+
             return membershipType;
         }
 
@@ -36,18 +36,18 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 MockDb.MembershipTypes.FirstOrDefault(em => em.Id == membershipType.Id &&
                                                             em.RowVersion.SequenceEqual(membershipType.RowVersion));
 
-            if(membershipTypeToUpdate == null)
+            if (membershipTypeToUpdate == null)
                 throw new Csla.DataPortalException(null);
-           
+
             membershipTypeToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
-            return membershipTypeToUpdate;        
+            return membershipTypeToUpdate;
         }
 
         public async Task Delete(int id)
         {
             var membershipTypesToDelete = MockDb.MembershipTypes.FirstOrDefault(dt => dt.Id == id);
             var listIndex = MockDb.MembershipTypes.IndexOf(membershipTypesToDelete);
-            if(listIndex > -1)
+            if (listIndex > -1)
                 MockDb.MembershipTypes.RemoveAt(listIndex);
         }
 

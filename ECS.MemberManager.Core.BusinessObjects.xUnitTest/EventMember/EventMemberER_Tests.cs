@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using Csla;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using ECS.MemberManager.Core.EF.Domain;
@@ -45,7 +44,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.IsType<EventMemberER>(eventDocumentObj);
             Assert.False(eventDocumentObj.IsValid);
         }
-        
+
         [Fact]
         public async Task TestEventMemberER_GetEventMemberER()
         {
@@ -53,38 +52,38 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             Assert.NotNull(eventDocumentObj);
             Assert.IsType<EventMemberER>(eventDocumentObj);
-            Assert.Equal(1,eventDocumentObj.Id);
+            Assert.Equal(1, eventDocumentObj.Id);
             Assert.True(eventDocumentObj.IsValid);
         }
 
         [Fact]
         public async Task TestEventMemberER_EventRequired()
         {
-            var eventDocumentObj = await BuildEventMember(); 
+            var eventDocumentObj = await BuildEventMember();
             var isObjectValidInit = eventDocumentObj.IsValid;
-            eventDocumentObj.Event = null; 
-           
+            eventDocumentObj.Event = null;
+
             Assert.NotNull(eventDocumentObj);
             Assert.True(isObjectValidInit);
             Assert.False(eventDocumentObj.IsValid);
-            Assert.Equal("Event",eventDocumentObj.BrokenRulesCollection[0].Property);
-            Assert.Equal("Event required",eventDocumentObj.BrokenRulesCollection[0].Description);
+            Assert.Equal("Event", eventDocumentObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("Event required", eventDocumentObj.BrokenRulesCollection[0].Description);
         }
-        
+
         [Fact]
         public async Task TestEventMemberER_MemberInfoRequired()
         {
             var eventDocumentObj = await BuildEventMember();
             var isObjectValidInit = eventDocumentObj.IsValid;
             eventDocumentObj.MemberInfo = null;
-            
+
             Assert.NotNull(eventDocumentObj);
             Assert.True(isObjectValidInit);
             Assert.False(eventDocumentObj.IsValid);
-            Assert.Equal("MemberInfo",eventDocumentObj.BrokenRulesCollection[0].Property);
-            Assert.Equal("MemberInfo required",eventDocumentObj.BrokenRulesCollection[0].Description);
+            Assert.Equal("MemberInfo", eventDocumentObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("MemberInfo required", eventDocumentObj.BrokenRulesCollection[0].Description);
         }
-        
+
         [Fact]
         public async Task TestEventMemberER_RoleCannotExceed50Chars()
         {
@@ -94,15 +93,15 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                                     "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
                                     "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
                                     "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis ";
-           
+
             Assert.NotNull(eventDocumentObj);
             Assert.True(isObjectValidInit);
             Assert.False(eventDocumentObj.IsValid);
-            Assert.Equal("Role",eventDocumentObj.BrokenRulesCollection[0].Property);
-            Assert.Equal("Role can not exceed 50 characters",eventDocumentObj.BrokenRulesCollection[0].Description);
+            Assert.Equal("Role", eventDocumentObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("Role can not exceed 50 characters", eventDocumentObj.BrokenRulesCollection[0].Description);
         }
 
-        
+
         [Fact]
         public async Task TestEventMemberER_LastUpdatedByRequired()
         {
@@ -113,11 +112,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(eventDocumentObj);
             Assert.True(isObjectValidInit);
             Assert.False(eventDocumentObj.IsValid);
-            Assert.Equal("LastUpdatedBy",eventDocumentObj.BrokenRulesCollection[0].Property);
-            Assert.Equal("LastUpdatedBy required",eventDocumentObj.BrokenRulesCollection[0].Description);
-            
+            Assert.Equal("LastUpdatedBy", eventDocumentObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy required", eventDocumentObj.BrokenRulesCollection[0].Description);
         }
-        
+
         [Fact]
         public async Task TestEventMemberER_LastUpdatedDateRequired()
         {
@@ -128,11 +126,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(eventDocumentObj);
             Assert.True(isObjectValidInit);
             Assert.False(eventDocumentObj.IsValid);
-            Assert.Equal("LastUpdatedDate",eventDocumentObj.BrokenRulesCollection[0].Property);
-            Assert.Equal("LastUpdatedDate required",eventDocumentObj.BrokenRulesCollection[0].Description);
+            Assert.Equal("LastUpdatedDate", eventDocumentObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedDate required", eventDocumentObj.BrokenRulesCollection[0].Description);
         }
 
-         
+
         private async Task<EventMemberER> BuildEventMember()
         {
             var eventDocumentObj = await EventMemberER.NewEventMemberER();
@@ -144,6 +142,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             eventDocumentObj.Notes = "notes for doctype";
 
             return eventDocumentObj;
-        }        
+        }
     }
 }

@@ -1,21 +1,16 @@
-﻿
-
-
-using System; 
+﻿using System;
 using System.Threading.Tasks;
 using Csla;
-using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class TermInOfficeRORL : ReadOnlyListBase<TermInOfficeRORL,TermInOfficeROC>
+    public partial class TermInOfficeRORL : ReadOnlyListBase<TermInOfficeRORL, TermInOfficeROC>
     {
         #region Factory Methods
 
-
-        public static async Task<TermInOfficeRORL> GetTermInOfficeRORL( )
+        public static async Task<TermInOfficeRORL> GetTermInOfficeRORL()
         {
             return await DataPortal.FetchAsync<TermInOfficeRORL>();
         }
@@ -23,7 +18,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #endregion
 
         #region Data Access
- 
+
         [Fetch]
         private async Task Fetch([Inject] ITermInOfficeDal dal)
         {
@@ -40,6 +35,5 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         #endregion
-
-     }
+    }
 }

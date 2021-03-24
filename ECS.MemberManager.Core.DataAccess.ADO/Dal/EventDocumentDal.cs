@@ -17,7 +17,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
     {
         private static IConfigurationRoot _config;
         private SqlConnection _db = null;
-        
+
         public EventDocumentDal()
         {
             var builder = new ConfigurationBuilder()
@@ -25,7 +25,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var cnxnString = _config.GetConnectionString("LocalDbConnection");
-            
+
             _db = new SqlConnection(cnxnString);
         }
 
@@ -33,7 +33,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
         {
             _db = cnxn;
         }
-        
+
         public async Task<List<EventDocument>> Fetch()
         {
             var sql = new StringBuilder();
@@ -41,7 +41,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             sql.AppendLine("INNER JOIN DocumentTypes dt ON dt.Id = ed.DocumentTypeId");
             sql.AppendLine("INNER JOIN Events ev on ev.id = ed.EventId");
 
-            var result = await _db.QueryAsync<EventDocument,DocumentType,Event,EventDocument>(sql.ToString(),
+            var result = await _db.QueryAsync<EventDocument, DocumentType, Event, EventDocument>(sql.ToString(),
                 (eventDocument, documentType, eventObj) =>
                 {
                     eventDocument.Event = eventObj;
@@ -52,7 +52,6 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             );
 
             return result.ToList();
-
         }
 
         public async Task<EventDocument> Fetch(int id)
@@ -63,7 +62,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             sql.AppendLine("INNER JOIN Events ev on ev.Id = ed.EventId");
             sql.AppendLine($"WHERE ed.Id={id}");
 
-            var result = await _db.QueryAsync<EventDocument,DocumentType,Event,EventDocument>(sql.ToString(),
+            var result = await _db.QueryAsync<EventDocument, DocumentType, Event, EventDocument>(sql.ToString(),
                 (eventDocument, documentType, eventObj) =>
                 {
                     eventDocument.Event = eventObj;
@@ -82,8 +81,8 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                 "INSERT INTO EventDocuments (EventId, DocumentName, DocumentTypeId, PathAndFileName, LastUpdatedBy, LastUpdatedDate, Notes) " +
                 "SELECT @EventId, @DocumentName, @DocumentTypeId, @PathAndFileName, @LastUpdatedBy, @LastUpdatedDate, @Notes " +
                 "SELECT SCOPE_IDENTITY()";
-            
-            eventDocumentToInsert.Id = await _db.ExecuteScalarAsync<int>(sql,new
+
+            eventDocumentToInsert.Id = await _db.ExecuteScalarAsync<int>(sql, new
             {
                 EventId = eventDocumentToInsert.Event.Id,
                 DocumentName = eventDocumentToInsert.DocumentName,
@@ -98,7 +97,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             //reretrieve EventDocument to get rowversion
             var insertedEmail = await _db.GetAsync<EventDocument>(eventDocumentToInsert.Id);
             eventDocumentToInsert.RowVersion = insertedEmail.RowVersion;
-            
+
             return eventDocumentToInsert;
         }
 
@@ -115,7 +114,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                       "OUTPUT inserted.RowVersion " +
                       "WHERE  [Id] = @Id AND RowVersion = @RowVersion";
 
-            var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql,new
+            var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql, new
             {
                 Id = eventDocument.Id,
                 EventId = eventDocument.Event.Id,
@@ -125,12 +124,12 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                 LastUpdatedBy = eventDocument.LastUpdatedBy,
                 LastUpdatedDate = eventDocument.LastUpdatedDate,
                 Notes = eventDocument.Notes,
-                RowVersion = eventDocument.RowVersion              
+                RowVersion = eventDocument.RowVersion
             });
             if (rowVersion == null)
                 throw new DBConcurrencyException("Entity has been updated since last read. Try again!");
             eventDocument.RowVersion = rowVersion;
-            
+
             return eventDocument;
         }
 
@@ -138,10 +137,9 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
         {
             await _db.DeleteAsync<EventDocument>(new EventDocument() {Id = id});
         }
-        
+
         public void Dispose()
         {
         }
-
     }
 }

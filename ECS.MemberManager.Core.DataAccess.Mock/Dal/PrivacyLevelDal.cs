@@ -26,11 +26,11 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         public async Task<PrivacyLevel> Insert(PrivacyLevel privacyLevel)
         {
             var lastPrivacyLevel = MockDb.PrivacyLevels.ToList().OrderByDescending(dt => dt.Id).First();
-            privacyLevel.Id = 1+lastPrivacyLevel.Id;
+            privacyLevel.Id = 1 + lastPrivacyLevel.Id;
             privacyLevel.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
-            
+
             MockDb.PrivacyLevels.Add(privacyLevel);
-            
+
             return privacyLevel;
         }
 
@@ -40,9 +40,9 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 MockDb.PrivacyLevels.FirstOrDefault(em => em.Id == privacyLevel.Id &&
                                                           em.RowVersion.SequenceEqual(privacyLevel.RowVersion));
 
-            if(privacyLevelToUpdate == null)
+            if (privacyLevelToUpdate == null)
                 throw new Csla.DataPortalException(null);
-           
+
             privacyLevelToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
             return privacyLevelToUpdate;
         }
@@ -51,7 +51,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             var privacyLevelToDelete = MockDb.PrivacyLevels.FirstOrDefault(dt => dt.Id == id);
             var listIndex = MockDb.PrivacyLevels.IndexOf(privacyLevelToDelete);
-            if(listIndex > -1)
+            if (listIndex > -1)
                 MockDb.PrivacyLevels.RemoveAt(listIndex);
         }
     }

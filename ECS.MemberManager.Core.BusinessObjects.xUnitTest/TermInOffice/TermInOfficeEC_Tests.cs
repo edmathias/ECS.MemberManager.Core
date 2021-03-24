@@ -45,7 +45,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.IsType<TermInOfficeEC>(termObj);
             Assert.False(termObj.IsValid);
         }
-        
+
         [Fact]
         public async Task TestTermInOfficeEC_GetTermInOfficeEC()
         {
@@ -54,10 +54,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             Assert.NotNull(termObj);
             Assert.IsType<TermInOfficeEC>(termObj);
-            Assert.Equal(termObjToLoad.Id,termObj.Id);
+            Assert.Equal(termObjToLoad.Id, termObj.Id);
             Assert.Equal(termObjToLoad.Office.Id, termObj.Office.Id);
             Assert.Equal(termObjToLoad.Person.Id, termObj.Person.Id);
-            Assert.Equal(new SmartDate(termObjToLoad.StartDate),termObj.StartDate);
+            Assert.Equal(new SmartDate(termObjToLoad.StartDate), termObj.StartDate);
             Assert.Equal(termObjToLoad.LastUpdatedBy, termObj.LastUpdatedBy);
             Assert.Equal(new SmartDate(termObjToLoad.LastUpdatedDate), termObj.LastUpdatedDate);
             Assert.Equal(termObjToLoad.Notes, termObj.Notes);
@@ -72,15 +72,15 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var termObj = await TermInOfficeEC.GetTermInOfficeEC(termObjToTest);
             var isObjectValidInit = termObj.IsValid;
             termObj.LastUpdatedBy = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
-                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
-                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
-                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis ";
+                                    "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                                    "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                                    "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis ";
 
             Assert.NotNull(termObj);
             Assert.True(isObjectValidInit);
             Assert.False(termObj.IsValid);
-            Assert.Equal("LastUpdatedBy",termObj.BrokenRulesCollection[0].Property);
-            Assert.Equal("LastUpdatedBy can not exceed 255 characters",termObj.BrokenRulesCollection[0].Description);
+            Assert.Equal("LastUpdatedBy", termObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy can not exceed 255 characters", termObj.BrokenRulesCollection[0].Description);
         }
 
         [Fact]
@@ -94,9 +94,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(termObj);
             Assert.True(isObjectValidInit);
             Assert.False(termObj.IsValid);
-            Assert.Equal("LastUpdatedBy",termObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy", termObj.BrokenRulesCollection[0].Property);
         }
-      
+
         private TermInOffice BuildTermInOffice()
         {
             var termObj = new TermInOffice();
@@ -109,6 +109,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             termObj.Notes = "notes for doctype";
 
             return termObj;
-        }        
+        }
     }
 }

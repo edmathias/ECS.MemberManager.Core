@@ -261,9 +261,21 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             return new List<EMailType>
             {
-                new EMailType() {Id = 1, Description = "work", Notes = String.Empty,RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)},
-                new EMailType() {Id = 2, Description = "home", Notes = "notes for home",RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)},
-                new EMailType() {Id = 99, Description = "delete this", Notes = "notes for home",RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)}
+                new EMailType()
+                {
+                    Id = 1, Description = "work", Notes = String.Empty,
+                    RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
+                },
+                new EMailType()
+                {
+                    Id = 2, Description = "home", Notes = "notes for home",
+                    RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
+                },
+                new EMailType()
+                {
+                    Id = 99, Description = "delete this", Notes = "notes for home",
+                    RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
+                }
             };
         }
 
@@ -376,7 +388,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                     MemberStatus = GetMemberStatuses().First(ms => ms.Id == 1),
                     Notes = "notes 1",
                     Person = GetPersons().First(p => p.Id == 2),
-                    PrivacyLevel = new PrivacyLevel() { Id =1, Description = "priv level 1", Notes = "notes 1"},
+                    PrivacyLevel = new PrivacyLevel() {Id = 1, Description = "priv level 1", Notes = "notes 1"},
                     RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
                 },
                 new MemberInfo()
@@ -390,7 +402,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                     MemberStatus = GetMemberStatuses().First(ms => ms.Id == 2),
                     Notes = "notes 2",
                     Person = GetPersons().First(p => p.Id == 2),
-                    PrivacyLevel = new PrivacyLevel() { Id =2, Description = "priv level 2", Notes = "notes 1"},
+                    PrivacyLevel = new PrivacyLevel() {Id = 2, Description = "priv level 2", Notes = "notes 1"},
                     RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
                 },
                 new MemberInfo()
@@ -404,7 +416,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                     MemberStatus = GetMemberStatuses().First(ms => ms.Id == 2),
                     Notes = "notes 99",
                     Person = GetPersons().First(p => p.Id == 2),
-                    PrivacyLevel = new PrivacyLevel() { Id =2, Description = "priv level 2", Notes = "notes 1"},
+                    PrivacyLevel = new PrivacyLevel() {Id = 2, Description = "priv level 2", Notes = "notes 1"},
                     RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
                 }
             };
@@ -439,18 +451,24 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             return new List<MemberStatus>
             {
-                new MemberStatus {Id = 1, 
-                    Description = "Active", 
+                new MemberStatus
+                {
+                    Id = 1,
+                    Description = "Active",
                     Notes = "This member is active.",
                     RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
                 },
-                new MemberStatus {Id = 2, 
-                    Description = "Inactive", 
+                new MemberStatus
+                {
+                    Id = 2,
+                    Description = "Inactive",
                     Notes = "This member is inactive",
                     RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
                 },
-                new MemberStatus {Id = 99, 
-                    Description = "Inactive", 
+                new MemberStatus
+                {
+                    Id = 99,
+                    Description = "Inactive",
                     Notes = "This member is deleted",
                     RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
                 },
@@ -591,22 +609,24 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             return new List<PaymentSource>()
             {
-                new PaymentSource() {Id = 1, 
-                    Description = "Source 1", 
+                new PaymentSource()
+                {
+                    Id = 1,
+                    Description = "Source 1",
                     Notes = "notes here",
                     RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
                 },
                 new PaymentSource()
                 {
-                    Id = 2, 
-                    Description = "Payment Source 2", 
+                    Id = 2,
+                    Description = "Payment Source 2",
                     Notes = "more notes",
                     RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
                 },
                 new PaymentSource()
                 {
-                    Id = 99, 
-                    Description = "Payment to Delete", 
+                    Id = 99,
+                    Description = "Payment to Delete",
                     Notes = "more notes",
                     RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
                 }
@@ -619,22 +639,22 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             {
                 new PaymentType()
                 {
-                    Id = 1, 
-                    Description = "Payment Type 1", 
+                    Id = 1,
+                    Description = "Payment Type 1",
                     Notes = "notes here",
                     RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
                 },
                 new PaymentType()
                 {
-                    Id = 2, 
-                    Description = "Payment Type 2", 
+                    Id = 2,
+                    Description = "Payment Type 2",
                     Notes = "more notes here",
                     RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
                 },
                 new PaymentType()
                 {
-                    Id = 99, 
-                    Description = "Payment Type to delete", 
+                    Id = 99,
+                    Description = "Payment Type to delete",
                     Notes = "more notes here",
                     RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
                 }
@@ -730,22 +750,22 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             {
                 new PrivacyLevel()
                 {
-                    Id = 1, 
-                    Description = "privacy level 1", 
+                    Id = 1,
+                    Description = "privacy level 1",
                     Notes = "notes to save",
                     RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
                 },
                 new PrivacyLevel()
                 {
-                    Id = 2, 
-                    Description = "privacy level 2", 
+                    Id = 2,
+                    Description = "privacy level 2",
                     Notes = "more notes",
                     RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
                 },
                 new PrivacyLevel()
                 {
-                    Id = 99, 
-                    Description = "privacy level 99", 
+                    Id = 99,
+                    Description = "privacy level 99",
                     Notes = "privacy to delete",
                     RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
                 }

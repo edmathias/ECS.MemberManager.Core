@@ -9,7 +9,7 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class PaymentSourceER_Tests 
+    public class PaymentSourceER_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
@@ -21,8 +21,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
+
+            if (testLibrary == "Mock")
                 MockDb.ResetMockDb();
             else
             {
@@ -58,11 +58,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             var paymentSource = await PaymentSourceER.GetPaymentSourceER(1);
             paymentSource.Notes = "These are updated Notes";
-            
-            var result =  await paymentSource.SaveAsync();
+
+            var result = await paymentSource.SaveAsync();
 
             Assert.NotNull(result);
-            Assert.Equal("These are updated Notes",result.Notes );
+            Assert.Equal("These are updated Notes", result.Notes);
         }
 
         [Fact]
@@ -73,25 +73,25 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             paymentSource.Notes = "This person is on standby";
 
             var savedPaymentSource = await paymentSource.SaveAsync();
-           
+
             Assert.NotNull(savedPaymentSource);
             Assert.IsType<PaymentSourceER>(savedPaymentSource);
-            Assert.True( savedPaymentSource.Id > 0 );
+            Assert.True(savedPaymentSource.Id > 0);
         }
 
         [Fact]
         public async Task PaymentSourceER_TestDeleteObjectFromDatabase()
         {
             const int ID_TO_DELETE = 99;
-            
+
             await PaymentSourceER.DeletePaymentSourceER(ID_TO_DELETE);
 
             await Assert.ThrowsAsync<DataPortalException>(() => PaymentSourceER.GetPaymentSourceER(ID_TO_DELETE));
         }
-        
+
         // test invalid state 
         [Fact]
-        public async Task PaymentSourceER_TestDescriptionRequired() 
+        public async Task PaymentSourceER_TestDescriptionRequired()
         {
             var paymentSource = await PaymentSourceER.NewPaymentSourceER();
             paymentSource.Description = "make valid";
@@ -102,25 +102,26 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.True(isObjectValidInit);
             Assert.False(paymentSource.IsValid);
         }
-       
+
         [Fact]
         public async Task PaymentSourceER_TestDescriptionExceedsMaxLengthOf50()
         {
             var paymentSource = await PaymentSourceER.NewPaymentSourceER();
             paymentSource.Description = "valid length";
             Assert.True(paymentSource.IsValid);
-            
-            paymentSource.Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor "+
-                                       "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis "+
-                                       "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "+
-                                       "Duis aute irure dolor in reprehenderit";
+
+            paymentSource.Description =
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
+                "Duis aute irure dolor in reprehenderit";
 
             Assert.NotNull(paymentSource);
             Assert.False(paymentSource.IsValid);
             Assert.Equal("Description", paymentSource.BrokenRulesCollection[0].Property);
-            Assert.Equal("Description can not exceed 50 characters",paymentSource.BrokenRulesCollection[0].Description);
- 
-        }        
+            Assert.Equal("Description can not exceed 50 characters",
+                paymentSource.BrokenRulesCollection[0].Description);
+        }
         // test exception if attempt to save in invalid state
 
         [Fact]
@@ -129,11 +130,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var paymentSource = await PaymentSourceER.NewPaymentSourceER();
             paymentSource.Description = String.Empty;
             PaymentSourceER savedPaymentSource = null;
-                
+
             Assert.False(paymentSource.IsValid);
-            Assert.Throws<Csla.Rules.ValidationException>(() => savedPaymentSource =  paymentSource.Save() );
+            Assert.Throws<Csla.Rules.ValidationException>(() => savedPaymentSource = paymentSource.Save());
         }
-        
-        
     }
 }

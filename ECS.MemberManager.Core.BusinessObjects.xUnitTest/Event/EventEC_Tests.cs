@@ -45,7 +45,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.IsType<EventEC>(eventObj);
             Assert.False(eventObj.IsValid);
         }
-        
+
         [Fact]
         public async Task EventEC_GetEventEC()
         {
@@ -54,8 +54,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             Assert.NotNull(eventObj);
             Assert.IsType<EventEC>(eventObj);
-            Assert.Equal(eventObjToLoad.Id,eventObj.Id);
-            Assert.Equal(eventObjToLoad.Description,eventObj.Description);
+            Assert.Equal(eventObjToLoad.Id, eventObj.Id);
+            Assert.Equal(eventObjToLoad.Description, eventObj.Description);
             Assert.Equal(eventObjToLoad.LastUpdatedBy, eventObj.LastUpdatedBy);
             Assert.Equal(new SmartDate(eventObjToLoad.LastUpdatedDate), eventObj.LastUpdatedDate);
             Assert.Equal(eventObjToLoad.Notes, eventObj.Notes);
@@ -69,13 +69,13 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var eventObjToTest = BuildEvent();
             var eventObj = await EventEC.GetEventEC(eventObjToTest);
             var isObjectValidInit = eventObj.IsValid;
-            eventObj.EventName = string.Empty; 
+            eventObj.EventName = string.Empty;
 
             Assert.NotNull(eventObj);
             Assert.True(isObjectValidInit);
             Assert.False(eventObj.IsValid);
-            Assert.Equal("EventName",eventObj.BrokenRulesCollection[0].Property);
-            Assert.Equal("EventName required",eventObj.BrokenRulesCollection[0].Description);
+            Assert.Equal("EventName", eventObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("EventName required", eventObj.BrokenRulesCollection[0].Description);
         }
 
         [Fact]
@@ -85,17 +85,17 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var eventObj = await EventEC.GetEventEC(eventObjToTest);
             var isObjectValidInit = eventObj.IsValid;
             eventObj.EventName = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
-                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
-                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
-                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis ";
+                                 "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                                 "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                                 "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis ";
 
             Assert.NotNull(eventObj);
             Assert.True(isObjectValidInit);
             Assert.False(eventObj.IsValid);
-            Assert.Equal("EventName",eventObj.BrokenRulesCollection[0].Property);
-            Assert.Equal("EventName can not exceed 255 characters",eventObj.BrokenRulesCollection[0].Description);
+            Assert.Equal("EventName", eventObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("EventName can not exceed 255 characters", eventObj.BrokenRulesCollection[0].Description);
         }
-        
+
 
         [Fact]
         public async Task EventEC_LastUpdatedByRequired()
@@ -108,23 +108,24 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(eventObj);
             Assert.True(isObjectValidInit);
             Assert.False(eventObj.IsValid);
-            Assert.Equal("LastUpdatedBy",eventObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy", eventObj.BrokenRulesCollection[0].Property);
         }
-     
+
         [Fact]
         public async Task EventEC_LastUpdatedDateRequired()
         {
             var eventObjToTest = BuildEvent();
             var eventObj = await EventEC.GetEventEC(eventObjToTest);
             var isObjectValidInit = eventObj.IsValid;
-            eventObj.LastUpdatedDate = DateTime.MinValue; 
+            eventObj.LastUpdatedDate = DateTime.MinValue;
 
             Assert.NotNull(eventObj);
             Assert.True(isObjectValidInit);
             Assert.False(eventObj.IsValid);
-            Assert.Equal("LastUpdatedDate",eventObj.BrokenRulesCollection[0].Property);
-            Assert.Equal("LastUpdatedDate required",eventObj.BrokenRulesCollection[0].Description);
-        }        
+            Assert.Equal("LastUpdatedDate", eventObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedDate required", eventObj.BrokenRulesCollection[0].Description);
+        }
+
         private Event BuildEvent()
         {
             var eventObj = new Event();
@@ -136,6 +137,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             eventObj.Notes = "notes for doctype";
 
             return eventObj;
-        }        
+        }
     }
 }

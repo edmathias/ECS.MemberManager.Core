@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Dal;
@@ -10,7 +9,7 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class PhoneECL_Tests 
+    public class PhoneECL_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
@@ -22,8 +21,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
+
+            if (testLibrary == "Mock")
                 MockDb.ResetMockDb();
             else
             {
@@ -35,7 +34,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 }
             }
         }
-        
+
         [Fact]
         private async void PhoneECL_TestPhoneECL()
         {
@@ -45,16 +44,16 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.IsType<PhoneECL>(memberStatusEdit);
         }
 
-        
+
         [Fact]
         private async void PhoneECL_TestGetPhoneECL()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IPhoneDal>();
             var childData = await dal.Fetch();
-            
+
             var listToTest = await PhoneECL.GetPhoneECL(childData);
-            
+
             Assert.NotNull(listToTest);
             Assert.Equal(3, listToTest.Count);
         }
@@ -70,8 +69,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             phone.LastUpdatedBy = "Hank";
             phone.LastUpdatedDate = DateTime.Now;
             phone.Notes = "notes for phone";
-
         }
-        
     }
 }

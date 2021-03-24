@@ -2,9 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.ADO;
-using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using ECS.MemberManager.Core.EF.Domain;
 using Microsoft.Extensions.Configuration;
@@ -94,7 +92,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var eventMemberObjList = await EventMemberERL.GetEventMemberERL();
             var countBeforeAdd = eventMemberObjList.Count;
 
-            var eventMemberObjToAdd = await BuildEventMember(); 
+            var eventMemberObjToAdd = await BuildEventMember();
             eventMemberObjList.Add(eventMemberObjToAdd);
 
             var eventMemberObjEditList = await eventMemberObjList.SaveAsync();
@@ -113,6 +111,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             eventDocumentObj.Notes = "notes for doctype";
 
             return eventDocumentObj;
-        }        
+        }
     }
 }

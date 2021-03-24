@@ -1,8 +1,5 @@
-﻿using System;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Threading.Tasks;
-using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using ECS.MemberManager.Core.EF.Domain;
@@ -45,9 +42,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             Assert.NotNull(categoryOfOrganization);
             Assert.IsType<OrganizationTypeEC>(categoryOfOrganization);
-            Assert.Equal(categoryOfOrganizationToLoad.Id,categoryOfOrganization.Id);
-            Assert.Equal(categoryOfOrganizationToLoad.Name,categoryOfOrganization.Name);
-            Assert.Equal(categoryOfOrganizationToLoad.Notes,categoryOfOrganization.Notes);
+            Assert.Equal(categoryOfOrganizationToLoad.Id, categoryOfOrganization.Id);
+            Assert.Equal(categoryOfOrganizationToLoad.Name, categoryOfOrganization.Name);
+            Assert.Equal(categoryOfOrganizationToLoad.Notes, categoryOfOrganization.Notes);
             Assert.True(categoryOfOrganization.IsValid);
         }
 
@@ -72,17 +69,17 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(category);
             Assert.True(isObjectValidInit);
             Assert.False(category.IsValid);
-            Assert.Equal("Name",category.BrokenRulesCollection[0].Property);
+            Assert.Equal("Name", category.BrokenRulesCollection[0].Property);
         }
 
-        
+
         private OrganizationType BuildOrganizationType()
         {
             var category = new OrganizationType()
             {
                 Name = "organization type name 1",
                 Notes = "org type notes",
-                CategoryOfOrganization = new CategoryOfOrganization() { Id =1,DisplayOrder = 1,Category = "cat name"}
+                CategoryOfOrganization = new CategoryOfOrganization() {Id = 1, DisplayOrder = 1, Category = "cat name"}
             };
 
             return category;

@@ -10,7 +10,7 @@ namespace ECS.MemberManager.Core.DataAccess.Dal
         Task<Person> Fetch(int id);
         Task<List<Person>> Fetch();
         Task<Person> Insert(Person person);
-        Task<Person> Update(Person personToUpdate );
+        Task<Person> Update(Person personToUpdate);
         Task Delete(int id);
     }
 }

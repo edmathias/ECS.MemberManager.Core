@@ -19,14 +19,14 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             return MockDb.PaymentSources.ToList();
         }
 
-        public async Task<PaymentSource> Insert( PaymentSource paymentSource)
+        public async Task<PaymentSource> Insert(PaymentSource paymentSource)
         {
             var lastPaymentSource = MockDb.PaymentSources.ToList().OrderByDescending(ms => ms.Id).First();
-            paymentSource.Id = 1+lastPaymentSource.Id;
+            paymentSource.Id = 1 + lastPaymentSource.Id;
             paymentSource.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
-            
+
             MockDb.PaymentSources.Add(paymentSource);
-            
+
             return paymentSource;
         }
 
@@ -36,9 +36,9 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 MockDb.PaymentSources.FirstOrDefault(em => em.Id == paymentSource.Id &&
                                                            em.RowVersion.SequenceEqual(paymentSource.RowVersion));
 
-            if(paymentSourceToUpdate == null)
+            if (paymentSourceToUpdate == null)
                 throw new Csla.DataPortalException(null);
-           
+
             paymentSourceToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
             return paymentSourceToUpdate;
         }
@@ -47,7 +47,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             var paymentSourceToDelete = MockDb.PaymentSources.FirstOrDefault(ms => ms.Id == id);
             var listIndex = MockDb.PaymentSources.IndexOf(paymentSourceToDelete);
-            if(listIndex > -1)
+            if (listIndex > -1)
                 MockDb.PaymentSources.RemoveAt(listIndex);
         }
 

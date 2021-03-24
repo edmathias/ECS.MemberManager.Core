@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Principal;
 using System.Threading.Tasks;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
@@ -20,14 +19,14 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             return MockDb.Persons.ToList();
         }
 
-        public async Task<Person> Insert( Person person)
+        public async Task<Person> Insert(Person person)
         {
             var lastPerson = MockDb.Persons.ToList().OrderByDescending(p => p.Id).First();
-            person.Id = 1+lastPerson.Id;
+            person.Id = 1 + lastPerson.Id;
             person.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
-            
+
             MockDb.Persons.Add(person);
-            
+
             return person;
         }
 
@@ -37,9 +36,9 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 MockDb.Persons.FirstOrDefault(em => em.Id == person.Id &&
                                                     em.RowVersion.SequenceEqual(person.RowVersion));
 
-            if(personToUpdate == null)
+            if (personToUpdate == null)
                 throw new Csla.DataPortalException(null);
-           
+
             personToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
             return personToUpdate;
         }
@@ -48,7 +47,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             var personToDelete = MockDb.Persons.FirstOrDefault(p => p.Id == id);
             var listIndex = MockDb.Persons.IndexOf(personToDelete);
-            if(listIndex > -1)
+            if (listIndex > -1)
                 MockDb.Persons.RemoveAt(listIndex);
         }
 

@@ -1,8 +1,6 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using Csla;
-using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using ECS.MemberManager.Core.EF.Domain;
@@ -65,11 +63,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             await BuildPersonEC(person);
             var isObjectValidInit = person.IsValid;
             person.LastName = string.Empty;
-            
+
             Assert.NotNull(person);
             Assert.True(isObjectValidInit);
             Assert.False(person.IsValid);
-            Assert.Equal("LastName",person.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastName", person.BrokenRulesCollection[0].Property);
         }
 
         [Fact]
@@ -78,17 +76,17 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var personType = await PersonEC.NewPersonEC();
             await BuildPersonEC(personType);
             var isObjectValidInit = personType.IsValid;
-            personType.LastName =  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
-                                      "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
-                                      "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
-                                      "Duis aute irure dolor in reprehenderit";
+            personType.LastName = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+                                  "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                                  "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
+                                  "Duis aute irure dolor in reprehenderit";
 
             Assert.NotNull(personType);
             Assert.True(isObjectValidInit);
             Assert.False(personType.IsValid);
-            Assert.Equal("LastName",personType.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastName", personType.BrokenRulesCollection[0].Property);
         }
-       
+
         [Fact]
         public async Task TestPersonEC_LastUpdatedByRequired()
         {
@@ -100,7 +98,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(personType);
             Assert.True(isObjectValidInit);
             Assert.False(personType.IsValid);
-            Assert.Equal("LastUpdatedBy",personType.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy", personType.BrokenRulesCollection[0].Property);
         }
 
         [Fact]
@@ -109,17 +107,18 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var personType = await PersonEC.NewPersonEC();
             await BuildPersonEC(personType);
             var isObjectValidInit = personType.IsValid;
-            personType.LastUpdatedBy =  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
-                                      "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
-                                      "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
-                                      "Duis aute irure dolor in reprehenderit";
+            personType.LastUpdatedBy =
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
+                "Duis aute irure dolor in reprehenderit";
 
             Assert.NotNull(personType);
             Assert.True(isObjectValidInit);
             Assert.False(personType.IsValid);
-            Assert.Equal("LastUpdatedBy",personType.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy", personType.BrokenRulesCollection[0].Property);
         }
-        
+
         private async Task BuildPersonEC(PersonEC personToBuild)
         {
             personToBuild.LastName = "lastname";

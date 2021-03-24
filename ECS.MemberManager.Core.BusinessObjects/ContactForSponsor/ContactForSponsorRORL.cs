@@ -1,30 +1,23 @@
-﻿
-
-
-//******************************************************************************
+﻿//******************************************************************************
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/18/2021 16:28:09
+// Generated on 03/23/2021 09:56:50
 //******************************************************************************    
 
-using System; 
-using System.Collections.Generic;
+using System;
 using System.Threading.Tasks;
 using Csla;
-using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
-using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class ContactForSponsorRORL : ReadOnlyListBase<ContactForSponsorRORL,ContactForSponsorROC>
+    public partial class ContactForSponsorRORL : ReadOnlyListBase<ContactForSponsorRORL, ContactForSponsorROC>
     {
         #region Factory Methods
 
-
-        public static async Task<ContactForSponsorRORL> GetContactForSponsorRORL( )
+        public static async Task<ContactForSponsorRORL> GetContactForSponsorRORL()
         {
             return await DataPortal.FetchAsync<ContactForSponsorRORL>();
         }
@@ -32,7 +25,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #endregion
 
         #region Data Access
- 
+
         [Fetch]
         private async Task Fetch([Inject] IContactForSponsorDal dal)
         {
@@ -49,6 +42,5 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         #endregion
-
-     }
+    }
 }

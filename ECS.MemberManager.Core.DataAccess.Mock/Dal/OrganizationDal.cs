@@ -19,14 +19,14 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             return MockDb.Organizations.ToList();
         }
 
-        public async Task<Organization> Insert( Organization organizationToInsert)
+        public async Task<Organization> Insert(Organization organizationToInsert)
         {
             var lastOrganization = MockDb.Organizations.ToList().OrderByDescending(ms => ms.Id).First();
-            organizationToInsert.Id = 1+lastOrganization.Id;
+            organizationToInsert.Id = 1 + lastOrganization.Id;
             organizationToInsert.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
-            
+
             MockDb.Organizations.Add(organizationToInsert);
-            
+
             return organizationToInsert;
         }
 
@@ -34,11 +34,11 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             var organizationToUpdate =
                 MockDb.Organizations.FirstOrDefault(em => em.Id == organization.Id &&
-                                                    em.RowVersion.SequenceEqual(organization.RowVersion));
+                                                          em.RowVersion.SequenceEqual(organization.RowVersion));
 
-            if(organizationToUpdate == null)
+            if (organizationToUpdate == null)
                 throw new Csla.DataPortalException(null);
-           
+
             organizationToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
             return organizationToUpdate;
         }
@@ -47,7 +47,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             var eMailToDelete = MockDb.Organizations.FirstOrDefault(ms => ms.Id == id);
             var listIndex = MockDb.Organizations.IndexOf(eMailToDelete);
-            if(listIndex > -1)
+            if (listIndex > -1)
                 MockDb.Organizations.RemoveAt(listIndex);
         }
 

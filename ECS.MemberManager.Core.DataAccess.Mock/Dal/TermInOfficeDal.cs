@@ -19,14 +19,14 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             return MockDb.TermInOffices.ToList();
         }
 
-        public async Task<TermInOffice> Insert( TermInOffice termInOffice)
+        public async Task<TermInOffice> Insert(TermInOffice termInOffice)
         {
             var lastTermInOffice = MockDb.TermInOffices.ToList().OrderByDescending(dt => dt.Id).First();
-            termInOffice.Id = 1+lastTermInOffice.Id;
+            termInOffice.Id = 1 + lastTermInOffice.Id;
             termInOffice.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
-            
+
             MockDb.TermInOffices.Add(termInOffice);
-            
+
             return termInOffice;
         }
 
@@ -36,18 +36,18 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 MockDb.TermInOffices.FirstOrDefault(em => em.Id == termInOffice.Id &&
                                                           em.RowVersion.SequenceEqual(termInOffice.RowVersion));
 
-            if(termInOfficeToUpdate == null)
+            if (termInOfficeToUpdate == null)
                 throw new Csla.DataPortalException(null);
-           
+
             termInOfficeToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
-            return termInOfficeToUpdate;        
+            return termInOfficeToUpdate;
         }
 
         public async Task Delete(int id)
         {
             var termInOfficesToDelete = MockDb.TermInOffices.FirstOrDefault(dt => dt.Id == id);
             var listIndex = MockDb.TermInOffices.IndexOf(termInOfficesToDelete);
-            if(listIndex > -1)
+            if (listIndex > -1)
                 MockDb.TermInOffices.RemoveAt(listIndex);
         }
 

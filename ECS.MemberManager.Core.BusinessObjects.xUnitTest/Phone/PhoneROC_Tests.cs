@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using Csla;
 using ECS.MemberManager.Core.EF.Domain;
 using Xunit;
@@ -17,12 +16,12 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             phoneToLoad.Id = ID_VALUE;
 
             var phone = await PhoneROC.GetPhoneROC(phoneToLoad);
-            
+
             Assert.NotNull(phone);
             Assert.IsType<PhoneROC>(phone);
-            Assert.Equal(phoneToLoad.Id,phone.Id);
-            Assert.Equal(phoneToLoad.PhoneType,phone.PhoneType);
-            Assert.Equal(phoneToLoad.AreaCode,phone.AreaCode);
+            Assert.Equal(phoneToLoad.Id, phone.Id);
+            Assert.Equal(phoneToLoad.PhoneType, phone.PhoneType);
+            Assert.Equal(phoneToLoad.AreaCode, phone.AreaCode);
             Assert.Equal(phoneToLoad.Number, phone.Number);
             Assert.Equal(phoneToLoad.Extension, phone.Extension);
             Assert.Equal(phoneToLoad.DisplayOrder, phone.DisplayOrder);
@@ -46,7 +45,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             phone.Notes = "notes for doctype";
 
             return phone;
-        }        
-
+        }
     }
 }

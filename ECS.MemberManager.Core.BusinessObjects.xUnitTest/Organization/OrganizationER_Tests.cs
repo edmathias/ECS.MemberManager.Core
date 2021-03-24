@@ -1,5 +1,4 @@
 using System;
-using System.Data;
 using System.IO;
 using System.Threading.Tasks;
 using Csla;
@@ -24,9 +23,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
-                   MockDb.ResetMockDb();
+
+            if (testLibrary == "Mock")
+                MockDb.ResetMockDb();
             else
             {
                 if (!IsDatabaseBuilt)
@@ -105,8 +104,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(organization);
             Assert.True(isObjectValidInit);
             Assert.False(organization.IsValid);
-            Assert.Equal("Name",organization.BrokenRulesCollection[0].Property);
-            Assert.Equal("Name required",organization.BrokenRulesCollection[0].Description);
+            Assert.Equal("Name", organization.BrokenRulesCollection[0].Property);
+            Assert.Equal("Name required", organization.BrokenRulesCollection[0].Description);
         }
 
         [Fact]
@@ -115,14 +114,14 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var organization = await OrganizationER.NewOrganizationER();
             await BuildValidOrganization(organization);
             organization.Name = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
-                                    "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
-                                    "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
-                                    "Duis aute irure dolor in reprehenderit";
+                                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                                "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
+                                "Duis aute irure dolor in reprehenderit";
 
             Assert.NotNull(organization);
             Assert.False(organization.IsValid);
-            Assert.Equal("Name",organization.BrokenRulesCollection[0].Property);
-            Assert.Equal("Name can not exceed 50 characters",organization.BrokenRulesCollection[0].Description);
+            Assert.Equal("Name", organization.BrokenRulesCollection[0].Property);
+            Assert.Equal("Name can not exceed 50 characters", organization.BrokenRulesCollection[0].Description);
         }
 
         [Fact]
@@ -136,8 +135,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(organization);
             Assert.True(isObjectValidInit);
             Assert.False(organization.IsValid);
-            Assert.Equal("LastUpdatedBy",organization.BrokenRulesCollection[0].Property);
-            Assert.Equal("LastUpdatedBy required",organization.BrokenRulesCollection[0].Description);
+            Assert.Equal("LastUpdatedBy", organization.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy required", organization.BrokenRulesCollection[0].Description);
         }
 
         [Fact]
@@ -145,17 +144,19 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             var organization = await OrganizationER.NewOrganizationER();
             await BuildValidOrganization(organization);
-            organization.LastUpdatedBy = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
-                                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
-                                "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
-                                "Duis aute irure dolor in reprehenderit";
+            organization.LastUpdatedBy =
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
+                "Duis aute irure dolor in reprehenderit";
 
             Assert.NotNull(organization);
             Assert.False(organization.IsValid);
-            Assert.Equal("LastUpdatedBy",organization.BrokenRulesCollection[0].Property);
-            Assert.Equal("LastUpdatedBy can not exceed 255 characters",organization.BrokenRulesCollection[0].Description);
+            Assert.Equal("LastUpdatedBy", organization.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy can not exceed 255 characters",
+                organization.BrokenRulesCollection[0].Description);
         }
-  
+
         [Fact]
         public async Task OrganizationER_OrganizationTypeRequired()
         {
@@ -167,10 +168,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(organization);
             Assert.True(isObjectValidInit);
             Assert.False(organization.IsValid);
-            Assert.Equal("OrganizationType",organization.BrokenRulesCollection[0].Property);
-            Assert.Equal("OrganizationType required",organization.BrokenRulesCollection[0].Description);
+            Assert.Equal("OrganizationType", organization.BrokenRulesCollection[0].Property);
+            Assert.Equal("OrganizationType required", organization.BrokenRulesCollection[0].Description);
         }
-        
+
         [Fact]
         public async Task OrganizationER_TestInvalidSave()
         {
@@ -180,19 +181,19 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.False(organization.IsValid);
             await Assert.ThrowsAsync<ValidationException>(() => organization.SaveAsync());
         }
-    
+
         [Fact]
         public async Task OrganizationER_TestSaveOutOfOrder()
         {
             var organization1 = await OrganizationER.GetOrganizationER(1);
             var organization2 = await OrganizationER.GetOrganizationER(1);
-            organization1.Notes = "set up timestamp issue";  // turn on IsDirty
+            organization1.Notes = "set up timestamp issue"; // turn on IsDirty
             organization2.Notes = "set up timestamp issue";
 
             var organization2_2 = await organization2.SaveAsync();
-            
+
             Assert.NotEqual(organization2_2.RowVersion, organization1.RowVersion);
-            Assert.Equal("set up timestamp issue",organization2_2.Notes);
+            Assert.Equal("set up timestamp issue", organization2_2.Notes);
             await Assert.ThrowsAsync<DataPortalException>(() => organization1.SaveAsync());
         }
 
@@ -200,17 +201,17 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         public async Task OrganizationER_TestSubsequentSaves()
         {
             var organization = await OrganizationER.GetOrganizationER(1);
-            organization.Notes = "set up timestamp issue";  // turn on IsDirty
+            organization.Notes = "set up timestamp issue"; // turn on IsDirty
 
             var organization2 = await organization.SaveAsync();
             var rowVersion1 = organization2.RowVersion;
             organization2.Notes = "another timestamp trigger";
 
             var organization3 = await organization2.SaveAsync();
-            
+
             Assert.NotEqual(organization2.RowVersion, organization3.RowVersion);
         }
-        
+
         [Fact]
         public async Task OrganizationER_InvalidGet()
         {
@@ -220,7 +221,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         private async Task BuildValidOrganization(OrganizationER organization)
         {
             organization.Name = "organization name";
-            organization.OrganizationType = await OrganizationTypeEC.GetOrganizationTypeEC(new OrganizationType() {Id = 1});
+            organization.OrganizationType =
+                await OrganizationTypeEC.GetOrganizationTypeEC(new OrganizationType() {Id = 1});
             organization.Notes = "notes for org";
             organization.LastUpdatedBy = "edm";
             organization.LastUpdatedDate = DateTime.Now;

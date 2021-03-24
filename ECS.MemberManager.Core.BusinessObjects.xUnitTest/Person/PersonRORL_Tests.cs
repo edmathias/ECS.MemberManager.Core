@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Threading.Tasks;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using Microsoft.Extensions.Configuration;
@@ -19,8 +18,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
+
+            if (testLibrary == "Mock")
                 MockDb.ResetMockDb();
             else
             {
@@ -37,7 +36,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         private async void PersonRORL_TestGetPersonRORL()
         {
             var personTypeInfoList = await PersonRORL.GetPersonRORL();
-            
+
             Assert.NotNull(personTypeInfoList);
             Assert.True(personTypeInfoList.IsReadOnly);
             Assert.Equal(3, personTypeInfoList.Count);
