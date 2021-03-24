@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -38,9 +37,9 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
         {
             var sql = "select * from TermInOffices tio " +
                       "left join Persons p on tio.PersonId = p.Id " +
-                      "left join Offices o on tio.OfficeId = o.Id "; 
-                      
-            var result = await _db.QueryAsync<TermInOffice,Person,Office,TermInOffice>(sql,
+                      "left join Offices o on tio.OfficeId = o.Id ";
+
+            var result = await _db.QueryAsync<TermInOffice, Person, Office, TermInOffice>(sql,
                 (term, person, office) =>
                 {
                     term.Person = person;
@@ -58,8 +57,8 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                       "left join Persons p on tio.PersonId = p.Id " +
                       "left join Offices o on tio.OfficeId = o.Id " +
                       $"WHERE tio.Id = {id}";
-                      
-            var result = await _db.QueryAsync<TermInOffice,Person,Office,TermInOffice>(sql,
+
+            var result = await _db.QueryAsync<TermInOffice, Person, Office, TermInOffice>(sql,
                 (term, person, office) =>
                 {
                     term.Person = person;
@@ -74,8 +73,8 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
         public async Task<TermInOffice> Insert(TermInOffice eventToInsert)
         {
             var sql =
-                "INSERT INTO [dbo].[TermInOffices] ([PersonId], [OfficeId], [StartDate], [LastUpdatedBy], [LastUpdatedDate], [Notes]) "+
-                "SELECT @PersonId, @OfficeId, @StartDate, @LastUpdatedBy, @LastUpdatedDate, @Notes "+
+                "INSERT INTO [dbo].[TermInOffices] ([PersonId], [OfficeId], [StartDate], [LastUpdatedBy], [LastUpdatedDate], [Notes]) " +
+                "SELECT @PersonId, @OfficeId, @StartDate, @LastUpdatedBy, @LastUpdatedDate, @Notes " +
                 "SELECT SCOPE_IDENTITY()";
             eventToInsert.Id = await _db.ExecuteScalarAsync<int>(sql, new
             {
@@ -86,7 +85,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                 LastUpdatedBy = eventToInsert.LastUpdatedBy,
                 LastUpdatedDate = eventToInsert.LastUpdatedDate,
                 Notes = eventToInsert.Notes
-            } );
+            });
 
             //reretrieve TermInOffice to get rowversion
             var insertedEmail = await _db.GetAsync<TermInOffice>(eventToInsert.Id);
@@ -107,7 +106,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                       "OUTPUT inserted.RowVersion " +
                       "WHERE  [Id] = @Id AND RowVersion = @RowVersion ";
 
-            var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql, new 
+            var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql, new
             {
                 Id = eventToUpdate.Id,
                 PersonId = eventToUpdate.Person.Id,
@@ -118,7 +117,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                 Notes = eventToUpdate.Notes,
                 RowVersion = eventToUpdate.RowVersion
             });
-            
+
             if (rowVersion == null)
                 throw new DBConcurrencyException("Entity has been updated since last read. Try again!");
             eventToUpdate.RowVersion = rowVersion;

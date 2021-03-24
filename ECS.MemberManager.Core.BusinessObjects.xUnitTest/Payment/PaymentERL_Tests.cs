@@ -2,13 +2,9 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Csla;
-using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.ADO;
-using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using ECS.MemberManager.Core.EF.Domain;
-using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Xunit;
 
@@ -26,8 +22,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
+
+            if (testLibrary == "Mock")
                 MockDb.ResetMockDb();
             else
             {
@@ -48,7 +44,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(paymentEdit);
             Assert.IsType<PaymentERL>(paymentEdit);
         }
-        
+
         [Fact]
         private async void PaymentERL_TestGetPaymentERL()
         {
@@ -57,7 +53,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(paymentEdit);
             Assert.Equal(3, paymentEdit.Count);
         }
-        
+
         [Fact]
         private async void PaymentERL_TestDeletePaymentsEntry()
         {
@@ -66,29 +62,29 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var paymentToDelete = paymentEdit.First(et => et.Id == 99);
 
             // remove is deferred delete
-            var isDeleted = paymentEdit.Remove(paymentToDelete); 
+            var isDeleted = paymentEdit.Remove(paymentToDelete);
 
             var paymentListAfterDelete = await paymentEdit.SaveAsync();
 
             Assert.NotNull(paymentListAfterDelete);
             Assert.IsType<PaymentERL>(paymentListAfterDelete);
             Assert.True(isDeleted);
-            Assert.NotEqual(listCount,paymentListAfterDelete.Count);
+            Assert.NotEqual(listCount, paymentListAfterDelete.Count);
         }
 
         [Fact]
         private async void PaymentERL_TestUpdatePaymentsEntry()
         {
             const int idToUpdate = 1;
-            
+
             var paymentEditList = await PaymentERL.GetPaymentERL();
             var countBeforeUpdate = paymentEditList.Count;
             var paymentToUpdate = paymentEditList.First(a => a.Id == idToUpdate);
             paymentToUpdate.Notes = "This was updated";
 
             var updatedList = await paymentEditList.SaveAsync();
-            
-            Assert.Equal("This was updated",updatedList.First(a => a.Id == idToUpdate).Notes);
+
+            Assert.Equal("This was updated", updatedList.First(a => a.Id == idToUpdate).Notes);
             Assert.Equal(countBeforeUpdate, updatedList.Count);
         }
 
@@ -97,12 +93,12 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             var paymentEditList = await PaymentERL.GetPaymentERL();
             var countBeforeAdd = paymentEditList.Count;
-            
+
             var paymentToAdd = paymentEditList.AddNew();
             BuildPayment(paymentToAdd);
 
             var updatedPaymentsList = await paymentEditList.SaveAsync();
-            
+
             Assert.NotEqual(countBeforeAdd, updatedPaymentsList.Count);
         }
 
@@ -115,14 +111,12 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             payment.Notes = "notes here";
             payment.PaymentDate = DateTime.Now;
             payment.PaymentExpirationDate = DateTime.Now;
-            payment.PaymentSource = await PaymentSourceEC.GetPaymentSourceEC( new PaymentSource() {Id = 1});
+            payment.PaymentSource = await PaymentSourceEC.GetPaymentSourceEC(new PaymentSource() {Id = 1});
             payment.PaymentSource.Description = "Source 1";
             payment.PaymentSource.Notes = "source notes";
             payment.PaymentType = await PaymentTypeEC.GetPaymentTypeEC(new PaymentType() {Id = 1});
             payment.PaymentType.Description = "type description";
             payment.PaymentType.Notes = "notes for type";
         }
-        
- 
     }
 }

@@ -20,8 +20,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
+
+            if (testLibrary == "Mock")
                 MockDb.ResetMockDb();
             else
             {
@@ -42,64 +42,64 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(membershipTypeEdit);
             Assert.IsType<MembershipTypeERL>(membershipTypeEdit);
         }
-        
+
         [Fact]
         private async void MembershipTypeERL_TestGetMembershipTypeERL()
         {
-            var membershipTypeEdit = 
+            var membershipTypeEdit =
                 await MembershipTypeERL.GetMembershipTypeERL();
 
             Assert.NotNull(membershipTypeEdit);
             Assert.Equal(3, membershipTypeEdit.Count);
         }
-        
+
         [Fact]
         private async void MembershipTypeERL_TestDeleteMembershipTypeERL()
         {
             const int ID_TO_DELETE = 99;
-            var membershipTypeList = 
+            var membershipTypeList =
                 await MembershipTypeERL.GetMembershipTypeERL();
             var listCount = membershipTypeList.Count;
             var membershipTypeToDelete = membershipTypeList.First(cl => cl.Id == ID_TO_DELETE);
             // remove is deferred delete
-            var isDeleted = membershipTypeList.Remove(membershipTypeToDelete); 
+            var isDeleted = membershipTypeList.Remove(membershipTypeToDelete);
 
             var membershipTypeListAfterDelete = await membershipTypeList.SaveAsync();
 
             Assert.NotNull(membershipTypeListAfterDelete);
             Assert.IsType<MembershipTypeERL>(membershipTypeListAfterDelete);
             Assert.True(isDeleted);
-            Assert.NotEqual(listCount,membershipTypeListAfterDelete.Count);
+            Assert.NotEqual(listCount, membershipTypeListAfterDelete.Count);
         }
 
         [Fact]
         private async void MembershipTypeERL_TestUpdateMembershipTypeERL()
         {
             const int ID_TO_UPDATE = 1;
-            
-            var membershipTypeList = 
+
+            var membershipTypeList =
                 await MembershipTypeERL.GetMembershipTypeERL();
             var countBeforeUpdate = membershipTypeList.Count;
             var membershipTypeToUpdate = membershipTypeList.First(cl => cl.Id == ID_TO_UPDATE);
             membershipTypeToUpdate.Notes = "Updated Notes";
-            
+
             var updatedList = await membershipTypeList.SaveAsync();
-            
+
             Assert.Equal(countBeforeUpdate, updatedList.Count);
         }
 
         [Fact]
         private async void MembershipTypeERL_TestAddMembershipTypeERL()
         {
-            var membershipTypeList = 
+            var membershipTypeList =
                 await MembershipTypeERL.GetMembershipTypeERL();
             var countBeforeAdd = membershipTypeList.Count;
-            
+
             var membershipTypeToAdd = membershipTypeList.AddNew();
             BuildMembershipType(membershipTypeToAdd);
 
             var updatedMembershipTypeList = await membershipTypeList.SaveAsync();
-            
+
             Assert.NotEqual(countBeforeAdd, updatedMembershipTypeList.Count);
         }
 
@@ -111,6 +111,5 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             membershipTypeToBuild.LastUpdatedDate = DateTime.Now;
             membershipTypeToBuild.Notes = "notes for doctype";
         }
-        
     }
 }

@@ -19,15 +19,15 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             return MockDb.TaskForEvents.ToList();
         }
 
-        public async Task<TaskForEvent> Insert( TaskForEvent taskForEvent)
+        public async Task<TaskForEvent> Insert(TaskForEvent taskForEvent)
         {
             var lastTaskForEvent = MockDb.TaskForEvents.ToList().OrderByDescending(dt => dt.Id).First();
-            taskForEvent.Id = 1+lastTaskForEvent.Id;
+            taskForEvent.Id = 1 + lastTaskForEvent.Id;
             taskForEvent.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
-            
+
             MockDb.TaskForEvents.Add(taskForEvent);
 
-            taskForEvent.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks); 
+            taskForEvent.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
             return taskForEvent;
         }
 
@@ -37,9 +37,9 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 MockDb.TaskForEvents.FirstOrDefault(em => em.Id == taskForEvent.Id &&
                                                           em.RowVersion.SequenceEqual(taskForEvent.RowVersion));
 
-            if(taskForEventToUpdate == null)
+            if (taskForEventToUpdate == null)
                 throw new Csla.DataPortalException(null);
-           
+
             taskForEventToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
             return taskForEventToUpdate;
         }
@@ -48,7 +48,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             var taskForEventsToDelete = MockDb.TaskForEvents.FirstOrDefault(dt => dt.Id == id);
             var listIndex = MockDb.TaskForEvents.IndexOf(taskForEventsToDelete);
-            if(listIndex > -1)
+            if (listIndex > -1)
                 MockDb.TaskForEvents.RemoveAt(listIndex);
         }
 

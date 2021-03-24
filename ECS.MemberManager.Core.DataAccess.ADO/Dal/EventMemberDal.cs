@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -38,9 +37,9 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
         {
             var sql = "select * from EventMembers em " +
                       "left join MemberInfo mi on em.MemberInfoId = mi.Id " +
-                      "left join Events ev on em.EventId = ev.Id "; 
-                      
-            var result = await _db.QueryAsync<EventMember,MemberInfo,Event,EventMember>(sql,
+                      "left join Events ev on em.EventId = ev.Id ";
+
+            var result = await _db.QueryAsync<EventMember, MemberInfo, Event, EventMember>(sql,
                 (eventMember, memberInfo, eventObj) =>
                 {
                     eventMember.MemberInfo = memberInfo;
@@ -57,9 +56,9 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             var sql = "select * from EventMembers em " +
                       "left join MemberInfo mi on em.MemberInfoId = mi.Id " +
                       "left join Events ev on em.EventId = ev.Id " +
-                      $"where em.Id={id}"; 
-                      
-            var result = await _db.QueryAsync<EventMember,MemberInfo,Event,EventMember>(sql,
+                      $"where em.Id={id}";
+
+            var result = await _db.QueryAsync<EventMember, MemberInfo, Event, EventMember>(sql,
                 (eventMember, memberInfo, eventObj) =>
                 {
                     eventMember.MemberInfo = memberInfo;
@@ -75,7 +74,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
         {
             var sql =
                 "INSERT INTO [dbo].[EventMembers] ([MemberInfoId], [EventId], [Role], [LastUpdatedBy], [LastUpdatedDate], [Notes]) " +
-                "SELECT @MemberInfoId, @EventId, @Role, @LastUpdatedBy, @LastUpdatedDate, @Notes "+
+                "SELECT @MemberInfoId, @EventId, @Role, @LastUpdatedBy, @LastUpdatedDate, @Notes " +
                 "SELECT SCOPE_IDENTITY()";
             eventToInsert.Id = await _db.ExecuteScalarAsync<int>(sql, new
             {
@@ -85,7 +84,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                 LastUpdatedBy = eventToInsert.LastUpdatedBy,
                 LastUpdatedDate = eventToInsert.LastUpdatedDate,
                 Notes = eventToInsert.Notes
-            } );
+            });
 
             //reretrieve EventMember to get rowversion
             var insertedEmail = await _db.GetAsync<EventMember>(eventToInsert.Id);
@@ -96,17 +95,17 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
 
         public async Task<EventMember> Update(EventMember eventToUpdate)
         {
-            var sql = "UPDATE [dbo].[EventMembers] "+
-            "SET    [MemberInfoId] = @MemberInfoId, "+
-            "[EventId] = @EventId, "+
-            "[Role] = @Role, "+
-            "[LastUpdatedBy] = @LastUpdatedBy, "+
-            "[LastUpdatedDate] = @LastUpdatedDate, "+
-            "[Notes] = @Notes "+
-            "OUTPUT inserted.RowVersion " +
-            "WHERE  [Id] = @Id AND RowVersion = @RowVersion ";
+            var sql = "UPDATE [dbo].[EventMembers] " +
+                      "SET    [MemberInfoId] = @MemberInfoId, " +
+                      "[EventId] = @EventId, " +
+                      "[Role] = @Role, " +
+                      "[LastUpdatedBy] = @LastUpdatedBy, " +
+                      "[LastUpdatedDate] = @LastUpdatedDate, " +
+                      "[Notes] = @Notes " +
+                      "OUTPUT inserted.RowVersion " +
+                      "WHERE  [Id] = @Id AND RowVersion = @RowVersion ";
 
-            var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql, new 
+            var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql, new
             {
                 Id = eventToUpdate.Id,
                 MemberInfoId = eventToUpdate.MemberInfo.Id,
@@ -117,7 +116,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                 Notes = eventToUpdate.Notes,
                 RowVersion = eventToUpdate.RowVersion
             });
-            
+
             if (rowVersion == null)
                 throw new DBConcurrencyException("Entity has been updated since last read. Try again!");
             eventToUpdate.RowVersion = rowVersion;

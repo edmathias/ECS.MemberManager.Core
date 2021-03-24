@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Transactions;
 using Dapper;
 using Dapper.Contrib.Extensions;
 using ECS.MemberManager.Core.DataAccess.Dal;
@@ -37,9 +35,10 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
 
         public async Task<List<DocumentType>> Fetch()
         {
-            var documentTypeTypes =await _db.GetAllAsync<DocumentType>();
+            var documentTypeTypes = await _db.GetAllAsync<DocumentType>();
             return documentTypeTypes.ToList();
         }
+
         public async Task<DocumentType> Fetch(int id)
         {
             return await _db.GetAsync<DocumentType>(id);

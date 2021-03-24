@@ -1,9 +1,7 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Mock;
-using ECS.MemberManager.Core.EF.Domain;
 using Microsoft.Extensions.Configuration;
 using Xunit;
 
@@ -21,8 +19,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
+
+            if (testLibrary == "Mock")
                 MockDb.ResetMockDb();
             else
             {
@@ -43,34 +41,34 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(titleOfPersonEdit);
             Assert.IsType<TitleERL>(titleOfPersonEdit);
         }
-        
+
         [Fact]
         private async void TitleERL_TestGetTitleERL()
         {
-            var titleOfPersonEdit = 
+            var titleOfPersonEdit =
                 await TitleERL.GetTitleERL();
 
             Assert.NotNull(titleOfPersonEdit);
             Assert.Equal(3, titleOfPersonEdit.Count);
         }
-        
+
         [Fact]
         private async void TitleERL_TestDeleteTitleERL()
         {
             const int ID_TO_DELETE = 99;
-            var titleList = 
+            var titleList =
                 await TitleERL.GetTitleERL();
             var listCount = titleList.Count;
             var titleToDelete = titleList.First(cl => cl.Id == ID_TO_DELETE);
             // remove is deferred delete
-            var isDeleted = titleList.Remove(titleToDelete); 
+            var isDeleted = titleList.Remove(titleToDelete);
 
             var titleOfPersonListAfterDelete = await titleList.SaveAsync();
 
             Assert.NotNull(titleOfPersonListAfterDelete);
             Assert.IsType<TitleERL>(titleOfPersonListAfterDelete);
             Assert.True(isDeleted);
-            Assert.NotEqual(listCount,titleOfPersonListAfterDelete.Count);
+            Assert.NotEqual(listCount, titleOfPersonListAfterDelete.Count);
         }
 
         [Fact]
@@ -78,12 +76,12 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             const int ID_TO_UPDATE = 1;
             const string DESCRIPTION_UPDATE = "Updated description";
-            
-            var titleList = 
+
+            var titleList =
                 await TitleERL.GetTitleERL();
             var titleOfPersonToUpdate = titleList.First(cl => cl.Id == ID_TO_UPDATE);
             titleOfPersonToUpdate.Description = DESCRIPTION_UPDATE;
-            
+
             var updatedList = await titleList.SaveAsync();
             var updatedEMail = updatedList.First(el => el.Id == ID_TO_UPDATE);
 
@@ -95,15 +93,15 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         private async void TitleERL_TestAddTitleERL()
         {
-            var titleList = 
+            var titleList =
                 await TitleERL.GetTitleERL();
             var countBeforeAdd = titleList.Count;
-            
+
             var titleOfPersonToAdd = titleList.AddNew();
             BuildTitle(titleOfPersonToAdd);
 
             var updatedCategoryList = await titleList.SaveAsync();
-            
+
             Assert.NotEqual(countBeforeAdd, updatedCategoryList.Count);
         }
 
@@ -113,6 +111,5 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             titleToBuild.Description = "description for title";
             titleToBuild.DisplayOrder = 1;
         }
-        
     }
 }

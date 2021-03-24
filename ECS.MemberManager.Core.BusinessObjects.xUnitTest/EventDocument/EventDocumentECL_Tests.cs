@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.ADO;
@@ -12,7 +11,7 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class EventDocumentECL_Tests 
+    public class EventDocumentECL_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
@@ -24,8 +23,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
+
+            if (testLibrary == "Mock")
                 MockDb.ResetMockDb();
             else
             {
@@ -37,7 +36,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 }
             }
         }
-        
+
         [Fact]
         private async void EventDocumentECL_TestEventDocumentECL()
         {
@@ -47,16 +46,16 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.IsType<EventDocumentECL>(eventDocumentObjEdit);
         }
 
-        
+
         [Fact]
         private async void EventDocumentECL_TestGetEventDocumentECL()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEventDocumentDal>();
             var childData = await dal.Fetch();
-            
+
             var listToTest = await EventDocumentECL.GetEventDocumentECL(childData);
-            
+
             Assert.NotNull(listToTest);
             Assert.Equal(3, listToTest.Count);
         }
@@ -64,7 +63,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         private async Task BuildEventDocument(EventDocumentEC eventDocumentObj)
         {
             eventDocumentObj.DocumentName = "eventDocument name";
-            eventDocumentObj.Event = await EventEC.GetEventEC(new Event() { Id = 1 });
+            eventDocumentObj.Event = await EventEC.GetEventEC(new Event() {Id = 1});
             eventDocumentObj.DocumentType = await DocumentTypeEC.GetDocumentTypeEC(new DocumentType() {Id = 1});
             eventDocumentObj.Notes = "eventDocument notes";
             eventDocumentObj.PathAndFileName = "C:\\pathandfilename";
@@ -72,6 +71,5 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             eventDocumentObj.LastUpdatedDate = DateTime.Now;
             eventDocumentObj.Notes = "notes for eventdocument";
         }
-        
     }
 }

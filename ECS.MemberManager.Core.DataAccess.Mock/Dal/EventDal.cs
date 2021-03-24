@@ -25,24 +25,24 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         public async Task<Event> Insert(Event eventToInsert)
         {
-            var lastEvent = MockDb.Events.ToList().OrderByDescending(e =>e.Id).First();
-            eventToInsert.Id = 1+lastEvent.Id;
+            var lastEvent = MockDb.Events.ToList().OrderByDescending(e => e.Id).First();
+            eventToInsert.Id = 1 + lastEvent.Id;
             eventToInsert.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
-            
+
             MockDb.Events.Add(eventToInsert);
-            
-            return eventToInsert;        
+
+            return eventToInsert;
         }
 
         public async Task<Event> Update(Event eventUpdate)
         {
             var eventToUpdate =
                 MockDb.Events.FirstOrDefault(em => em.Id == eventUpdate.Id &&
-                                                               em.RowVersion.SequenceEqual(eventUpdate.RowVersion));
+                                                   em.RowVersion.SequenceEqual(eventUpdate.RowVersion));
 
-            if(eventToUpdate == null)
+            if (eventToUpdate == null)
                 throw new Csla.DataPortalException(null);
-           
+
             eventToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
             return eventToUpdate;
         }
@@ -51,7 +51,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             var eventToDelete = MockDb.Events.FirstOrDefault(e => e.Id == id);
             var listIndex = MockDb.Events.IndexOf(eventToDelete);
-            if(listIndex > -1)
+            if (listIndex > -1)
                 MockDb.Events.RemoveAt(listIndex);
         }
     }

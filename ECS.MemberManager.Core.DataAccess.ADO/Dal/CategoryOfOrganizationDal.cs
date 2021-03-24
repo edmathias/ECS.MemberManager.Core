@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,7 +24,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var cnxnString = _config.GetConnectionString("LocalDbConnection");
-            
+
             _db = new SqlConnection(cnxnString);
         }
 
@@ -33,9 +32,10 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
         {
             _db = cnxn;
         }
+
         public async Task<List<CategoryOfOrganization>> Fetch()
         {
-            var category =await _db.GetAllAsync<CategoryOfOrganization>();
+            var category = await _db.GetAllAsync<CategoryOfOrganization>();
             return category.ToList();
         }
 
@@ -49,11 +49,11 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             var sql = "INSERT INTO CategoryOfOrganizations (Category, DisplayOrder) " +
                       "VALUES(@Category, @DisplayOrder);" +
                       "SELECT SCOPE_IDENTITY()";
-            categoryToInsert.Id = await _db.ExecuteScalarAsync<int>(sql,categoryToInsert);
+            categoryToInsert.Id = await _db.ExecuteScalarAsync<int>(sql, categoryToInsert);
 
             var insertedEmail = await _db.GetAsync<CategoryOfOrganization>(categoryToInsert.Id);
             categoryToInsert.RowVersion = insertedEmail.RowVersion;
-            
+
             return categoryToInsert;
         }
 
@@ -65,11 +65,11 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                       "OUTPUT inserted.RowVersion " +
                       "WHERE Id = @Id AND RowVersion = @RowVersion ";
 
-            var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql,categoryToUpdate);
+            var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql, categoryToUpdate);
             if (rowVersion == null)
                 throw new DBConcurrencyException("Entity has been updated since last read. Try again!");
             categoryToUpdate.RowVersion = rowVersion;
-            
+
             return categoryToUpdate;
         }
 
@@ -77,11 +77,10 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
         {
             await _db.DeleteAsync<CategoryOfOrganization>(new CategoryOfOrganization() {Id = id});
         }
-        
+
         public void Dispose()
         {
-            _db.Dispose(); 
+            _db.Dispose();
         }
-  
     }
 }

@@ -1,12 +1,10 @@
 ﻿using System;
-using System.ComponentModel;
-using Csla;
 using ECS.MemberManager.Core.EF.Domain;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class DocumentTypeROC_Tests
+    public class DocumentTypeROC_Tests : CslaBaseTest
     {
         [Fact]
         public async void DocumentTypeROC_TestGetChild()
@@ -17,7 +15,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             docType.Id = ID_VALUE;
 
             var documentType = await DocumentTypeROC.GetDocumentTypeROC(docType);
-            
+
             Assert.NotNull(documentType);
             Assert.IsType<DocumentTypeROC>(documentType);
             Assert.Equal(documentType.Id, documentType.Id);
@@ -38,8 +36,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             documentType.Notes = "notes for doctype";
 
             return documentType;
-        }        
-        
-
+        }
     }
 }

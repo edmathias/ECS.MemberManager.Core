@@ -1,18 +1,13 @@
-﻿
-
-
-using System; 
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
-using ECS.MemberManager.Core.DataAccess;
-using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class PhoneECL : BusinessListBase<PhoneECL,PhoneEC>
+    public partial class PhoneECL : BusinessListBase<PhoneECL, PhoneEC>
     {
         #region Factory Methods
 
@@ -21,7 +16,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             return await DataPortal.CreateChildAsync<PhoneECL>();
         }
 
-        internal static async Task<PhoneECL> GetPhoneECL(List<Phone> childData)
+        internal static async Task<PhoneECL> GetPhoneECL(IList<Phone> childData)
         {
             return await DataPortal.FetchChildAsync<PhoneECL>(childData);
         }
@@ -29,11 +24,10 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #endregion
 
         #region Data Access
- 
-        [FetchChild]
-        private async Task Fetch(List<Phone> childData)
-        {
 
+        [FetchChild]
+        private async Task Fetch(IList<Phone> childData)
+        {
             using (LoadListMode)
             {
                 foreach (var domainObjToAdd in childData)
@@ -43,7 +37,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 }
             }
         }
-       
+
         [Update]
         private void Update()
         {
@@ -51,6 +45,5 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         #endregion
-
-     }
+    }
 }

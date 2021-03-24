@@ -1,8 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Dal;
@@ -12,7 +9,7 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class EventECL_Tests 
+    public class EventECL_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
@@ -24,8 +21,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
+
+            if (testLibrary == "Mock")
                 MockDb.ResetMockDb();
             else
             {
@@ -37,7 +34,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 }
             }
         }
-        
+
         [Fact]
         private async void EventECL_TestEventECL()
         {
@@ -47,16 +44,16 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.IsType<EventECL>(eventObjEdit);
         }
 
-        
+
         [Fact]
         private async void EventECL_TestGetEventECL()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEventDal>();
             var childData = await dal.Fetch();
-            
+
             var listToTest = await EventECL.GetEventECL(childData);
-            
+
             Assert.NotNull(listToTest);
             Assert.Equal(3, listToTest.Count);
         }
@@ -70,6 +67,5 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             eventObj.LastUpdatedDate = DateTime.Now;
             eventObj.NextDate = DateTime.Now;
         }
-        
     }
 }

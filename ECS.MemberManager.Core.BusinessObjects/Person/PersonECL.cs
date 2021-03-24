@@ -1,25 +1,20 @@
-﻿
-
-
-//******************************************************************************
+﻿//******************************************************************************
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/18/2021 16:28:34
+// Generated on 03/23/2021 09:57:37
 //******************************************************************************    
 
-using System; 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
-using ECS.MemberManager.Core.DataAccess;
-using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class PersonECL : BusinessListBase<PersonECL,PersonEC>
+    public partial class PersonECL : BusinessListBase<PersonECL, PersonEC>
     {
         #region Factory Methods
 
@@ -28,7 +23,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             return await DataPortal.CreateChildAsync<PersonECL>();
         }
 
-        internal static async Task<PersonECL> GetPersonECL(List<Person> childData)
+        internal static async Task<PersonECL> GetPersonECL(IList<Person> childData)
         {
             return await DataPortal.FetchChildAsync<PersonECL>(childData);
         }
@@ -36,11 +31,10 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #endregion
 
         #region Data Access
- 
-        [FetchChild]
-        private async Task Fetch(List<Person> childData)
-        {
 
+        [FetchChild]
+        private async Task Fetch(IList<Person> childData)
+        {
             using (LoadListMode)
             {
                 foreach (var domainObjToAdd in childData)
@@ -50,7 +44,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 }
             }
         }
-       
+
         [Update]
         private void Update()
         {
@@ -58,6 +52,5 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         #endregion
-
-     }
+    }
 }

@@ -1,18 +1,13 @@
-﻿
-
-
-using System; 
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
-using ECS.MemberManager.Core.DataAccess;
-using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class MemberInfoECL : BusinessListBase<MemberInfoECL,MemberInfoEC>
+    public partial class MemberInfoECL : BusinessListBase<MemberInfoECL, MemberInfoEC>
     {
         #region Factory Methods
 
@@ -21,7 +16,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             return await DataPortal.CreateChildAsync<MemberInfoECL>();
         }
 
-        internal static async Task<MemberInfoECL> GetMemberInfoECL(List<MemberInfo> childData)
+        internal static async Task<MemberInfoECL> GetMemberInfoECL(IList<MemberInfo> childData)
         {
             return await DataPortal.FetchChildAsync<MemberInfoECL>(childData);
         }
@@ -29,11 +24,10 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #endregion
 
         #region Data Access
- 
-        [FetchChild]
-        private async Task Fetch(List<MemberInfo> childData)
-        {
 
+        [FetchChild]
+        private async Task Fetch(IList<MemberInfo> childData)
+        {
             using (LoadListMode)
             {
                 foreach (var domainObjToAdd in childData)
@@ -43,7 +37,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 }
             }
         }
-       
+
         [Update]
         private void Update()
         {
@@ -51,6 +45,5 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         #endregion
-
-     }
+    }
 }

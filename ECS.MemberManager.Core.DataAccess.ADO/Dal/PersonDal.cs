@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Transactions;
 using Dapper;
 using Dapper.Contrib.Extensions;
 using ECS.MemberManager.Core.DataAccess.Dal;
@@ -41,8 +39,8 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             var sql = "select * from Persons " +
                       "left join Titles on Persons.TitleId = Titles.Id " +
                       "left join EMails on  Persons.EMailId = EMails.Id";
-                      
-            var result = await _db.QueryAsync<Person,Title,EMail,Person>(sql,
+
+            var result = await _db.QueryAsync<Person, Title, EMail, Person>(sql,
                 (person, title, email) =>
                 {
                     person.Title = title;
@@ -53,14 +51,15 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
 
             return result.ToList();
         }
+
         public async Task<Person> Fetch(int id)
         {
             var sql = "select * from Persons " +
                       "left join Titles on Persons.TitleId = Titles.Id " +
                       "left join EMails on  Persons.EMailId = EMails.Id " +
                       $"where Persons.Id = {id}";
-                      
-            var result = await _db.QueryAsync<Person,Title,EMail,Person>(sql,
+
+            var result = await _db.QueryAsync<Person, Title, EMail, Person>(sql,
                 (person, title, email) =>
                 {
                     person.Title = title;
@@ -137,7 +136,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                 RowVersion = personToUpdate.RowVersion,
                 EMailId = personToUpdate.EMail.Id
             });
-            
+
             if (rowVersion == null)
                 throw new DBConcurrencyException("Entity has been updated since last read. Try again!");
             personToUpdate.RowVersion = rowVersion;

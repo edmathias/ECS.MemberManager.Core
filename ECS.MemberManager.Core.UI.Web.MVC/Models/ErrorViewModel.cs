@@ -1,5 +1,3 @@
-using System;
-
 namespace ECS.MemberManager.Core.UI.Web.MVC.Models
 {
     public class ErrorViewModel

@@ -1,18 +1,12 @@
-﻿
-
-
-using System; 
-using System.Collections.Generic;
+﻿using System;
 using System.Threading.Tasks;
 using Csla;
-using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
-using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class OrganizationTypeERL : BusinessListBase<OrganizationTypeERL,OrganizationTypeEC>
+    public partial class OrganizationTypeERL : BusinessListBase<OrganizationTypeERL, OrganizationTypeEC>
     {
         #region Factory Methods
 
@@ -21,7 +15,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             return await DataPortal.CreateAsync<OrganizationTypeERL>();
         }
 
-        public static async Task<OrganizationTypeERL> GetOrganizationTypeERL( )
+        public static async Task<OrganizationTypeERL> GetOrganizationTypeERL()
         {
             return await DataPortal.FetchAsync<OrganizationTypeERL>();
         }
@@ -29,7 +23,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #endregion
 
         #region Data Access
- 
+
         [Fetch]
         private async Task Fetch([Inject] IOrganizationTypeDal dal)
         {
@@ -44,7 +38,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 }
             }
         }
-       
+
         [Update]
         private void Update()
         {
@@ -52,6 +46,5 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         #endregion
-
-     }
+    }
 }

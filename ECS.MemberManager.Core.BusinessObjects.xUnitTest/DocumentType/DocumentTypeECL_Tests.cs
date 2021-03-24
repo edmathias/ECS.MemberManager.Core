@@ -1,43 +1,12 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Csla.Rules;
-using ECS.MemberManager.Core.DataAccess;
-using ECS.MemberManager.Core.DataAccess.ADO;
-using ECS.MemberManager.Core.DataAccess.Dal;
-using ECS.MemberManager.Core.DataAccess.Mock;
-using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
+using ECS.MemberManager.Core.EF.Domain;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class DocumentTypeECL_Tests 
+    public class DocumentTypeECL_Tests : CslaBaseTest
     {
-        private IConfigurationRoot _config = null;
-        private bool IsDatabaseBuilt = false;
-
-        public DocumentTypeECL_Tests()
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            _config = builder.Build();
-            var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
-                MockDb.ResetMockDb();
-            else
-            {
-                if (!IsDatabaseBuilt)
-                {
-                    var adoDb = new ADODb();
-                    adoDb.BuildMemberManagerADODb();
-                    IsDatabaseBuilt = true;
-                }
-            }
-        }
-        
         [Fact]
         private async void DocumentTypeECL_TestDocumentTypeECL()
         {
@@ -47,16 +16,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.IsType<DocumentTypeECL>(documentTypeEdit);
         }
 
-        
         [Fact]
         private async void DocumentTypeECL_TestGetDocumentTypeECL()
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IDocumentTypeDal>();
-            var childData = await dal.Fetch();
-            
-            var listToTest = await DocumentTypeECL.GetDocumentTypeECL(childData);
-            
+            var listToTest = await DocumentTypeECL.GetDocumentTypeECL(GetDocumentTypes());
+
             Assert.NotNull(listToTest);
             Assert.Equal(3, listToTest.Count);
         }
@@ -68,6 +32,30 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             documentType.LastUpdatedBy = "edm";
             documentType.LastUpdatedDate = DateTime.Now;
         }
-        
+
+        private static IList<DocumentType> GetDocumentTypes()
+        {
+            return new List<DocumentType>
+            {
+                new DocumentType()
+                {
+                    Id = 1, Description = "Document Type A", Notes = String.Empty,
+                    LastUpdatedBy = "edm", LastUpdatedDate = DateTime.Now,
+                    RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
+                },
+                new DocumentType()
+                {
+                    Id = 2, Description = "Document Type B", Notes = "some notes",
+                    LastUpdatedBy = "edm", LastUpdatedDate = DateTime.Now,
+                    RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
+                },
+                new DocumentType()
+                {
+                    Id = 99, Description = "Document Type to Delete", Notes = String.Empty,
+                    LastUpdatedBy = "edm", LastUpdatedDate = DateTime.Now,
+                    RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
+                },
+            };
+        }
     }
 }

@@ -45,7 +45,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.IsType<TaskForEventEC>(eventObj);
             Assert.False(eventObj.IsValid);
         }
-        
+
         [Fact]
         public async Task TestTaskForEventEC_GetTaskForEventEC()
         {
@@ -54,10 +54,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             Assert.NotNull(eventObj);
             Assert.IsType<TaskForEventEC>(eventObj);
-            Assert.Equal(eventObjToLoad.Id,eventObj.Id);
+            Assert.Equal(eventObjToLoad.Id, eventObj.Id);
             Assert.Equal(eventObjToLoad.TaskName, eventObj.TaskName);
             Assert.Equal(new SmartDate(eventObjToLoad.PlannedDate), eventObj.PlannedDate);
-            Assert.Equal(new SmartDate(eventObjToLoad.ActualDate),eventObj.ActualDate);
+            Assert.Equal(new SmartDate(eventObjToLoad.ActualDate), eventObj.ActualDate);
             Assert.Equal(eventObjToLoad.LastUpdatedBy, eventObj.LastUpdatedBy);
             Assert.Equal(new SmartDate(eventObjToLoad.LastUpdatedDate), eventObj.LastUpdatedDate);
             Assert.Equal(eventObjToLoad.Notes, eventObj.Notes);
@@ -72,14 +72,14 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var eventObj = await TaskForEventEC.GetTaskForEventEC(eventObjToTest);
             var isObjectValidInit = eventObj.IsValid;
             eventObj.TaskName = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
-                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
-                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
-                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis ";
+                                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis ";
 
             Assert.NotNull(eventObj);
             Assert.True(isObjectValidInit);
             Assert.False(eventObj.IsValid);
-            Assert.Equal("TaskName",eventObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("TaskName", eventObj.BrokenRulesCollection[0].Property);
         }
 
         [Fact]
@@ -93,23 +93,23 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(eventObj);
             Assert.True(isObjectValidInit);
             Assert.False(eventObj.IsValid);
-            Assert.Equal("LastUpdatedBy",eventObj.BrokenRulesCollection[0].Property);
+            Assert.Equal("LastUpdatedBy", eventObj.BrokenRulesCollection[0].Property);
         }
-      
+
         private TaskForEvent BuildTaskForEvent()
         {
             var eventObj = new TaskForEvent();
             eventObj.Id = 1;
-            eventObj.Event = new Event { Id = 1};
+            eventObj.Event = new Event {Id = 1};
             eventObj.TaskName = "task description";
-            eventObj.PlannedDate = DateTime.Now	;
-            eventObj.ActualDate = DateTime.Now	;
+            eventObj.PlannedDate = DateTime.Now;
+            eventObj.ActualDate = DateTime.Now;
             eventObj.Information = "information";
             eventObj.LastUpdatedBy = "edm";
             eventObj.LastUpdatedDate = DateTime.Now;
             eventObj.Notes = "notes for doctype";
 
             return eventObj;
-        }        
+        }
     }
 }

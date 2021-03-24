@@ -1,8 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Csla.Rules;
+﻿using System.IO;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Dal;
@@ -12,7 +8,7 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class EMailTypeECL_Tests 
+    public class EMailTypeECL_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
@@ -24,8 +20,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
+
+            if (testLibrary == "Mock")
                 MockDb.ResetMockDb();
             else
             {
@@ -37,7 +33,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 }
             }
         }
-        
+
         [Fact]
         private async void EMailTypeECL_TestEMailTypeECL()
         {
@@ -47,16 +43,16 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.IsType<EMailTypeECL>(eMailTypeEdit);
         }
 
-        
+
         [Fact]
         private async void EMailTypeECL_TestGetEMailTypeECL()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IEMailTypeDal>();
             var childData = await dal.Fetch();
-            
+
             var listToTest = await EMailTypeECL.GetEMailTypeECL(childData);
-            
+
             Assert.NotNull(listToTest);
             Assert.Equal(3, listToTest.Count);
         }
@@ -66,6 +62,5 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             eMailType.Description = "doc type description";
             eMailType.Notes = "document type notes";
         }
-        
     }
 }

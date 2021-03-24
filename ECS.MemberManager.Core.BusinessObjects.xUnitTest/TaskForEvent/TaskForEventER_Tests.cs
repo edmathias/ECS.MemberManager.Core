@@ -1,9 +1,7 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Csla;
-using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using ECS.MemberManager.Core.EF.Domain;
@@ -12,7 +10,7 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class TaskForEventER_Tests 
+    public class TaskForEventER_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
@@ -24,8 +22,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
+
+            if (testLibrary == "Mock")
                 MockDb.ResetMockDb();
             else
             {
@@ -61,11 +59,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             var eventObj = await TaskForEventER.GetTaskForEventER(1);
             eventObj.Notes = "These are updated Notes";
-            
-            var result =  await eventObj.SaveAsync();
+
+            var result = await eventObj.SaveAsync();
 
             Assert.NotNull(result);
-            Assert.Equal("These are updated Notes",result.Notes );
+            Assert.Equal("These are updated Notes", result.Notes);
         }
 
         [Fact]
@@ -80,28 +78,28 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             eventObj.ActualDate = DateTime.Now;
             eventObj.Information = "Information line";
             var domainEvent = new Event() {Id = 1};
-            eventObj.Event = await EventEC.GetEventEC(domainEvent); 
+            eventObj.Event = await EventEC.GetEventEC(domainEvent);
 
             var savedTaskForEvent = await eventObj.SaveAsync();
-           
+
             Assert.NotNull(savedTaskForEvent);
             Assert.IsType<TaskForEventER>(savedTaskForEvent);
-            Assert.True( savedTaskForEvent.Id > 0 );
+            Assert.True(savedTaskForEvent.Id > 0);
         }
 
         [Fact]
         public async Task TaskForEventER_TestDeleteObjectFromDatabase()
         {
             const int ID_TO_DELETE = 99;
-            
+
             await TaskForEventER.DeleteTaskForEventER(ID_TO_DELETE);
 
             await Assert.ThrowsAsync<DataPortalException>(() => TaskForEventER.GetTaskForEventER(ID_TO_DELETE));
         }
-        
+
         // test invalid state 
         [Fact]
-        public async Task TaskForEventER_TestTaskNameRequired() 
+        public async Task TaskForEventER_TestTaskNameRequired()
         {
             var eventObj = await TaskForEventER.NewTaskForEventER();
             eventObj.TaskName = "event name";
@@ -120,9 +118,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.False(eventObj.IsValid);
             Assert.Equal("TaskName required",
                 eventObj.BrokenRulesCollection[0].Description);
-            
         }
-       
+
         [Fact]
         public async Task TaskForEventER_TestTaskForEventNameExceedsMaxLengthOf50()
         {
@@ -131,17 +128,17 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             eventObj.LastUpdatedDate = DateTime.Now;
             eventObj.TaskName = "valid length";
             Assert.True(eventObj.IsValid);
-            
-            eventObj.TaskName = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor "+
-                                     "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis "+
-                                     "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "+
-                                     "Duis aute irure dolor in reprehenderit";
+
+            eventObj.TaskName = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+                                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                                "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
+                                "Duis aute irure dolor in reprehenderit";
 
             Assert.NotNull(eventObj);
             Assert.False(eventObj.IsValid);
             Assert.Equal("TaskName can not exceed 50 characters",
                 eventObj.BrokenRulesCollection[0].Description);
-        }        
+        }
         // test exception if attempt to save in invalid state
 
         [Fact]
@@ -150,9 +147,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var eventObj = await TaskForEventER.NewTaskForEventER();
             eventObj.TaskName = String.Empty;
             TaskForEventER savedTaskForEvent = null;
-                
+
             Assert.False(eventObj.IsValid);
-            Assert.Throws<Csla.Rules.ValidationException>(() =>  eventObj.Save());
+            Assert.Throws<Csla.Rules.ValidationException>(() => eventObj.Save());
         }
     }
 }

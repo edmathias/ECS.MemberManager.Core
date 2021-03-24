@@ -20,8 +20,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
+
+            if (testLibrary == "Mock")
                 MockDb.ResetMockDb();
             else
             {
@@ -40,14 +40,13 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IOrganizationTypeDal>();
             var categoryList = await dal.Fetch();
-            
-            var categoryOfOrganizationInfoList = 
+
+            var categoryOfOrganizationInfoList =
                 await OrganizationTypeROCL.GetOrganizationTypeROCL(categoryList);
-            
+
             Assert.NotNull(categoryOfOrganizationInfoList);
             Assert.True(categoryOfOrganizationInfoList.IsReadOnly);
             Assert.Equal(3, categoryOfOrganizationInfoList.Count);
         }
-      
     }
 }

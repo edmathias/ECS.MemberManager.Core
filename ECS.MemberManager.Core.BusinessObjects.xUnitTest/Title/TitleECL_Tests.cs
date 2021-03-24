@@ -1,8 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Csla.Rules;
+﻿using System.IO;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Dal;
@@ -12,7 +8,7 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class TitleECL_Tests 
+    public class TitleECL_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
@@ -24,8 +20,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
+
+            if (testLibrary == "Mock")
                 MockDb.ResetMockDb();
             else
             {
@@ -37,7 +33,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 }
             }
         }
-        
+
         [Fact]
         private async void TitleECL_TestTitleECL()
         {
@@ -46,16 +42,16 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(titleEdit);
             Assert.IsType<TitleECL>(titleEdit);
         }
-        
+
         [Fact]
         private async void TitleECL_TestGetTitleECL()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<ITitleDal>();
             var childData = await dal.Fetch();
-            
+
             var listToTest = await TitleECL.GetTitleECL(childData);
-            
+
             Assert.NotNull(listToTest);
             Assert.Equal(3, listToTest.Count);
         }
@@ -66,6 +62,5 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             title.Description = "test description";
             title.DisplayOrder = 1;
         }
-        
     }
 }

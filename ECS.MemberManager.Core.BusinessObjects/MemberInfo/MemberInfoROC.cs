@@ -1,18 +1,13 @@
-﻿
-
-//******************************************************************************
+﻿//******************************************************************************
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/18/2021 16:28:21
+// Generated on 03/23/2021 09:57:13
 //******************************************************************************    
 
 using System;
-using System.Collections.Generic; 
 using System.Threading.Tasks;
 using Csla;
-using ECS.MemberManager.Core.DataAccess;
-using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
@@ -21,100 +16,118 @@ namespace ECS.MemberManager.Core.BusinessObjects
     public partial class MemberInfoROC : ReadOnlyBase<MemberInfoROC>
     {
         #region Business Methods
- 
+
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
-        public virtual int Id 
+
+        public virtual int Id
         {
-            get => GetProperty(IdProperty); 
-            private set => LoadProperty(IdProperty, value);    
+            get => GetProperty(IdProperty);
+            private set => LoadProperty(IdProperty, value);
         }
 
 
         public static readonly PropertyInfo<PersonROC> PersonProperty = RegisterProperty<PersonROC>(o => o.Person);
-        public PersonROC Person  
+
+        public PersonROC Person
         {
-            get => GetProperty(PersonProperty); 
-        
-            private set => LoadProperty(PersonProperty, value); 
-        }    
- 
-        public static readonly PropertyInfo<string> MemberNumberProperty = RegisterProperty<string>(o => o.MemberNumber);
-        public virtual string MemberNumber 
-        {
-            get => GetProperty(MemberNumberProperty); 
-            private set => LoadProperty(MemberNumberProperty, value);    
+            get => GetProperty(PersonProperty);
+
+            private set => LoadProperty(PersonProperty, value);
         }
 
-        public static readonly PropertyInfo<SmartDate> DateFirstJoinedProperty = RegisterProperty<SmartDate>(o => o.DateFirstJoined);
-        public virtual SmartDate DateFirstJoined 
+        public static readonly PropertyInfo<string>
+            MemberNumberProperty = RegisterProperty<string>(o => o.MemberNumber);
+
+        public virtual string MemberNumber
         {
-            get => GetProperty(DateFirstJoinedProperty); 
-            private set => LoadProperty(DateFirstJoinedProperty, value);    
+            get => GetProperty(MemberNumberProperty);
+            private set => LoadProperty(MemberNumberProperty, value);
+        }
+
+        public static readonly PropertyInfo<SmartDate> DateFirstJoinedProperty =
+            RegisterProperty<SmartDate>(o => o.DateFirstJoined);
+
+        public virtual SmartDate DateFirstJoined
+        {
+            get => GetProperty(DateFirstJoinedProperty);
+            private set => LoadProperty(DateFirstJoinedProperty, value);
         }
 
 
-        public static readonly PropertyInfo<PrivacyLevelROC> PrivacyLevelProperty = RegisterProperty<PrivacyLevelROC>(o => o.PrivacyLevel);
-        public PrivacyLevelROC PrivacyLevel  
-        {
-            get => GetProperty(PrivacyLevelProperty); 
-        
-            private set => LoadProperty(PrivacyLevelProperty, value); 
-        }    
- 
+        public static readonly PropertyInfo<PrivacyLevelROC> PrivacyLevelProperty =
+            RegisterProperty<PrivacyLevelROC>(o => o.PrivacyLevel);
 
-        public static readonly PropertyInfo<MemberStatusROC> MemberStatusProperty = RegisterProperty<MemberStatusROC>(o => o.MemberStatus);
-        public MemberStatusROC MemberStatus  
+        public PrivacyLevelROC PrivacyLevel
         {
-            get => GetProperty(MemberStatusProperty); 
-        
-            private set => LoadProperty(MemberStatusProperty, value); 
-        }    
- 
+            get => GetProperty(PrivacyLevelProperty);
 
-        public static readonly PropertyInfo<MembershipTypeROC> MembershipTypeProperty = RegisterProperty<MembershipTypeROC>(o => o.MembershipType);
-        public MembershipTypeROC MembershipType  
-        {
-            get => GetProperty(MembershipTypeProperty); 
-        
-            private set => LoadProperty(MembershipTypeProperty, value); 
-        }    
- 
-        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(o => o.LastUpdatedBy);
-        public virtual string LastUpdatedBy 
-        {
-            get => GetProperty(LastUpdatedByProperty); 
-            private set => LoadProperty(LastUpdatedByProperty, value);    
+            private set => LoadProperty(PrivacyLevelProperty, value);
         }
 
-        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(o => o.LastUpdatedDate);
-        public virtual SmartDate LastUpdatedDate 
+
+        public static readonly PropertyInfo<MemberStatusROC> MemberStatusProperty =
+            RegisterProperty<MemberStatusROC>(o => o.MemberStatus);
+
+        public MemberStatusROC MemberStatus
         {
-            get => GetProperty(LastUpdatedDateProperty); 
-            private set => LoadProperty(LastUpdatedDateProperty, value);    
+            get => GetProperty(MemberStatusProperty);
+
+            private set => LoadProperty(MemberStatusProperty, value);
+        }
+
+
+        public static readonly PropertyInfo<MembershipTypeROC> MembershipTypeProperty =
+            RegisterProperty<MembershipTypeROC>(o => o.MembershipType);
+
+        public MembershipTypeROC MembershipType
+        {
+            get => GetProperty(MembershipTypeProperty);
+
+            private set => LoadProperty(MembershipTypeProperty, value);
+        }
+
+        public static readonly PropertyInfo<string> LastUpdatedByProperty =
+            RegisterProperty<string>(o => o.LastUpdatedBy);
+
+        public virtual string LastUpdatedBy
+        {
+            get => GetProperty(LastUpdatedByProperty);
+            private set => LoadProperty(LastUpdatedByProperty, value);
+        }
+
+        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty =
+            RegisterProperty<SmartDate>(o => o.LastUpdatedDate);
+
+        public virtual SmartDate LastUpdatedDate
+        {
+            get => GetProperty(LastUpdatedDateProperty);
+            private set => LoadProperty(LastUpdatedDateProperty, value);
         }
 
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
-        public virtual string Notes 
+
+        public virtual string Notes
         {
-            get => GetProperty(NotesProperty); 
-            private set => LoadProperty(NotesProperty, value);    
+            get => GetProperty(NotesProperty);
+            private set => LoadProperty(NotesProperty, value);
         }
 
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
-        public virtual byte[] RowVersion 
+
+        public virtual byte[] RowVersion
         {
-            get => GetProperty(RowVersionProperty); 
-            private set => LoadProperty(RowVersionProperty, value);    
+            get => GetProperty(RowVersionProperty);
+            private set => LoadProperty(RowVersionProperty, value);
         }
 
-        #endregion 
+        #endregion
 
         #region Factory Methods
+
         internal static async Task<MemberInfoROC> GetMemberInfoROC(MemberInfo childData)
         {
             return await DataPortal.FetchChildAsync<MemberInfoROC>(childData);
-        }  
-
+        }
 
         #endregion
 
@@ -127,9 +140,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
             Person = (data.Person != null ? await PersonROC.GetPersonROC(data.Person) : null);
             MemberNumber = data.MemberNumber;
             DateFirstJoined = data.DateFirstJoined;
-            PrivacyLevel = (data.PrivacyLevel != null ? await PrivacyLevelROC.GetPrivacyLevelROC(data.PrivacyLevel) : null);
-            MemberStatus = (data.MemberStatus != null ? await MemberStatusROC.GetMemberStatusROC(data.MemberStatus) : null);
-            MembershipType = (data.MembershipType != null ? await MembershipTypeROC.GetMembershipTypeROC(data.MembershipType) : null);
+            PrivacyLevel = (data.PrivacyLevel != null
+                ? await PrivacyLevelROC.GetPrivacyLevelROC(data.PrivacyLevel)
+                : null);
+            MemberStatus = (data.MemberStatus != null
+                ? await MemberStatusROC.GetMemberStatusROC(data.MemberStatus)
+                : null);
+            MembershipType = (data.MembershipType != null
+                ? await MembershipTypeROC.GetMembershipTypeROC(data.MembershipType)
+                : null);
             LastUpdatedBy = data.LastUpdatedBy;
             LastUpdatedDate = data.LastUpdatedDate;
             Notes = data.Notes;

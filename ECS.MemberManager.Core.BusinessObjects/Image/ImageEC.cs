@@ -1,10 +1,6 @@
-﻿
-
-using System;
-using System.Collections.Generic; 
+﻿using System;
 using System.Threading.Tasks;
 using Csla;
-using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
@@ -14,41 +10,43 @@ namespace ECS.MemberManager.Core.BusinessObjects
     public partial class ImageEC : BusinessBase<ImageEC>
     {
         #region Business Methods
- 
+
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
-        public virtual int Id 
+
+        public virtual int Id
         {
-            get => GetProperty(IdProperty); 
-            private set => LoadProperty(IdProperty, value);    
+            get => GetProperty(IdProperty);
+            private set => LoadProperty(IdProperty, value);
         }
 
         public static readonly PropertyInfo<string> ImagePathProperty = RegisterProperty<string>(o => o.ImagePath);
-        public virtual string ImagePath 
+
+        public virtual string ImagePath
         {
-            get => GetProperty(ImagePathProperty); 
-            set => SetProperty(ImagePathProperty, value); 
-   
+            get => GetProperty(ImagePathProperty);
+            set => SetProperty(ImagePathProperty, value);
         }
 
         public static readonly PropertyInfo<byte[]> ImageFileProperty = RegisterProperty<byte[]>(o => o.ImageFile);
-        public virtual byte[] ImageFile 
+
+        public virtual byte[] ImageFile
         {
-            get => GetProperty(ImageFileProperty); 
-            set => SetProperty(ImageFileProperty, value); 
-   
+            get => GetProperty(ImageFileProperty);
+            set => SetProperty(ImageFileProperty, value);
         }
 
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
-        public virtual byte[] RowVersion 
+
+        public virtual byte[] RowVersion
         {
-            get => GetProperty(RowVersionProperty); 
-            set => SetProperty(RowVersionProperty, value); 
-   
+            get => GetProperty(RowVersionProperty);
+            set => SetProperty(RowVersionProperty, value);
         }
 
-        #endregion 
+        #endregion
 
         #region Factory Methods
+
         internal static async Task<ImageEC> NewImageEC()
         {
             return await DataPortal.CreateChildAsync<ImageEC>();
@@ -57,8 +55,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         internal static async Task<ImageEC> GetImageEC(Image childData)
         {
             return await DataPortal.FetchChildAsync<ImageEC>(childData);
-        }  
-
+        }
 
         #endregion
 
@@ -67,20 +64,20 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [FetchChild]
         private async Task Fetch(Image data)
         {
-            using(BypassPropertyChecks)
+            using (BypassPropertyChecks)
             {
-            Id = data.Id;
-            ImagePath = data.ImagePath;
-            ImageFile = data.ImageFile;
-            RowVersion = data.RowVersion;
-            }            
+                Id = data.Id;
+                ImagePath = data.ImagePath;
+                ImageFile = data.ImageFile;
+                RowVersion = data.RowVersion;
+            }
         }
+
         [InsertChild]
         private async Task Insert([Inject] IImageDal dal)
         {
             var data = new Image()
             {
-
                 Id = Id,
                 ImagePath = ImagePath,
                 ImageFile = ImageFile,
@@ -92,12 +89,11 @@ namespace ECS.MemberManager.Core.BusinessObjects
             RowVersion = insertedObj.RowVersion;
         }
 
-       [UpdateChild]
+        [UpdateChild]
         private async Task Update([Inject] IImageDal dal)
         {
             var data = new Image()
             {
-
                 Id = Id,
                 ImagePath = ImagePath,
                 ImageFile = ImageFile,
@@ -108,13 +104,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
             RowVersion = insertedObj.RowVersion;
         }
 
-       
+
         [DeleteSelfChild]
         private async Task DeleteSelf([Inject] IImageDal dal)
         {
-            await Delete(Id,dal);
+            await Delete(Id, dal);
         }
-       
+
         [Delete]
         private async Task Delete(int id, [Inject] IImageDal dal)
         {

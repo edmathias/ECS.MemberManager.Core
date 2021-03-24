@@ -1,5 +1,4 @@
-﻿<#@ include file="MyT4Utilities.tt" #><#@ import namespace="System.Diagnostics.Eventing.Reader" #>
-<#+
+﻿<#@ include file="MyT4Utilities.tt" #><#+
     List<ColumnData> BuildColumnList(string objectName)
     {
         var connectionString =
@@ -23,72 +22,73 @@
 #>
 
 <#+
-  // Insert any template procedures here
-    void BuildCSLAProperties(ColumnData columnData, string stereoType, bool isReadOnly )
+    // Insert any template procedures here
+    void BuildCSLAProperties(ColumnData columnData, string stereoType, bool isReadOnly)
     {
         var childStereoType = GetChildStereoType(stereoType);
-        if(columnData.isForeignKey)
+        if (columnData.isForeignKey)
         {
             var newOutputName = ConvertForeignKeyColumn(columnData.columnName);
             var objType = newOutputName.Replace(".Id", string.Empty);
 #>
 
-        public static readonly PropertyInfo<<#= objType #><#= childStereoType#>> <#= objType #>Property = RegisterProperty<<#= objType #><#= childStereoType#>>(o => o.<#= objType #>);
+        public static readonly PropertyInfo<<#= objType #><#= childStereoType #>> <#= objType #>Property = RegisterProperty<<#= objType #><#= childStereoType #>>(o => o.<#= objType #>);
         public <#= objType #><#= childStereoType #> <#= objType #>  
         {
             get => GetProperty(<#= objType #>Property); 
 <#+
-        if(isReadOnly)
-        {
+            if (isReadOnly)
+            {
 #>        
-            private set => LoadProperty(<#= objType  #>Property, value); 
+            private set => LoadProperty(<#= objType #>Property, value); 
 <#+
-        }
-        else
-        {
+            }
+            else
+            {
 #>
-            set => SetProperty(<#= objType  #>Property, value); 
+            set => SetProperty(<#= objType #>Property, value); 
 <#+
-        }
+            }
 #>
         }    
  
 <#+
         } // end if 
         else
-        { 
+        {
 #>
-        public static readonly PropertyInfo<<#= columnData.dotNetType #>> <#= columnData.columnName #>Property = RegisterProperty<<#= columnData.dotNetType	 #>>(o => o.<#= columnData.columnName #>);
+        public static readonly PropertyInfo<<#= columnData.dotNetType #>> <#= columnData.columnName #>Property = RegisterProperty<<#= columnData.dotNetType #>>(o => o.<#= columnData.columnName #>);
         public virtual <#= columnData.dotNetType #> <#= columnData.columnName #> 
         {
             get => GetProperty(<#= columnData.columnName #>Property); 
 <#+
             if (columnData.isPrimaryKey || isReadOnly)
-            { 
+            {
 #>
-            private set => LoadProperty(<#= columnData.columnName #>Property, value); <#+                
+            private set => LoadProperty(<#= columnData.columnName #>Property, value); <#+
             }
             else
             {
 #>
             set => SetProperty(<#= columnData.columnName #>Property, value); 
-<#+                
-            }#>   
+<#+
+            }
+#>   
         }
 
 <#+
-        }  // end else
+        } // end else
     }
 #>
 
 <#+
-    void BuildFactoryMethods(string objectName, string stereoType, bool isChild, bool isReadOnly )
+    void BuildFactoryMethods(string objectName, string stereoType, bool isChild, bool isReadOnly)
     {
         var childDesig = (isChild ? "Child" : String.Empty);
         var visibility = (isChild ? "internal" : "public");
         var childDataString = (isChild ? "childData" : "id");
-        var childParams = (isChild ? objectName+" "  + childDataString : "int id"); 
-        
+        var childParams = (isChild ? objectName + " " + childDataString : "int id");
+
         if (!isReadOnly)
         {
 #>
@@ -97,16 +97,16 @@
             return await DataPortal.Create<#= childDesig #>Async<<#= objectName #><#= stereoType #>>();
         }
 
-<#+            
+<#+
         }
 #>
-        <#= visibility #> static async Task<<#= objectName #><#= stereoType #>> Get<#= objectName #><#= stereoType #>(<#=childParams #>)
+        <#= visibility #> static async Task<<#= objectName #><#= stereoType #>> Get<#= objectName #><#= stereoType #>(<#= childParams #>)
         {
-            return await DataPortal.Fetch<#= childDesig #>Async<<#= objectName #><#= stereoType #>>(<#=childDataString #>);
+            return await DataPortal.Fetch<#= childDesig #>Async<<#= objectName #><#= stereoType #>>(<#= childDataString #>);
         }  
 
 <#+
-        if (!isReadOnly && !isChild )
+        if (!isReadOnly && !isChild)
         {
 #>
         public static async Task Delete<#= objectName #><#= stereoType #>(int id)
@@ -116,20 +116,18 @@
 
 <#+
         }
-    
     }
 #>
 
 <#+
-    void BuildFetch(List<ColumnData> columnList,string objectType, string stereoType, bool isChild, bool isReadOnly )
+    void BuildFetch(IList<ColumnData> columnList, string objectType, string stereoType, bool isChild, bool isReadOnly)
     {
         var visibility = (isChild ? "internal" : "public");
         var childDesig = (isChild ? "Child" : string.Empty);
         var childParam = (isChild ? "childData" : string.Empty);
-        var childList = (isChild ? "List<" + objectType + ">" : string.Empty);
-        
+        var childList = (isChild ? "IList<" + objectType + ">" : string.Empty);
 #>
-        [Fetch<#=childDesig #>]
+        [Fetch<#= childDesig #>]
 <#+
         if (isChild)
         {
@@ -141,7 +139,7 @@
         else
         {
 #>
-        private async Task Fetch(int id, [Inject] I<#=objectType #>Dal dal)
+        private async Task Fetch(int id, [Inject] I<#= objectType #>Dal dal)
         {
             var data = await dal.Fetch(id);
 
@@ -152,42 +150,42 @@
 #>
             using(BypassPropertyChecks)
             {
-<#+                
+<#+
         }
 
         foreach (var columnData in columnList)
         {
-            BuildFetchDataAccessProperties(columnData,stereoType);
+            BuildFetchDataAccessProperties(columnData, stereoType);
         }
 
         if (!isReadOnly)
         {
 #>
             }            
-<#+                
+<#+
         }
 #>
         }
-<#+      
+<#+
     }
 #>
 
 <#+
-    void BuildInsert(List<ColumnData> columnList, string objectType, string stereoType, bool isChild )
+    void BuildInsert(IList<ColumnData> columnList, string objectType, string stereoType, bool isChild)
     {
         var childDesig = isChild ? "Child" : String.Empty;
 #>
-        [Insert<#=childDesig #>]
-        private async Task Insert([Inject] I<#=objectType #>Dal dal)
+        [Insert<#= childDesig #>]
+        private async Task Insert([Inject] I<#= objectType #>Dal dal)
         {
             var data = new <#= objectType #>()
             {
 
 <#+
-    foreach (var columnData in columnList)
-    {
-        BuildInsertUpdateDataAccessProperties(columnData);
-    }
+        foreach (var columnData in columnList)
+        {
+            BuildInsertUpdateDataAccessProperties(columnData);
+        }
 #>
             };
 
@@ -196,7 +194,7 @@
             RowVersion = insertedObj.RowVersion;
         }
 
-<#+      
+<#+
     }
 #>
 
@@ -207,7 +205,7 @@
         {
 #>
         [Fetch]
-        private async Task Fetch([Inject] I<#=objectName #>Dal dal)
+        private async Task Fetch([Inject] I<#= objectName #>Dal dal)
         {
             var childData = await dal.Fetch();
 <#+
@@ -216,7 +214,7 @@
         {
 #>
         [FetchChild]
-        private async Task Fetch(List<<#= objectName #>> childData)
+        private async Task Fetch(IList<<#= objectName #>> childData)
         {
 <#+
         }
@@ -236,22 +234,21 @@
 #>
 
 <#+
-    void BuildUpdate(List<ColumnData> columnList, string objectType, string stereoType, bool isChild )
-    { 
+    void BuildUpdate(IList<ColumnData> columnList, string objectType, string stereoType, bool isChild)
+    {
         var childDesig = isChild ? "Child" : String.Empty;
-        
 #>
-       [Update<#=childDesig #>]
-        private async Task Update([Inject] I<#=objectType#>Dal dal)
+       [Update<#= childDesig #>]
+        private async Task Update([Inject] I<#= objectType #>Dal dal)
         {
             var data = new <#= objectType #>()
             {
 
 <#+
-    foreach (var columnData in columnList)
-    {
-        BuildInsertUpdateDataAccessProperties(columnData);
-    }
+        foreach (var columnData in columnList)
+        {
+            BuildInsertUpdateDataAccessProperties(columnData);
+        }
 #>
             };
 
@@ -259,7 +256,7 @@
             RowVersion = insertedObj.RowVersion;
         }
 
-<#+      
+<#+
     }
 #>
 
@@ -267,26 +264,27 @@
     void BuildDeleteMethods(string objectType, bool isChild)
     {
 #>
-<#+     if(isChild)
-        {  
+<#+
+        if (isChild)
+        {
 #>       
         [DeleteSelfChild]
 <#+
         }
-else
-{
+        else
+        {
 #>
         [DeleteSelf]
 <#+
-}
+        }
 #>
-        private async Task DeleteSelf([Inject] I<#=objectType#>Dal dal)
+        private async Task DeleteSelf([Inject] I<#= objectType #>Dal dal)
         {
             await Delete(Id,dal);
         }
        
         [Delete]
-        private async Task Delete(int id, [Inject] I<#=objectType#>Dal dal)
+        private async Task Delete(int id, [Inject] I<#= objectType #>Dal dal)
         {
             await dal.Delete(id);
         }
@@ -295,14 +293,14 @@ else
 #>
 
 <#+
-    void BuildFetchDataAccessProperties(ColumnData columnData, string stereoType )
+    void BuildFetchDataAccessProperties(ColumnData columnData, string stereoType)
     {
         if (columnData.isForeignKey)
         {
             var objName = columnData.columnName.Replace("Id", string.Empty);
-            var childStereoType =  GetChildStereoType(stereoType);
+            var childStereoType = GetChildStereoType(stereoType);
 #>
-            <#= objName #> = (data.<#=objName #> != null ? await <#= objName #><#=childStereoType#>.Get<#= objName #><#=childStereoType#>(data.<#= objName #>) : null);
+            <#= objName #> = (data.<#= objName #> != null ? await <#= objName #><#= childStereoType #>.Get<#= objName #><#= childStereoType #>(data.<#= objName #>) : null);
 <#+
         }
         else
@@ -338,7 +336,7 @@ else
     {
         switch (stereoType)
         {
-            case "ER" :
+            case "ER":
             case "EC":
             case "ECL":
             case "ERL":
@@ -360,22 +358,22 @@ else
         var visibility = (isChild ? "internal" : "public");
         var childDesig = (isChild ? "Child" : string.Empty);
         var childParam = (isChild ? "childData" : string.Empty);
-        var childList = (isChild ? "List<" + objectName + ">" : string.Empty);
-        
-if(!isReadOnly)
-    {
-#>
-        <#=visibility #> static async Task<<#=objectName #><#=stereo #>> New<#=objectName#><#=stereo #>()
+        var childList = (isChild ? "IList<" + objectName + ">" : string.Empty);
+
+        if (!isReadOnly)
         {
-            return await DataPortal.Create<#=childDesig#>Async<<#=objectName #><#=stereo #>>();
+#>
+        <#= visibility #> static async Task<<#= objectName #><#= stereo #>> New<#= objectName #><#= stereo #>()
+        {
+            return await DataPortal.Create<#= childDesig #>Async<<#= objectName #><#= stereo #>>();
         }
 <#+
-    }
+        }
 #>
 
-        <#=visibility #> static async Task<<#=objectName #><#=stereo #>> Get<#=objectName#><#=stereo #>(<#=childList #> <#=childParam#>)
+        <#= visibility #> static async Task<<#= objectName #><#= stereo #>> Get<#= objectName #><#= stereo #>(<#= childList #> <#= childParam #>)
         {
-            return await DataPortal.Fetch<#=childDesig#>Async<<#=objectName #><#=stereo #>>(<#=childParam#>);
+            return await DataPortal.Fetch<#= childDesig #>Async<<#= objectName #><#= stereo #>>(<#= childParam #>);
         }
 <#+
     }
@@ -383,8 +381,8 @@ if(!isReadOnly)
 
 <#+
     void CreateBuildHeader()
-    { 
- #>
+    {
+#>
 //******************************************************************************
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.

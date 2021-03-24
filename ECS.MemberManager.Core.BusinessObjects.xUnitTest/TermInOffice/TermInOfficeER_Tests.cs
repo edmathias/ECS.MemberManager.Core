@@ -1,9 +1,7 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Csla;
-using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using ECS.MemberManager.Core.EF.Domain;
@@ -12,7 +10,7 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class TermInOfficeER_Tests 
+    public class TermInOfficeER_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
@@ -24,8 +22,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
+
+            if (testLibrary == "Mock")
                 MockDb.ResetMockDb();
             else
             {
@@ -62,11 +60,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             var termObj = await TermInOfficeER.GetTermInOfficeER(1);
             termObj.Notes = "These are updated Notes";
-            
-            var result =  await termObj.SaveAsync();
+
+            var result = await termObj.SaveAsync();
 
             Assert.NotNull(result);
-            Assert.Equal("These are updated Notes",result.Notes );
+            Assert.Equal("These are updated Notes", result.Notes);
         }
 
         [Fact]
@@ -76,17 +74,17 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             await BuildTermInOffice(termObj);
 
             var savedTermInOffice = await termObj.SaveAsync();
-           
+
             Assert.NotNull(savedTermInOffice);
             Assert.IsType<TermInOfficeER>(savedTermInOffice);
-            Assert.True( savedTermInOffice.Id > 0 );
+            Assert.True(savedTermInOffice.Id > 0);
         }
 
         [Fact]
         public async Task TermInOfficeER_TestDeleteObjectFromDatabase()
         {
             const int ID_TO_DELETE = 99;
-            
+
             await TermInOfficeER.DeleteTermInOfficeER(ID_TO_DELETE);
 
             await Assert.ThrowsAsync<DataPortalException>(() => TermInOfficeER.GetTermInOfficeER(ID_TO_DELETE));
@@ -97,11 +95,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             var termObj = await TermInOfficeER.NewTermInOfficeER();
             termObj.LastUpdatedBy = String.Empty;
-                
+
             Assert.False(termObj.IsValid);
-            await Assert.ThrowsAsync<Csla.Rules.ValidationException>(() => termObj.SaveAsync() );
+            await Assert.ThrowsAsync<Csla.Rules.ValidationException>(() => termObj.SaveAsync());
         }
-        
+
         private async Task BuildTermInOffice(TermInOfficeER termObj)
         {
             termObj.Office = await OfficeEC.GetOfficeEC(new Office() {Id = 1});
@@ -110,7 +108,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             termObj.LastUpdatedBy = "edm";
             termObj.LastUpdatedDate = DateTime.Now;
             termObj.Notes = "notes for doctype";
-        }        
-        
+        }
     }
 }

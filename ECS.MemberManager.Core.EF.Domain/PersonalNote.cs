@@ -5,10 +5,8 @@ namespace ECS.MemberManager.Core.EF.Domain
 {
     public class PersonalNote : EntityBase
     {
-        [Required]
-        public Person Person { get; set; }
-        [MaxLength(50)]
-        public string Description { get; set; }
+        [Required] public Person Person { get; set; }
+        [MaxLength(50)] public string Description { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime DateEnd { get; set; }
         [MaxLength(255)] public string LastUpdatedBy { get; set; }

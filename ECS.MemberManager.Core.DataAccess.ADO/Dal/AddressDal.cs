@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,7 +24,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var cnxnString = _config.GetConnectionString("LocalDbConnection");
-            
+
             _db = new SqlConnection(cnxnString);
         }
 
@@ -33,11 +32,11 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
         {
             _db = cnxn;
         }
-        
+
         public async Task<List<Address>> Fetch()
         {
             var list = await _db.GetAllAsync<Address>();
-            
+
             return list.ToList();
         }
 
@@ -47,13 +46,14 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
         }
 
         public async Task<Address> Insert(Address addressToInsert)
-        
+
         {
-            var sql = "INSERT INTO Addresses (Address1, Address2, City,State,PostCode,Notes,LastUpdatedBy,LastUpdatedDate) " +
-                      "VALUES(@Address1,@Address2,@City,@State,@PostCode,@Notes,@LastUpdatedBy,@LastUpdatedDate);" +
-                      "SELECT SCOPE_IDENTITY()";
-           
-            addressToInsert.Id =  await _db.ExecuteScalarAsync<int>(sql, addressToInsert);
+            var sql =
+                "INSERT INTO Addresses (Address1, Address2, City,State,PostCode,Notes,LastUpdatedBy,LastUpdatedDate) " +
+                "VALUES(@Address1,@Address2,@City,@State,@PostCode,@Notes,@LastUpdatedBy,@LastUpdatedDate);" +
+                "SELECT SCOPE_IDENTITY()";
+
+            addressToInsert.Id = await _db.ExecuteScalarAsync<int>(sql, addressToInsert);
             var refetchedAddress = await _db.GetAsync<Address>(addressToInsert.Id);
             addressToInsert.RowVersion = refetchedAddress.RowVersion;
 
@@ -79,7 +79,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             if (rowVersion == null)
                 throw new DBConcurrencyException("Entity has been updated since last read. Try again!");
             addressToUpdate.RowVersion = rowVersion;
-            
+
             return addressToUpdate;
         }
 
@@ -87,10 +87,10 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
         {
             await _db.DeleteAsync<Address>(new Address() {Id = id});
         }
-        
+
         public void Dispose()
         {
-            _db.Dispose(); 
+            _db.Dispose();
         }
     }
 }

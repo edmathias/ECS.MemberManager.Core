@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.ADO;
-using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using ECS.MemberManager.Core.EF.Domain;
 using Microsoft.Extensions.Configuration;
@@ -25,8 +22,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
+
+            if (testLibrary == "Mock")
                 MockDb.ResetMockDb();
             else
             {
@@ -47,7 +44,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(personErl);
             Assert.IsType<PersonERL>(personErl);
         }
-        
+
         [Fact]
         private async void PersonERL_TestGetPersonERL()
         {
@@ -56,20 +53,20 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(personERL);
             Assert.Equal(3, personERL.Count);
         }
-        
+
         [Fact]
         private async void PersonERL_TestUpdatePersonEditChildEntry()
         {
             const int idToUpdate = 1;
-            
+
             var personERL = await PersonERL.GetPersonERL();
             var countBeforeUpdate = personERL.Count;
             var personToUpdate = personERL.First(a => a.Id == idToUpdate);
             personToUpdate.Notes = "This was updated";
 
             var updatedList = await personERL.SaveAsync();
-            
-            Assert.Equal("This was updated",updatedList.First(a => a.Id == idToUpdate).Notes);
+
+            Assert.Equal("This was updated", updatedList.First(a => a.Id == idToUpdate).Notes);
             Assert.Equal(countBeforeUpdate, updatedList.Count);
         }
 
@@ -78,12 +75,12 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             var personERL = await PersonERL.GetPersonERL();
             var countBeforeAdd = personERL.Count;
-            
+
             var personToAdd = personERL.AddNew();
             await BuildPersonEC(personToAdd);
 
             var updatedList = await personERL.SaveAsync();
-            
+
             Assert.NotEqual(countBeforeAdd, updatedList.Count);
         }
 
@@ -101,6 +98,5 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             personToBuild.EMail = await EMailEC.GetEMailEC(new EMail() {Id = 1});
             personToBuild.Title = await TitleEC.GetTitleEC(new Title() {Id = 1});
         }
- 
     }
 }

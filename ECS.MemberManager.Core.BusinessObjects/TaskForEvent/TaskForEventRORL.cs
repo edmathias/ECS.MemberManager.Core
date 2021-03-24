@@ -1,28 +1,23 @@
-﻿
-
-
-//******************************************************************************
+﻿//******************************************************************************
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/18/2021 16:28:41
+// Generated on 03/23/2021 09:57:49
 //******************************************************************************    
 
-using System; 
+using System;
 using System.Threading.Tasks;
 using Csla;
-using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class TaskForEventRORL : ReadOnlyListBase<TaskForEventRORL,TaskForEventROC>
+    public partial class TaskForEventRORL : ReadOnlyListBase<TaskForEventRORL, TaskForEventROC>
     {
         #region Factory Methods
 
-
-        public static async Task<TaskForEventRORL> GetTaskForEventRORL( )
+        public static async Task<TaskForEventRORL> GetTaskForEventRORL()
         {
             return await DataPortal.FetchAsync<TaskForEventRORL>();
         }
@@ -30,7 +25,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #endregion
 
         #region Data Access
- 
+
         [Fetch]
         private async Task Fetch([Inject] ITaskForEventDal dal)
         {
@@ -47,6 +42,5 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         #endregion
-
-     }
+    }
 }

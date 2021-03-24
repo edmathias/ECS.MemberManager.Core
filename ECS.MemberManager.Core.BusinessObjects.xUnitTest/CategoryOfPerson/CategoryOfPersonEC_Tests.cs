@@ -1,43 +1,11 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Csla.Rules;
-using ECS.MemberManager.Core.DataAccess.ADO;
-using ECS.MemberManager.Core.DataAccess.Mock;
+﻿using System.Threading.Tasks;
 using ECS.MemberManager.Core.EF.Domain;
-using Microsoft.Extensions.Configuration;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class CategoryOfPersonEC_Tests
+    public class CategoryOfPersonEC_Tests : CslaBaseTest
     {
-        private IConfigurationRoot _config = null;
-        private bool IsDatabaseBuilt = false;
-
-        public CategoryOfPersonEC_Tests()
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            _config = builder.Build();
-            var testLibrary = _config.GetValue<string>("TestLibrary");
-
-            if (testLibrary == "Mock")
-                MockDb.ResetMockDb();
-            else
-            {
-                if (!IsDatabaseBuilt)
-                {
-                    var adoDb = new ADODb();
-                    adoDb.BuildMemberManagerADODb();
-                    IsDatabaseBuilt = true;
-                }
-            }
-        }
-
-
         [Fact]
         public async Task TestCategoryOfPersonEC_NewCategoryOfPersonEC()
         {
@@ -47,7 +15,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.IsType<CategoryOfPersonEC>(category);
             Assert.False(category.IsValid);
         }
-        
+
         [Fact]
         public async Task TestCategoryOfPersonEC_GetCategoryOfPersonEC()
         {
@@ -56,9 +24,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             Assert.NotNull(categoryOfPerson);
             Assert.IsType<CategoryOfPersonEC>(categoryOfPerson);
-            Assert.Equal(categoryOfPersonToLoad.Id,categoryOfPerson.Id);
-            Assert.Equal(categoryOfPersonToLoad.Category,categoryOfPerson.Category);
-            Assert.Equal(categoryOfPersonToLoad.DisplayOrder,categoryOfPerson.DisplayOrder);
+            Assert.Equal(categoryOfPersonToLoad.Id, categoryOfPerson.Id);
+            Assert.Equal(categoryOfPersonToLoad.Category, categoryOfPerson.Category);
+            Assert.Equal(categoryOfPersonToLoad.DisplayOrder, categoryOfPerson.DisplayOrder);
             Assert.True(categoryOfPerson.IsValid);
         }
 
@@ -73,8 +41,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(category);
             Assert.True(isObjectValidInit);
             Assert.False(category.IsValid);
-            Assert.Equal("Category",category.BrokenRulesCollection[0].Property);
-            Assert.Equal("Category required",category.BrokenRulesCollection[0].Description);
+            Assert.Equal("Category", category.BrokenRulesCollection[0].Property);
+            Assert.Equal("Category required", category.BrokenRulesCollection[0].Description);
         }
 
         [Fact]
@@ -90,8 +58,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(category);
             Assert.True(isObjectValidInit);
             Assert.False(category.IsValid);
-            Assert.Equal("Category",category.BrokenRulesCollection[0].Property);
-            Assert.Equal("Category can not exceed 50 characters",category.BrokenRulesCollection[0].Description);
+            Assert.Equal("Category", category.BrokenRulesCollection[0].Property);
+            Assert.Equal("Category can not exceed 50 characters", category.BrokenRulesCollection[0].Description);
         }
 
         private CategoryOfPerson BuildCategoryOfPerson()
@@ -102,6 +70,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             categoryToBuild.DisplayOrder = 1;
 
             return categoryToBuild;
-        }        
+        }
     }
 }

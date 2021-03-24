@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Transactions;
 using Dapper;
 using Dapper.Contrib.Extensions;
 using ECS.MemberManager.Core.DataAccess.Dal;
@@ -38,9 +36,10 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
 
         public async Task<List<Sponsor>> Fetch()
         {
-            var contactForSponsorTypes =await _db.GetAllAsync<Sponsor>();
+            var contactForSponsorTypes = await _db.GetAllAsync<Sponsor>();
             return contactForSponsorTypes.ToList();
         }
+
         public async Task<Sponsor> Fetch(int id)
         {
             return await _db.GetAsync<Sponsor>(id);
@@ -72,7 +71,6 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                 Notes = sponsorToInsert.Notes,
                 LastUpdatedBy = sponsorToInsert.LastUpdatedBy,
                 LastUpdatedDate = sponsorToInsert.LastUpdatedDate
-                
             });
 
             var insertedEmail = await _db.GetAsync<Sponsor>(sponsorToInsert.Id);
@@ -118,7 +116,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                 LastUpdatedDate = sponsorToUpdate.LastUpdatedDate,
                 RowVersion = sponsorToUpdate.RowVersion
             });
-            
+
             if (rowVersion == null)
                 throw new DBConcurrencyException("Entity has been updated since last read. Try again!");
             sponsorToUpdate.RowVersion = rowVersion;

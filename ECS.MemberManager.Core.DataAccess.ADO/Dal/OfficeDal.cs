@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,7 +24,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var cnxnString = _config.GetConnectionString("LocalDbConnection");
-            
+
             _db = new SqlConnection(cnxnString);
         }
 
@@ -33,9 +32,10 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
         {
             _db = cnxn;
         }
+
         public async Task<List<Office>> Fetch()
         {
-            var offices =await _db.GetAllAsync<Office>();
+            var offices = await _db.GetAllAsync<Office>();
             return offices.ToList();
         }
 
@@ -46,37 +46,38 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
 
         public async Task<Office> Insert(Office officeToInsert)
         {
-            var sql = "INSERT INTO [dbo].[Offices] ([Name], [Term], [CalendarPeriod], [ChosenHow], [Appointer], [LastUpdatedBy], [LastUpdatedDate], [Notes]) "+
-                            "SELECT @Name, @Term, @CalendarPeriod, @ChosenHow, @Appointer, @LastUpdatedBy, @LastUpdatedDate, @Notes " +
-                            "SELECT SCOPE_IDENTITY()";
-            officeToInsert.Id = await _db.ExecuteScalarAsync<int>(sql,officeToInsert);
+            var sql =
+                "INSERT INTO [dbo].[Offices] ([Name], [Term], [CalendarPeriod], [ChosenHow], [Appointer], [LastUpdatedBy], [LastUpdatedDate], [Notes]) " +
+                "SELECT @Name, @Term, @CalendarPeriod, @ChosenHow, @Appointer, @LastUpdatedBy, @LastUpdatedDate, @Notes " +
+                "SELECT SCOPE_IDENTITY()";
+            officeToInsert.Id = await _db.ExecuteScalarAsync<int>(sql, officeToInsert);
 
             //reretrieve Office to get rowversion
             var insertedOffice = await _db.GetAsync<Office>(officeToInsert.Id);
             officeToInsert.RowVersion = insertedOffice.RowVersion;
-            
+
             return officeToInsert;
         }
 
         public async Task<Office> Update(Office officeToUpdate)
         {
             var sql = "UPDATE Offices " +
-                      "SET [Name] = @Name, "+
-                      "[Term] = @Term, "+
-                      "[CalendarPeriod] = @CalendarPeriod, "+
-                      "[ChosenHow] = @ChosenHow, "+
-                      "[Appointer] = @Appointer, "+
-                      "[LastUpdatedBy] = @LastUpdatedBy, "+
-                      "[LastUpdatedDate] = @LastUpdatedDate, "+
+                      "SET [Name] = @Name, " +
+                      "[Term] = @Term, " +
+                      "[CalendarPeriod] = @CalendarPeriod, " +
+                      "[ChosenHow] = @ChosenHow, " +
+                      "[Appointer] = @Appointer, " +
+                      "[LastUpdatedBy] = @LastUpdatedBy, " +
+                      "[LastUpdatedDate] = @LastUpdatedDate, " +
                       "[Notes] = @Notes " +
                       "OUTPUT inserted.RowVersion " +
                       "WHERE Id = @Id AND RowVersion = @RowVersion ";
 
-            var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql,officeToUpdate);
+            var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql, officeToUpdate);
             if (rowVersion == null)
                 throw new DBConcurrencyException("Entity has been updated since last read. Try again!");
             officeToUpdate.RowVersion = rowVersion;
-            
+
             return officeToUpdate;
         }
 
@@ -84,10 +85,10 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
         {
             await _db.DeleteAsync<Office>(new Office() {Id = id});
         }
-        
+
         public void Dispose()
         {
-            _db.Dispose(); 
+            _db.Dispose();
         }
     }
 }

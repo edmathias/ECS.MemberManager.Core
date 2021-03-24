@@ -1,19 +1,14 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Csla.Rules;
+﻿using System.IO;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.DataAccess.Mock;
-using ECS.MemberManager.Core.EF.Domain;
 using Microsoft.Extensions.Configuration;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class TermInOfficeECL_Tests 
+    public class TermInOfficeECL_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
@@ -25,8 +20,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
+
+            if (testLibrary == "Mock")
                 MockDb.ResetMockDb();
             else
             {
@@ -38,7 +33,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 }
             }
         }
-        
+
         [Fact]
         private async void TermInOfficeECL_TestTermInOfficeECL()
         {
@@ -48,20 +43,18 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.IsType<TermInOfficeECL>(eventObjEdit);
         }
 
-        
+
         [Fact]
         private async void TermInOfficeECL_TestGetTermInOfficeECL()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<ITermInOfficeDal>();
             var childData = await dal.Fetch();
-            
+
             var listToTest = await TermInOfficeECL.GetTermInOfficeECL(childData);
-            
+
             Assert.NotNull(listToTest);
             Assert.Equal(3, listToTest.Count);
         }
-
-  
     }
 }

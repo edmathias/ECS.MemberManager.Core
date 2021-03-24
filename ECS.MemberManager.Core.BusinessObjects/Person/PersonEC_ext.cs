@@ -1,5 +1,4 @@
-﻿using Csla.Rules;
-using Csla.Rules.CommonRules;
+﻿using Csla.Rules.CommonRules;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
@@ -10,9 +9,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
             base.AddBusinessRules();
 
             BusinessRules.AddRule(new Required(LastNameProperty));
-            BusinessRules.AddRule(new MaxLength(LastNameProperty,50));
+            BusinessRules.AddRule(new MaxLength(LastNameProperty, 50));
             BusinessRules.AddRule(new Required(LastUpdatedByProperty));
-            BusinessRules.AddRule(new MaxLength(LastUpdatedByProperty,255));
+            BusinessRules.AddRule(new MaxLength(LastUpdatedByProperty, 255));
         }
     }
 }

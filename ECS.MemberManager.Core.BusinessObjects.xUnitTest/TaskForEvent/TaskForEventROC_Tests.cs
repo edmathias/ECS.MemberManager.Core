@@ -1,9 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Csla;
-using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using ECS.MemberManager.Core.EF.Domain;
@@ -12,7 +8,7 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class TaskForEventROC_Tests 
+    public class TaskForEventROC_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
@@ -24,8 +20,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
+
+            if (testLibrary == "Mock")
                 MockDb.ResetMockDb();
             else
             {
@@ -37,6 +33,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 }
             }
         }
+
         [Fact]
         public async void TaskForEventROC_TestGetChild()
         {
@@ -46,7 +43,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             taskForEvent.Id = ID_VALUE;
 
             var eventObj = await TaskForEventROC.GetTaskForEventROC(taskForEvent);
-            
+
             Assert.NotNull(eventObj);
             Assert.IsType<TaskForEventROC>(eventObj);
             Assert.Equal(eventObj.Id, eventObj.Id);
@@ -64,17 +61,16 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             var eventObj = new TaskForEvent();
             eventObj.Id = 1;
-            eventObj.Event = new Event { Id = 1};
+            eventObj.Event = new Event {Id = 1};
             eventObj.TaskName = "task description";
-            eventObj.PlannedDate = DateTime.Now	;
-            eventObj.ActualDate = DateTime.Now	;
+            eventObj.PlannedDate = DateTime.Now;
+            eventObj.ActualDate = DateTime.Now;
             eventObj.Information = "information";
             eventObj.LastUpdatedBy = "edm";
             eventObj.LastUpdatedDate = DateTime.Now;
             eventObj.Notes = "notes for doctype";
 
             return eventObj;
-        }        
-
+        }
     }
 }

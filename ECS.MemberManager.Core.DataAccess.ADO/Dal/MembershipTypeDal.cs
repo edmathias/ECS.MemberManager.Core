@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using System.Transactions;
 using Dapper;
 using Dapper.Contrib.Extensions;
 using ECS.MemberManager.Core.DataAccess.Dal;
@@ -38,9 +35,10 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
 
         public async Task<List<MembershipType>> Fetch()
         {
-            var membershipTypeTypes =await _db.GetAllAsync<MembershipType>();
+            var membershipTypeTypes = await _db.GetAllAsync<MembershipType>();
             return membershipTypeTypes.ToList();
         }
+
         public async Task<MembershipType> Fetch(int id)
         {
             return await _db.GetAsync<MembershipType>(id);
@@ -48,9 +46,10 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
 
         public async Task<MembershipType> Insert(MembershipType membershipTypeToInsert)
         {
-            var sql = "INSERT INTO [dbo].[MembershipTypes] ([Description], [Level], [LastUpdatedBy], [LastUpdatedDate], [Notes]) "+
-                    "SELECT @Description, @Level, @LastUpdatedBy, @LastUpdatedDate, @Notes " +
-                    "SELECT SCOPE_IDENTITY()";
+            var sql =
+                "INSERT INTO [dbo].[MembershipTypes] ([Description], [Level], [LastUpdatedBy], [LastUpdatedDate], [Notes]) " +
+                "SELECT @Description, @Level, @LastUpdatedBy, @LastUpdatedDate, @Notes " +
+                "SELECT SCOPE_IDENTITY()";
 
             membershipTypeToInsert.Id = await _db.ExecuteScalarAsync<int>(sql, membershipTypeToInsert);
 
@@ -62,14 +61,14 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
 
         public async Task<MembershipType> Update(MembershipType membershipTypeToUpdate)
         {
-            var sql = "UPDATE [dbo].[MembershipTypes] "+
-                            "SET [Description] = @Description, "+
-                            "[Level] = @Level, "+
-                            "[LastUpdatedBy] = @LastUpdatedBy, "+
-                            "[LastUpdatedDate] = @LastUpdatedDate, "+
-                            "[Notes] = @Notes "+
-                            "OUTPUT inserted.RowVersion " +
-                            "WHERE Id = @Id AND RowVersion = @RowVersion ";
+            var sql = "UPDATE [dbo].[MembershipTypes] " +
+                      "SET [Description] = @Description, " +
+                      "[Level] = @Level, " +
+                      "[LastUpdatedBy] = @LastUpdatedBy, " +
+                      "[LastUpdatedDate] = @LastUpdatedDate, " +
+                      "[Notes] = @Notes " +
+                      "OUTPUT inserted.RowVersion " +
+                      "WHERE Id = @Id AND RowVersion = @RowVersion ";
 
             var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql, membershipTypeToUpdate);
             if (rowVersion == null)

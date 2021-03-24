@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -37,7 +36,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
         public async Task<List<TaskForEvent>> Fetch()
         {
             var sql = "select * from TaskForEvents inner join Events on TaskForEvents.EventId = Events.Id";
-            var result = await _db.QueryAsync<TaskForEvent,Event,TaskForEvent>(sql,
+            var result = await _db.QueryAsync<TaskForEvent, Event, TaskForEvent>(sql,
                 (taskForEvent, eventObj) =>
                 {
                     taskForEvent.Event = eventObj;
@@ -46,14 +45,13 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             );
 
             return result.ToList();
-
         }
 
         public async Task<TaskForEvent> Fetch(int id)
         {
-            var sql = "select * from TaskForEvents inner join Events on TaskForEvents.EventId = Events.Id "+
+            var sql = "select * from TaskForEvents inner join Events on TaskForEvents.EventId = Events.Id " +
                       $"where TaskForEvents.Id = {id}";
-            var result = await _db.QueryAsync<TaskForEvent,Event,TaskForEvent>(sql,
+            var result = await _db.QueryAsync<TaskForEvent, Event, TaskForEvent>(sql,
                 (taskForEvent, eventObj) =>
                 {
                     taskForEvent.Event = eventObj;
@@ -82,7 +80,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                 LastUpdatedDate = eventToInsert.LastUpdatedDate,
                 Notes = eventToInsert.Notes,
                 RowVersion = eventToInsert.RowVersion
-            } );
+            });
 
             //reretrieve TaskForEvent to get rowversion
             var insertedEmail = await _db.GetAsync<TaskForEvent>(eventToInsert.Id);
@@ -93,19 +91,19 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
 
         public async Task<TaskForEvent> Update(TaskForEvent eventToUpdate)
         {
-            var sql = 	"UPDATE [dbo].[TaskForEvents] "+
-                        "SET [EventId] = @EventId, "+
-                        "[TaskName] = @TaskName, "+
-                        "[PlannedDate] = @PlannedDate, "+
-                        "[ActualDate] = @ActualDate, "+
-                        "[Information] = @Information, "+
-                        "[LastUpdatedBy] = @LastUpdatedBy, "+
-                        "[LastUpdatedDate] = @LastUpdatedDate, "+
-                        "[Notes] = @Notes "+
-                        "OUTPUT inserted.RowVersion " +
-                        "WHERE Id = @Id AND RowVersion = @RowVersion ";
+            var sql = "UPDATE [dbo].[TaskForEvents] " +
+                      "SET [EventId] = @EventId, " +
+                      "[TaskName] = @TaskName, " +
+                      "[PlannedDate] = @PlannedDate, " +
+                      "[ActualDate] = @ActualDate, " +
+                      "[Information] = @Information, " +
+                      "[LastUpdatedBy] = @LastUpdatedBy, " +
+                      "[LastUpdatedDate] = @LastUpdatedDate, " +
+                      "[Notes] = @Notes " +
+                      "OUTPUT inserted.RowVersion " +
+                      "WHERE Id = @Id AND RowVersion = @RowVersion ";
 
-            var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql, new 
+            var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql, new
             {
                 Id = eventToUpdate.Id,
                 EventId = eventToUpdate.Event.Id,
@@ -118,7 +116,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                 Notes = eventToUpdate.Notes,
                 RowVersion = eventToUpdate.RowVersion
             });
-            
+
             if (rowVersion == null)
                 throw new DBConcurrencyException("Entity has been updated since last read. Try again!");
             eventToUpdate.RowVersion = rowVersion;

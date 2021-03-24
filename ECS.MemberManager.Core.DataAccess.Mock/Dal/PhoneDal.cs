@@ -19,14 +19,14 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             return MockDb.Phones.ToList();
         }
 
-        public async Task<Phone> Insert( Phone phone)
+        public async Task<Phone> Insert(Phone phone)
         {
             var lastPhone = MockDb.Phones.ToList().OrderByDescending(dt => dt.Id).First();
-            phone.Id = 1+lastPhone.Id;
+            phone.Id = 1 + lastPhone.Id;
             phone.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
-            
+
             MockDb.Phones.Add(phone);
-            
+
             return phone;
         }
 
@@ -36,9 +36,9 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 MockDb.Phones.FirstOrDefault(em => em.Id == phone.Id &&
                                                    em.RowVersion.SequenceEqual(phone.RowVersion));
 
-            if(phoneToUpdate == null)
+            if (phoneToUpdate == null)
                 throw new Csla.DataPortalException(null);
-           
+
             phoneToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
             return phoneToUpdate;
         }
@@ -47,7 +47,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             var documentTypesToDelete = MockDb.Phones.FirstOrDefault(dt => dt.Id == id);
             var listIndex = MockDb.Phones.IndexOf(documentTypesToDelete);
-            if(listIndex > -1)
+            if (listIndex > -1)
                 MockDb.Phones.RemoveAt(listIndex);
         }
 

@@ -8,8 +8,7 @@ namespace ECS.MemberManager.Core.EF.Domain
     [Table("EMailTypes")]
     public class EMailType : EntityBase
     {
-        [Required, MaxLength(50)]
-        public string Description { get; set; }
-        public string Notes { get; set; } 
+        [Required, MaxLength(50)] public string Description { get; set; }
+        public string Notes { get; set; }
     }
 }

@@ -15,7 +15,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             membershipType.Id = ID_VALUE;
 
             var membershipTypeObj = await MembershipTypeROC.GetMembershipTypeROC(membershipType);
-            
+
             Assert.NotNull(membershipTypeObj);
             Assert.IsType<MembershipTypeROC>(membershipTypeObj);
             Assert.Equal(membershipTypeObj.Id, membershipTypeObj.Id);
@@ -36,8 +36,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             membershipTypeObj.Notes = "notes for doctype";
 
             return membershipTypeObj;
-        }        
-        
-
+        }
     }
 }

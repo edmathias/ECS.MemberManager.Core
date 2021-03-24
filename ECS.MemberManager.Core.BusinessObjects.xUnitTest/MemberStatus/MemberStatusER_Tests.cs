@@ -9,7 +9,7 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class MemberStatusER_Tests 
+    public class MemberStatusER_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
@@ -21,8 +21,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
+
+            if (testLibrary == "Mock")
                 MockDb.ResetMockDb();
             else
             {
@@ -58,11 +58,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             var memberStatus = await MemberStatusER.GetMemberStatusER(1);
             memberStatus.Notes = "These are updated Notes";
-            
-            var result =  await memberStatus.SaveAsync();
+
+            var result = await memberStatus.SaveAsync();
 
             Assert.NotNull(result);
-            Assert.Equal("These are updated Notes",result.Notes );
+            Assert.Equal("These are updated Notes", result.Notes);
         }
 
         [Fact]
@@ -73,25 +73,25 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             memberStatus.Notes = "This person is on standby";
 
             var savedMemberStatus = await memberStatus.SaveAsync();
-           
+
             Assert.NotNull(savedMemberStatus);
             Assert.IsType<MemberStatusER>(savedMemberStatus);
-            Assert.True( savedMemberStatus.Id > 0 );
+            Assert.True(savedMemberStatus.Id > 0);
         }
 
         [Fact]
         public async Task MemberStatusER_TestDeleteObjectFromDatabase()
         {
             const int ID_TO_DELETE = 99;
-            
+
             await MemberStatusER.DeleteMemberStatusER(ID_TO_DELETE);
 
             await Assert.ThrowsAsync<DataPortalException>(() => MemberStatusER.GetMemberStatusER(ID_TO_DELETE));
         }
-        
+
         // test invalid state 
         [Fact]
-        public async Task MemberStatusER_TestDescriptionRequired() 
+        public async Task MemberStatusER_TestDescriptionRequired()
         {
             var memberStatus = await MemberStatusER.NewMemberStatusER();
             memberStatus.Description = "make valid";
@@ -101,29 +101,28 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(memberStatus);
             Assert.True(isObjectValidInit);
             Assert.False(memberStatus.IsValid);
-            Assert.Equal("Description",memberStatus.BrokenRulesCollection[0].Property);
-            Assert.Equal("Description required",memberStatus.BrokenRulesCollection[0].Description);
+            Assert.Equal("Description", memberStatus.BrokenRulesCollection[0].Property);
+            Assert.Equal("Description required", memberStatus.BrokenRulesCollection[0].Description);
         }
-       
+
         [Fact]
         public async Task MemberStatusER_TestDescriptionCanNotExceed50Characters()
         {
             var memberStatus = await MemberStatusER.NewMemberStatusER();
             memberStatus.Description = "valid length";
             Assert.True(memberStatus.IsValid);
-            
-            memberStatus.Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor "+
-                                       "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis "+
-                                       "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "+
-                                       "Duis aute irure dolor in reprehenderit";
+
+            memberStatus.Description =
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
+                "Duis aute irure dolor in reprehenderit";
 
             Assert.NotNull(memberStatus);
             Assert.False(memberStatus.IsValid);
-            Assert.Equal("Description",memberStatus.BrokenRulesCollection[0].Property);
-            Assert.Equal("Description can not exceed 50 characters",memberStatus.BrokenRulesCollection[0].Description);
-            
- 
-        }        
+            Assert.Equal("Description", memberStatus.BrokenRulesCollection[0].Property);
+            Assert.Equal("Description can not exceed 50 characters", memberStatus.BrokenRulesCollection[0].Description);
+        }
         // test exception if attempt to save in invalid state
 
         [Fact]
@@ -132,11 +131,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var memberStatus = await MemberStatusER.NewMemberStatusER();
             memberStatus.Description = String.Empty;
             MemberStatusER savedMemberStatus = null;
-                
+
             Assert.False(memberStatus.IsValid);
-            Assert.Throws<Csla.Rules.ValidationException>(() => savedMemberStatus =  memberStatus.Save() );
+            Assert.Throws<Csla.Rules.ValidationException>(() => savedMemberStatus = memberStatus.Save());
         }
-        
-        
     }
 }

@@ -1,7 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using Csla;
-using ECS.MemberManager.Core.EF.Domain;
+﻿using ECS.MemberManager.Core.EF.Domain;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
@@ -17,10 +14,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             titlebuild.Id = ID_VALUE;
 
             var title = await TitleROC.GetTitleROC(titlebuild);
-            
+
             Assert.NotNull(title);
             Assert.IsType<TitleROC>(title);
-            Assert.Equal(titlebuild.Abbreviation,title.Abbreviation);
+            Assert.Equal(titlebuild.Abbreviation, title.Abbreviation);
             Assert.Equal(titlebuild.Id, title.Id);
             Assert.Equal(titlebuild.Description, title.Description);
             Assert.Equal(titlebuild.RowVersion, title.RowVersion);
@@ -35,8 +32,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             title.DisplayOrder = 1;
 
             return title;
-        }        
-        
-
+        }
     }
 }

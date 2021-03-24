@@ -1,9 +1,7 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Csla;
-using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using ECS.MemberManager.Core.EF.Domain;
@@ -12,7 +10,7 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class OfficeROC_Tests 
+    public class OfficeROC_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
@@ -24,8 +22,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
+
+            if (testLibrary == "Mock")
                 MockDb.ResetMockDb();
             else
             {
@@ -46,14 +44,14 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             Assert.NotNull(officeObj);
             Assert.IsType<OfficeROC>(officeObj);
-            Assert.Equal(childData.Appointer,officeObj.Appointer);
-            Assert.Equal(childData.Name,officeObj.Name);
-            Assert.Equal(childData.Notes,officeObj.Notes);
-            Assert.Equal(childData.Term,officeObj.Term);
-            Assert.Equal(childData.CalendarPeriod,officeObj.CalendarPeriod);
-            Assert.Equal(childData.ChosenHow,officeObj.ChosenHow);
-            Assert.Equal(childData.LastUpdatedBy,officeObj.LastUpdatedBy);
-            Assert.Equal(new SmartDate(childData.LastUpdatedDate),officeObj.LastUpdatedDate);
+            Assert.Equal(childData.Appointer, officeObj.Appointer);
+            Assert.Equal(childData.Name, officeObj.Name);
+            Assert.Equal(childData.Notes, officeObj.Notes);
+            Assert.Equal(childData.Term, officeObj.Term);
+            Assert.Equal(childData.CalendarPeriod, officeObj.CalendarPeriod);
+            Assert.Equal(childData.ChosenHow, officeObj.ChosenHow);
+            Assert.Equal(childData.LastUpdatedBy, officeObj.LastUpdatedBy);
+            Assert.Equal(new SmartDate(childData.LastUpdatedDate), officeObj.LastUpdatedDate);
         }
 
         private Office BuildOffice()
@@ -69,6 +67,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             officeObj.LastUpdatedDate = DateTime.Now;
             officeObj.Notes = "notes";
             return officeObj;
-        }        
+        }
     }
 }

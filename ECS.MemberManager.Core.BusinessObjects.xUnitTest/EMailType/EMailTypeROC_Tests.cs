@@ -1,7 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using Csla;
-using ECS.MemberManager.Core.EF.Domain;
+﻿using ECS.MemberManager.Core.EF.Domain;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
@@ -17,7 +14,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             email.Id = ID_VALUE;
 
             var eMailType = await EMailTypeROC.GetEMailTypeROC(email);
-            
+
             Assert.NotNull(eMailType);
             Assert.IsType<EMailTypeROC>(eMailType);
             Assert.Equal(eMailType.Id, email.Id);
@@ -34,8 +31,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             eMailType.Notes = "notes for doctype";
 
             return eMailType;
-        }        
-        
-
+        }
     }
 }

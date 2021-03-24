@@ -43,7 +43,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.IsType<PrivacyLevelEC>(privacyLevel);
             Assert.False(privacyLevel.IsValid);
         }
-        
+
         [Fact]
         public async Task TestPrivacyLevelEC_GetPrivacyLevelEC()
         {
@@ -52,8 +52,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             Assert.NotNull(privacyLevel);
             Assert.IsType<PrivacyLevelEC>(privacyLevel);
-            Assert.Equal(privacyLevelToLoad.Id,privacyLevel.Id);
-            Assert.Equal(privacyLevelToLoad.Description,privacyLevel.Description);
+            Assert.Equal(privacyLevelToLoad.Id, privacyLevel.Id);
+            Assert.Equal(privacyLevelToLoad.Description, privacyLevel.Description);
             Assert.Equal(privacyLevelToLoad.Notes, privacyLevel.Notes);
             Assert.Equal(privacyLevelToLoad.RowVersion, privacyLevel.RowVersion);
             Assert.True(privacyLevel.IsValid);
@@ -70,7 +70,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(privacyLevel);
             Assert.True(isObjectValidInit);
             Assert.False(privacyLevel.IsValid);
-            Assert.Equal("Description",privacyLevel.BrokenRulesCollection[0].Property);
+            Assert.Equal("Description", privacyLevel.BrokenRulesCollection[0].Property);
         }
 
         [Fact]
@@ -79,7 +79,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var privacyLevelToTest = BuildPrivacyLevel();
             var privacyLevel = await PrivacyLevelEC.GetPrivacyLevelEC(privacyLevelToTest);
             var isObjectValidInit = privacyLevel.IsValid;
-            privacyLevel.Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+            privacyLevel.Description =
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
                 "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
                 "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
                 "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis ";
@@ -87,7 +88,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(privacyLevel);
             Assert.True(isObjectValidInit);
             Assert.False(privacyLevel.IsValid);
-            Assert.Equal("Description",privacyLevel.BrokenRulesCollection[0].Property);
+            Assert.Equal("Description", privacyLevel.BrokenRulesCollection[0].Property);
         }
 
         private PrivacyLevel BuildPrivacyLevel()
@@ -98,6 +99,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             privacyLevel.Notes = "notes for doctype";
 
             return privacyLevel;
-        }        
+        }
     }
 }

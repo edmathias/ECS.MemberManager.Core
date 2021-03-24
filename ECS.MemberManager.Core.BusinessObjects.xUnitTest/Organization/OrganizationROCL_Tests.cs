@@ -20,8 +20,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
+
+            if (testLibrary == "Mock")
                 MockDb.ResetMockDb();
             else
             {
@@ -32,9 +32,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                     IsDatabaseBuilt = true;
                 }
             }
-            
         }
-        
+
         [Fact]
         private async void OrganizationROCL_TestGetOrganizationROCL()
         {
@@ -43,7 +42,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var data = await dal.Fetch();
 
             var organizationList = await OrganizationROCL.GetOrganizationROCL(data);
-           
+
             Assert.NotNull(organizationList);
             Assert.True(organizationList.IsReadOnly);
             Assert.Equal(3, organizationList.Count);

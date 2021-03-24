@@ -10,7 +10,7 @@ namespace ECS.MemberManager.Core.DataAccess.Dal
         Task<TaskForEvent> Fetch(int id);
         Task<List<TaskForEvent>> Fetch();
         Task<TaskForEvent> Insert(TaskForEvent title);
-        Task<TaskForEvent> Update(TaskForEvent title );
+        Task<TaskForEvent> Update(TaskForEvent title);
         Task Delete(int id);
     }
 }

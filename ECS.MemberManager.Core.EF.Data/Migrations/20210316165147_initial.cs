@@ -23,10 +23,7 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                     LastUpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Addresses", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_Addresses", x => x.Id); });
 
             migrationBuilder.CreateTable(
                 name: "CategoryOfOrganizations",
@@ -38,10 +35,7 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                     DisplayOrder = table.Column<int>(type: "int", nullable: false),
                     RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CategoryOfOrganizations", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_CategoryOfOrganizations", x => x.Id); });
 
             migrationBuilder.CreateTable(
                 name: "CategoryOfPersons",
@@ -53,10 +47,7 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                     DisplayOrder = table.Column<int>(type: "int", nullable: false),
                     RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CategoryOfPersons", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_CategoryOfPersons", x => x.Id); });
 
             migrationBuilder.CreateTable(
                 name: "DocumentTypes",
@@ -70,10 +61,7 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DocumentTypes", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_DocumentTypes", x => x.Id); });
 
             migrationBuilder.CreateTable(
                 name: "EMailTypes",
@@ -85,10 +73,7 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EMailTypes", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_EMailTypes", x => x.Id); });
 
             migrationBuilder.CreateTable(
                 name: "Events",
@@ -105,10 +90,7 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Events", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_Events", x => x.Id); });
 
             migrationBuilder.CreateTable(
                 name: "Images",
@@ -120,10 +102,7 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                     ImageFile = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Images", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_Images", x => x.Id); });
 
             migrationBuilder.CreateTable(
                 name: "MembershipTypes",
@@ -138,10 +117,7 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MembershipTypes", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_MembershipTypes", x => x.Id); });
 
             migrationBuilder.CreateTable(
                 name: "MemberStatuses",
@@ -153,10 +129,7 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MemberStatuses", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_MemberStatuses", x => x.Id); });
 
             migrationBuilder.CreateTable(
                 name: "Offices",
@@ -174,10 +147,7 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Offices", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_Offices", x => x.Id); });
 
             migrationBuilder.CreateTable(
                 name: "PaymentSources",
@@ -189,10 +159,7 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PaymentSources", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_PaymentSources", x => x.Id); });
 
             migrationBuilder.CreateTable(
                 name: "PaymentTypes",
@@ -204,10 +171,7 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PaymentTypes", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_PaymentTypes", x => x.Id); });
 
             migrationBuilder.CreateTable(
                 name: "Phones",
@@ -225,10 +189,7 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Phones", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_Phones", x => x.Id); });
 
             migrationBuilder.CreateTable(
                 name: "PrivacyLevels",
@@ -240,10 +201,7 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PrivacyLevels", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_PrivacyLevels", x => x.Id); });
 
             migrationBuilder.CreateTable(
                 name: "Titles",
@@ -256,10 +214,7 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                     DisplayOrder = table.Column<int>(type: "int", nullable: false),
                     RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Titles", x => x.Id);
-                });
+                constraints: table => { table.PrimaryKey("PK_Titles", x => x.Id); });
 
             migrationBuilder.CreateTable(
                 name: "OrganizationTypes",
@@ -443,7 +398,7 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AddressOrganization", x => new { x.AddressesId, x.OrganizationsId });
+                    table.PrimaryKey("PK_AddressOrganization", x => new {x.AddressesId, x.OrganizationsId});
                     table.ForeignKey(
                         name: "FK_AddressOrganization_Addresses_AddressesId",
                         column: x => x.AddressesId,
@@ -467,7 +422,7 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EMailOrganization", x => new { x.EMailsId, x.OrganizationsId });
+                    table.PrimaryKey("PK_EMailOrganization", x => new {x.EMailsId, x.OrganizationsId});
                     table.ForeignKey(
                         name: "FK_EMailOrganization_EMails_EMailsId",
                         column: x => x.EMailsId,
@@ -491,7 +446,7 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrganizationPhone", x => new { x.OrganizationsId, x.PhonesId });
+                    table.PrimaryKey("PK_OrganizationPhone", x => new {x.OrganizationsId, x.PhonesId});
                     table.ForeignKey(
                         name: "FK_OrganizationPhone_Organizations_OrganizationsId",
                         column: x => x.OrganizationsId,
@@ -515,7 +470,7 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AddressPerson", x => new { x.AddressesId, x.PersonsId });
+                    table.PrimaryKey("PK_AddressPerson", x => new {x.AddressesId, x.PersonsId});
                     table.ForeignKey(
                         name: "FK_AddressPerson_Addresses_AddressesId",
                         column: x => x.AddressesId,
@@ -539,7 +494,7 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CategoryOfPersonPerson", x => new { x.CategoryOfPersonsId, x.PersonsId });
+                    table.PrimaryKey("PK_CategoryOfPersonPerson", x => new {x.CategoryOfPersonsId, x.PersonsId});
                     table.ForeignKey(
                         name: "FK_CategoryOfPersonPerson_CategoryOfPersons_CategoryOfPersonsId",
                         column: x => x.CategoryOfPersonsId,
@@ -563,7 +518,7 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EventPerson", x => new { x.EventsId, x.PersonsId });
+                    table.PrimaryKey("PK_EventPerson", x => new {x.EventsId, x.PersonsId});
                     table.ForeignKey(
                         name: "FK_EventPerson_Events_EventsId",
                         column: x => x.EventsId,
@@ -699,7 +654,7 @@ namespace ECS.MemberManager.Core.EF.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PersonPhone", x => new { x.PersonsId, x.PhonesId });
+                    table.PrimaryKey("PK_PersonPhone", x => new {x.PersonsId, x.PhonesId});
                     table.ForeignKey(
                         name: "FK_PersonPhone_Persons_PersonsId",
                         column: x => x.PersonsId,

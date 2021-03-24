@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,7 +24,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var cnxnString = _config.GetConnectionString("LocalDbConnection");
-            
+
             _db = new SqlConnection(cnxnString);
         }
 
@@ -33,9 +32,10 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
         {
             _db = cnxn;
         }
+
         public async Task<List<EMailType>> Fetch()
         {
-            var eMailTypes =await _db.GetAllAsync<EMailType>();
+            var eMailTypes = await _db.GetAllAsync<EMailType>();
             return eMailTypes.ToList();
         }
 
@@ -49,12 +49,12 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             var sql = "INSERT INTO EMailTypes (Description, Notes) " +
                       "VALUES(@Description, @Notes);" +
                       "SELECT SCOPE_IDENTITY()";
-            eMailTypeToInsert.Id = await _db.ExecuteScalarAsync<int>(sql,eMailTypeToInsert);
+            eMailTypeToInsert.Id = await _db.ExecuteScalarAsync<int>(sql, eMailTypeToInsert);
 
             //reretrieve EMailType to get rowversion
             var insertedEmail = await _db.GetAsync<EMailType>(eMailTypeToInsert.Id);
             eMailTypeToInsert.RowVersion = insertedEmail.RowVersion;
-            
+
             return eMailTypeToInsert;
         }
 
@@ -66,11 +66,11 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                       "OUTPUT inserted.RowVersion " +
                       "WHERE Id = @Id AND RowVersion = @RowVersion ";
 
-            var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql,eMailTypeToUpdate);
+            var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql, eMailTypeToUpdate);
             if (rowVersion == null)
                 throw new DBConcurrencyException("Entity has been updated since last read. Try again!");
             eMailTypeToUpdate.RowVersion = rowVersion;
-            
+
             return eMailTypeToUpdate;
         }
 
@@ -78,12 +78,10 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
         {
             await _db.DeleteAsync<EMailType>(new EMailType() {Id = id});
         }
-        
+
         public void Dispose()
         {
-            _db.Dispose(); 
+            _db.Dispose();
         }
-
-  
     }
 }

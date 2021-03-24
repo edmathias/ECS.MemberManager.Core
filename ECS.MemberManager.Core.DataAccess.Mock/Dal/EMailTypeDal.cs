@@ -20,14 +20,14 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             return MockDb.EMailTypes.ToList();
         }
 
-        public async Task<EMailType> Insert( EMailType eMailType)
+        public async Task<EMailType> Insert(EMailType eMailType)
         {
             var lastEMailType = MockDb.EMailTypes.ToList().OrderByDescending(ms => ms.Id).First();
-            eMailType.Id = 1+lastEMailType.Id;
+            eMailType.Id = 1 + lastEMailType.Id;
             eMailType.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
-            
+
             MockDb.EMailTypes.Add(eMailType);
-            
+
             return eMailType;
         }
 
@@ -35,11 +35,11 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             var eMailTypeToUpdate =
                 MockDb.EMailTypes.FirstOrDefault(em => em.Id == eMailType.Id &&
-                                                               em.RowVersion.SequenceEqual(eMailType.RowVersion));
+                                                       em.RowVersion.SequenceEqual(eMailType.RowVersion));
 
-            if(eMailTypeToUpdate == null)
+            if (eMailTypeToUpdate == null)
                 throw new Csla.DataPortalException(null);
-           
+
             eMailTypeToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
             return eMailTypeToUpdate;
         }
@@ -48,7 +48,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             var eMailTypeToDelete = MockDb.EMailTypes.FirstOrDefault(ms => ms.Id == id);
             var listIndex = MockDb.EMailTypes.IndexOf(eMailTypeToDelete);
-            if(listIndex > -1)
+            if (listIndex > -1)
                 MockDb.EMailTypes.RemoveAt(listIndex);
         }
 

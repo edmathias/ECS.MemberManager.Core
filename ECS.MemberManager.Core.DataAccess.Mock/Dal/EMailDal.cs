@@ -19,14 +19,14 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             return MockDb.EMails.ToList();
         }
 
-        public async Task<EMail> Insert( EMail eMail)
+        public async Task<EMail> Insert(EMail eMail)
         {
             var lastEMail = MockDb.EMails.ToList().OrderByDescending(ms => ms.Id).First();
-            eMail.Id = lastEMail.Id+1;
+            eMail.Id = lastEMail.Id + 1;
             eMail.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
-            
+
             MockDb.EMails.Add(eMail);
-            
+
             return eMail;
         }
 
@@ -34,11 +34,11 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             var emailToUpdate =
                 MockDb.EMails.FirstOrDefault(em => em.Id == eMail.Id &&
-                                                               em.RowVersion.SequenceEqual(eMail.RowVersion));
+                                                   em.RowVersion.SequenceEqual(eMail.RowVersion));
 
-            if(emailToUpdate == null)
+            if (emailToUpdate == null)
                 throw new Csla.DataPortalException(null);
-           
+
             emailToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
             return emailToUpdate;
         }
@@ -47,7 +47,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             var eMailToDelete = MockDb.EMails.FirstOrDefault(ms => ms.Id == id);
             var listIndex = MockDb.EMails.IndexOf(eMailToDelete);
-            if(listIndex > -1)
+            if (listIndex > -1)
                 MockDb.EMails.RemoveAt(listIndex);
         }
 

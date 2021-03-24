@@ -1,8 +1,6 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
-using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Dal;
@@ -13,7 +11,7 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class MemberInfoECL_Tests 
+    public class MemberInfoECL_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
@@ -25,8 +23,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
+
+            if (testLibrary == "Mock")
                 MockDb.ResetMockDb();
             else
             {
@@ -38,7 +36,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 }
             }
         }
-        
+
         [Fact]
         private async void MemberInfoECL_TestMemberInfoECL()
         {
@@ -48,16 +46,16 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.IsType<MemberInfoECL>(memberInfoObjEdit);
         }
 
-        
+
         [Fact]
         private async void MemberInfoECL_TestGetMemberInfoECL()
         {
             using var dalManager = DalFactory.GetManager();
             var dal = dalManager.GetProvider<IMemberInfoDal>();
             var childData = await dal.Fetch();
-            
+
             var listToTest = await MemberInfoECL.GetMemberInfoECL(childData);
-            
+
             Assert.NotNull(listToTest);
             Assert.Equal(3, listToTest.Count);
         }
@@ -79,7 +77,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var dal4 = dalManager.GetProvider<IPrivacyLevelDal>();
             memberInfo.PrivacyLevel = await dal4.Fetch(1);
             memberInfo.LastUpdatedBy = "edm";
-            memberInfo.LastUpdatedDate = DateTime.Now	;
+            memberInfo.LastUpdatedDate = DateTime.Now;
 
             return memberInfo;
         }

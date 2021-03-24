@@ -12,8 +12,7 @@ namespace ECS.MemberManager.Core.DataAccess
         {
             var configurationBuilder = new ConfigurationBuilder();
             configurationBuilder.AddJsonFile("appsettings.json", optional: true, true);
-            _configurationRoot    =  configurationBuilder.Build();
-            
+            _configurationRoot = configurationBuilder.Build();
         }
 
         public static IDalManager GetManager()

@@ -1,43 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using ECS.MemberManager.Core.DataAccess;
-using ECS.MemberManager.Core.DataAccess.ADO;
-using ECS.MemberManager.Core.DataAccess.Dal;
-using ECS.MemberManager.Core.DataAccess.Mock;
 using ECS.MemberManager.Core.EF.Domain;
-using Microsoft.Extensions.Configuration;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class CategoryOfOrganizationECL_Tests
+    public class CategoryOfOrganizationECL_Tests : CslaBaseTest
     {
-        private IConfigurationRoot _config = null;
-        private bool IsDatabaseBuilt = false;
-
-        public CategoryOfOrganizationECL_Tests()
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            _config = builder.Build();
-            var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
-                MockDb.ResetMockDb();
-            else
-            {
-                if (!IsDatabaseBuilt)
-                {
-                    var adoDb = new ADODb();
-                    adoDb.BuildMemberManagerADODb();
-                    IsDatabaseBuilt = true;
-                }
-            }
-        }
-
         [Fact]
         private async void CategoryOfOrganizationECL_TestNewCategoryOfOrganizationECL()
         {
@@ -46,12 +15,13 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(categoryOfOrganizationErl);
             Assert.IsType<CategoryOfOrganizationECL>(categoryOfOrganizationErl);
         }
-        
+
         [Fact]
         private async void CategoryOfOrganizationECL_TestGetCategoryOfOrganizationECL()
         {
             var categoryOfOrganizations = BuildCategoryOfOrganizations();
-            var categoryOfOrganizationECL = await CategoryOfOrganizationECL.GetCategoryOfOrganizationECL(categoryOfOrganizations);
+            var categoryOfOrganizationECL =
+                await CategoryOfOrganizationECL.GetCategoryOfOrganizationECL(categoryOfOrganizations);
 
             Assert.NotNull(categoryOfOrganizationECL);
             Assert.Equal(3, categoryOfOrganizationECL.Count);
@@ -89,8 +59,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                     RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
                 }
             };
-            
         }
- 
     }
 }

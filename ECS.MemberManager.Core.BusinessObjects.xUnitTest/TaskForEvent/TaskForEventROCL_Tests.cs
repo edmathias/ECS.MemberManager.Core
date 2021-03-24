@@ -20,8 +20,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
             _config = builder.Build();
             var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
+
+            if (testLibrary == "Mock")
                 MockDb.ResetMockDb();
             else
             {
@@ -33,7 +33,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 }
             }
         }
-        
+
         [Fact]
         private async void EventInfoList_TestGetEventInfoList()
         {
@@ -42,11 +42,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var childData = await dal.Fetch();
 
             var eventInfoList = await TaskForEventROCL.GetTaskForEventROCL(childData);
-            
+
             Assert.NotNull(eventInfoList);
             Assert.True(eventInfoList.IsReadOnly);
             Assert.Equal(3, eventInfoList.Count);
         }
-      
     }
 }

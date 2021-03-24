@@ -10,7 +10,7 @@ namespace ECS.MemberManager.Core.DataAccess.Dal
         Task<Sponsor> Fetch(int id);
         Task<List<Sponsor>> Fetch();
         Task<Sponsor> Insert(Sponsor person);
-        Task<Sponsor> Update(Sponsor person );
+        Task<Sponsor> Update(Sponsor person);
         Task Delete(int id);
     }
 }

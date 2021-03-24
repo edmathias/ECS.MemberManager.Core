@@ -10,7 +10,7 @@ namespace ECS.MemberManager.Core.DataAccess.Dal
         Task<MembershipType> Fetch(int id);
         Task<List<MembershipType>> Fetch();
         Task<MembershipType> Insert(MembershipType documentType);
-        Task<MembershipType> Update(MembershipType documentType );
+        Task<MembershipType> Update(MembershipType documentType);
         Task Delete(int id);
     }
 }

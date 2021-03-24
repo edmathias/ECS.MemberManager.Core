@@ -1,30 +1,24 @@
-﻿
-
-
-//******************************************************************************
+﻿//******************************************************************************
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/18/2021 16:28:26
+// Generated on 03/23/2021 09:57:22
 //******************************************************************************    
 
-using System; 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
-using ECS.MemberManager.Core.DataAccess;
-using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class MembershipTypeROCL : ReadOnlyListBase<MembershipTypeROCL,MembershipTypeROC>
+    public partial class MembershipTypeROCL : ReadOnlyListBase<MembershipTypeROCL, MembershipTypeROC>
     {
         #region Factory Methods
 
-
-        internal static async Task<MembershipTypeROCL> GetMembershipTypeROCL(List<MembershipType> childData)
+        internal static async Task<MembershipTypeROCL> GetMembershipTypeROCL(IList<MembershipType> childData)
         {
             return await DataPortal.FetchChildAsync<MembershipTypeROCL>(childData);
         }
@@ -32,11 +26,10 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #endregion
 
         #region Data Access
- 
-        [FetchChild]
-        private async Task Fetch(List<MembershipType> childData)
-        {
 
+        [FetchChild]
+        private async Task Fetch(IList<MembershipType> childData)
+        {
             using (LoadListMode)
             {
                 foreach (var domainObjToAdd in childData)
@@ -48,6 +41,5 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         #endregion
-
-     }
+    }
 }

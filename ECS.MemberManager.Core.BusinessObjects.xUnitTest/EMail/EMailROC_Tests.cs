@@ -1,12 +1,10 @@
 ﻿using System;
-using System.ComponentModel;
-using Csla;
 using ECS.MemberManager.Core.EF.Domain;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class EMailROC_Tests
+    public class EMailROC_Tests : CslaBaseTest
     {
         [Fact]
         public async void EMailROC_TestGetChild()
@@ -17,7 +15,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             mail.Id = ID_VALUE;
 
             var eMail = await EMailROC.GetEMailROC(mail);
-            
+
             Assert.NotNull(eMail);
             Assert.IsType<EMailROC>(eMail);
             Assert.Equal(eMail.Id, eMail.Id);
@@ -41,8 +39,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             };
 
             return eMail;
-        }        
-        
-
+        }
     }
 }

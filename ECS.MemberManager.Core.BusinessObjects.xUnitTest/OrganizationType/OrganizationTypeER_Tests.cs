@@ -1,9 +1,6 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
-using Csla;
-using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using ECS.MemberManager.Core.EF.Domain;
@@ -12,7 +9,7 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class OrganizationTypeER_Tests 
+    public class OrganizationTypeER_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
@@ -37,12 +34,12 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 }
             }
         }
-        
-       [Fact]
+
+        [Fact]
         public async void OrganizationTypeER_Get()
         {
             var organizationType = await OrganizationTypeER.GetOrganizationTypeER(1);
-            
+
             Assert.NotNull(organizationType);
             Assert.Equal(1, organizationType.Id);
             Assert.True(organizationType.IsValid);
@@ -63,11 +60,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var updatedName = "new name";
             var organizationType = await OrganizationTypeER.GetOrganizationTypeER(1);
             organizationType.Name = updatedName;
-            
+
             var result = await organizationType.SaveAsync();
 
             Assert.NotNull(result);
-            Assert.Equal(updatedName,result.Name);
+            Assert.Equal(updatedName, result.Name);
         }
 
         [Fact]
@@ -75,34 +72,35 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             var organizationType = await OrganizationTypeER.NewOrganizationTypeER();
             organizationType.Name = "inserted name";
-            organizationType.CategoryOfOrganization = await CategoryOfOrganizationEC.GetCategoryOfOrganizationEC(new CategoryOfOrganization
-            {
-                Id = 1,
-                Category = "Category name",
-                DisplayOrder = 1
-            });
+            organizationType.CategoryOfOrganization = await CategoryOfOrganizationEC.GetCategoryOfOrganizationEC(
+                new CategoryOfOrganization
+                {
+                    Id = 1,
+                    Category = "Category name",
+                    DisplayOrder = 1
+                });
 
             var savedOrganizationType = await organizationType.SaveAsync();
-           
+
             Assert.NotNull(savedOrganizationType);
             Assert.IsType<OrganizationTypeER>(savedOrganizationType);
-            Assert.True( savedOrganizationType.Id > 0 );
+            Assert.True(savedOrganizationType.Id > 0);
         }
 
         [Fact]
         public async Task OrganizationTypeER_DeleteObjectFromDatabase()
         {
             const int ID_TO_DELETE = 99;
-            
+
             await OrganizationTypeER.DeleteOrganizationTypeER(ID_TO_DELETE);
-            
+
             var categoryToCheck = await Assert.ThrowsAsync<Csla.DataPortalException>
-                (() => OrganizationTypeER.GetOrganizationTypeER(ID_TO_DELETE));        
+                (() => OrganizationTypeER.GetOrganizationTypeER(ID_TO_DELETE));
         }
-        
+
         // test invalid state 
         [Fact]
-        public async Task OrganizationTypeER_NameRequired() 
+        public async Task OrganizationTypeER_NameRequired()
         {
             var organizationType = await OrganizationTypeER.NewOrganizationTypeER();
             organizationType.Name = "valid name";
@@ -115,7 +113,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.True(isObjectValidInit);
             Assert.False(organizationType.IsValid);
         }
-       
+
         [Fact]
         public async Task OrganizationTypeER_NameExceedsMaxLengthOf50()
         {
@@ -124,7 +122,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             organizationType.CategoryOfOrganization = await CategoryOfOrganizationEC.NewCategoryOfOrganizationEC();
             organizationType.CategoryOfOrganization.Category = "category name";
             var isValidOrig = organizationType.IsValid;
-            
+
             organizationType.Name =
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
                 "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis ";
@@ -136,8 +134,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             Assert.Equal("Name can not exceed 50 characters",
                 organizationType.BrokenRulesCollection[0].Description);
- 
-        }        
+        }
         // test exception if attempt to save in invalid state
 
         [Fact]
@@ -145,7 +142,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             var organizationType = await OrganizationTypeER.NewOrganizationTypeER();
             organizationType.Name = String.Empty;
-                
+
             Assert.False(organizationType.IsValid);
             Assert.Throws<Csla.Rules.ValidationException>(() => organizationType.Save());
         }

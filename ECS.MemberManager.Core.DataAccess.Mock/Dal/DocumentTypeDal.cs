@@ -19,14 +19,14 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             return MockDb.DocumentTypes.ToList();
         }
 
-        public async Task<DocumentType> Insert( DocumentType documentType)
+        public async Task<DocumentType> Insert(DocumentType documentType)
         {
             var lastDocumentType = MockDb.DocumentTypes.ToList().OrderByDescending(dt => dt.Id).First();
-            documentType.Id = 1+lastDocumentType.Id;
+            documentType.Id = 1 + lastDocumentType.Id;
             documentType.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
-            
+
             MockDb.DocumentTypes.Add(documentType);
-            
+
             return documentType;
         }
 
@@ -34,11 +34,11 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             var documentTypeToUpdate =
                 MockDb.DocumentTypes.FirstOrDefault(em => em.Id == documentType.Id &&
-                                                               em.RowVersion.SequenceEqual(documentType.RowVersion));
+                                                          em.RowVersion.SequenceEqual(documentType.RowVersion));
 
-            if(documentTypeToUpdate == null)
+            if (documentTypeToUpdate == null)
                 throw new Csla.DataPortalException(null);
-           
+
             documentTypeToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
             return documentTypeToUpdate;
         }
@@ -47,7 +47,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             var documentTypesToDelete = MockDb.DocumentTypes.FirstOrDefault(dt => dt.Id == id);
             var listIndex = MockDb.DocumentTypes.IndexOf(documentTypesToDelete);
-            if(listIndex > -1)
+            if (listIndex > -1)
                 MockDb.DocumentTypes.RemoveAt(listIndex);
         }
 

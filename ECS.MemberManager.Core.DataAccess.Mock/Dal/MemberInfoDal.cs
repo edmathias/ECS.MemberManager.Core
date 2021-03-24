@@ -19,14 +19,14 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             return MockDb.MemberInfo.ToList();
         }
 
-        public async Task<MemberInfo> Insert( MemberInfo memberStatus)
+        public async Task<MemberInfo> Insert(MemberInfo memberStatus)
         {
             var lastMemberInfo = MockDb.MemberInfo.ToList().OrderByDescending(ms => ms.Id).First();
-            memberStatus.Id = 1+lastMemberInfo.Id;
+            memberStatus.Id = 1 + lastMemberInfo.Id;
             memberStatus.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
-            
+
             MockDb.MemberInfo.Add(memberStatus);
-            
+
             return memberStatus;
         }
 
@@ -34,9 +34,9 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             var memberInfoToUpdate =
                 MockDb.MemberInfo.FirstOrDefault(em => em.Id == memberInfo.Id &&
-                                                               em.RowVersion.SequenceEqual(memberInfo.RowVersion));
+                                                       em.RowVersion.SequenceEqual(memberInfo.RowVersion));
 
-            if(memberInfoToUpdate == null)
+            if (memberInfoToUpdate == null)
                 throw new Csla.DataPortalException(null);
 
             memberInfoToUpdate.MemberNumber = memberInfo.MemberNumber;
@@ -48,7 +48,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             var memberStatusToDelete = MockDb.MemberInfo.FirstOrDefault(ms => ms.Id == id);
             var listIndex = MockDb.MemberInfo.IndexOf(memberStatusToDelete);
-            if(listIndex > -1)
+            if (listIndex > -1)
                 MockDb.MemberInfo.RemoveAt(listIndex);
         }
 

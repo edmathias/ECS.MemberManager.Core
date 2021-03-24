@@ -1,7 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using Csla;
-using ECS.MemberManager.Core.EF.Domain;
+﻿using ECS.MemberManager.Core.EF.Domain;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
@@ -17,7 +14,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             buildPrivacyLevel.Id = ID_VALUE;
 
             var privacyLevel = await PrivacyLevelROC.GetPrivacyLevelROC(buildPrivacyLevel);
-            
+
             Assert.NotNull(privacyLevel);
             Assert.IsType<PrivacyLevelROC>(privacyLevel);
             Assert.Equal(privacyLevel.Id, buildPrivacyLevel.Id);
@@ -34,7 +31,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             privacyLevel.Notes = "notes for doctype";
 
             return privacyLevel;
-        }        
-
+        }
     }
 }

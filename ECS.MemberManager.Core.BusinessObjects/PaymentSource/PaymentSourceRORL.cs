@@ -1,28 +1,23 @@
-﻿
-
-
-//******************************************************************************
+﻿//******************************************************************************
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/18/2021 16:28:32
+// Generated on 03/23/2021 09:57:33
 //******************************************************************************    
 
-using System; 
+using System;
 using System.Threading.Tasks;
 using Csla;
-using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class PaymentSourceRORL : ReadOnlyListBase<PaymentSourceRORL,PaymentSourceROC>
+    public partial class PaymentSourceRORL : ReadOnlyListBase<PaymentSourceRORL, PaymentSourceROC>
     {
         #region Factory Methods
 
-
-        public static async Task<PaymentSourceRORL> GetPaymentSourceRORL( )
+        public static async Task<PaymentSourceRORL> GetPaymentSourceRORL()
         {
             return await DataPortal.FetchAsync<PaymentSourceRORL>();
         }
@@ -30,7 +25,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #endregion
 
         #region Data Access
- 
+
         [Fetch]
         private async Task Fetch([Inject] IPaymentSourceDal dal)
         {
@@ -47,6 +42,5 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         #endregion
-
-     }
+    }
 }

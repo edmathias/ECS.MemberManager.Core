@@ -1,52 +1,45 @@
-﻿using System.IO;
-using ECS.MemberManager.Core.DataAccess;
-using ECS.MemberManager.Core.DataAccess.ADO;
-using ECS.MemberManager.Core.DataAccess.Dal;
-using ECS.MemberManager.Core.DataAccess.Mock;
-using Microsoft.Extensions.Configuration;
+﻿using System;
+using System.Collections.Generic;
+using ECS.MemberManager.Core.EF.Domain;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class EMailROCL_Tests
+    public class EMailROCL_Tests : CslaBaseTest
     {
-        private IConfigurationRoot _config = null;
-        private bool IsDatabaseBuilt = false;
-
-        public EMailROCL_Tests()
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            _config = builder.Build();
-            var testLibrary = _config.GetValue<string>("TestLibrary");
-            
-            if(testLibrary == "Mock")
-                MockDb.ResetMockDb();
-            else
-            {
-                if (!IsDatabaseBuilt)
-                {
-                    var adoDb = new ADODb();
-                    adoDb.BuildMemberManagerADODb();
-                    IsDatabaseBuilt = true;
-                }
-            }
-        }
-        
         [Fact]
         private async void EMailInfoList_TestGetEMailInfoList()
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEMailDal>();
-            var childData = await dal.Fetch();
+            var eMailTypeInfoList = await EMailROCL.GetEMailROCL(GetEmails());
 
-            var eMailTypeInfoList = await EMailROCL.GetEMailROCL(childData);
-            
             Assert.NotNull(eMailTypeInfoList);
             Assert.True(eMailTypeInfoList.IsReadOnly);
             Assert.Equal(3, eMailTypeInfoList.Count);
         }
-      
+
+        private static IList<EMail> GetEmails()
+        {
+            return new List<EMail>()
+            {
+                new EMail()
+                {
+                    Id = 1, EMailType = new EMailType() {Id = 1},
+                    EMailAddress = "edm@ecs.com", LastUpdatedBy = "edm", LastUpdatedDate = DateTime.Now,
+                    Notes = "some notes", RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
+                },
+                new EMail()
+                {
+                    Id = 2, EMailType = new EMailType() {Id = 1},
+                    EMailAddress = "edm@ecs.com", LastUpdatedBy = "edm", LastUpdatedDate = DateTime.Now,
+                    Notes = "some notes", RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
+                },
+                new EMail()
+                {
+                    Id = 99, EMailType = new EMailType() {Id = 1},
+                    EMailAddress = "edm@ecs.com", LastUpdatedBy = "edm", LastUpdatedDate = DateTime.Now,
+                    Notes = "test the delete", RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
+                }
+            };
+        }
     }
 }

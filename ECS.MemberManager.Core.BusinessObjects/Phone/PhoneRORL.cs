@@ -1,21 +1,16 @@
-﻿
-
-
-using System; 
+﻿using System;
 using System.Threading.Tasks;
 using Csla;
-using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class PhoneRORL : ReadOnlyListBase<PhoneRORL,PhoneROC>
+    public partial class PhoneRORL : ReadOnlyListBase<PhoneRORL, PhoneROC>
     {
         #region Factory Methods
 
-
-        public static async Task<PhoneRORL> GetPhoneRORL( )
+        public static async Task<PhoneRORL> GetPhoneRORL()
         {
             return await DataPortal.FetchAsync<PhoneRORL>();
         }
@@ -23,7 +18,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #endregion
 
         #region Data Access
- 
+
         [Fetch]
         private async Task Fetch([Inject] IPhoneDal dal)
         {
@@ -40,6 +35,5 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         #endregion
-
-     }
+    }
 }

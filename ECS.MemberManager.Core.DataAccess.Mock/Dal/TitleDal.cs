@@ -19,14 +19,14 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             return MockDb.Titles.ToList();
         }
 
-        public async Task<Title> Insert( Title title)
+        public async Task<Title> Insert(Title title)
         {
             var lastTitle = MockDb.Titles.ToList().OrderByDescending(dt => dt.Id).First();
-            title.Id = 1+lastTitle.Id;
+            title.Id = 1 + lastTitle.Id;
             title.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
-            
+
             MockDb.Titles.Add(title);
-            
+
             return title;
         }
 
@@ -36,9 +36,9 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 MockDb.Titles.FirstOrDefault(em => em.Id == title.Id &&
                                                    em.RowVersion.SequenceEqual(title.RowVersion));
 
-            if(titleToUpdate == null)
+            if (titleToUpdate == null)
                 throw new Csla.DataPortalException(null);
-           
+
             titleToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
             return titleToUpdate;
         }
@@ -47,7 +47,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             var titleToDelete = MockDb.Titles.FirstOrDefault(dt => dt.Id == id);
             var listIndex = MockDb.Titles.IndexOf(titleToDelete);
-            if(listIndex > -1)
+            if (listIndex > -1)
                 MockDb.Titles.RemoveAt(listIndex);
         }
 

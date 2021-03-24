@@ -25,23 +25,23 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         public async Task<EventDocument> Insert(EventDocument eventToInsert)
         {
-            var lastEventDocument = MockDb.EventDocuments.ToList().OrderByDescending(e =>e.Id).First();
-            eventToInsert.Id = 1+lastEventDocument.Id;
+            var lastEventDocument = MockDb.EventDocuments.ToList().OrderByDescending(e => e.Id).First();
+            eventToInsert.Id = 1 + lastEventDocument.Id;
             eventToInsert.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
-            
+
             MockDb.EventDocuments.Add(eventToInsert);
-            return eventToInsert;        
+            return eventToInsert;
         }
 
         public async Task<EventDocument> Update(EventDocument eventDocument)
         {
             var eventDocumentToUpdate =
                 MockDb.EventDocuments.FirstOrDefault(em => em.Id == eventDocument.Id &&
-                                                               em.RowVersion.SequenceEqual(eventDocument.RowVersion));
+                                                           em.RowVersion.SequenceEqual(eventDocument.RowVersion));
 
-            if(eventDocumentToUpdate == null)
+            if (eventDocumentToUpdate == null)
                 throw new Csla.DataPortalException(null);
-           
+
             // update fields to satisfy unit tests.
             eventDocumentToUpdate.DocumentName = eventDocument.DocumentName;
             eventDocumentToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
@@ -52,7 +52,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
             var eventToDelete = MockDb.EventDocuments.FirstOrDefault(e => e.Id == id);
             var listIndex = MockDb.EventDocuments.IndexOf(eventToDelete);
-            if(listIndex > -1)
+            if (listIndex > -1)
                 MockDb.EventDocuments.RemoveAt(listIndex);
         }
     }

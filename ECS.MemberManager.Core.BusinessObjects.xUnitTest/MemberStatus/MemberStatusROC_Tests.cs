@@ -1,7 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using Csla;
-using ECS.MemberManager.Core.EF.Domain;
+﻿using ECS.MemberManager.Core.EF.Domain;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
@@ -17,7 +14,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             buildMemberStatus.Id = ID_VALUE;
 
             var memberStatus = await MemberStatusROC.GetMemberStatusROC(buildMemberStatus);
-            
+
             Assert.NotNull(memberStatus);
             Assert.IsType<MemberStatusROC>(memberStatus);
             Assert.Equal(memberStatus.Id, buildMemberStatus.Id);
@@ -34,7 +31,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             memberStatus.Notes = "notes for doctype";
 
             return memberStatus;
-        }        
-
+        }
     }
 }

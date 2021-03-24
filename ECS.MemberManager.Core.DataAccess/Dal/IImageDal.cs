@@ -10,7 +10,7 @@ namespace ECS.MemberManager.Core.DataAccess.Dal
         Task<Image> Fetch(int id);
         Task<List<Image>> Fetch();
         Task<Image> Insert(Image imageToInsert);
-        Task<Image> Update(Image imageToUpdate );
+        Task<Image> Update(Image imageToUpdate);
         Task Delete(int id);
     }
 }

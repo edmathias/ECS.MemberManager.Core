@@ -10,7 +10,7 @@ namespace ECS.MemberManager.Core.DataAccess.Dal
         Task<PrivacyLevel> Fetch(int id);
         Task<List<PrivacyLevel>> Fetch();
         Task<PrivacyLevel> Insert(PrivacyLevel privacyLevel);
-        Task<PrivacyLevel> Update(PrivacyLevel privacyLevel );
+        Task<PrivacyLevel> Update(PrivacyLevel privacyLevel);
         Task Delete(int id);
     }
 }

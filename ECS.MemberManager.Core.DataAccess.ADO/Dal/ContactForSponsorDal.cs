@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Transactions;
 using Dapper;
 using Dapper.Contrib.Extensions;
 using ECS.MemberManager.Core.DataAccess.Dal;
@@ -42,7 +40,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             sql.AppendLine("select * from ContactForSponsors cs");
             sql.AppendLine("left join Sponsors s on cs.SponsorId = s.Id");
             sql.AppendLine("left join Persons p on cs.PersonId = p.Id");
-             var result = await _db.QueryAsync<ContactForSponsor,Sponsor,Person,ContactForSponsor>(sql.ToString(),
+            var result = await _db.QueryAsync<ContactForSponsor, Sponsor, Person, ContactForSponsor>(sql.ToString(),
                 (contact, sponsor, person) =>
                 {
                     contact.Sponsor = sponsor;
@@ -51,8 +49,9 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                 }
             );
 
-             return result.ToList();
+            return result.ToList();
         }
+
         public async Task<ContactForSponsor> Fetch(int id)
         {
             StringBuilder sql = new StringBuilder();
@@ -60,7 +59,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             sql.AppendLine("left join Sponsors s on cs.SponsorId = s.Id");
             sql.AppendLine("left join Persons p on cs.PersonId = p.Id");
             sql.AppendLine($"where cs.Id = {id}");
-            var result = await _db.QueryAsync<ContactForSponsor,Sponsor,Person,ContactForSponsor>(sql.ToString(),
+            var result = await _db.QueryAsync<ContactForSponsor, Sponsor, Person, ContactForSponsor>(sql.ToString(),
                 (contact, sponsor, person) =>
                 {
                     contact.Sponsor = sponsor;
@@ -69,7 +68,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                 }
             );
 
-            return result.First();            
+            return result.First();
         }
 
         public async Task<ContactForSponsor> Insert(ContactForSponsor contactForSponsorToInsert)
@@ -116,10 +115,10 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
 
             var rowVersion = await _db.ExecuteScalarAsync<byte[]>(sql.ToString(), new
             {
-                Id=contactForSponsorToUpdate.Id,
+                Id = contactForSponsorToUpdate.Id,
                 SponsorId = contactForSponsorToUpdate.Sponsor.Id,
                 DateWhenContacted = contactForSponsorToUpdate.DateWhenContacted,
-                Purpose=contactForSponsorToUpdate.Purpose,
+                Purpose = contactForSponsorToUpdate.Purpose,
                 RecordOfDiscussion = contactForSponsorToUpdate.RecordOfDiscussion,
                 PersonId = contactForSponsorToUpdate.Person.Id,
                 Notes = contactForSponsorToUpdate.Notes,
@@ -127,7 +126,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                 LastUpdatedDate = contactForSponsorToUpdate.LastUpdatedDate,
                 RowVersion = contactForSponsorToUpdate.RowVersion
             });
-            
+
             if (rowVersion == null)
                 throw new DBConcurrencyException("Entity has been updated since last read. Try again!");
             contactForSponsorToUpdate.RowVersion = rowVersion;

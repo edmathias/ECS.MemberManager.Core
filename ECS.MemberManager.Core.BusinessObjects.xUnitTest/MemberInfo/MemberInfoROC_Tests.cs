@@ -1,9 +1,6 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
-using Csla;
-using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Dal;
@@ -14,7 +11,7 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class MemberInfoROC_Tests 
+    public class MemberInfoROC_Tests
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
@@ -39,8 +36,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 }
             }
         }
-        
-       [Fact]
+
+        [Fact]
         public async void MemberInfoROC_Get()
         {
             var memberInfo = await MemberInfoROC.GetMemberInfoROC(await BuildMemberInfo());
@@ -69,7 +66,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var dal4 = dalManager.GetProvider<IPrivacyLevelDal>();
             memberInfo.PrivacyLevel = await dal4.Fetch(1);
             memberInfo.LastUpdatedBy = "edm";
-            memberInfo.LastUpdatedDate = DateTime.Now	;
+            memberInfo.LastUpdatedDate = DateTime.Now;
 
             return memberInfo;
         }

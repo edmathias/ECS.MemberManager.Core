@@ -1,9 +1,6 @@
 using System;
-using System.Data;
 using System.IO;
 using System.Threading.Tasks;
-using Csla;
-using Csla.Rules;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using ECS.MemberManager.Core.EF.Domain;
@@ -69,7 +66,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.NotNull(paymentType);
             Assert.True(isObjectValidInit);
             Assert.False(paymentType.IsValid);
-            Assert.Equal("LastUpdatedBy",paymentType.BrokenRulesCollection[0].OriginProperty);
+            Assert.Equal("LastUpdatedBy", paymentType.BrokenRulesCollection[0].OriginProperty);
         }
 
         [Fact]
@@ -78,17 +75,18 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var paymentType = await PaymentEC.NewPaymentEC();
             await BuildValidPaymentEC(paymentType);
             var isObjectValidInit = paymentType.IsValid;
-            paymentType.LastUpdatedBy =  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
-                                         "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
-                                         "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
-                                         "Duis aute irure dolor in reprehenderit";
+            paymentType.LastUpdatedBy =
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
+                "incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis " +
+                "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " +
+                "Duis aute irure dolor in reprehenderit";
 
             Assert.NotNull(paymentType);
             Assert.True(isObjectValidInit);
             Assert.False(paymentType.IsValid);
-            Assert.Equal("LastUpdatedBy",paymentType.BrokenRulesCollection[0].OriginProperty);
-            Assert.Equal("LastUpdatedBy can not exceed 255 characters",paymentType.BrokenRulesCollection[0].Description);
-
+            Assert.Equal("LastUpdatedBy", paymentType.BrokenRulesCollection[0].OriginProperty);
+            Assert.Equal("LastUpdatedBy can not exceed 255 characters",
+                paymentType.BrokenRulesCollection[0].Description);
         }
 
         private async Task BuildValidPaymentEC(PaymentEC payment)
