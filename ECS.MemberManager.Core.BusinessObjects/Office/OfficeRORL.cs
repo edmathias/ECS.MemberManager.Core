@@ -1,23 +1,30 @@
-﻿//******************************************************************************
+﻿
+
+
+//******************************************************************************
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/23/2021 09:57:22
+// Generated on 03/25/2021 11:08:16
 //******************************************************************************    
 
-using System;
+using System; 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
+using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
+using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class MembershipTypeRORL : ReadOnlyListBase<MembershipTypeRORL, MembershipTypeROC>
+    public partial class MembershipTypeRORL : ReadOnlyListBase<MembershipTypeRORL,MembershipTypeROC>
     {
         #region Factory Methods
 
-        public static async Task<MembershipTypeRORL> GetMembershipTypeRORL()
+
+        public static async Task<MembershipTypeRORL> GetMembershipTypeRORL( )
         {
             return await DataPortal.FetchAsync<MembershipTypeRORL>();
         }
@@ -25,7 +32,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #endregion
 
         #region Data Access
-
+ 
         [Fetch]
         private async Task Fetch([Inject] IMembershipTypeDal dal)
         {
@@ -42,5 +49,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         #endregion
-    }
+
+     }
 }

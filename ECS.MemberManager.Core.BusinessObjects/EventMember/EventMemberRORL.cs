@@ -1,16 +1,21 @@
-﻿using System;
+﻿
+
+
+using System; 
 using System.Threading.Tasks;
 using Csla;
+using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class EventMemberRORL : ReadOnlyListBase<EventMemberRORL, EventMemberROC>
+    public partial class EventMemberRORL : ReadOnlyListBase<EventMemberRORL,EventMemberROC>
     {
         #region Factory Methods
 
-        public static async Task<EventMemberRORL> GetEventMemberRORL()
+
+        public static async Task<EventMemberRORL> GetEventMemberRORL( )
         {
             return await DataPortal.FetchAsync<EventMemberRORL>();
         }
@@ -18,7 +23,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #endregion
 
         #region Data Access
-
+ 
         [Fetch]
         private async Task Fetch([Inject] IEventMemberDal dal)
         {
@@ -35,5 +40,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         #endregion
-    }
+
+     }
 }

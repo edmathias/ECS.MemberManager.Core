@@ -1,16 +1,21 @@
-﻿using System;
+﻿
+
+
+using System; 
 using System.Threading.Tasks;
 using Csla;
+using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class ImageRORL : ReadOnlyListBase<ImageRORL, ImageROC>
+    public partial class ImageRORL : ReadOnlyListBase<ImageRORL,ImageROC>
     {
         #region Factory Methods
 
-        public static async Task<ImageRORL> GetImageRORL()
+
+        public static async Task<ImageRORL> GetImageRORL( )
         {
             return await DataPortal.FetchAsync<ImageRORL>();
         }
@@ -18,7 +23,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #endregion
 
         #region Data Access
-
+ 
         [Fetch]
         private async Task Fetch([Inject] IImageDal dal)
         {
@@ -35,5 +40,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         #endregion
-    }
+
+     }
 }

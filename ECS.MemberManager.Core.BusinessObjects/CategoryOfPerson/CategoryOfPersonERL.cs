@@ -1,19 +1,25 @@
-﻿//******************************************************************************
+﻿
+
+
+//******************************************************************************
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/23/2021 09:56:46
+// Generated on 03/25/2021 11:07:29
 //******************************************************************************    
 
-using System;
+using System; 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
+using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
+using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class CategoryOfPersonERL : BusinessListBase<CategoryOfPersonERL, CategoryOfPersonEC>
+    public partial class CategoryOfPersonERL : BusinessListBase<CategoryOfPersonERL,CategoryOfPersonEC>
     {
         #region Factory Methods
 
@@ -22,7 +28,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             return await DataPortal.CreateAsync<CategoryOfPersonERL>();
         }
 
-        public static async Task<CategoryOfPersonERL> GetCategoryOfPersonERL()
+        public static async Task<CategoryOfPersonERL> GetCategoryOfPersonERL( )
         {
             return await DataPortal.FetchAsync<CategoryOfPersonERL>();
         }
@@ -30,7 +36,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #endregion
 
         #region Data Access
-
+ 
         [Fetch]
         private async Task Fetch([Inject] ICategoryOfPersonDal dal)
         {
@@ -45,7 +51,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 }
             }
         }
-
+       
         [Update]
         private void Update()
         {
@@ -53,5 +59,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         #endregion
-    }
+
+     }
 }

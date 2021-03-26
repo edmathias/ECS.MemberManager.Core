@@ -77,6 +77,38 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
+        public async Task ContactForSponsorER_UpdatePerson()
+        {
+            const string NOTES_UPDATE = "test child update";
+            
+            var contactForSponsor = await ContactForSponsorER.GetContactForSponsorER(1);
+
+            contactForSponsor.Person.Notes = NOTES_UPDATE;
+            
+            var result = await contactForSponsor.SaveAsync();
+            
+            Assert.NotNull(result);
+            Assert.Equal(NOTES_UPDATE,result.Person.Notes);
+        }
+
+        [Fact]
+        public async Task ContactForSponsorER_UpdateSponsor()
+        {
+            const string NOTES_UPDATE = "test child update";
+            
+            var contactForSponsor = await ContactForSponsorER.GetContactForSponsorER(1);
+
+            contactForSponsor.Sponsor.Notes = NOTES_UPDATE;
+            
+            var result = await contactForSponsor.SaveAsync();
+            
+            Assert.NotNull(result);
+            Assert.Equal(NOTES_UPDATE,result.Sponsor.Notes);
+        }
+        
+        
+        
+        [Fact]
         public async Task ContactForSponsorER_TestInsertNewContactForSponsorER()
         {
             var contactForSponsor = await ContactForSponsorER.NewContactForSponsorER();

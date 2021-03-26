@@ -17,6 +17,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             services.AddTransient(typeof(IContactForSponsorDal), typeof(ContactForSponsorDal));
             services.AddTransient(typeof(IDocumentTypeDal), typeof(DocumentTypeDal));
             services.AddTransient(typeof(IEMailDal), typeof(EMailDal));
+            services.AddTransient(typeof(IPersonDal),typeof(PersonDal));
+            services.AddTransient(typeof(ISponsorDal),typeof(SponsorDal));
             /*
             services.AddTransient(typeof(IEMailTypeDal),typeof(EMailTypeDal));
             services.AddTransient(typeof(IEventDal),typeof(EventDal));
@@ -31,7 +33,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             services.AddTransient(typeof(IPaymentDal),typeof(PaymentDal));
             services.AddTransient(typeof(IPaymentSourceDal),typeof(PaymentSourceDal));
             services.AddTransient(typeof(IPaymentTypeDal),typeof(PaymentTypeDal));
-            services.AddTransient(typeof(IPersonDal),typeof(PersonDal));
             services.AddTransient(typeof(IPhoneDal),typeof(PhoneDal));
             services.AddTransient(typeof(IPrivacyLevelDal),typeof(PrivacyLevelDal));
             services.AddTransient(typeof(ITaskForEventDal),typeof(TaskForEventDal));

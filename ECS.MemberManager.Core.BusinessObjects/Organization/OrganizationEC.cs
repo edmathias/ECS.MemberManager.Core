@@ -1,13 +1,17 @@
-﻿//******************************************************************************
+﻿
+
+//******************************************************************************
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/23/2021 09:57:22
+// Generated on 03/25/2021 11:08:17
 //******************************************************************************    
 
 using System;
+using System.Collections.Generic; 
 using System.Threading.Tasks;
 using Csla;
+using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
@@ -17,80 +21,73 @@ namespace ECS.MemberManager.Core.BusinessObjects
     public partial class OrganizationEC : BusinessBase<OrganizationEC>
     {
         #region Business Methods
-
+ 
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
-
-        public virtual int Id
+        public virtual int Id 
         {
-            get => GetProperty(IdProperty);
-            private set => LoadProperty(IdProperty, value);
+            get => GetProperty(IdProperty); 
+            private set => LoadProperty(IdProperty, value);    
         }
 
         public static readonly PropertyInfo<string> NameProperty = RegisterProperty<string>(o => o.Name);
-
-        public virtual string Name
+        public virtual string Name 
         {
-            get => GetProperty(NameProperty);
-            set => SetProperty(NameProperty, value);
+            get => GetProperty(NameProperty); 
+            set => SetProperty(NameProperty, value); 
+   
         }
 
-        public static readonly PropertyInfo<SmartDate> DateOfFirstContactProperty =
-            RegisterProperty<SmartDate>(o => o.DateOfFirstContact);
-
-        public virtual SmartDate DateOfFirstContact
+        public static readonly PropertyInfo<SmartDate> DateOfFirstContactProperty = RegisterProperty<SmartDate>(o => o.DateOfFirstContact);
+        public virtual SmartDate DateOfFirstContact 
         {
-            get => GetProperty(DateOfFirstContactProperty);
-            set => SetProperty(DateOfFirstContactProperty, value);
+            get => GetProperty(DateOfFirstContactProperty); 
+            set => SetProperty(DateOfFirstContactProperty, value); 
+   
         }
 
-        public static readonly PropertyInfo<string> LastUpdatedByProperty =
-            RegisterProperty<string>(o => o.LastUpdatedBy);
-
-        public virtual string LastUpdatedBy
+        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(o => o.LastUpdatedBy);
+        public virtual string LastUpdatedBy 
         {
-            get => GetProperty(LastUpdatedByProperty);
-            set => SetProperty(LastUpdatedByProperty, value);
+            get => GetProperty(LastUpdatedByProperty); 
+            set => SetProperty(LastUpdatedByProperty, value); 
+   
         }
 
-        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty =
-            RegisterProperty<SmartDate>(o => o.LastUpdatedDate);
-
-        public virtual SmartDate LastUpdatedDate
+        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(o => o.LastUpdatedDate);
+        public virtual SmartDate LastUpdatedDate 
         {
-            get => GetProperty(LastUpdatedDateProperty);
-            set => SetProperty(LastUpdatedDateProperty, value);
+            get => GetProperty(LastUpdatedDateProperty); 
+            set => SetProperty(LastUpdatedDateProperty, value); 
+   
         }
 
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
-
-        public virtual string Notes
+        public virtual string Notes 
         {
-            get => GetProperty(NotesProperty);
-            set => SetProperty(NotesProperty, value);
+            get => GetProperty(NotesProperty); 
+            set => SetProperty(NotesProperty, value); 
+   
         }
 
 
-        public static readonly PropertyInfo<OrganizationTypeEC> OrganizationTypeProperty =
-            RegisterProperty<OrganizationTypeEC>(o => o.OrganizationType);
-
-        public OrganizationTypeEC OrganizationType
+        public static readonly PropertyInfo<OrganizationTypeEC> OrganizationTypeProperty = RegisterProperty<OrganizationTypeEC>(o => o.OrganizationType);
+        public OrganizationTypeEC OrganizationType  
         {
-            get => GetProperty(OrganizationTypeProperty);
-            set => SetProperty(OrganizationTypeProperty, value);
-        }
-
+            get => GetProperty(OrganizationTypeProperty); 
+            set => SetProperty(OrganizationTypeProperty, value); 
+        }    
+ 
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
-
-        public virtual byte[] RowVersion
+        public virtual byte[] RowVersion 
         {
-            get => GetProperty(RowVersionProperty);
-            set => SetProperty(RowVersionProperty, value);
+            get => GetProperty(RowVersionProperty); 
+            set => SetProperty(RowVersionProperty, value); 
+   
         }
 
-        #endregion
+        #endregion 
 
         #region Factory Methods
-
         internal static async Task<OrganizationEC> NewOrganizationEC()
         {
             return await DataPortal.CreateChildAsync<OrganizationEC>();
@@ -99,7 +96,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
         internal static async Task<OrganizationEC> GetOrganizationEC(Organization childData)
         {
             return await DataPortal.FetchChildAsync<OrganizationEC>(childData);
-        }
+        }  
+
 
         #endregion
 
@@ -108,34 +106,33 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [FetchChild]
         private async Task Fetch(Organization data)
         {
-            using (BypassPropertyChecks)
+            using(BypassPropertyChecks)
             {
-                Id = data.Id;
-                Name = data.Name;
-                DateOfFirstContact = data.DateOfFirstContact;
-                LastUpdatedBy = data.LastUpdatedBy;
-                LastUpdatedDate = data.LastUpdatedDate;
-                Notes = data.Notes;
-                OrganizationType = (data.OrganizationType != null
-                    ? await OrganizationTypeEC.GetOrganizationTypeEC(data.OrganizationType)
-                    : null);
-                RowVersion = data.RowVersion;
-            }
+            Id = data.Id;
+            Name = data.Name;
+            DateOfFirstContact = data.DateOfFirstContact;
+            LastUpdatedBy = data.LastUpdatedBy;
+            LastUpdatedDate = data.LastUpdatedDate;
+            Notes = data.Notes;
+            OrganizationType = (data.OrganizationType != null ? await OrganizationTypeEC.GetOrganizationTypeEC(data.OrganizationType) : null);
+            RowVersion = data.RowVersion;
+            }            
         }
-
         [InsertChild]
         private async Task Insert([Inject] IOrganizationDal dal)
         {
+            FieldManager.UpdateChildren();
+
             var data = new Organization()
             {
+
                 Id = Id,
                 Name = Name,
                 DateOfFirstContact = DateOfFirstContact,
                 LastUpdatedBy = LastUpdatedBy,
                 LastUpdatedDate = LastUpdatedDate,
                 Notes = Notes,
-                OrganizationType =
-                    (OrganizationType != null ? new OrganizationType() {Id = OrganizationType.Id} : null),
+                OrganizationType = (OrganizationType != null ? new OrganizationType() { Id = OrganizationType.Id } : null),
                 RowVersion = RowVersion,
             };
 
@@ -144,19 +141,21 @@ namespace ECS.MemberManager.Core.BusinessObjects
             RowVersion = insertedObj.RowVersion;
         }
 
-        [UpdateChild]
+       [UpdateChild]
         private async Task Update([Inject] IOrganizationDal dal)
         {
+            FieldManager.UpdateChildren();
+
             var data = new Organization()
             {
+
                 Id = Id,
                 Name = Name,
                 DateOfFirstContact = DateOfFirstContact,
                 LastUpdatedBy = LastUpdatedBy,
                 LastUpdatedDate = LastUpdatedDate,
                 Notes = Notes,
-                OrganizationType =
-                    (OrganizationType != null ? new OrganizationType() {Id = OrganizationType.Id} : null),
+                OrganizationType = (OrganizationType != null ? new OrganizationType() { Id = OrganizationType.Id } : null),
                 RowVersion = RowVersion,
             };
 
@@ -164,13 +163,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
             RowVersion = insertedObj.RowVersion;
         }
 
-
+       
         [DeleteSelfChild]
         private async Task DeleteSelf([Inject] IOrganizationDal dal)
         {
-            await Delete(Id, dal);
+            await Delete(Id,dal);
         }
-
+       
         [Delete]
         private async Task Delete(int id, [Inject] IOrganizationDal dal)
         {
