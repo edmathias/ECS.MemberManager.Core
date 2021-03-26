@@ -3,7 +3,7 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class EMailTypeROC_Tests
+    public class EMailTypeROC_Tests : CslaBaseTest
     {
         [Fact]
         public async void EMailTypeROC_TestGetChild()

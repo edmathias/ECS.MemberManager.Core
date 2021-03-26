@@ -19,9 +19,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             services.AddTransient(typeof(IEMailDal), typeof(EMailDal));
             services.AddTransient(typeof(IPersonDal),typeof(PersonDal));
             services.AddTransient(typeof(ISponsorDal),typeof(SponsorDal));
-            /*
             services.AddTransient(typeof(IEMailTypeDal),typeof(EMailTypeDal));
             services.AddTransient(typeof(IEventDal),typeof(EventDal));
+            /*
             services.AddTransient(typeof(IEventDocumentDal),typeof(EventDocumentDal));
             services.AddTransient(typeof(IEventMemberDal),typeof(EventMemberDal));
             services.AddTransient(typeof(IMemberInfoDal),typeof(MemberInfoDal));

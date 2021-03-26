@@ -2,7 +2,7 @@
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class EMailTypeROR_Tests
+    public class EMailTypeROR_Tests : CslaBaseTest
     {
         [Fact]
         public async void EMailTypeROR_TestGetById()

@@ -65,6 +65,22 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 (() => EMailER.GetEMailER(99));
         }
 
+        [Fact]
+        public async Task EMailTypeER_UpdateEMailType()
+        {
+            const string NOTES_UPDATE = "test child update";
+            
+            var email = await EMailER.GetEMailER(1);
+
+            email.EMailType.Notes = NOTES_UPDATE;
+            
+            var result = await email.SaveAsync();
+            
+            Assert.NotNull(result);
+            Assert.Equal(NOTES_UPDATE,result.EMailType.Notes);
+        }
+
+        
 
         // test exception if attempt to save in invalid state
 
