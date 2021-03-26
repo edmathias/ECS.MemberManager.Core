@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
+using ECS.MemberManager.Core.DataAccess.Mock;
 using ECS.MemberManager.Core.EF.Domain;
 using Xunit;
 
@@ -82,10 +83,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
         private async Task BuildContactForSponsor(ContactForSponsorEC contactForSponsor)
         {
-            var sponsor = await BuildSponsor();
-            var person = await BuildPerson();
-            contactForSponsor.Sponsor = await SponsorEC.GetSponsorEC(await BuildSponsor());
-            contactForSponsor.Person = await PersonEC.GetPersonEC(await BuildPerson());
+            var sponsor = MockDb.Sponsors.First();
+            var person = MockDb.Persons.First();
+            contactForSponsor.Sponsor = await SponsorEC.GetSponsorEC(sponsor);
+            contactForSponsor.Person = await PersonEC.GetPersonEC(person);
             contactForSponsor.DateWhenContacted = DateTime.Now;
             contactForSponsor.Purpose = "purpose for contact";
             contactForSponsor.RecordOfDiscussion = "this was discussed";
@@ -95,24 +96,5 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             contactForSponsor.Notes = "notes for doctype";
         }
 
-        private async Task<Sponsor> BuildSponsor()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ISponsorDal>();
-
-            var sponsors = await dal.Fetch();
-
-            return sponsors.First();
-        }
-
-        private async Task<Person> BuildPerson()
-        {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPersonDal>();
-
-            var persons = await dal.Fetch();
-
-            return persons.First();
-        }
     }
 }
