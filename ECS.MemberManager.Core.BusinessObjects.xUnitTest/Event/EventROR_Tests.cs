@@ -2,7 +2,7 @@
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class EventROR_Tests
+    public class EventROR_Tests : CslaBaseTest
     {
         [Fact]
         public async void EventROR_TestGetById()

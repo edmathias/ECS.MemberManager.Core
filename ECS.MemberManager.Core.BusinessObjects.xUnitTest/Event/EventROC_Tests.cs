@@ -4,7 +4,7 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class EventROC_Tests
+    public class EventROC_Tests : CslaBaseTest
     {
         [Fact]
         public async void EventROC_TestGetChild()
