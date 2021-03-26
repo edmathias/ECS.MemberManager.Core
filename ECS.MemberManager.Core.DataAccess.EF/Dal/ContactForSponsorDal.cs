@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ECS.MemberManager.Core.DataAccess.Dal;
@@ -17,8 +18,14 @@ namespace ECS.MemberManager.Core.DataAccess.EF
             using (var context = new MembershipManagerDataContext())
             {
                 list = await context.ContactForSponsors
-                    .Include(a => a.Person)
-                    .Include(a => a.Sponsor)
+                    .Include(p => p.Person)
+                    .ThenInclude(t => t.Title)
+                    .Include(p => p.Person)
+                    .ThenInclude(e => e.EMail)
+                    .Include(s => s.Sponsor)
+                    .ThenInclude(p => p.Person)
+                    .Include(s => s.Sponsor)
+                    .ThenInclude(s => s.Organization)  
                     .ToListAsync();
             }
 
@@ -33,9 +40,16 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 
             using (var context = new MembershipManagerDataContext())
             {
-                contact = await context.ContactForSponsors.Where(a => a.Id == id)
-                    .Include(a => a.Person)
-                    .Include(a => a.Sponsor)
+                contact = await context.ContactForSponsors
+                    .Where (c => c.Id == id)
+                    .Include(p => p.Person)
+                    .ThenInclude(t => t.Title)
+                    .Include(p => p.Person)
+                    .ThenInclude(e => e.EMail)
+                    .Include(s => s.Sponsor)
+                    .ThenInclude(p => p.Person)
+                    .Include(s => s.Sponsor)
+                    .ThenInclude(s => s.Organization)                    
                     .FirstAsync();
             }
 
@@ -51,10 +65,11 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 
                 await context.ContactForSponsors.AddAsync(contactToInsert);
 
-                await context.SaveChangesAsync();
-            }
+                var result = await context.SaveChangesAsync();
 
-            ;
+                if (result != 1)
+                    throw new ApplicationException("Error updating ContactForSponsor");
+            }
 
             return contactToInsert;
         }
@@ -68,7 +83,10 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 
                 context.Update(contactToUpdate);
 
-                await context.SaveChangesAsync();
+                var result = await context.SaveChangesAsync();
+                if (result != 1)
+                    throw new ApplicationException("Error updating ContactForSponsor");
+                
             }
 
             return contactToUpdate;
@@ -78,7 +96,8 @@ namespace ECS.MemberManager.Core.DataAccess.EF
         {
             using (var context = new MembershipManagerDataContext())
             {
-                context.Remove(await context.ContactForSponsors.SingleAsync(a => a.Id == id));
+                var contact = await context.ContactForSponsors.SingleAsync(a => a.Id == id); 
+                context.Remove(contact);
                 await context.SaveChangesAsync();
             }
         }

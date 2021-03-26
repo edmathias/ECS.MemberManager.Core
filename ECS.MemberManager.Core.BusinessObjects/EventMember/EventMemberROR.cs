@@ -1,94 +1,88 @@
-﻿using System;
+﻿
+
+
+using System;
+using System.Collections.Generic; 
 using System.Threading.Tasks;
 using Csla;
+using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
+using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
     public partial class EventMemberROR : BusinessBase<EventMemberROR>
     {
-        #region Business Methods
-
-        public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
-
-        public virtual int Id
+        #region Business Methods 
+         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
+        public virtual int Id 
         {
-            get => GetProperty(IdProperty);
-            private set => LoadProperty(IdProperty, value);
+            get => GetProperty(IdProperty); 
+            private set => LoadProperty(IdProperty, value);    
         }
 
 
-        public static readonly PropertyInfo<MemberInfoROC> MemberInfoProperty =
-            RegisterProperty<MemberInfoROC>(o => o.MemberInfo);
-
-        public MemberInfoROC MemberInfo
+        public static readonly PropertyInfo<MemberInfoROC> MemberInfoProperty = RegisterProperty<MemberInfoROC>(o => o.MemberInfo);
+        public MemberInfoROC MemberInfo  
         {
-            get => GetProperty(MemberInfoProperty);
-
-            private set => LoadProperty(MemberInfoProperty, value);
-        }
-
+            get => GetProperty(MemberInfoProperty); 
+        
+            private set => LoadProperty(MemberInfoProperty, value); 
+        }    
+ 
 
         public static readonly PropertyInfo<EventROC> EventProperty = RegisterProperty<EventROC>(o => o.Event);
-
-        public EventROC Event
+        public EventROC Event  
         {
-            get => GetProperty(EventProperty);
-
-            private set => LoadProperty(EventProperty, value);
-        }
-
+            get => GetProperty(EventProperty); 
+        
+            private set => LoadProperty(EventProperty, value); 
+        }    
+ 
         public static readonly PropertyInfo<string> RoleProperty = RegisterProperty<string>(o => o.Role);
-
-        public virtual string Role
+        public virtual string Role 
         {
-            get => GetProperty(RoleProperty);
-            private set => LoadProperty(RoleProperty, value);
+            get => GetProperty(RoleProperty); 
+            private set => LoadProperty(RoleProperty, value);    
         }
 
-        public static readonly PropertyInfo<string> LastUpdatedByProperty =
-            RegisterProperty<string>(o => o.LastUpdatedBy);
-
-        public virtual string LastUpdatedBy
+        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(o => o.LastUpdatedBy);
+        public virtual string LastUpdatedBy 
         {
-            get => GetProperty(LastUpdatedByProperty);
-            private set => LoadProperty(LastUpdatedByProperty, value);
+            get => GetProperty(LastUpdatedByProperty); 
+            private set => LoadProperty(LastUpdatedByProperty, value);    
         }
 
-        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty =
-            RegisterProperty<SmartDate>(o => o.LastUpdatedDate);
-
-        public virtual SmartDate LastUpdatedDate
+        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(o => o.LastUpdatedDate);
+        public virtual SmartDate LastUpdatedDate 
         {
-            get => GetProperty(LastUpdatedDateProperty);
-            private set => LoadProperty(LastUpdatedDateProperty, value);
+            get => GetProperty(LastUpdatedDateProperty); 
+            private set => LoadProperty(LastUpdatedDateProperty, value);    
         }
 
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
-
-        public virtual string Notes
+        public virtual string Notes 
         {
-            get => GetProperty(NotesProperty);
-            private set => LoadProperty(NotesProperty, value);
+            get => GetProperty(NotesProperty); 
+            private set => LoadProperty(NotesProperty, value);    
         }
 
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
-
-        public virtual byte[] RowVersion
+        public virtual byte[] RowVersion 
         {
-            get => GetProperty(RowVersionProperty);
-            private set => LoadProperty(RowVersionProperty, value);
+            get => GetProperty(RowVersionProperty); 
+            private set => LoadProperty(RowVersionProperty, value);    
         }
 
-        #endregion
+        #endregion 
 
         #region Factory Methods
-
         public static async Task<EventMemberROR> GetEventMemberROR(int id)
         {
             return await DataPortal.FetchAsync<EventMemberROR>(id);
-        }
+        }  
+
 
         #endregion
 

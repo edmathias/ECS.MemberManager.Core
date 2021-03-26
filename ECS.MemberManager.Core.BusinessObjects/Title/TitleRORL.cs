@@ -1,16 +1,21 @@
-﻿using System;
+﻿
+
+
+using System; 
 using System.Threading.Tasks;
 using Csla;
+using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class TitleRORL : ReadOnlyListBase<TitleRORL, TitleROC>
+    public partial class TitleRORL : ReadOnlyListBase<TitleRORL,TitleROC>
     {
         #region Factory Methods
 
-        public static async Task<TitleRORL> GetTitleRORL()
+
+        public static async Task<TitleRORL> GetTitleRORL( )
         {
             return await DataPortal.FetchAsync<TitleRORL>();
         }
@@ -18,7 +23,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #endregion
 
         #region Data Access
-
+ 
         [Fetch]
         private async Task Fetch([Inject] ITitleDal dal)
         {
@@ -35,5 +40,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         #endregion
-    }
+
+     }
 }

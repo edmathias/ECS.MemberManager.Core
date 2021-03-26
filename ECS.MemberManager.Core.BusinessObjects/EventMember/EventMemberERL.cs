@@ -1,12 +1,18 @@
-﻿using System;
+﻿
+
+
+using System; 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
+using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
+using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class EventMemberERL : BusinessListBase<EventMemberERL, EventMemberEC>
+    public partial class EventMemberERL : BusinessListBase<EventMemberERL,EventMemberEC>
     {
         #region Factory Methods
 
@@ -15,7 +21,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             return await DataPortal.CreateAsync<EventMemberERL>();
         }
 
-        public static async Task<EventMemberERL> GetEventMemberERL()
+        public static async Task<EventMemberERL> GetEventMemberERL( )
         {
             return await DataPortal.FetchAsync<EventMemberERL>();
         }
@@ -23,7 +29,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #endregion
 
         #region Data Access
-
+ 
         [Fetch]
         private async Task Fetch([Inject] IEventMemberDal dal)
         {
@@ -38,7 +44,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 }
             }
         }
-
+       
         [Update]
         private void Update()
         {
@@ -46,5 +52,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         #endregion
-    }
+
+     }
 }

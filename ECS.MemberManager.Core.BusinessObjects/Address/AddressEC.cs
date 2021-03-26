@@ -4,7 +4,7 @@
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/24/2021 15:50:52
+// Generated on 03/25/2021 11:07:19
 //******************************************************************************    
 
 using System;
@@ -139,6 +139,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [InsertChild]
         private async Task Insert([Inject] IAddressDal dal)
         {
+            FieldManager.UpdateChildren();
+
             var data = new Address()
             {
 
@@ -162,6 +164,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
        [UpdateChild]
         private async Task Update([Inject] IAddressDal dal)
         {
+            FieldManager.UpdateChildren();
+
             var data = new Address()
             {
 

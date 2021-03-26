@@ -1,19 +1,25 @@
-﻿//******************************************************************************
+﻿
+
+
+//******************************************************************************
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/23/2021 09:56:49
+// Generated on 03/25/2021 11:07:32
 //******************************************************************************    
 
-using System;
+using System; 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
+using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
+using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class ContactForSponsorERL : BusinessListBase<ContactForSponsorERL, ContactForSponsorEC>
+    public partial class ContactForSponsorERL : BusinessListBase<ContactForSponsorERL,ContactForSponsorEC>
     {
         #region Factory Methods
 
@@ -22,7 +28,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             return await DataPortal.CreateAsync<ContactForSponsorERL>();
         }
 
-        public static async Task<ContactForSponsorERL> GetContactForSponsorERL()
+        public static async Task<ContactForSponsorERL> GetContactForSponsorERL( )
         {
             return await DataPortal.FetchAsync<ContactForSponsorERL>();
         }
@@ -30,7 +36,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #endregion
 
         #region Data Access
-
+ 
         [Fetch]
         private async Task Fetch([Inject] IContactForSponsorDal dal)
         {
@@ -45,7 +51,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 }
             }
         }
-
+       
         [Update]
         private void Update()
         {
@@ -53,5 +59,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         #endregion
-    }
+
+     }
 }

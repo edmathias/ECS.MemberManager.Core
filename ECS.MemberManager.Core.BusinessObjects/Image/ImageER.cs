@@ -1,6 +1,10 @@
-﻿using System;
+﻿
+
+using System;
+using System.Collections.Generic; 
 using System.Threading.Tasks;
 using Csla;
+using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
@@ -10,43 +14,41 @@ namespace ECS.MemberManager.Core.BusinessObjects
     public partial class ImageER : BusinessBase<ImageER>
     {
         #region Business Methods
-
+ 
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
-
-        public virtual int Id
+        public virtual int Id 
         {
-            get => GetProperty(IdProperty);
-            private set => LoadProperty(IdProperty, value);
+            get => GetProperty(IdProperty); 
+            private set => LoadProperty(IdProperty, value);    
         }
 
         public static readonly PropertyInfo<string> ImagePathProperty = RegisterProperty<string>(o => o.ImagePath);
-
-        public virtual string ImagePath
+        public virtual string ImagePath 
         {
-            get => GetProperty(ImagePathProperty);
-            set => SetProperty(ImagePathProperty, value);
+            get => GetProperty(ImagePathProperty); 
+            set => SetProperty(ImagePathProperty, value); 
+   
         }
 
         public static readonly PropertyInfo<byte[]> ImageFileProperty = RegisterProperty<byte[]>(o => o.ImageFile);
-
-        public virtual byte[] ImageFile
+        public virtual byte[] ImageFile 
         {
-            get => GetProperty(ImageFileProperty);
-            set => SetProperty(ImageFileProperty, value);
+            get => GetProperty(ImageFileProperty); 
+            set => SetProperty(ImageFileProperty, value); 
+   
         }
 
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
-
-        public virtual byte[] RowVersion
+        public virtual byte[] RowVersion 
         {
-            get => GetProperty(RowVersionProperty);
-            set => SetProperty(RowVersionProperty, value);
+            get => GetProperty(RowVersionProperty); 
+            set => SetProperty(RowVersionProperty, value); 
+   
         }
 
-        #endregion
+        #endregion 
 
         #region Factory Methods
-
         public static async Task<ImageER> NewImageER()
         {
             return await DataPortal.CreateAsync<ImageER>();
@@ -55,12 +57,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
         public static async Task<ImageER> GetImageER(int id)
         {
             return await DataPortal.FetchAsync<ImageER>(id);
-        }
+        }  
 
         public static async Task DeleteImageER(int id)
         {
             await DataPortal.DeleteAsync<ImageER>(id);
-        }
+        } 
+
 
         #endregion
 
@@ -71,20 +74,22 @@ namespace ECS.MemberManager.Core.BusinessObjects
         {
             var data = await dal.Fetch(id);
 
-            using (BypassPropertyChecks)
+            using(BypassPropertyChecks)
             {
-                Id = data.Id;
-                ImagePath = data.ImagePath;
-                ImageFile = data.ImageFile;
-                RowVersion = data.RowVersion;
-            }
+            Id = data.Id;
+            ImagePath = data.ImagePath;
+            ImageFile = data.ImageFile;
+            RowVersion = data.RowVersion;
+            }            
         }
-
         [Insert]
         private async Task Insert([Inject] IImageDal dal)
         {
+            FieldManager.UpdateChildren();
+
             var data = new Image()
             {
+
                 Id = Id,
                 ImagePath = ImagePath,
                 ImageFile = ImageFile,
@@ -96,11 +101,14 @@ namespace ECS.MemberManager.Core.BusinessObjects
             RowVersion = insertedObj.RowVersion;
         }
 
-        [Update]
+       [Update]
         private async Task Update([Inject] IImageDal dal)
         {
+            FieldManager.UpdateChildren();
+
             var data = new Image()
             {
+
                 Id = Id,
                 ImagePath = ImagePath,
                 ImageFile = ImageFile,
@@ -114,9 +122,9 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [DeleteSelf]
         private async Task DeleteSelf([Inject] IImageDal dal)
         {
-            await Delete(Id, dal);
+            await Delete(Id,dal);
         }
-
+       
         [Delete]
         private async Task Delete(int id, [Inject] IImageDal dal)
         {

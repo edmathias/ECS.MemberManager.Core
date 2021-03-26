@@ -178,6 +178,8 @@
         [Insert<#= childDesig #>]
         private async Task Insert([Inject] I<#= objectType #>Dal dal)
         {
+            FieldManager.UpdateChildren();
+
             var data = new <#= objectType #>()
             {
 
@@ -241,6 +243,8 @@
        [Update<#= childDesig #>]
         private async Task Update([Inject] I<#= objectType #>Dal dal)
         {
+            FieldManager.UpdateChildren();
+
             var data = new <#= objectType #>()
             {
 

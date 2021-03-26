@@ -1,6 +1,10 @@
-﻿using System;
+﻿
+
+using System;
+using System.Collections.Generic; 
 using System.Threading.Tasks;
 using Csla;
+using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
@@ -10,93 +14,89 @@ namespace ECS.MemberManager.Core.BusinessObjects
     public partial class PhoneEC : BusinessBase<PhoneEC>
     {
         #region Business Methods
-
+ 
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
-
-        public virtual int Id
+        public virtual int Id 
         {
-            get => GetProperty(IdProperty);
-            private set => LoadProperty(IdProperty, value);
+            get => GetProperty(IdProperty); 
+            private set => LoadProperty(IdProperty, value);    
         }
 
         public static readonly PropertyInfo<string> PhoneTypeProperty = RegisterProperty<string>(o => o.PhoneType);
-
-        public virtual string PhoneType
+        public virtual string PhoneType 
         {
-            get => GetProperty(PhoneTypeProperty);
-            set => SetProperty(PhoneTypeProperty, value);
+            get => GetProperty(PhoneTypeProperty); 
+            set => SetProperty(PhoneTypeProperty, value); 
+   
         }
 
         public static readonly PropertyInfo<string> AreaCodeProperty = RegisterProperty<string>(o => o.AreaCode);
-
-        public virtual string AreaCode
+        public virtual string AreaCode 
         {
-            get => GetProperty(AreaCodeProperty);
-            set => SetProperty(AreaCodeProperty, value);
+            get => GetProperty(AreaCodeProperty); 
+            set => SetProperty(AreaCodeProperty, value); 
+   
         }
 
         public static readonly PropertyInfo<string> NumberProperty = RegisterProperty<string>(o => o.Number);
-
-        public virtual string Number
+        public virtual string Number 
         {
-            get => GetProperty(NumberProperty);
-            set => SetProperty(NumberProperty, value);
+            get => GetProperty(NumberProperty); 
+            set => SetProperty(NumberProperty, value); 
+   
         }
 
         public static readonly PropertyInfo<string> ExtensionProperty = RegisterProperty<string>(o => o.Extension);
-
-        public virtual string Extension
+        public virtual string Extension 
         {
-            get => GetProperty(ExtensionProperty);
-            set => SetProperty(ExtensionProperty, value);
+            get => GetProperty(ExtensionProperty); 
+            set => SetProperty(ExtensionProperty, value); 
+   
         }
 
         public static readonly PropertyInfo<int> DisplayOrderProperty = RegisterProperty<int>(o => o.DisplayOrder);
-
-        public virtual int DisplayOrder
+        public virtual int DisplayOrder 
         {
-            get => GetProperty(DisplayOrderProperty);
-            set => SetProperty(DisplayOrderProperty, value);
+            get => GetProperty(DisplayOrderProperty); 
+            set => SetProperty(DisplayOrderProperty, value); 
+   
         }
 
-        public static readonly PropertyInfo<string> LastUpdatedByProperty =
-            RegisterProperty<string>(o => o.LastUpdatedBy);
-
-        public virtual string LastUpdatedBy
+        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(o => o.LastUpdatedBy);
+        public virtual string LastUpdatedBy 
         {
-            get => GetProperty(LastUpdatedByProperty);
-            set => SetProperty(LastUpdatedByProperty, value);
+            get => GetProperty(LastUpdatedByProperty); 
+            set => SetProperty(LastUpdatedByProperty, value); 
+   
         }
 
-        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty =
-            RegisterProperty<SmartDate>(o => o.LastUpdatedDate);
-
-        public virtual SmartDate LastUpdatedDate
+        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(o => o.LastUpdatedDate);
+        public virtual SmartDate LastUpdatedDate 
         {
-            get => GetProperty(LastUpdatedDateProperty);
-            set => SetProperty(LastUpdatedDateProperty, value);
+            get => GetProperty(LastUpdatedDateProperty); 
+            set => SetProperty(LastUpdatedDateProperty, value); 
+   
         }
 
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
-
-        public virtual string Notes
+        public virtual string Notes 
         {
-            get => GetProperty(NotesProperty);
-            set => SetProperty(NotesProperty, value);
+            get => GetProperty(NotesProperty); 
+            set => SetProperty(NotesProperty, value); 
+   
         }
 
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
-
-        public virtual byte[] RowVersion
+        public virtual byte[] RowVersion 
         {
-            get => GetProperty(RowVersionProperty);
-            set => SetProperty(RowVersionProperty, value);
+            get => GetProperty(RowVersionProperty); 
+            set => SetProperty(RowVersionProperty, value); 
+   
         }
 
-        #endregion
+        #endregion 
 
         #region Factory Methods
-
         internal static async Task<PhoneEC> NewPhoneEC()
         {
             return await DataPortal.CreateChildAsync<PhoneEC>();
@@ -105,7 +105,8 @@ namespace ECS.MemberManager.Core.BusinessObjects
         internal static async Task<PhoneEC> GetPhoneEC(Phone childData)
         {
             return await DataPortal.FetchChildAsync<PhoneEC>(childData);
-        }
+        }  
+
 
         #endregion
 
@@ -114,26 +115,28 @@ namespace ECS.MemberManager.Core.BusinessObjects
         [FetchChild]
         private async Task Fetch(Phone data)
         {
-            using (BypassPropertyChecks)
+            using(BypassPropertyChecks)
             {
-                Id = data.Id;
-                PhoneType = data.PhoneType;
-                AreaCode = data.AreaCode;
-                Number = data.Number;
-                Extension = data.Extension;
-                DisplayOrder = data.DisplayOrder;
-                LastUpdatedBy = data.LastUpdatedBy;
-                LastUpdatedDate = data.LastUpdatedDate;
-                Notes = data.Notes;
-                RowVersion = data.RowVersion;
-            }
+            Id = data.Id;
+            PhoneType = data.PhoneType;
+            AreaCode = data.AreaCode;
+            Number = data.Number;
+            Extension = data.Extension;
+            DisplayOrder = data.DisplayOrder;
+            LastUpdatedBy = data.LastUpdatedBy;
+            LastUpdatedDate = data.LastUpdatedDate;
+            Notes = data.Notes;
+            RowVersion = data.RowVersion;
+            }            
         }
-
         [InsertChild]
         private async Task Insert([Inject] IPhoneDal dal)
         {
+            FieldManager.UpdateChildren();
+
             var data = new Phone()
             {
+
                 Id = Id,
                 PhoneType = PhoneType,
                 AreaCode = AreaCode,
@@ -151,11 +154,14 @@ namespace ECS.MemberManager.Core.BusinessObjects
             RowVersion = insertedObj.RowVersion;
         }
 
-        [UpdateChild]
+       [UpdateChild]
         private async Task Update([Inject] IPhoneDal dal)
         {
+            FieldManager.UpdateChildren();
+
             var data = new Phone()
             {
+
                 Id = Id,
                 PhoneType = PhoneType,
                 AreaCode = AreaCode,
@@ -172,13 +178,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
             RowVersion = insertedObj.RowVersion;
         }
 
-
+       
         [DeleteSelfChild]
         private async Task DeleteSelf([Inject] IPhoneDal dal)
         {
-            await Delete(Id, dal);
+            await Delete(Id,dal);
         }
-
+       
         [Delete]
         private async Task Delete(int id, [Inject] IPhoneDal dal)
         {

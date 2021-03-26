@@ -1,19 +1,25 @@
-﻿//******************************************************************************
+﻿
+
+
+//******************************************************************************
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/23/2021 09:57:48
+// Generated on 03/25/2021 11:08:43
 //******************************************************************************    
 
-using System;
+using System; 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
+using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
+using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class TaskForEventERL : BusinessListBase<TaskForEventERL, TaskForEventEC>
+    public partial class TaskForEventERL : BusinessListBase<TaskForEventERL,TaskForEventEC>
     {
         #region Factory Methods
 
@@ -22,7 +28,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             return await DataPortal.CreateAsync<TaskForEventERL>();
         }
 
-        public static async Task<TaskForEventERL> GetTaskForEventERL()
+        public static async Task<TaskForEventERL> GetTaskForEventERL( )
         {
             return await DataPortal.FetchAsync<TaskForEventERL>();
         }
@@ -30,7 +36,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #endregion
 
         #region Data Access
-
+ 
         [Fetch]
         private async Task Fetch([Inject] ITaskForEventDal dal)
         {
@@ -45,7 +51,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 }
             }
         }
-
+       
         [Update]
         private void Update()
         {
@@ -53,5 +59,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         #endregion
-    }
+
+     }
 }

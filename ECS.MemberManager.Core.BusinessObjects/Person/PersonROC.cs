@@ -1,13 +1,18 @@
-﻿//******************************************************************************
+﻿
+
+//******************************************************************************
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/23/2021 09:57:38
+// Generated on 03/25/2021 11:08:33
 //******************************************************************************    
 
 using System;
+using System.Collections.Generic; 
 using System.Threading.Tasks;
 using Csla;
+using ECS.MemberManager.Core.DataAccess;
+using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
@@ -16,127 +21,110 @@ namespace ECS.MemberManager.Core.BusinessObjects
     public partial class PersonROC : ReadOnlyBase<PersonROC>
     {
         #region Business Methods
-
+ 
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
-
-        public virtual int Id
+        public virtual int Id 
         {
-            get => GetProperty(IdProperty);
-            private set => LoadProperty(IdProperty, value);
+            get => GetProperty(IdProperty); 
+            private set => LoadProperty(IdProperty, value);    
         }
 
 
         public static readonly PropertyInfo<TitleROC> TitleProperty = RegisterProperty<TitleROC>(o => o.Title);
-
-        public TitleROC Title
+        public TitleROC Title  
         {
-            get => GetProperty(TitleProperty);
-
-            private set => LoadProperty(TitleProperty, value);
-        }
-
+            get => GetProperty(TitleProperty); 
+        
+            private set => LoadProperty(TitleProperty, value); 
+        }    
+ 
         public static readonly PropertyInfo<string> LastNameProperty = RegisterProperty<string>(o => o.LastName);
-
-        public virtual string LastName
+        public virtual string LastName 
         {
-            get => GetProperty(LastNameProperty);
-            private set => LoadProperty(LastNameProperty, value);
+            get => GetProperty(LastNameProperty); 
+            private set => LoadProperty(LastNameProperty, value);    
         }
 
         public static readonly PropertyInfo<string> MiddleNameProperty = RegisterProperty<string>(o => o.MiddleName);
-
-        public virtual string MiddleName
+        public virtual string MiddleName 
         {
-            get => GetProperty(MiddleNameProperty);
-            private set => LoadProperty(MiddleNameProperty, value);
+            get => GetProperty(MiddleNameProperty); 
+            private set => LoadProperty(MiddleNameProperty, value);    
         }
 
         public static readonly PropertyInfo<string> FirstNameProperty = RegisterProperty<string>(o => o.FirstName);
-
-        public virtual string FirstName
+        public virtual string FirstName 
         {
-            get => GetProperty(FirstNameProperty);
-            private set => LoadProperty(FirstNameProperty, value);
+            get => GetProperty(FirstNameProperty); 
+            private set => LoadProperty(FirstNameProperty, value);    
         }
 
-        public static readonly PropertyInfo<SmartDate> DateOfFirstContactProperty =
-            RegisterProperty<SmartDate>(o => o.DateOfFirstContact);
-
-        public virtual SmartDate DateOfFirstContact
+        public static readonly PropertyInfo<SmartDate> DateOfFirstContactProperty = RegisterProperty<SmartDate>(o => o.DateOfFirstContact);
+        public virtual SmartDate DateOfFirstContact 
         {
-            get => GetProperty(DateOfFirstContactProperty);
-            private set => LoadProperty(DateOfFirstContactProperty, value);
+            get => GetProperty(DateOfFirstContactProperty); 
+            private set => LoadProperty(DateOfFirstContactProperty, value);    
         }
 
-        public static readonly PropertyInfo<SmartDate>
-            BirthDateProperty = RegisterProperty<SmartDate>(o => o.BirthDate);
-
-        public virtual SmartDate BirthDate
+        public static readonly PropertyInfo<SmartDate> BirthDateProperty = RegisterProperty<SmartDate>(o => o.BirthDate);
+        public virtual SmartDate BirthDate 
         {
-            get => GetProperty(BirthDateProperty);
-            private set => LoadProperty(BirthDateProperty, value);
+            get => GetProperty(BirthDateProperty); 
+            private set => LoadProperty(BirthDateProperty, value);    
         }
 
-        public static readonly PropertyInfo<string> LastUpdatedByProperty =
-            RegisterProperty<string>(o => o.LastUpdatedBy);
-
-        public virtual string LastUpdatedBy
+        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(o => o.LastUpdatedBy);
+        public virtual string LastUpdatedBy 
         {
-            get => GetProperty(LastUpdatedByProperty);
-            private set => LoadProperty(LastUpdatedByProperty, value);
+            get => GetProperty(LastUpdatedByProperty); 
+            private set => LoadProperty(LastUpdatedByProperty, value);    
         }
 
-        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty =
-            RegisterProperty<SmartDate>(o => o.LastUpdatedDate);
-
-        public virtual SmartDate LastUpdatedDate
+        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(o => o.LastUpdatedDate);
+        public virtual SmartDate LastUpdatedDate 
         {
-            get => GetProperty(LastUpdatedDateProperty);
-            private set => LoadProperty(LastUpdatedDateProperty, value);
+            get => GetProperty(LastUpdatedDateProperty); 
+            private set => LoadProperty(LastUpdatedDateProperty, value);    
         }
 
         public static readonly PropertyInfo<string> CodeProperty = RegisterProperty<string>(o => o.Code);
-
-        public virtual string Code
+        public virtual string Code 
         {
-            get => GetProperty(CodeProperty);
-            private set => LoadProperty(CodeProperty, value);
+            get => GetProperty(CodeProperty); 
+            private set => LoadProperty(CodeProperty, value);    
         }
 
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
-
-        public virtual string Notes
+        public virtual string Notes 
         {
-            get => GetProperty(NotesProperty);
-            private set => LoadProperty(NotesProperty, value);
+            get => GetProperty(NotesProperty); 
+            private set => LoadProperty(NotesProperty, value);    
         }
 
 
         public static readonly PropertyInfo<EMailROC> EMailProperty = RegisterProperty<EMailROC>(o => o.EMail);
-
-        public EMailROC EMail
+        public EMailROC EMail  
         {
-            get => GetProperty(EMailProperty);
-
-            private set => LoadProperty(EMailProperty, value);
-        }
-
+            get => GetProperty(EMailProperty); 
+        
+            private set => LoadProperty(EMailProperty, value); 
+        }    
+ 
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
-
-        public virtual byte[] RowVersion
+        public virtual byte[] RowVersion 
         {
-            get => GetProperty(RowVersionProperty);
-            private set => LoadProperty(RowVersionProperty, value);
+            get => GetProperty(RowVersionProperty); 
+            private set => LoadProperty(RowVersionProperty, value);    
         }
 
-        #endregion
+        #endregion 
 
         #region Factory Methods
-
         internal static async Task<PersonROC> GetPersonROC(Person childData)
         {
             return await DataPortal.FetchChildAsync<PersonROC>(childData);
-        }
+        }  
+
 
         #endregion
 

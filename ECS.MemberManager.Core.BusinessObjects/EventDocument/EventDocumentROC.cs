@@ -1,6 +1,11 @@
-﻿using System;
+﻿
+
+using System;
+using System.Collections.Generic; 
 using System.Threading.Tasks;
 using Csla;
+using ECS.MemberManager.Core.DataAccess;
+using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
@@ -9,96 +14,82 @@ namespace ECS.MemberManager.Core.BusinessObjects
     public partial class EventDocumentROC : ReadOnlyBase<EventDocumentROC>
     {
         #region Business Methods
-
+ 
         public static readonly PropertyInfo<int> IdProperty = RegisterProperty<int>(o => o.Id);
-
-        public virtual int Id
+        public virtual int Id 
         {
-            get => GetProperty(IdProperty);
-            private set => LoadProperty(IdProperty, value);
+            get => GetProperty(IdProperty); 
+            private set => LoadProperty(IdProperty, value);    
         }
 
 
         public static readonly PropertyInfo<EventROC> EventProperty = RegisterProperty<EventROC>(o => o.Event);
-
-        public EventROC Event
+        public EventROC Event  
         {
-            get => GetProperty(EventProperty);
-
-            private set => LoadProperty(EventProperty, value);
-        }
-
-        public static readonly PropertyInfo<string>
-            DocumentNameProperty = RegisterProperty<string>(o => o.DocumentName);
-
-        public virtual string DocumentName
+            get => GetProperty(EventProperty); 
+        
+            private set => LoadProperty(EventProperty, value); 
+        }    
+ 
+        public static readonly PropertyInfo<string> DocumentNameProperty = RegisterProperty<string>(o => o.DocumentName);
+        public virtual string DocumentName 
         {
-            get => GetProperty(DocumentNameProperty);
-            private set => LoadProperty(DocumentNameProperty, value);
+            get => GetProperty(DocumentNameProperty); 
+            private set => LoadProperty(DocumentNameProperty, value);    
         }
 
 
-        public static readonly PropertyInfo<DocumentTypeROC> DocumentTypeProperty =
-            RegisterProperty<DocumentTypeROC>(o => o.DocumentType);
-
-        public DocumentTypeROC DocumentType
+        public static readonly PropertyInfo<DocumentTypeROC> DocumentTypeProperty = RegisterProperty<DocumentTypeROC>(o => o.DocumentType);
+        public DocumentTypeROC DocumentType  
         {
-            get => GetProperty(DocumentTypeProperty);
-
-            private set => LoadProperty(DocumentTypeProperty, value);
+            get => GetProperty(DocumentTypeProperty); 
+        
+            private set => LoadProperty(DocumentTypeProperty, value); 
+        }    
+ 
+        public static readonly PropertyInfo<string> PathAndFileNameProperty = RegisterProperty<string>(o => o.PathAndFileName);
+        public virtual string PathAndFileName 
+        {
+            get => GetProperty(PathAndFileNameProperty); 
+            private set => LoadProperty(PathAndFileNameProperty, value);    
         }
 
-        public static readonly PropertyInfo<string> PathAndFileNameProperty =
-            RegisterProperty<string>(o => o.PathAndFileName);
-
-        public virtual string PathAndFileName
+        public static readonly PropertyInfo<string> LastUpdatedByProperty = RegisterProperty<string>(o => o.LastUpdatedBy);
+        public virtual string LastUpdatedBy 
         {
-            get => GetProperty(PathAndFileNameProperty);
-            private set => LoadProperty(PathAndFileNameProperty, value);
+            get => GetProperty(LastUpdatedByProperty); 
+            private set => LoadProperty(LastUpdatedByProperty, value);    
         }
 
-        public static readonly PropertyInfo<string> LastUpdatedByProperty =
-            RegisterProperty<string>(o => o.LastUpdatedBy);
-
-        public virtual string LastUpdatedBy
+        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty = RegisterProperty<SmartDate>(o => o.LastUpdatedDate);
+        public virtual SmartDate LastUpdatedDate 
         {
-            get => GetProperty(LastUpdatedByProperty);
-            private set => LoadProperty(LastUpdatedByProperty, value);
-        }
-
-        public static readonly PropertyInfo<SmartDate> LastUpdatedDateProperty =
-            RegisterProperty<SmartDate>(o => o.LastUpdatedDate);
-
-        public virtual SmartDate LastUpdatedDate
-        {
-            get => GetProperty(LastUpdatedDateProperty);
-            private set => LoadProperty(LastUpdatedDateProperty, value);
+            get => GetProperty(LastUpdatedDateProperty); 
+            private set => LoadProperty(LastUpdatedDateProperty, value);    
         }
 
         public static readonly PropertyInfo<string> NotesProperty = RegisterProperty<string>(o => o.Notes);
-
-        public virtual string Notes
+        public virtual string Notes 
         {
-            get => GetProperty(NotesProperty);
-            private set => LoadProperty(NotesProperty, value);
+            get => GetProperty(NotesProperty); 
+            private set => LoadProperty(NotesProperty, value);    
         }
 
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
-
-        public virtual byte[] RowVersion
+        public virtual byte[] RowVersion 
         {
-            get => GetProperty(RowVersionProperty);
-            private set => LoadProperty(RowVersionProperty, value);
+            get => GetProperty(RowVersionProperty); 
+            private set => LoadProperty(RowVersionProperty, value);    
         }
 
-        #endregion
+        #endregion 
 
         #region Factory Methods
-
         internal static async Task<EventDocumentROC> GetEventDocumentROC(EventDocument childData)
         {
             return await DataPortal.FetchChildAsync<EventDocumentROC>(childData);
-        }
+        }  
+
 
         #endregion
 
@@ -110,9 +101,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             Id = data.Id;
             Event = (data.Event != null ? await EventROC.GetEventROC(data.Event) : null);
             DocumentName = data.DocumentName;
-            DocumentType = (data.DocumentType != null
-                ? await DocumentTypeROC.GetDocumentTypeROC(data.DocumentType)
-                : null);
+            DocumentType = (data.DocumentType != null ? await DocumentTypeROC.GetDocumentTypeROC(data.DocumentType) : null);
             PathAndFileName = data.PathAndFileName;
             LastUpdatedBy = data.LastUpdatedBy;
             LastUpdatedDate = data.LastUpdatedDate;

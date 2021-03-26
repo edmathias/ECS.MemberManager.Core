@@ -1,15 +1,21 @@
-﻿using System;
+﻿
+
+
+using System; 
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
+using ECS.MemberManager.Core.DataAccess;
+using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class ImageROCL : ReadOnlyListBase<ImageROCL, ImageROC>
+    public partial class ImageROCL : ReadOnlyListBase<ImageROCL,ImageROC>
     {
         #region Factory Methods
+
 
         internal static async Task<ImageROCL> GetImageROCL(IList<Image> childData)
         {
@@ -19,10 +25,11 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #endregion
 
         #region Data Access
-
+ 
         [FetchChild]
         private async Task Fetch(IList<Image> childData)
         {
+
             using (LoadListMode)
             {
                 foreach (var domainObjToAdd in childData)
@@ -34,5 +41,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         #endregion
-    }
+
+     }
 }

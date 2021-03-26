@@ -1,13 +1,18 @@
-﻿using System;
+﻿
+
+
+using System; 
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Csla;
+using ECS.MemberManager.Core.DataAccess;
+using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {
     [Serializable]
-    public partial class MemberStatusECL : BusinessListBase<MemberStatusECL, MemberStatusEC>
+    public partial class MemberStatusECL : BusinessListBase<MemberStatusECL,MemberStatusEC>
     {
         #region Factory Methods
 
@@ -24,10 +29,11 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #endregion
 
         #region Data Access
-
+ 
         [FetchChild]
         private async Task Fetch(IList<MemberStatus> childData)
         {
+
             using (LoadListMode)
             {
                 foreach (var domainObjToAdd in childData)
@@ -37,7 +43,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 }
             }
         }
-
+       
         [Update]
         private void Update()
         {
@@ -45,5 +51,6 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         #endregion
-    }
+
+     }
 }
