@@ -370,7 +370,42 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         private static IList<EventMember> GetEventMember()
         {
-            return new List<EventMember>();
+            return new List<EventMember>()
+            {
+                new EventMember()
+                {
+                    Id = 1,
+                    MemberInfo = GetMemberInfo().Take(1).Single(),
+                    Event = GetEvents().Take(1).Single(),
+                    Role = "role 1",
+                    LastUpdatedBy = "edm",
+                    LastUpdatedDate = DateTime.Now,
+                    Notes = "notes 1",
+                    RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
+                },
+                new EventMember()
+                {
+                   Id = 2,
+                    MemberInfo = GetMemberInfo().Take(1).Single(),
+                    Event = GetEvents().Take(1).Single(),
+                    Role = "role 2",
+                    LastUpdatedBy = "edm",
+                    LastUpdatedDate = DateTime.Now,
+                    Notes = "notes 2",
+                    RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
+                },
+                new EventMember()
+                {
+                   Id = 99,
+                    MemberInfo = GetMemberInfo().Take(1).Single(),
+                    Event = GetEvents().Take(1).Single(),
+                    Role = "role to delete",
+                    LastUpdatedBy = "edm",
+                    LastUpdatedDate = DateTime.Now,
+                    Notes = "delete this",
+                    RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks)
+                }                
+            };
         }
 
         private static IList<MemberInfo> GetMemberInfo()

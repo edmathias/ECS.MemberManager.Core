@@ -1,17 +1,21 @@
 ﻿using System.IO;
+using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.ADO;
+using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.DataAccess.Mock;
 using Microsoft.Extensions.Configuration;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class EventMemberRORL_Tests : CslaBaseTest
+    public class EventMemberROCL_Tests : CslaBaseTest
     {
         [Fact]
-        private async void EventMemberRORL_TestGetEventMemberRORL()
+        private async void EventMemberROCL_TestGetEventMemberROCL()
         {
-            var listToTest = await EventMemberRORL.GetEventMemberRORL();
+            var childData = MockDb.EventMembers;
+
+            var listToTest = await EventMemberROCL.GetEventMemberROCL(childData);
 
             Assert.NotNull(listToTest);
             Assert.Equal(3, listToTest.Count);

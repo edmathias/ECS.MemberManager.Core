@@ -65,6 +65,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             await Assert.ThrowsAsync<DataPortalException>(() => EMailTypeER.GetEMailTypeER(ID_TO_DELETE));
         }
 
+        
         // test invalid state 
         [Fact]
         public async Task EMailTypeER_TestDescriptionRequired()

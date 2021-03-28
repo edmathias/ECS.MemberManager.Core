@@ -95,7 +95,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var countBeforeAdd = paymentEditList.Count;
 
             var paymentToAdd = paymentEditList.AddNew();
-            BuildPayment(paymentToAdd);
+            await BuildPayment(paymentToAdd);
 
             var updatedPaymentsList = await paymentEditList.SaveAsync();
 
