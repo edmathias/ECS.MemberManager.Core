@@ -290,7 +290,8 @@ namespace ECS.MemberManager.Core.DataAccess.EF
                 "SELECT 1, N'Membership Type A', 1, N'edm', '20201231 00:00:00.000', N'notes for A' UNION ALL");
             sb.AppendLine(
                 "SELECT 2, N'Membership Type B', 2, N'edm', '20210101 00:00:00.000', N'Notes for B' UNION ALL");
-            sb.AppendLine("SELECT 99, N'Membership to delete', 2, N'edm', '20210114 00:00:00.000', N'delete this'");
+            sb.AppendLine(
+                "SELECT 99, N'Membership to delete', 2, N'edm', '20210114 00:00:00.000', N'delete this'");
             sb.AppendLine("SET IDENTITY_INSERT [dbo].[MembershipTypes] OFF;");
             sb.AppendLine("DBCC CHECKIDENT ('MembershipTypes', RESEED, 2)");
 

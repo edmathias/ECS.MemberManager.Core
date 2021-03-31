@@ -9,7 +9,7 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class MembershipTypeER_Tests
+    public class MembershipTypeER_Tests : CslaBaseTest
     {
         [Fact]
         public async Task MembershipTypeER_TestGetMembershipType()

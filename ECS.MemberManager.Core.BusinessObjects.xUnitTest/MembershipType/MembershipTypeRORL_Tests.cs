@@ -6,7 +6,7 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class MembershipTypeRORL_Tests
+    public class MembershipTypeRORL_Tests : CslaBaseTest
     {
         [Fact]
         private async void MembershipTypeRORL_TestGetMembershipTypeRORL()
