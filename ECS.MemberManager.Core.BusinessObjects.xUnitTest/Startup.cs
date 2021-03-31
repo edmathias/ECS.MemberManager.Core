@@ -24,8 +24,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             services.AddTransient(typeof(IEventDocumentDal),typeof(EventDocumentDal));
             services.AddTransient(typeof(IEventMemberDal),typeof(EventMemberDal));
             services.AddTransient(typeof(IMemberInfoDal),typeof(MemberInfoDal));
-            /*
             services.AddTransient(typeof(IMembershipTypeDal),typeof(MembershipTypeDal));
+            /*
             services.AddTransient(typeof(IMemberStatusDal),typeof(MemberStatusDal));
             services.AddTransient(typeof(IOfficeDal),typeof(OfficeDal));
             services.AddTransient(typeof(IOrganizationDal),typeof(OrganizationDal));

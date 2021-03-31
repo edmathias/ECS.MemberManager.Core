@@ -10,36 +10,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
     public class MembershipTypeROCL_Tests
     {
-        private IConfigurationRoot _config = null;
-        private bool IsDatabaseBuilt = false;
-
-        public MembershipTypeROCL_Tests()
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            _config = builder.Build();
-            var testLibrary = _config.GetValue<string>("TestLibrary");
-
-            if (testLibrary == "Mock")
-                MockDb.ResetMockDb();
-            else
-            {
-                if (!IsDatabaseBuilt)
-                {
-                    var adoDb = new ADODb();
-                    adoDb.BuildMemberManagerADODb();
-                    IsDatabaseBuilt = true;
-                }
-            }
-        }
-
         [Fact]
         private async void MembershipTypeInfoList_TestGetMembershipTypeInfoList()
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IMembershipTypeDal>();
-            var childData = await dal.Fetch();
+            var childData = MockDb.MembershipTypes;
 
             var membershipTypeInfoList = await MembershipTypeROCL.GetMembershipTypeROCL(childData);
 
