@@ -95,7 +95,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var countBeforeAdd = organizationEditList.Count;
 
             var organizationToAdd = organizationEditList.AddNew();
-            BuildOrganization(organizationToAdd);
+            await BuildOrganization(organizationToAdd);
 
             var updatedOrganizationsList = await organizationEditList.SaveAsync();
 

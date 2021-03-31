@@ -8,7 +8,7 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class EMailTypeROCL_Tests
+    public class EMailTypeROCL_Tests : CslaBaseTest
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;
@@ -37,10 +37,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         private async void EMailTypeInfoList_TestGetEMailTypeInfoList()
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEMailTypeDal>();
-            var childData = await dal.Fetch();
-
+            var childData = MockDb.EMailTypes;
+            
             var eMailTypeInfoList = await EMailTypeROCL.GetEMailTypeROCL(childData);
 
             Assert.NotNull(eMailTypeInfoList);

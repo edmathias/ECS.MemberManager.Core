@@ -8,18 +8,17 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class EventROCL_Tests : CslaBaseTest
+    public class EventMemberROCL_Tests : CslaBaseTest
     {
         [Fact]
-        private async void EventROCL_TestGetEventROCL()
+        private async void EventMemberROCL_TestGetEventMemberROCL()
         {
-            var childData = MockDb.Events;
+            var childData = MockDb.EventMembers;
 
-            var eventInfoList = await EventROCL.GetEventROCL(childData);
+            var listToTest = await EventMemberROCL.GetEventMemberROCL(childData);
 
-            Assert.NotNull(eventInfoList);
-            Assert.True(eventInfoList.IsReadOnly);
-            Assert.Equal(3, eventInfoList.Count);
+            Assert.NotNull(listToTest);
+            Assert.Equal(3, listToTest.Count);
         }
     }
 }

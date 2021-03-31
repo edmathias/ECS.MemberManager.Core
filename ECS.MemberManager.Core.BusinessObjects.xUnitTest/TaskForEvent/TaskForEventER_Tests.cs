@@ -146,7 +146,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             var eventObj = await TaskForEventER.NewTaskForEventER();
             eventObj.TaskName = String.Empty;
-            TaskForEventER savedTaskForEvent = null;
 
             Assert.False(eventObj.IsValid);
             Assert.Throws<Csla.Rules.ValidationException>(() => eventObj.Save());

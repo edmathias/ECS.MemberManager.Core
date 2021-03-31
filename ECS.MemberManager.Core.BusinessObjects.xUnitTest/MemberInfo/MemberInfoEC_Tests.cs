@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Csla;
 using ECS.MemberManager.Core.DataAccess;
@@ -12,36 +13,12 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class MemberInfoEC_Tests
+    public class MemberInfoEC_Tests : CslaBaseTest
     {
-        private IConfigurationRoot _config = null;
-        private bool IsDatabaseBuilt = false;
-
-        public MemberInfoEC_Tests()
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            _config = builder.Build();
-            var testLibrary = _config.GetValue<string>("TestLibrary");
-
-            if (testLibrary == "Mock")
-                MockDb.ResetMockDb();
-            else
-            {
-                if (!IsDatabaseBuilt)
-                {
-                    var adoDb = new ADODb();
-                    adoDb.BuildMemberManagerADODb();
-                    IsDatabaseBuilt = true;
-                }
-            }
-        }
-
         [Fact]
         public async void MemberInfoEC_Get()
         {
-            var memberInfoObj = await BuildMemberInfo();
+            var memberInfoObj = BuildMemberInfo();
             var memberInfo = await MemberInfoEC.GetMemberInfoEC(memberInfoObj);
 
             Assert.NotNull(memberInfo.Person);
@@ -113,7 +90,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async Task TestMemberInfoEC_DateFirstJoinedRequired()
         {
-            var memberInfoToTest = await BuildMemberInfo();
+            var memberInfoToTest = BuildMemberInfo();
             var memberInfo = await MemberInfoEC.GetMemberInfoEC(memberInfoToTest);
             var isObjectValidInit = memberInfo.IsValid;
             memberInfo.DateFirstJoined = DateTime.MinValue;
@@ -128,7 +105,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async Task TestMemberInfoEC_MemberStatusRequired()
         {
-            var memberInfoToTest = await BuildMemberInfo();
+            var memberInfoToTest = BuildMemberInfo();
             var memberInfo = await MemberInfoEC.GetMemberInfoEC(memberInfoToTest);
             var isObjectValidInit = memberInfo.IsValid;
             memberInfo.MemberStatus = null;
@@ -143,7 +120,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async Task TestMemberInfoEC_MembershipTypeRequired()
         {
-            var memberInfoToTest = await BuildMemberInfo();
+            var memberInfoToTest = BuildMemberInfo();
             var memberInfo = await MemberInfoEC.GetMemberInfoEC(memberInfoToTest);
             var isObjectValidInit = memberInfo.IsValid;
             memberInfo.MembershipType = null;
@@ -158,7 +135,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async Task TestMemberInfoEC_LastUpdatedByRequired()
         {
-            var memberInfoToTest = await BuildMemberInfo();
+            var memberInfoToTest = BuildMemberInfo();
             var memberInfo = await MemberInfoEC.GetMemberInfoEC(memberInfoToTest);
             var isObjectValidInit = memberInfo.IsValid;
             memberInfo.LastUpdatedBy = string.Empty;
@@ -173,7 +150,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async Task TestMemberInfoEC_LastUpdatedByExceeds255Characters()
         {
-            var memberInfoToTest = await BuildMemberInfo();
+            var memberInfoToTest = BuildMemberInfo();
             var memberInfo = await MemberInfoEC.GetMemberInfoEC(memberInfoToTest);
             var isObjectValidInit = memberInfo.IsValid;
             memberInfo.LastUpdatedBy = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempo" +
@@ -192,7 +169,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async Task TestMemberInfoEC_LastUpdatedDateRequired()
         {
-            var memberInfoToTest = await BuildMemberInfo();
+            var memberInfoToTest = BuildMemberInfo();
             var memberInfo = await MemberInfoEC.GetMemberInfoEC(memberInfoToTest);
             var isObjectValidInit = memberInfo.IsValid;
             memberInfo.LastUpdatedDate = DateTime.MinValue;
@@ -207,7 +184,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
         private async Task BuildMemberInfoEC(MemberInfoEC memberInfo)
         {
-            var domainInfo = await BuildMemberInfo();
+            var domainInfo = BuildMemberInfo();
             memberInfo.Notes = domainInfo.Notes;
             memberInfo.Person = await PersonEC.GetPersonEC(domainInfo.Person);
             memberInfo.MemberNumber = domainInfo.MemberNumber;
@@ -219,23 +196,17 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             memberInfo.LastUpdatedDate = domainInfo.LastUpdatedDate;
         }
 
-        private async Task<MemberInfo> BuildMemberInfo()
+        private MemberInfo BuildMemberInfo()
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPersonDal>();
-
             var memberInfo = new MemberInfo();
             memberInfo.Id = 1;
             memberInfo.Notes = "member info notes";
             memberInfo.MemberNumber = "9876543";
-            memberInfo.Person = await dal.Fetch(1);
+            memberInfo.Person = MockDb.Persons.Take(1).First();
             memberInfo.DateFirstJoined = DateTime.Now;
-            var dal2 = dalManager.GetProvider<IMembershipTypeDal>();
-            memberInfo.MembershipType = await dal2.Fetch(1);
-            var dal3 = dalManager.GetProvider<IMemberStatusDal>();
-            memberInfo.MemberStatus = await dal3.Fetch(1);
-            var dal4 = dalManager.GetProvider<IPrivacyLevelDal>();
-            memberInfo.PrivacyLevel = await dal4.Fetch(1);
+            memberInfo.MembershipType = MockDb.MembershipTypes.Take(1).First();
+            memberInfo.PrivacyLevel = MockDb.PrivacyLevels.Take(1).First();
+            memberInfo.MemberStatus = MockDb.MemberStatuses.Take(1).First();
             memberInfo.LastUpdatedBy = "edm";
             memberInfo.LastUpdatedDate = DateTime.Now;
 

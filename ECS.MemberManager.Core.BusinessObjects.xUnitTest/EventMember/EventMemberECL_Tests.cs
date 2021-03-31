@@ -10,32 +10,8 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class EventMemberECL_Tests
+    public class EventMemberECL_Tests : CslaBaseTest
     {
-        private IConfigurationRoot _config = null;
-        private bool IsDatabaseBuilt = false;
-
-        public EventMemberECL_Tests()
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            _config = builder.Build();
-            var testLibrary = _config.GetValue<string>("TestLibrary");
-
-            if (testLibrary == "Mock")
-                MockDb.ResetMockDb();
-            else
-            {
-                if (!IsDatabaseBuilt)
-                {
-                    var adoDb = new ADODb();
-                    adoDb.BuildMemberManagerADODb();
-                    IsDatabaseBuilt = true;
-                }
-            }
-        }
-
         [Fact]
         private async void EventMemberECL_TestEventMemberECL()
         {
@@ -49,10 +25,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         private async void EventMemberECL_TestGetEventMemberECL()
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEventMemberDal>();
-            var childData = await dal.Fetch();
-
+            var childData = MockDb.EventMembers;
+            
             var listToTest = await EventMemberECL.GetEventMemberECL(childData);
 
             Assert.NotNull(listToTest);
@@ -72,5 +46,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
             return eventDocumentObj;
         }
+        
+        
     }
 }

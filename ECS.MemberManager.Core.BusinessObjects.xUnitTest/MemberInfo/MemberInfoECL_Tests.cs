@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.ADO;
@@ -11,32 +12,8 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class MemberInfoECL_Tests
+    public class MemberInfoECL_Tests : CslaBaseTest
     {
-        private IConfigurationRoot _config = null;
-        private bool IsDatabaseBuilt = false;
-
-        public MemberInfoECL_Tests()
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            _config = builder.Build();
-            var testLibrary = _config.GetValue<string>("TestLibrary");
-
-            if (testLibrary == "Mock")
-                MockDb.ResetMockDb();
-            else
-            {
-                if (!IsDatabaseBuilt)
-                {
-                    var adoDb = new ADODb();
-                    adoDb.BuildMemberManagerADODb();
-                    IsDatabaseBuilt = true;
-                }
-            }
-        }
-
         [Fact]
         private async void MemberInfoECL_TestMemberInfoECL()
         {
@@ -50,9 +27,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         private async void MemberInfoECL_TestGetMemberInfoECL()
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IMemberInfoDal>();
-            var childData = await dal.Fetch();
+            var childData = MockDb.MemberInfo;
 
             var listToTest = await MemberInfoECL.GetMemberInfoECL(childData);
 
@@ -69,13 +44,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var memberInfo = new MemberInfo();
             memberInfo.Notes = "member info notes";
             memberInfo.MemberNumber = "9876543";
-            memberInfo.Person = await dal.Fetch(1);
-            var dal2 = dalManager.GetProvider<IMembershipTypeDal>();
-            memberInfo.MembershipType = await dal2.Fetch(1);
-            var dal3 = dalManager.GetProvider<IMemberStatusDal>();
-            memberInfo.MemberStatus = await dal3.Fetch(1);
-            var dal4 = dalManager.GetProvider<IPrivacyLevelDal>();
-            memberInfo.PrivacyLevel = await dal4.Fetch(1);
+            memberInfo.Person = MockDb.Persons.Take(1).First();
+            memberInfo.DateFirstJoined = DateTime.Now;
+            memberInfo.MembershipType = MockDb.MembershipTypes.Take(1).First();
+            memberInfo.PrivacyLevel = MockDb.PrivacyLevels.Take(1).First();
+            memberInfo.MemberStatus = MockDb.MemberStatuses.Take(1).First();
             memberInfo.LastUpdatedBy = "edm";
             memberInfo.LastUpdatedDate = DateTime.Now;
 

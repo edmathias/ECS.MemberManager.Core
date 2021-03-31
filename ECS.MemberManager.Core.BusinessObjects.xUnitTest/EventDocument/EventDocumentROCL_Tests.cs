@@ -37,9 +37,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         private async void EventDocumentROCL_TestGetEventDocumentROCL()
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IEventDocumentDal>();
-            var childData = await dal.Fetch();
+            var childData = MockDb.EventDocuments;
 
             var listToTest = await EventDocumentROCL.GetEventDocumentROCL(childData);
 

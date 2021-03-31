@@ -103,6 +103,38 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.False(eventDocumentObj.IsValid);
             Assert.Throws<Csla.Rules.ValidationException>(() => savedEventDocument = eventDocumentObj.Save());
         }
+        
+
+        [Fact]
+        public async Task EventDocumentER_UpdateEvent()
+        {
+            const string NOTES_UPDATE = "test child update";
+            
+            var eventDocument = await EventDocumentER.GetEventDocumentER(1);
+
+            eventDocument.Event.Notes = NOTES_UPDATE;
+            
+            var result = await eventDocument.SaveAsync();
+            
+            Assert.NotNull(result);
+            Assert.Equal(NOTES_UPDATE,result.Event.Notes);
+        }
+
+        [Fact]
+        public async Task EventDocumentER_UpdateDocumentType()
+        {
+            const string NOTES_UPDATE = "test child update";
+            
+            var eventDocument = await EventDocumentER.GetEventDocumentER(1);
+
+            eventDocument.DocumentType.Notes = NOTES_UPDATE;
+            
+            var result = await eventDocument.SaveAsync();
+            
+            Assert.NotNull(result);
+            Assert.Equal(NOTES_UPDATE,result.DocumentType.Notes);
+        }
+        
 
         [Fact]
         public async Task EventDocumentER_EventRequired()
