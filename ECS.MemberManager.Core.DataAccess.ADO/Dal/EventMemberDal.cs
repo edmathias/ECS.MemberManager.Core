@@ -12,7 +12,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace ECS.MemberManager.Core.DataAccess.ADO
 {
-    public class EventMemberDal : IEventMemberDal
+    public class EventMemberDal : IDal<EventMember>
     {
         private static IConfigurationRoot _config;
         private SqlConnection _db = null;

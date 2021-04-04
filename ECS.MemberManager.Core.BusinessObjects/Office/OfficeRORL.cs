@@ -5,7 +5,7 @@
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/25/2021 11:08:16
+// Generated on 04/01/2021 14:01:10
 //******************************************************************************    
 
 using System; 
@@ -34,7 +34,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access
  
         [Fetch]
-        private async Task Fetch([Inject] IMembershipTypeDal dal)
+        private async Task Fetch([Inject] IDal<MembershipType> dal)
         {
             var childData = await dal.Fetch();
 

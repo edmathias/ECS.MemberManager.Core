@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECS.MemberManager.Core.DataAccess.EF
 {
-    public class EventMemberDal : IEventMemberDal
+    public class EventMemberDal : IDal<EventMember>
     {
         public async Task<List<EventMember>> Fetch()
         {
@@ -27,8 +27,6 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 
         public async Task<EventMember> Fetch(int id)
         {
-            List<EventMember> list = null;
-
             EventMember eventMember = null;
 
             using (var context = new MembershipManagerDataContext())

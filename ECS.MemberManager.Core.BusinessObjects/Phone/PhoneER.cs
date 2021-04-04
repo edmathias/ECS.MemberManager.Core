@@ -118,7 +118,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access Methods
 
         [Fetch]
-        private async Task Fetch(int id, [Inject] IPhoneDal dal)
+        private async Task Fetch(int id, [Inject] IDal<Phone> dal)
         {
             var data = await dal.Fetch(id);
 
@@ -137,7 +137,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             }            
         }
         [Insert]
-        private async Task Insert([Inject] IPhoneDal dal)
+        private async Task Insert([Inject] IDal<Phone> dal)
         {
             FieldManager.UpdateChildren();
 
@@ -162,7 +162,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
        [Update]
-        private async Task Update([Inject] IPhoneDal dal)
+        private async Task Update([Inject] IDal<Phone> dal)
         {
             FieldManager.UpdateChildren();
 
@@ -186,13 +186,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         [DeleteSelf]
-        private async Task DeleteSelf([Inject] IPhoneDal dal)
+        private async Task DeleteSelf([Inject] IDal<Phone> dal)
         {
             await Delete(Id,dal);
         }
        
         [Delete]
-        private async Task Delete(int id, [Inject] IPhoneDal dal)
+        private async Task Delete(int id, [Inject] IDal<Phone> dal)
         {
             await dal.Delete(id);
         }

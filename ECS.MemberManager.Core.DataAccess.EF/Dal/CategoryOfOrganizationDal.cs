@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECS.MemberManager.Core.DataAccess.EF
 {
-    public class CategoryOfOrganizationDal : ICategoryOfOrganizationDal
+    public class CategoryOfOrganizationDal : IDal<CategoryOfOrganization>
     {
         public async Task<List<CategoryOfOrganization>> Fetch()
         {
@@ -24,8 +24,6 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 
         public async Task<CategoryOfOrganization> Fetch(int id)
         {
-            List<CategoryOfOrganization> list = null;
-
             CategoryOfOrganization category = null;
 
             using (var context = new MembershipManagerDataContext())

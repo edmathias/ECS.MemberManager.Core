@@ -1,6 +1,7 @@
 ﻿using Csla.Configuration;
 using ECS.MemberManager.Core.DataAccess.EF;
 using ECS.MemberManager.Core.DataAccess.Dal;
+using ECS.MemberManager.Core.EF.Domain;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
@@ -11,22 +12,23 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             services.AddCsla(); // necessary for the CSLA [Inject] attribute to work.
 
-            services.AddTransient(typeof(IAddressDal), typeof(AddressDal));
-            services.AddTransient(typeof(ICategoryOfOrganizationDal), typeof(CategoryOfOrganizationDal));
-            services.AddTransient(typeof(ICategoryOfPersonDal), typeof(CategoryOfPersonDal));
-            services.AddTransient(typeof(IContactForSponsorDal), typeof(ContactForSponsorDal));
-            services.AddTransient(typeof(IDocumentTypeDal), typeof(DocumentTypeDal));
-            services.AddTransient(typeof(IEMailDal), typeof(EMailDal));
-            services.AddTransient(typeof(IPersonDal),typeof(PersonDal));
-            services.AddTransient(typeof(ISponsorDal),typeof(SponsorDal));
-            services.AddTransient(typeof(IEMailTypeDal),typeof(EMailTypeDal));
-            services.AddTransient(typeof(IEventDal),typeof(EventDal));
-            services.AddTransient(typeof(IEventDocumentDal),typeof(EventDocumentDal));
-            services.AddTransient(typeof(IEventMemberDal),typeof(EventMemberDal));
-            services.AddTransient(typeof(IMemberInfoDal),typeof(MemberInfoDal));
-            services.AddTransient(typeof(IMembershipTypeDal),typeof(MembershipTypeDal));
+            
+            services.AddTransient(typeof(IDal<Address>), typeof(AddressDal));
+            services.AddTransient(typeof(IDal<CategoryOfOrganization>), typeof(CategoryOfOrganizationDal));
+            services.AddTransient(typeof(IDal<CategoryOfPerson>), typeof(CategoryOfPersonDal));
+            services.AddTransient(typeof(IDal<ContactForSponsor>), typeof(ContactForSponsorDal));
+            services.AddTransient(typeof(IDal<DocumentType>), typeof(DocumentTypeDal));
+            services.AddTransient(typeof(IDal<EMail>), typeof(EMailDal));
+            services.AddTransient(typeof(IDal<Person>),typeof(PersonDal));
+            services.AddTransient(typeof(IDal<Sponsor>),typeof(SponsorDal));
+            services.AddTransient(typeof(IDal<EMailType>),typeof(EMailTypeDal));
+            services.AddTransient(typeof(IDal<Event>),typeof(EventDal));
+            services.AddTransient(typeof(IDal<EventDocument>),typeof(EventDocumentDal));
+            services.AddTransient(typeof(IDal<EventMember>),typeof(EventMemberDal));
+            services.AddTransient(typeof(IDal<MemberInfo>),typeof(MemberInfoDal));
+            services.AddTransient(typeof(IDal<MembershipType>),typeof(MembershipTypeDal));
+            services.AddTransient(typeof(IDal<MemberStatus>),typeof(MemberStatusDal));
             /*
-            services.AddTransient(typeof(IMemberStatusDal),typeof(MemberStatusDal));
             services.AddTransient(typeof(IOfficeDal),typeof(OfficeDal));
             services.AddTransient(typeof(IOrganizationDal),typeof(OrganizationDal));
             services.AddTransient(typeof(IOrganizationTypeDal),typeof(OrganizationTypeDal));

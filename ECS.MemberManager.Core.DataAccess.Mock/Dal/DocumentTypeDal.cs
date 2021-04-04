@@ -7,7 +7,7 @@ using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.DataAccess.Mock
 {
-    public class DocumentTypeDal : IDocumentTypeDal
+    public class DocumentTypeDal : IDal<DocumentType>
     {
         public async Task<DocumentType> Fetch(int id)
         {

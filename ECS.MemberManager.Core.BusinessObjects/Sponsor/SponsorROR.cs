@@ -5,14 +5,12 @@
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/25/2021 11:08:42
+// Generated on 04/01/2021 14:10:38
 //******************************************************************************    
-
 using System;
 using System.Collections.Generic; 
 using System.Threading.Tasks;
 using Csla;
-using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
@@ -138,7 +136,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access Methods
 
         [Fetch]
-        private async Task Fetch(int id, [Inject] ISponsorDal dal)
+        private async Task Fetch(int id, [Inject] IDal<Sponsor> dal)
         {
             var data = await dal.Fetch(id);
 

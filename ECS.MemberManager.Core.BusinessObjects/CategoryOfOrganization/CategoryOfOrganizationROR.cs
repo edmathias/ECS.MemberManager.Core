@@ -5,7 +5,7 @@
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/25/2021 11:07:27
+// Generated on 04/01/2021 14:00:31
 //******************************************************************************    
 
 using System;
@@ -64,7 +64,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access Methods
 
         [Fetch]
-        private async Task Fetch(int id, [Inject] ICategoryOfOrganizationDal dal)
+        private async Task Fetch(int id, [Inject] IDal<CategoryOfOrganization> dal)
         {
             var data = await dal.Fetch(id);
 

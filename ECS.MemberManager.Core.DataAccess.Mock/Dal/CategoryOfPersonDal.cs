@@ -7,7 +7,7 @@ using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.DataAccess.Mock
 {
-    public class CategoryOfPersonDal : ICategoryOfPersonDal
+    public class CategoryOfPersonDal : IDal<CategoryOfPerson>
     {
         public void Dispose()
         {

@@ -7,7 +7,7 @@ using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.DataAccess.Mock
 {
-    public class MembershipTypeDal : IMembershipTypeDal
+    public class MembershipTypeDal : IDal<MembershipType>
     {
         public async Task<MembershipType> Fetch(int id)
         {

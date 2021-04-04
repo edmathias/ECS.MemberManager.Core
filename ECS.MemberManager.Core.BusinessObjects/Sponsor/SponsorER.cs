@@ -4,14 +4,13 @@
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/25/2021 11:08:40
+// Generated on 04/01/2021 14:11:16
 //******************************************************************************    
 
 using System;
 using System.Collections.Generic; 
 using System.Threading.Tasks;
 using Csla;
-using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 
@@ -157,7 +156,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access Methods
 
         [Fetch]
-        private async Task Fetch(int id, [Inject] ISponsorDal dal)
+        private async Task Fetch(int id, [Inject] IDal<Sponsor> dal)
         {
             var data = await dal.Fetch(id);
 
@@ -180,7 +179,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             }            
         }
         [Insert]
-        private async Task Insert([Inject] ISponsorDal dal)
+        private async Task Insert([Inject] IDal<Sponsor> dal)
         {
             FieldManager.UpdateChildren();
 
@@ -209,7 +208,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
        [Update]
-        private async Task Update([Inject] ISponsorDal dal)
+        private async Task Update([Inject] IDal<Sponsor> dal)
         {
             FieldManager.UpdateChildren();
 
@@ -237,13 +236,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         [DeleteSelf]
-        private async Task DeleteSelf([Inject] ISponsorDal dal)
+        private async Task DeleteSelf([Inject] IDal<Sponsor> dal)
         {
             await Delete(Id,dal);
         }
        
         [Delete]
-        private async Task Delete(int id, [Inject] ISponsorDal dal)
+        private async Task Delete(int id, [Inject] IDal<Sponsor> dal)
         {
             await dal.Delete(id);
         }

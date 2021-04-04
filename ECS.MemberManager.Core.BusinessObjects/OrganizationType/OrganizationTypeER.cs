@@ -4,7 +4,7 @@
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/25/2021 11:08:21
+// Generated on 04/01/2021 14:01:15
 //******************************************************************************    
 
 using System;
@@ -85,7 +85,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access Methods
 
         [Fetch]
-        private async Task Fetch(int id, [Inject] IOrganizationTypeDal dal)
+        private async Task Fetch(int id, [Inject] IDal<OrganizationType> dal)
         {
             var data = await dal.Fetch(id);
 
@@ -99,7 +99,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             }            
         }
         [Insert]
-        private async Task Insert([Inject] IOrganizationTypeDal dal)
+        private async Task Insert([Inject] IDal<OrganizationType> dal)
         {
             FieldManager.UpdateChildren();
 
@@ -119,7 +119,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
        [Update]
-        private async Task Update([Inject] IOrganizationTypeDal dal)
+        private async Task Update([Inject] IDal<OrganizationType> dal)
         {
             FieldManager.UpdateChildren();
 
@@ -138,13 +138,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         [DeleteSelf]
-        private async Task DeleteSelf([Inject] IOrganizationTypeDal dal)
+        private async Task DeleteSelf([Inject] IDal<OrganizationType> dal)
         {
             await Delete(Id,dal);
         }
        
         [Delete]
-        private async Task Delete(int id, [Inject] IOrganizationTypeDal dal)
+        private async Task Delete(int id, [Inject] IDal<OrganizationType> dal)
         {
             await dal.Delete(id);
         }

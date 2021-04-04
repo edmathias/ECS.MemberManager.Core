@@ -8,32 +8,8 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class PaymentSourceECL_Tests
+    public class PaymentSourceECL_Tests : CslaBaseTest
     {
-        private IConfigurationRoot _config = null;
-        private bool IsDatabaseBuilt = false;
-
-        public PaymentSourceECL_Tests()
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            _config = builder.Build();
-            var testLibrary = _config.GetValue<string>("TestLibrary");
-
-            if (testLibrary == "Mock")
-                MockDb.ResetMockDb();
-            else
-            {
-                if (!IsDatabaseBuilt)
-                {
-                    var adoDb = new ADODb();
-                    adoDb.BuildMemberManagerADODb();
-                    IsDatabaseBuilt = true;
-                }
-            }
-        }
-
         [Fact]
         private async void PaymentSourceECL_TestPaymentSourceECL()
         {
@@ -43,13 +19,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.IsType<PaymentSourceECL>(paymentSourceEdit);
         }
 
-
         [Fact]
         private async void PaymentSourceECL_TestGetPaymentSourceECL()
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPaymentSourceDal>();
-            var childData = await dal.Fetch();
+            var childData = MockDb.PaymentSources;
 
             var listToTest = await PaymentSourceECL.GetPaymentSourceECL(childData);
 

@@ -7,7 +7,7 @@ using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.DataAccess.Mock
 {
-    public class ContactForSponsorDal : IContactForSponsorDal
+    public class ContactForSponsorDal : IDal<ContactForSponsor>
     {
         public void Dispose()
         {

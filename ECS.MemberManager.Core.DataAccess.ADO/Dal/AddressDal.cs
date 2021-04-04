@@ -12,7 +12,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace ECS.MemberManager.Core.DataAccess.ADO
 {
-    public class AddressDal : IAddressDal
+    public class AddressDal : IDal<Address>
     {
         private static IConfigurationRoot _config;
         private IDbConnection _db = null;

@@ -4,7 +4,7 @@
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/25/2021 11:07:37
+// Generated on 04/01/2021 14:00:41
 //******************************************************************************    
 
 using System;
@@ -110,7 +110,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             }            
         }
         [InsertChild]
-        private async Task Insert([Inject] IEMailDal dal)
+        private async Task Insert([Inject] IDal<EMail> dal)
         {
             FieldManager.UpdateChildren();
 
@@ -132,7 +132,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
        [UpdateChild]
-        private async Task Update([Inject] IEMailDal dal)
+        private async Task Update([Inject] IDal<EMail> dal)
         {
             FieldManager.UpdateChildren();
 
@@ -154,13 +154,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
        
         [DeleteSelfChild]
-        private async Task DeleteSelf([Inject] IEMailDal dal)
+        private async Task DeleteSelf([Inject] IDal<EMail> dal)
         {
             await Delete(Id,dal);
         }
        
         [Delete]
-        private async Task Delete(int id, [Inject] IEMailDal dal)
+        private async Task Delete(int id, [Inject] IDal<EMail> dal)
         {
             await dal.Delete(id);
         }

@@ -7,7 +7,7 @@ using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.DataAccess.Mock
 {
-    public class PaymentDal : IPaymentDal
+    public class PaymentDal : IDal<Payment>
     {
         public void Dispose()
         {

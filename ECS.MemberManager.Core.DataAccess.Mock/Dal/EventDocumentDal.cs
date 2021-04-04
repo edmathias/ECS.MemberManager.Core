@@ -7,7 +7,7 @@ using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.DataAccess.Mock
 {
-    public class EventDocumentDal : IEventDocumentDal
+    public class EventDocumentDal : IDal<EventDocument>
     {
         public void Dispose()
         {

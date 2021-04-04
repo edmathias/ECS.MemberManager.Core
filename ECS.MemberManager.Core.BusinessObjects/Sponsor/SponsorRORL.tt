@@ -13,11 +13,9 @@
     CreateBuildHeader();
 #>
 
-using System; 
-using System.Threading.Tasks;
-using Csla;
-using ECS.MemberManager.Core.DataAccess;
-using ECS.MemberManager.Core.DataAccess.Dal;
+<#
+BuildUsingStatements();
+#>
 
 namespace ECS.MemberManager.Core.BusinessObjects
 {

@@ -7,7 +7,7 @@ using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.DataAccess.Mock
 {
-    public class OfficeDal : IOfficeDal
+    public class OfficeDal : IDal<Office>
     {
         public async Task<Office> Fetch(int id)
         {
@@ -50,6 +50,10 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 throw new Exception("Office record not found - Delete");
 
             MockDb.Offices.Remove(officeToRemove);
+        }
+
+        public void Dispose()
+        {
         }
     }
 }

@@ -130,7 +130,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             }            
         }
         [InsertChild]
-        private async Task Insert([Inject] IPhoneDal dal)
+        private async Task Insert([Inject] IDal<Phone> dal)
         {
             FieldManager.UpdateChildren();
 
@@ -155,7 +155,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
        [UpdateChild]
-        private async Task Update([Inject] IPhoneDal dal)
+        private async Task Update([Inject] IDal<Phone> dal)
         {
             FieldManager.UpdateChildren();
 
@@ -180,13 +180,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
        
         [DeleteSelfChild]
-        private async Task DeleteSelf([Inject] IPhoneDal dal)
+        private async Task DeleteSelf([Inject] IDal<Phone> dal)
         {
             await Delete(Id,dal);
         }
        
         [Delete]
-        private async Task Delete(int id, [Inject] IPhoneDal dal)
+        private async Task Delete(int id, [Inject] IDal<Phone> dal)
         {
             await dal.Delete(id);
         }

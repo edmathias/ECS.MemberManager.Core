@@ -4,7 +4,7 @@
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/25/2021 11:08:18
+// Generated on 04/01/2021 14:01:11
 //******************************************************************************    
 
 using System;
@@ -77,6 +77,14 @@ namespace ECS.MemberManager.Core.BusinessObjects
             set => SetProperty(OrganizationTypeProperty, value); 
         }    
  
+
+        public static readonly PropertyInfo<CategoryOfOrganizationEC> CategoryOfOrganizationProperty = RegisterProperty<CategoryOfOrganizationEC>(o => o.CategoryOfOrganization);
+        public CategoryOfOrganizationEC CategoryOfOrganization  
+        {
+            get => GetProperty(CategoryOfOrganizationProperty); 
+            set => SetProperty(CategoryOfOrganizationProperty, value); 
+        }    
+ 
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
         public virtual byte[] RowVersion 
         {
@@ -109,7 +117,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access Methods
 
         [Fetch]
-        private async Task Fetch(int id, [Inject] IOrganizationDal dal)
+        private async Task Fetch(int id, [Inject] IDal<Organization> dal)
         {
             var data = await dal.Fetch(id);
 
@@ -122,11 +130,12 @@ namespace ECS.MemberManager.Core.BusinessObjects
             LastUpdatedDate = data.LastUpdatedDate;
             Notes = data.Notes;
             OrganizationType = (data.OrganizationType != null ? await OrganizationTypeEC.GetOrganizationTypeEC(data.OrganizationType) : null);
+            CategoryOfOrganization = (data.CategoryOfOrganization != null ? await CategoryOfOrganizationEC.GetCategoryOfOrganizationEC(data.CategoryOfOrganization) : null);
             RowVersion = data.RowVersion;
             }            
         }
         [Insert]
-        private async Task Insert([Inject] IOrganizationDal dal)
+        private async Task Insert([Inject] IDal<Organization> dal)
         {
             FieldManager.UpdateChildren();
 
@@ -140,6 +149,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 LastUpdatedDate = LastUpdatedDate,
                 Notes = Notes,
                 OrganizationType = (OrganizationType != null ? new OrganizationType() { Id = OrganizationType.Id } : null),
+                CategoryOfOrganization = (CategoryOfOrganization != null ? new CategoryOfOrganization() { Id = CategoryOfOrganization.Id } : null),
                 RowVersion = RowVersion,
             };
 
@@ -149,7 +159,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
        [Update]
-        private async Task Update([Inject] IOrganizationDal dal)
+        private async Task Update([Inject] IDal<Organization> dal)
         {
             FieldManager.UpdateChildren();
 
@@ -163,6 +173,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 LastUpdatedDate = LastUpdatedDate,
                 Notes = Notes,
                 OrganizationType = (OrganizationType != null ? new OrganizationType() { Id = OrganizationType.Id } : null),
+                CategoryOfOrganization = (CategoryOfOrganization != null ? new CategoryOfOrganization() { Id = CategoryOfOrganization.Id } : null),
                 RowVersion = RowVersion,
             };
 
@@ -171,13 +182,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         [DeleteSelf]
-        private async Task DeleteSelf([Inject] IOrganizationDal dal)
+        private async Task DeleteSelf([Inject] IDal<Organization> dal)
         {
             await Delete(Id,dal);
         }
        
         [Delete]
-        private async Task Delete(int id, [Inject] IOrganizationDal dal)
+        private async Task Delete(int id, [Inject] IDal<Organization> dal)
         {
             await dal.Delete(id);
         }

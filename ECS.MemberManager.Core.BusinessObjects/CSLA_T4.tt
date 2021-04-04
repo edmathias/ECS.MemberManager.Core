@@ -139,7 +139,7 @@
         else
         {
 #>
-        private async Task Fetch(int id, [Inject] I<#= objectType #>Dal dal)
+        private async Task Fetch(int id, [Inject] IDal<<#= objectType #>> dal)
         {
             var data = await dal.Fetch(id);
 
@@ -176,7 +176,7 @@
         var childDesig = isChild ? "Child" : String.Empty;
 #>
         [Insert<#= childDesig #>]
-        private async Task Insert([Inject] I<#= objectType #>Dal dal)
+        private async Task Insert([Inject] IDal<<#= objectType #>> dal)
         {
             FieldManager.UpdateChildren();
 
@@ -201,13 +201,13 @@
 #>
 
 <#+
-    void BuildListFetch(string objectName, bool isChild, string childStereo)
+    void BuildListFetch(string objectType, bool isChild, string childStereo)
     {
         if (!isChild)
         {
 #>
         [Fetch]
-        private async Task Fetch([Inject] I<#= objectName #>Dal dal)
+        private async Task Fetch([Inject] IDal<<#= objectType #>> dal)
         {
             var childData = await dal.Fetch();
 <#+
@@ -216,7 +216,7 @@
         {
 #>
         [FetchChild]
-        private async Task Fetch(IList<<#= objectName #>> childData)
+        private async Task Fetch(IList<<#= objectType #>> childData)
         {
 <#+
         }
@@ -226,7 +226,7 @@
             {
                 foreach (var domainObjToAdd in childData)
                 {
-                    var objectToAdd = await <#= objectName #><#= childStereo #>.Get<#= objectName #><#= childStereo #>(domainObjToAdd);
+                    var objectToAdd = await <#= objectType #><#= childStereo #>.Get<#= objectType #><#= childStereo #>(domainObjToAdd);
                     Add(objectToAdd);
                 }
             }
@@ -241,7 +241,7 @@
         var childDesig = isChild ? "Child" : String.Empty;
 #>
        [Update<#= childDesig #>]
-        private async Task Update([Inject] I<#= objectType #>Dal dal)
+        private async Task Update([Inject] IDal<<#= objectType #>> dal)
         {
             FieldManager.UpdateChildren();
 
@@ -282,13 +282,13 @@
 <#+
         }
 #>
-        private async Task DeleteSelf([Inject] I<#= objectType #>Dal dal)
+        private async Task DeleteSelf([Inject] IDal<<#= objectType #>> dal)
         {
             await Delete(Id,dal);
         }
        
         [Delete]
-        private async Task Delete(int id, [Inject] I<#= objectType #>Dal dal)
+        private async Task Delete(int id, [Inject] IDal<<#= objectType #>> dal)
         {
             await dal.Delete(id);
         }
@@ -395,6 +395,20 @@
 //******************************************************************************    
 <#+
     }
+#>
+
+<#+
+void BuildUsingStatements()
+{ 
+#>
+using System;
+using System.Collections.Generic; 
+using System.Threading.Tasks;
+using Csla;
+using ECS.MemberManager.Core.DataAccess.Dal;
+using ECS.MemberManager.Core.EF.Domain;
+<#+
+}
 #>
 
 

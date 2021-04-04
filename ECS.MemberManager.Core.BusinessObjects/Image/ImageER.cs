@@ -70,7 +70,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access Methods
 
         [Fetch]
-        private async Task Fetch(int id, [Inject] IImageDal dal)
+        private async Task Fetch(int id, [Inject] IDal<Image> dal)
         {
             var data = await dal.Fetch(id);
 
@@ -83,7 +83,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             }            
         }
         [Insert]
-        private async Task Insert([Inject] IImageDal dal)
+        private async Task Insert([Inject] IDal<Image> dal)
         {
             FieldManager.UpdateChildren();
 
@@ -102,7 +102,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
        [Update]
-        private async Task Update([Inject] IImageDal dal)
+        private async Task Update([Inject] IDal<Image> dal)
         {
             FieldManager.UpdateChildren();
 
@@ -120,13 +120,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         [DeleteSelf]
-        private async Task DeleteSelf([Inject] IImageDal dal)
+        private async Task DeleteSelf([Inject] IDal<Image> dal)
         {
             await Delete(Id,dal);
         }
        
         [Delete]
-        private async Task Delete(int id, [Inject] IImageDal dal)
+        private async Task Delete(int id, [Inject] IDal<Image> dal)
         {
             await dal.Delete(id);
         }

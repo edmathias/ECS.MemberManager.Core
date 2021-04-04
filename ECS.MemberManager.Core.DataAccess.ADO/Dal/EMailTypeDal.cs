@@ -12,7 +12,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace ECS.MemberManager.Core.DataAccess.ADO
 {
-    public class EMailTypeDal : IEMailTypeDal
+    public class EMailTypeDal : IDal<EMailType>
     {
         private static IConfigurationRoot _config;
         private SqlConnection _db = null;

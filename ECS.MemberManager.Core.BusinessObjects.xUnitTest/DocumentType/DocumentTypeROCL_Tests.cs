@@ -1,5 +1,6 @@
 ﻿using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.Dal;
+using ECS.MemberManager.Core.DataAccess.Mock;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
@@ -9,10 +10,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         private async void DocumentTypeInfoList_TestGetDocumentTypeInfoList()
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IDocumentTypeDal>();
-            var childData = await dal.Fetch();
-
+            var childData = MockDb.DocumentTypes;
             var eMailTypeInfoList = await DocumentTypeROCL.GetDocumentTypeROCL(childData);
 
             Assert.NotNull(eMailTypeInfoList);

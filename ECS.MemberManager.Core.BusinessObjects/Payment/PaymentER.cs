@@ -4,7 +4,7 @@
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/25/2021 11:08:24
+// Generated on 04/01/2021 14:01:20
 //******************************************************************************    
 
 using System;
@@ -133,7 +133,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access Methods
 
         [Fetch]
-        private async Task Fetch(int id, [Inject] IPaymentDal dal)
+        private async Task Fetch(int id, [Inject] IDal<Payment> dal)
         {
             var data = await dal.Fetch(id);
 
@@ -153,7 +153,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             }            
         }
         [Insert]
-        private async Task Insert([Inject] IPaymentDal dal)
+        private async Task Insert([Inject] IDal<Payment> dal)
         {
             FieldManager.UpdateChildren();
 
@@ -179,7 +179,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
        [Update]
-        private async Task Update([Inject] IPaymentDal dal)
+        private async Task Update([Inject] IDal<Payment> dal)
         {
             FieldManager.UpdateChildren();
 
@@ -204,13 +204,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         [DeleteSelf]
-        private async Task DeleteSelf([Inject] IPaymentDal dal)
+        private async Task DeleteSelf([Inject] IDal<Payment> dal)
         {
             await Delete(Id,dal);
         }
        
         [Delete]
-        private async Task Delete(int id, [Inject] IPaymentDal dal)
+        private async Task Delete(int id, [Inject] IDal<Payment> dal)
         {
             await dal.Delete(id);
         }

@@ -10,7 +10,7 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class PaymentROC_Tests
+    public class PaymentROC_Tests : CslaBaseTest
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;

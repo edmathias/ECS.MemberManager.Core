@@ -139,7 +139,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             }            
         }
         [InsertChild]
-        private async Task Insert([Inject] IMemberInfoDal dal)
+        private async Task Insert([Inject] IDal<MemberInfo> dal)
         {
             FieldManager.UpdateChildren();
 
@@ -165,7 +165,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
        [UpdateChild]
-        private async Task Update([Inject] IMemberInfoDal dal)
+        private async Task Update([Inject] IDal<MemberInfo> dal)
         {
             FieldManager.UpdateChildren();
 
@@ -191,13 +191,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
        
         [DeleteSelfChild]
-        private async Task DeleteSelf([Inject] IMemberInfoDal dal)
+        private async Task DeleteSelf([Inject] IDal<MemberInfo> dal)
         {
             await Delete(Id,dal);
         }
        
         [Delete]
-        private async Task Delete(int id, [Inject] IMemberInfoDal dal)
+        private async Task Delete(int id, [Inject] IDal<MemberInfo> dal)
         {
             await dal.Delete(id);
         }

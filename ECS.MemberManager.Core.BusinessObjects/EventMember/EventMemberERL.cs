@@ -31,7 +31,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access
  
         [Fetch]
-        private async Task Fetch([Inject] IEventMemberDal dal)
+        private async Task Fetch([Inject] IDal<EventMember> dal)
         {
             var childData = await dal.Fetch();
 

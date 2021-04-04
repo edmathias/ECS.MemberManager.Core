@@ -5,12 +5,12 @@ using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.DataAccess.Dal
 {
-    public interface IEventDal : IDisposable
+    public interface IDal<T> : IDisposable
     {
-        Task<List<Event>> Fetch();
-        Task<Event> Fetch(int id);
-        Task<Event> Insert(Event eventToInsert);
-        Task<Event> Update(Event eventToUpdate);
+        Task<T> Fetch(int id);
+        Task<List<T>> Fetch();
+        Task<T> Insert(T item);
+        Task<T> Update(T item);
         Task Delete(int id);
     }
 }

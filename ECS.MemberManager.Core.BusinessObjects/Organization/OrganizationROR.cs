@@ -5,7 +5,7 @@
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/25/2021 11:08:19
+// Generated on 04/01/2021 14:01:12
 //******************************************************************************    
 
 using System;
@@ -73,6 +73,15 @@ namespace ECS.MemberManager.Core.BusinessObjects
             private set => LoadProperty(OrganizationTypeProperty, value); 
         }    
  
+
+        public static readonly PropertyInfo<CategoryOfOrganizationROC> CategoryOfOrganizationProperty = RegisterProperty<CategoryOfOrganizationROC>(o => o.CategoryOfOrganization);
+        public CategoryOfOrganizationROC CategoryOfOrganization  
+        {
+            get => GetProperty(CategoryOfOrganizationProperty); 
+        
+            private set => LoadProperty(CategoryOfOrganizationProperty, value); 
+        }    
+ 
         public static readonly PropertyInfo<byte[]> RowVersionProperty = RegisterProperty<byte[]>(o => o.RowVersion);
         public virtual byte[] RowVersion 
         {
@@ -94,7 +103,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access Methods
 
         [Fetch]
-        private async Task Fetch(int id, [Inject] IOrganizationDal dal)
+        private async Task Fetch(int id, [Inject] IDal<Organization> dal)
         {
             var data = await dal.Fetch(id);
 
@@ -105,6 +114,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             LastUpdatedDate = data.LastUpdatedDate;
             Notes = data.Notes;
             OrganizationType = (data.OrganizationType != null ? await OrganizationTypeROC.GetOrganizationTypeROC(data.OrganizationType) : null);
+            CategoryOfOrganization = (data.CategoryOfOrganization != null ? await CategoryOfOrganizationROC.GetCategoryOfOrganizationROC(data.CategoryOfOrganization) : null);
             RowVersion = data.RowVersion;
         }
 

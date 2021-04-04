@@ -5,7 +5,7 @@
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/25/2021 11:07:24
+// Generated on 04/01/2021 14:00:28
 //******************************************************************************    
 
 using System;
@@ -106,7 +106,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access Methods
 
         [Fetch]
-        private async Task Fetch(int id, [Inject] IAddressDal dal)
+        private async Task Fetch(int id, [Inject] IDal<Address> dal)
         {
             var data = await dal.Fetch(id);
 

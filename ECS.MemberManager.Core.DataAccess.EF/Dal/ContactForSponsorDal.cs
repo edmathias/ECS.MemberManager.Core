@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECS.MemberManager.Core.DataAccess.EF
 {
-    public class ContactForSponsorDal : IContactForSponsorDal
+    public class ContactForSponsorDal : IDal<ContactForSponsor>
     {
         public async Task<List<ContactForSponsor>> Fetch()
         {
@@ -34,8 +34,6 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 
         public async Task<ContactForSponsor> Fetch(int id)
         {
-            List<ContactForSponsor> list = null;
-
             ContactForSponsor contact = null;
 
             using (var context = new MembershipManagerDataContext())

@@ -12,7 +12,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace ECS.MemberManager.Core.DataAccess.ADO
 {
-    public class MembershipTypeDal : IMembershipTypeDal
+    public class MembershipTypeDal : IDal<MembershipType>
     {
         private static IConfigurationRoot _config;
         private SqlConnection _db = null;

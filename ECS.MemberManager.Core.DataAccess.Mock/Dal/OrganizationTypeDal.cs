@@ -7,7 +7,7 @@ using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.DataAccess.Mock
 {
-    public class OrganizationTypeDal : IOrganizationTypeDal
+    public class OrganizationTypeDal : IDal<OrganizationType>
     {
         public async Task<OrganizationType> Fetch(int id)
         {
@@ -49,6 +49,10 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             var listIndex = MockDb.OrganizationTypes.IndexOf(organizationTypeToDelete);
             if (listIndex > -1)
                 MockDb.OrganizationTypes.RemoveAt(listIndex);
+        }
+
+        public void Dispose()
+        {
         }
     }
 }

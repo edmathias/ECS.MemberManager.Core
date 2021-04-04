@@ -89,7 +89,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access Methods
 
         [Fetch]
-        private async Task Fetch(int id, [Inject] IEventMemberDal dal)
+        private async Task Fetch(int id, [Inject] IDal<EventMember> dal)
         {
             var data = await dal.Fetch(id);
 

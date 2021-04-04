@@ -13,7 +13,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace ECS.MemberManager.Core.DataAccess.ADO
 {
-    public class ContactForSponsorDal : IContactForSponsorDal
+    public class ContactForSponsorDal : IDal<ContactForSponsor>
     {
         private static IConfigurationRoot _config;
         private SqlConnection _db = null;

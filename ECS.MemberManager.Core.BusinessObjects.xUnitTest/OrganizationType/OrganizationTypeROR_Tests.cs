@@ -6,7 +6,7 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class OrganizationTypeROR_Tests
+    public class OrganizationTypeROR_Tests : CslaBaseTest
     {
         private IConfigurationRoot _config = null;
         private bool IsDatabaseBuilt = false;

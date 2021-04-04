@@ -4,7 +4,7 @@
 // This file has been generated via text template.
 // Do not make changes as they will be automatically overwritten.
 //
-// Generated on 03/25/2021 11:08:42
+// Generated on 04/01/2021 14:01:46
 //******************************************************************************    
 
 using System;
@@ -137,7 +137,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             }            
         }
         [InsertChild]
-        private async Task Insert([Inject] ITaskForEventDal dal)
+        private async Task Insert([Inject] IDal<TaskForEvent> dal)
         {
             FieldManager.UpdateChildren();
 
@@ -162,7 +162,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
        [UpdateChild]
-        private async Task Update([Inject] ITaskForEventDal dal)
+        private async Task Update([Inject] IDal<TaskForEvent> dal)
         {
             FieldManager.UpdateChildren();
 
@@ -187,13 +187,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
 
        
         [DeleteSelfChild]
-        private async Task DeleteSelf([Inject] ITaskForEventDal dal)
+        private async Task DeleteSelf([Inject] IDal<TaskForEvent> dal)
         {
             await Delete(Id,dal);
         }
        
         [Delete]
-        private async Task Delete(int id, [Inject] ITaskForEventDal dal)
+        private async Task Delete(int id, [Inject] IDal<TaskForEvent> dal)
         {
             await dal.Delete(id);
         }

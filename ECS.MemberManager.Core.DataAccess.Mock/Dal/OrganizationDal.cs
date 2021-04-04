@@ -7,7 +7,7 @@ using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.DataAccess.Mock
 {
-    public class OrganizationDal : IOrganizationDal
+    public class OrganizationDal : IDal<Organization>
     {
         public async Task<Organization> Fetch(int id)
         {

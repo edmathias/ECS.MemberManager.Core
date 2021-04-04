@@ -7,7 +7,7 @@ using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.DataAccess.Mock
 {
-    public class EMailTypeDal : IEMailTypeDal
+    public class EMailTypeDal : IDal<EMailType>
     {
         public async Task<EMailType> Fetch(int id)
         {

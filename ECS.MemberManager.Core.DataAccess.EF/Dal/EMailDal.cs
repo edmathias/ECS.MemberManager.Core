@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECS.MemberManager.Core.DataAccess.EF
 {
-    public class EMailDal : IEMailDal
+    public class EMailDal : IDal<EMail>
     {
         public async Task<List<EMail>> Fetch()
         {
@@ -26,8 +26,6 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 
         public async Task<EMail> Fetch(int id)
         {
-            List<EMail> list = null;
-
             EMail contact = null;
 
             using (var context = new MembershipManagerDataContext())

@@ -102,7 +102,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         #region Data Access Methods
 
         [Fetch]
-        private async Task Fetch(int id, [Inject] IEventMemberDal dal)
+        private async Task Fetch(int id, [Inject] IDal<EventMember> dal)
         {
             var data = await dal.Fetch(id);
 
@@ -119,7 +119,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
             }            
         }
         [Insert]
-        private async Task Insert([Inject] IEventMemberDal dal)
+        private async Task Insert([Inject] IDal<EventMember> dal)
         {
             FieldManager.UpdateChildren();
 
@@ -142,7 +142,7 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
        [Update]
-        private async Task Update([Inject] IEventMemberDal dal)
+        private async Task Update([Inject] IDal<EventMember> dal)
         {
             FieldManager.UpdateChildren();
 
@@ -164,13 +164,13 @@ namespace ECS.MemberManager.Core.BusinessObjects
         }
 
         [DeleteSelf]
-        private async Task DeleteSelf([Inject] IEventMemberDal dal)
+        private async Task DeleteSelf([Inject] IDal<EventMember> dal)
         {
             await Delete(Id,dal);
         }
        
         [Delete]
-        private async Task Delete(int id, [Inject] IEventMemberDal dal)
+        private async Task Delete(int id, [Inject] IDal<EventMember> dal)
         {
             await dal.Delete(id);
         }

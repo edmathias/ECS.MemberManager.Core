@@ -8,61 +8,63 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECS.MemberManager.Core.DataAccess.EF
 {
-    public class AddressDal : IDal<Address>
+    public class MemberStatusDal : IDal<MemberStatus>
     {
-        public async Task<List<Address>> Fetch()
+        public async Task<List<MemberStatus>> Fetch()
         {
-            List<Address> list;
+            List<MemberStatus> list;
 
             using (var context = new MembershipManagerDataContext())
             {
-                list = await context.Addresses.ToListAsync();
+                list = await context.MemberStatuses
+                    .ToListAsync();
             }
 
             return list;
         }
 
-        public async Task<Address> Fetch(int id)
+        public async Task<MemberStatus> Fetch(int id)
         {
-            Address address = null;
+            MemberStatus memberStatus = null;
 
             using (var context = new MembershipManagerDataContext())
             {
-                address = await context.Addresses.Where(a => a.Id == id).FirstAsync();
+                memberStatus = await context.MemberStatuses.Where(a => a.Id == id)
+                    .FirstAsync();
             }
 
-            return address;
+            return memberStatus;
         }
 
-        public async Task<Address> Insert(Address addressToInsert)
+        public async Task<MemberStatus> Insert(MemberStatus memberStatusToInsert)
         {
             using (var context = new MembershipManagerDataContext())
             {
-                await context.Addresses.AddAsync(addressToInsert);
+                await context.MemberStatuses.AddAsync(memberStatusToInsert);
+
                 await context.SaveChangesAsync();
             }
 
-            ;
-
-            return addressToInsert;
+            return memberStatusToInsert;
         }
 
-        public async Task<Address> Update(Address addressToUpdate)
+        public async Task<MemberStatus> Update(MemberStatus memberStatusToUpdate)
         {
             using (var context = new MembershipManagerDataContext())
             {
-                context.Update(addressToUpdate);
+                context.Update(memberStatusToUpdate);
+
                 await context.SaveChangesAsync();
             }
 
-            return addressToUpdate;
+            return memberStatusToUpdate;
         }
 
         public async Task Delete(int id)
         {
             using (var context = new MembershipManagerDataContext())
             {
-                context.Remove(await context.Addresses.SingleAsync(a => a.Id == id));
+                context.Remove(await context.MemberStatuses.SingleAsync(a => a.Id == id));
                 await context.SaveChangesAsync();
             }
         }
