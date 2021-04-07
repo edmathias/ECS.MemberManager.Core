@@ -37,9 +37,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         private async void EventInfoList_TestGetEventInfoList()
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ITaskForEventDal>();
-            var childData = await dal.Fetch();
+            var childData = MockDb.TaskForEvents;
 
             var eventInfoList = await TaskForEventROCL.GetTaskForEventROCL(childData);
 

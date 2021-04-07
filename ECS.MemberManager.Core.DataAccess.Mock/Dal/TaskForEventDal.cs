@@ -7,7 +7,7 @@ using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.DataAccess.Mock
 {
-    public class TaskForEventDal : ITaskForEventDal
+    public class TaskForEventDal : IDal<TaskForEvent>
     {
         public async Task<TaskForEvent> Fetch(int id)
         {

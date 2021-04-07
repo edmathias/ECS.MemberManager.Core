@@ -51,18 +51,14 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
         private async Task<Sponsor> BuildSponsor()
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ISponsorDal>();
-            var childData = await dal.Fetch();
+            var childData = MockDb.Sponsors;
 
             return childData.First();
         }
 
         private async Task<Person> BuildPerson()
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPersonDal>();
-            var childData = await dal.Fetch();
+            var childData = MockDb.Persons;
 
             return childData.First();
         }

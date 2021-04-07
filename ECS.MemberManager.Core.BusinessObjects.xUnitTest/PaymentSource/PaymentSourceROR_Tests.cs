@@ -2,7 +2,7 @@
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class PaymentSourceROR_Tests : CslaBaseTest
+    public class PaymentSourceROR_Tests
     {
         [Fact]
         public async void PaymentSourceROR_TestGetById()

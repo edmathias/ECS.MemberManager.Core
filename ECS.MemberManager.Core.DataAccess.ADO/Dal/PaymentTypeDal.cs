@@ -12,7 +12,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace ECS.MemberManager.Core.DataAccess.ADO
 {
-    public class PaymentTypeDal : IPaymentTypeDal
+    public class PaymentTypeDal : IDal<PaymentType>
     {
         private static IConfigurationRoot _config;
         private SqlConnection _db = null;

@@ -3,7 +3,6 @@ using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.DataAccess.Mock;
-using ECS.MemberManager.Core.EF.Domain;
 using Microsoft.Extensions.Configuration;
 using Xunit;
 
@@ -25,6 +24,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         private async void MemberStatusECL_TestGetMemberStatusECL()
         {
             var childData = MockDb.MemberStatuses;
+
             var listToTest = await MemberStatusECL.GetMemberStatusECL(childData);
 
             Assert.NotNull(listToTest);

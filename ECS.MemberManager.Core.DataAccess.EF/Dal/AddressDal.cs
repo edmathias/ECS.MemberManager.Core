@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECS.MemberManager.Core.DataAccess.EF
 {
-    public class AddressDal : IDal<Address>
+    public class AddressDal : IDal<Address> 
     {
         public async Task<List<Address>> Fetch()
         {
@@ -24,6 +24,8 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 
         public async Task<Address> Fetch(int id)
         {
+            List<Address> list = null;
+
             Address address = null;
 
             using (var context = new MembershipManagerDataContext())

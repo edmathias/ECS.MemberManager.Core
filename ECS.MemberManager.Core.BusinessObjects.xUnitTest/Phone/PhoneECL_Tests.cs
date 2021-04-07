@@ -48,9 +48,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         private async void PhoneECL_TestGetPhoneECL()
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPhoneDal>();
-            var childData = await dal.Fetch();
+            var childData = MockDb.Phones;
 
             var listToTest = await PhoneECL.GetPhoneECL(childData);
 

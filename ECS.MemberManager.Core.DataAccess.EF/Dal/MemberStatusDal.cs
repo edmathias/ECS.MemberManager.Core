@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECS.MemberManager.Core.DataAccess.EF
 {
-    public class MemberStatusDal : IDal<MemberStatus>
+    public class MemberStatusDal : IDal<MemberStatus> 
     {
         public async Task<List<MemberStatus>> Fetch()
         {
@@ -16,8 +16,7 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 
             using (var context = new MembershipManagerDataContext())
             {
-                list = await context.MemberStatuses
-                    .ToListAsync();
+                list = await context.MemberStatuses.ToListAsync();
             }
 
             return list;
@@ -25,12 +24,13 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 
         public async Task<MemberStatus> Fetch(int id)
         {
+            List<MemberStatus> list = null;
+
             MemberStatus memberStatus = null;
 
             using (var context = new MembershipManagerDataContext())
             {
-                memberStatus = await context.MemberStatuses.Where(a => a.Id == id)
-                    .FirstAsync();
+                memberStatus = await context.MemberStatuses.Where(a => a.Id == id).FirstAsync();
             }
 
             return memberStatus;
@@ -41,9 +41,10 @@ namespace ECS.MemberManager.Core.DataAccess.EF
             using (var context = new MembershipManagerDataContext())
             {
                 await context.MemberStatuses.AddAsync(memberStatusToInsert);
-
                 await context.SaveChangesAsync();
             }
+
+            ;
 
             return memberStatusToInsert;
         }
@@ -53,7 +54,6 @@ namespace ECS.MemberManager.Core.DataAccess.EF
             using (var context = new MembershipManagerDataContext())
             {
                 context.Update(memberStatusToUpdate);
-
                 await context.SaveChangesAsync();
             }
 

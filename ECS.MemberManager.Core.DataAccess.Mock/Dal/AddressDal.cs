@@ -7,7 +7,7 @@ using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.DataAccess.Mock
 {
-    public class AddressDal : IDal<Address> 
+    public class AddressDal : IDal<Address>
     {
         public async Task<Address> Fetch(int id)
         {

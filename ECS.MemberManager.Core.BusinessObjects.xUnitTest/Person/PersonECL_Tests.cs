@@ -50,9 +50,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         private async void PersonECL_TestGetPersonECL()
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPersonDal>();
-            var childData = await dal.Fetch();
+            var childData = MockDb.Persons;
 
             var listToTest = await PersonECL.GetPersonECL(childData);
 

@@ -38,9 +38,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         private async void TermInOfficeROCL_TestGetTermInOfficeROCL()
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ITermInOfficeDal>();
-            var childData = await dal.Fetch();
+            var childData = MockDb.TermInOffices;
 
             var listToTest = await TermInOfficeROCL.GetTermInOfficeROCL(childData);
 

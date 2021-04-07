@@ -12,7 +12,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace ECS.MemberManager.Core.DataAccess.ADO
 {
-    public class TermInOfficeDal : ITermInOfficeDal
+    public class TermInOfficeDal : IDal<TermInOffice>
     {
         private static IConfigurationRoot _config;
         private SqlConnection _db = null;

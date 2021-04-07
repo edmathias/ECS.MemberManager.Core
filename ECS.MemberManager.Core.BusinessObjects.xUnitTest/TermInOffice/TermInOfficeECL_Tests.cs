@@ -47,9 +47,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         private async void TermInOfficeECL_TestGetTermInOfficeECL()
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ITermInOfficeDal>();
-            var childData = await dal.Fetch();
+            var childData = MockDb.TermInOffices;
 
             var listToTest = await TermInOfficeECL.GetTermInOfficeECL(childData);
 

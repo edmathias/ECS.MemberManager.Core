@@ -37,9 +37,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         private async void PrivacyLevelInfoList_TestGetPrivacyLevelInfoList()
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPrivacyLevelDal>();
-            var childData = await dal.Fetch();
+            var childData = MockDb.PrivacyLevels;
 
             var privacyLevelInfoList = await PrivacyLevelROCL.GetPrivacyLevelROCL(childData);
 

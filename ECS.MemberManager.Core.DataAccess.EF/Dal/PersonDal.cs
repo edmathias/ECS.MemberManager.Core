@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECS.MemberManager.Core.DataAccess.EF
 {
-    public class PersonDal : IPersonDal
+    public class PersonDal : IDal<Person>
     {
         public async Task<List<Person>> Fetch()
         {
@@ -26,6 +26,8 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 
         public async Task<Person> Fetch(int id)
         {
+            List<Person> list = null;
+
             Person person = null;
 
             using (var context = new MembershipManagerDataContext())

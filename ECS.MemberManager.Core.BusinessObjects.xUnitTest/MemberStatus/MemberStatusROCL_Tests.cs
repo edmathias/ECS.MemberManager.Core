@@ -14,6 +14,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         private async void MemberStatusInfoList_TestGetMemberStatusInfoList()
         {
             var childData = MockDb.MemberStatuses;
+
             var memberStatusInfoList = await MemberStatusROCL.GetMemberStatusROCL(childData);
 
             Assert.NotNull(memberStatusInfoList);

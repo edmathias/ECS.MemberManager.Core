@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECS.MemberManager.Core.DataAccess.EF
 {
-    public class SponsorDal : ISponsorDal
+    public class SponsorDal : IDal<Sponsor>
     {
         public async Task<List<Sponsor>> Fetch()
         {
@@ -28,6 +28,8 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 
         public async Task<Sponsor> Fetch(int id)
         {
+            List<Sponsor> list = null;
+
             Sponsor sponsor = null;
 
             using (var context = new MembershipManagerDataContext())

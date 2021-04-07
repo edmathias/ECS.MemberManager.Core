@@ -37,9 +37,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         private async void TitleInfoList_TestGetTitleInfoList()
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ITitleDal>();
-            var childData = await dal.Fetch();
+            var childData = MockDb.Titles;
 
             var titleTypeInfoList = await TitleROCL.GetTitleROCL(childData);
 

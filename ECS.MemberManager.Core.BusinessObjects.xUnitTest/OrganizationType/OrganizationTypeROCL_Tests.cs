@@ -3,21 +3,44 @@ using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.DataAccess.Mock;
-using ECS.MemberManager.Core.EF.Domain;
 using Microsoft.Extensions.Configuration;
 using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class OrganizationTypeROCL_Tests : CslaBaseTest
+    public class OrganizationTypeROCL_Tests
     {
+        private IConfigurationRoot _config = null;
+        private bool IsDatabaseBuilt = false;
+
+        public OrganizationTypeROCL_Tests()
+        {
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            _config = builder.Build();
+            var testLibrary = _config.GetValue<string>("TestLibrary");
+
+            if (testLibrary == "Mock")
+                MockDb.ResetMockDb();
+            else
+            {
+                if (!IsDatabaseBuilt)
+                {
+                    var adoDb = new ADODb();
+                    adoDb.BuildMemberManagerADODb();
+                    IsDatabaseBuilt = true;
+                }
+            }
+        }
+
         [Fact]
         private async void OrganizationTypeROCL_TestGetOrganizationTypeROCL()
         {
-            var categoryList = MockDb.OrganizationTypes;
+            var organizationTypes = MockDb.OrganizationTypes;
 
             var categoryOfOrganizationInfoList =
-                await OrganizationTypeROCL.GetOrganizationTypeROCL(categoryList);
+                await OrganizationTypeROCL.GetOrganizationTypeROCL(organizationTypes);
 
             Assert.NotNull(categoryOfOrganizationInfoList);
             Assert.True(categoryOfOrganizationInfoList.IsReadOnly);

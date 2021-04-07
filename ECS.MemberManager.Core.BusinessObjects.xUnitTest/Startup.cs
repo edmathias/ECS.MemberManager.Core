@@ -12,7 +12,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         {
             services.AddCsla(); // necessary for the CSLA [Inject] attribute to work.
 
-            
             services.AddTransient(typeof(IDal<Address>), typeof(AddressDal));
             services.AddTransient(typeof(IDal<CategoryOfOrganization>), typeof(CategoryOfOrganizationDal));
             services.AddTransient(typeof(IDal<CategoryOfPerson>), typeof(CategoryOfPersonDal));

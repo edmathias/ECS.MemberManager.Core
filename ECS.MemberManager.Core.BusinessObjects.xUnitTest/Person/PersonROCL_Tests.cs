@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using ECS.MemberManager.Core.DataAccess;
 using ECS.MemberManager.Core.DataAccess.ADO;
 using ECS.MemberManager.Core.DataAccess.Dal;
@@ -37,11 +38,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         private async void PersonInfoList_TestGetPersonInfoList()
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPersonDal>();
-            var childData = await dal.Fetch();
+            var childData = MockDb.Persons;
 
-            var eMailTypeInfoList = await PersonROCL.GetPersonROCL(childData);
+            var eMailTypeInfoList = await PersonROCL.GetPersonROCL(childData.ToList());
 
             Assert.NotNull(eMailTypeInfoList);
             Assert.True(eMailTypeInfoList.IsReadOnly);

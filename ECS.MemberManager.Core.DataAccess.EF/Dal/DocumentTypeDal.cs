@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECS.MemberManager.Core.DataAccess.EF
 {
-    public class DocumentTypeDal : IDal<DocumentType>
+    public class DocumentTypeDal : IDal<DocumentType> 
     {
         public async Task<List<DocumentType>> Fetch()
         {
@@ -24,6 +24,8 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 
         public async Task<DocumentType> Fetch(int id)
         {
+            List<DocumentType> list = null;
+
             DocumentType documentType = null;
 
             using (var context = new MembershipManagerDataContext())

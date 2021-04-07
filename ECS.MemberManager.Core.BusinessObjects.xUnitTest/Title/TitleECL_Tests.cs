@@ -46,9 +46,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         private async void TitleECL_TestGetTitleECL()
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<ITitleDal>();
-            var childData = await dal.Fetch();
+            var childData = MockDb.Titles;
 
             var listToTest = await TitleECL.GetTitleECL(childData);
 

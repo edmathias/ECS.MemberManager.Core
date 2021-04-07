@@ -11,6 +11,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         private async void DocumentTypeInfoList_TestGetDocumentTypeInfoList()
         {
             var childData = MockDb.DocumentTypes;
+
             var eMailTypeInfoList = await DocumentTypeROCL.GetDocumentTypeROCL(childData);
 
             Assert.NotNull(eMailTypeInfoList);

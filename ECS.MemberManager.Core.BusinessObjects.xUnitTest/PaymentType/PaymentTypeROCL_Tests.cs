@@ -37,9 +37,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         private async void PaymentTypeInfoList_TestGetPaymentTypeInfoList()
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPaymentTypeDal>();
-            var childData = await dal.Fetch();
+            var childData = MockDb.PaymentTypes;
 
             var paymentTypeInfoList = await PaymentTypeROCL.GetPaymentTypeROCL(childData);
 

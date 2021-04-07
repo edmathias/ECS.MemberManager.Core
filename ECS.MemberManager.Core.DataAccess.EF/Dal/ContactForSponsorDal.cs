@@ -34,6 +34,8 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 
         public async Task<ContactForSponsor> Fetch(int id)
         {
+            List<ContactForSponsor> list = null;
+
             ContactForSponsor contact = null;
 
             using (var context = new MembershipManagerDataContext())

@@ -15,6 +15,7 @@ namespace ECS.MemberManager.Core.EF.Domain
         public IList<Address> Addresses { get; set; }
 
         [Required] public OrganizationType OrganizationType { get; set; }
+        
         [Required] public CategoryOfOrganization CategoryOfOrganization { get; set; }
 
         public IList<Phone> Phones { get; set; }

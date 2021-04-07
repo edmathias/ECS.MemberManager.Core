@@ -38,9 +38,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 
         private async Task<MemberInfo> BuildMemberInfo()
         {
-            using var dalManager = DalFactory.GetManager();
-            var dal = dalManager.GetProvider<IPersonDal>();
-
             var memberInfo = new MemberInfo();
             memberInfo.Notes = "member info notes";
             memberInfo.MemberNumber = "9876543";

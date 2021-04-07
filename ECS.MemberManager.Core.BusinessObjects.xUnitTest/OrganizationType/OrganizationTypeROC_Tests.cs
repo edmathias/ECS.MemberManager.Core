@@ -3,7 +3,7 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class OrganizationTypeROC_Tests : CslaBaseTest
+    public class OrganizationTypeROC_Tests
     {
         [Fact]
         public async void OrganizationTypeROC_TestGetById()

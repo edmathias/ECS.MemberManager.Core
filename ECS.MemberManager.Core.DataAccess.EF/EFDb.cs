@@ -321,13 +321,13 @@ namespace ECS.MemberManager.Core.DataAccess.EF
             var sb = new StringBuilder();
             sb.AppendLine("SET IDENTITY_INSERT [dbo].[Organizations] ON;");
             sb.AppendLine(
-                "INSERT INTO [dbo].[Organizations]([Id], [Name], [OrganizationTypeId], [DateOfFirstContact], [LastUpdatedBy], [LastUpdatedDate], [Notes])");
+                "INSERT INTO [dbo].[Organizations]([Id], [Name], [OrganizationTypeId], [CategoryOfOrganizationId], [DateOfFirstContact], [LastUpdatedBy], [LastUpdatedDate], [Notes])");
             sb.AppendLine(
-                "SELECT 1, N'Organization 1', 1, '20200601 00:00:00.000', N'edm', '20210113 00:00:00.000', N'notes org 1' UNION ALL");
+                "SELECT 1, N'Organization 1', 1, 1, '20200601 00:00:00.000', N'edm', '20210113 00:00:00.000', N'notes org 1' UNION ALL");
             sb.AppendLine(
-                "SELECT 2, N'Organization 2', 2, '20200719 00:00:00.000', N'joe', '20210114 00:00:00.000', N'notes org 2' UNION ALL");
+                "SELECT 2, N'Organization 2', 2, 2, '20200719 00:00:00.000', N'joe', '20210114 00:00:00.000', N'notes org 2' UNION ALL");
             sb.AppendLine(
-                "SELECT 99, N'Organization to delete', 2, '20200719 00:00:00.000', N'joe', '20210114 00:00:00.000', N'notes to delete'");
+                "SELECT 99, N'Organization to delete', 2,1, '20200719 00:00:00.000', N'joe', '20210114 00:00:00.000', N'notes to delete'");
             sb.AppendLine("SET IDENTITY_INSERT [dbo].[Organizations] OFF;");
             sb.AppendLine("DBCC CHECKIDENT ('Organizations', RESEED, 2)");
 

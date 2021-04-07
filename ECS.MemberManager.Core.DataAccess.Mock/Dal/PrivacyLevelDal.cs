@@ -7,7 +7,7 @@ using ECS.MemberManager.Core.EF.Domain;
 
 namespace ECS.MemberManager.Core.DataAccess.Mock
 {
-    public class PrivacyLevelDal : IPrivacyLevelDal
+    public class PrivacyLevelDal : IDal<PrivacyLevel>
     {
         public void Dispose()
         {
