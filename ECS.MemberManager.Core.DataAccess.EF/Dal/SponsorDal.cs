@@ -28,8 +28,6 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 
         public async Task<Sponsor> Fetch(int id)
         {
-            List<Sponsor> list = null;
-
             Sponsor sponsor = null;
 
             using (var context = new MembershipManagerDataContext())

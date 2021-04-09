@@ -25,8 +25,6 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 
         public async Task<EMailType> Fetch(int id)
         {
-            List<EMailType> list = null;
-
             EMailType emailType = null;
 
             using (var context = new MembershipManagerDataContext())

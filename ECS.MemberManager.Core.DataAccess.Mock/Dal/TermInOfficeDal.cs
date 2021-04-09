@@ -9,17 +9,17 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 {
     public class TermInOfficeDal : IDal<TermInOffice>
     {
-        public async Task<TermInOffice> Fetch(int id)
+        public Task<TermInOffice> Fetch(int id)
         {
-            return MockDb.TermInOffices.FirstOrDefault(dt => dt.Id == id);
+            return Task.FromResult(MockDb.TermInOffices.FirstOrDefault(dt => dt.Id == id));
         }
 
-        public async Task<List<TermInOffice>> Fetch()
+        public Task<List<TermInOffice>> Fetch()
         {
-            return MockDb.TermInOffices.ToList();
+            return Task.FromResult(MockDb.TermInOffices.ToList());
         }
 
-        public async Task<TermInOffice> Insert(TermInOffice termInOffice)
+        public Task<TermInOffice> Insert(TermInOffice termInOffice)
         {
             var lastTermInOffice = MockDb.TermInOffices.ToList().OrderByDescending(dt => dt.Id).First();
             termInOffice.Id = 1 + lastTermInOffice.Id;
@@ -27,10 +27,10 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
             MockDb.TermInOffices.Add(termInOffice);
 
-            return termInOffice;
+            return Task.FromResult(termInOffice);
         }
 
-        public async Task<TermInOffice> Update(TermInOffice termInOffice)
+        public Task<TermInOffice> Update(TermInOffice termInOffice)
         {
             var termInOfficeToUpdate =
                 MockDb.TermInOffices.FirstOrDefault(em => em.Id == termInOffice.Id &&
@@ -40,15 +40,17 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 throw new Csla.DataPortalException(null);
 
             termInOfficeToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
-            return termInOfficeToUpdate;
+            return Task.FromResult(termInOfficeToUpdate);
         }
 
-        public async Task Delete(int id)
+        public Task Delete(int id)
         {
             var termInOfficesToDelete = MockDb.TermInOffices.FirstOrDefault(dt => dt.Id == id);
             var listIndex = MockDb.TermInOffices.IndexOf(termInOfficesToDelete);
             if (listIndex > -1)
                 MockDb.TermInOffices.RemoveAt(listIndex);
+            
+            return Task.CompletedTask;
         }
 
         public void Dispose()

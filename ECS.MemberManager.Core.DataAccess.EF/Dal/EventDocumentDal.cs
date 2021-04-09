@@ -27,8 +27,6 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 
         public async Task<EventDocument> Fetch(int id)
         {
-            List<EventDocument> list = null;
-
             EventDocument eventDocument = null;
 
             using (var context = new MembershipManagerDataContext())

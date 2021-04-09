@@ -13,17 +13,17 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
         }
 
-        public async Task<PrivacyLevel> Fetch(int id)
+        public Task<PrivacyLevel> Fetch(int id)
         {
-            return MockDb.PrivacyLevels.FirstOrDefault(pl => pl.Id == id);
+            return Task.FromResult(MockDb.PrivacyLevels.FirstOrDefault(pl => pl.Id == id));
         }
 
-        public async Task<List<PrivacyLevel>> Fetch()
+        public Task<List<PrivacyLevel>> Fetch()
         {
-            return MockDb.PrivacyLevels.ToList();
+            return Task.FromResult(MockDb.PrivacyLevels.ToList());
         }
 
-        public async Task<PrivacyLevel> Insert(PrivacyLevel privacyLevel)
+        public Task<PrivacyLevel> Insert(PrivacyLevel privacyLevel)
         {
             var lastPrivacyLevel = MockDb.PrivacyLevels.ToList().OrderByDescending(dt => dt.Id).First();
             privacyLevel.Id = 1 + lastPrivacyLevel.Id;
@@ -31,10 +31,10 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
             MockDb.PrivacyLevels.Add(privacyLevel);
 
-            return privacyLevel;
+            return Task.FromResult(privacyLevel);
         }
 
-        public async Task<PrivacyLevel> Update(PrivacyLevel privacyLevel)
+        public Task<PrivacyLevel> Update(PrivacyLevel privacyLevel)
         {
             var privacyLevelToUpdate =
                 MockDb.PrivacyLevels.FirstOrDefault(em => em.Id == privacyLevel.Id &&
@@ -44,15 +44,17 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 throw new Csla.DataPortalException(null);
 
             privacyLevelToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
-            return privacyLevelToUpdate;
+            return Task.FromResult(privacyLevelToUpdate);
         }
 
-        public async Task Delete(int id)
+        public Task Delete(int id)
         {
             var privacyLevelToDelete = MockDb.PrivacyLevels.FirstOrDefault(dt => dt.Id == id);
             var listIndex = MockDb.PrivacyLevels.IndexOf(privacyLevelToDelete);
             if (listIndex > -1)
                 MockDb.PrivacyLevels.RemoveAt(listIndex);
+
+            return Task.CompletedTask;
         }
     }
 }

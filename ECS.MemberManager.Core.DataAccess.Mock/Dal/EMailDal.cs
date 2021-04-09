@@ -9,17 +9,17 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 {
     public class EMailDal : IDal<EMail>
     {
-        public async Task<EMail> Fetch(int id)
+        public Task<EMail> Fetch(int id)
         {
-            return MockDb.EMails.FirstOrDefault(ms => ms.Id == id);
+            return Task.FromResult(MockDb.EMails.FirstOrDefault(ms => ms.Id == id));
         }
 
-        public async Task<List<EMail>> Fetch()
+        public Task<List<EMail>> Fetch()
         {
-            return MockDb.EMails.ToList();
+            return Task.FromResult(MockDb.EMails.ToList());
         }
 
-        public async Task<EMail> Insert(EMail eMail)
+        public Task<EMail> Insert(EMail eMail)
         {
             var lastEMail = MockDb.EMails.ToList().OrderByDescending(ms => ms.Id).First();
             eMail.Id = lastEMail.Id + 1;
@@ -27,10 +27,10 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
             MockDb.EMails.Add(eMail);
 
-            return eMail;
+            return Task.FromResult(eMail);
         }
 
-        public async Task<EMail> Update(EMail eMail)
+        public Task<EMail> Update(EMail eMail)
         {
             var emailToUpdate =
                 MockDb.EMails.FirstOrDefault(em => em.Id == eMail.Id &&
@@ -40,15 +40,17 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 throw new Csla.DataPortalException(null);
 
             emailToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
-            return emailToUpdate;
+            return Task.FromResult(emailToUpdate);
         }
 
-        public async Task Delete(int id)
+        public Task Delete(int id)
         {
             var eMailToDelete = MockDb.EMails.FirstOrDefault(ms => ms.Id == id);
             var listIndex = MockDb.EMails.IndexOf(eMailToDelete);
             if (listIndex > -1)
                 MockDb.EMails.RemoveAt(listIndex);
+            
+            return Task.CompletedTask;
         }
 
         public void Dispose()

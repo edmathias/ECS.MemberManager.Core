@@ -9,17 +9,17 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 {
     public class PaymentSourceDal : IDal<PaymentSource>
     {
-        public async Task<PaymentSource> Fetch(int id)
+        public Task<PaymentSource> Fetch(int id)
         {
-            return MockDb.PaymentSources.FirstOrDefault(ms => ms.Id == id);
+            return Task.FromResult(MockDb.PaymentSources.FirstOrDefault(ms => ms.Id == id));
         }
 
-        public async Task<List<PaymentSource>> Fetch()
+        public Task<List<PaymentSource>> Fetch()
         {
-            return MockDb.PaymentSources.ToList();
+            return Task.FromResult(MockDb.PaymentSources.ToList());
         }
 
-        public async Task<PaymentSource> Insert(PaymentSource paymentSource)
+        public Task<PaymentSource> Insert(PaymentSource paymentSource)
         {
             var lastPaymentSource = MockDb.PaymentSources.ToList().OrderByDescending(ms => ms.Id).First();
             paymentSource.Id = 1 + lastPaymentSource.Id;
@@ -27,10 +27,10 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
             MockDb.PaymentSources.Add(paymentSource);
 
-            return paymentSource;
+            return Task.FromResult(paymentSource);
         }
 
-        public async Task<PaymentSource> Update(PaymentSource paymentSource)
+        public Task<PaymentSource> Update(PaymentSource paymentSource)
         {
             var paymentSourceToUpdate =
                 MockDb.PaymentSources.FirstOrDefault(em => em.Id == paymentSource.Id &&
@@ -40,15 +40,17 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 throw new Csla.DataPortalException(null);
 
             paymentSourceToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
-            return paymentSourceToUpdate;
+            return Task.FromResult(paymentSourceToUpdate);
         }
 
-        public async Task Delete(int id)
+        public Task Delete(int id)
         {
             var paymentSourceToDelete = MockDb.PaymentSources.FirstOrDefault(ms => ms.Id == id);
             var listIndex = MockDb.PaymentSources.IndexOf(paymentSourceToDelete);
             if (listIndex > -1)
                 MockDb.PaymentSources.RemoveAt(listIndex);
+            
+            return Task.CompletedTask;
         }
 
         public void Dispose()

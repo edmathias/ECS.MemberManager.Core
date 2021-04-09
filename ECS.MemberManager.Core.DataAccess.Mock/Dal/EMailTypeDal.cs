@@ -9,18 +9,18 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 {
     public class EMailTypeDal : IDal<EMailType>
     {
-        public async Task<EMailType> Fetch(int id)
+        public Task<EMailType> Fetch(int id)
         {
             var email = MockDb.EMailTypes.FirstOrDefault(ms => ms.Id == id);
-            return email;
+            return Task.FromResult(email);
         }
 
-        public async Task<List<EMailType>> Fetch()
+        public Task<List<EMailType>> Fetch()
         {
-            return MockDb.EMailTypes.ToList();
+            return Task.FromResult(MockDb.EMailTypes.ToList());
         }
 
-        public async Task<EMailType> Insert(EMailType eMailType)
+        public Task<EMailType> Insert(EMailType eMailType)
         {
             var lastEMailType = MockDb.EMailTypes.ToList().OrderByDescending(ms => ms.Id).First();
             eMailType.Id = 1 + lastEMailType.Id;
@@ -28,10 +28,10 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
             MockDb.EMailTypes.Add(eMailType);
 
-            return eMailType;
+            return Task.FromResult(eMailType);
         }
 
-        public async Task<EMailType> Update(EMailType eMailType)
+        public Task<EMailType> Update(EMailType eMailType)
         {
             var eMailTypeToUpdate =
                 MockDb.EMailTypes.FirstOrDefault(em => em.Id == eMailType.Id &&
@@ -41,15 +41,17 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 throw new Csla.DataPortalException(null);
 
             eMailTypeToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
-            return eMailTypeToUpdate;
+            return Task.FromResult(eMailTypeToUpdate);
         }
 
-        public async Task Delete(int id)
+        public Task Delete(int id)
         {
             var eMailTypeToDelete = MockDb.EMailTypes.FirstOrDefault(ms => ms.Id == id);
             var listIndex = MockDb.EMailTypes.IndexOf(eMailTypeToDelete);
             if (listIndex > -1)
                 MockDb.EMailTypes.RemoveAt(listIndex);
+
+            return Task.CompletedTask;
         }
 
         public void Dispose()

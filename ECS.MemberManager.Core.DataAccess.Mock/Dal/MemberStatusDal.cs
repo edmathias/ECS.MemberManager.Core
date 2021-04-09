@@ -9,17 +9,17 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 {
     public class MemberStatusDal : IDal<MemberStatus>
     {
-        public async Task<MemberStatus> Fetch(int id)
+        public Task<MemberStatus> Fetch(int id)
         {
-            return MockDb.MemberStatuses.FirstOrDefault(ms => ms.Id == id);
+            return Task.FromResult(MockDb.MemberStatuses.FirstOrDefault(ms => ms.Id == id));
         }
 
-        public async Task<List<MemberStatus>> Fetch()
+        public Task<List<MemberStatus>> Fetch()
         {
-            return MockDb.MemberStatuses.ToList();
+            return Task.FromResult(MockDb.MemberStatuses.ToList());
         }
 
-        public async Task<MemberStatus> Insert(MemberStatus memberStatus)
+        public Task<MemberStatus> Insert(MemberStatus memberStatus)
         {
             var lastMemberStatus = MockDb.MemberStatuses.ToList().OrderByDescending(ms => ms.Id).First();
             memberStatus.Id = 1 + lastMemberStatus.Id;
@@ -27,10 +27,10 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
             MockDb.MemberStatuses.Add(memberStatus);
 
-            return memberStatus;
+            return Task.FromResult(memberStatus);
         }
 
-        public async Task<MemberStatus> Update(MemberStatus memberStatus)
+        public Task<MemberStatus> Update(MemberStatus memberStatus)
         {
             var memberStatusToUpdate =
                 MockDb.MemberStatuses.FirstOrDefault(em => em.Id == memberStatus.Id &&
@@ -40,15 +40,16 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 throw new Csla.DataPortalException(null);
 
             memberStatusToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
-            return memberStatusToUpdate;
+            return Task.FromResult(memberStatusToUpdate);
         }
 
-        public async Task Delete(int id)
+        public Task Delete(int id)
         {
             var memberStatusToDelete = MockDb.MemberStatuses.FirstOrDefault(ms => ms.Id == id);
             var listIndex = MockDb.MemberStatuses.IndexOf(memberStatusToDelete);
             if (listIndex > -1)
                 MockDb.MemberStatuses.RemoveAt(listIndex);
+            return Task.CompletedTask;
         }
 
         public void Dispose()
