@@ -27,10 +27,10 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             services.AddTransient(typeof(IDal<MemberInfo>),typeof(MemberInfoDal));
             services.AddTransient(typeof(IDal<MembershipType>),typeof(MembershipTypeDal));
             services.AddTransient(typeof(IDal<MemberStatus>),typeof(MemberStatusDal));
+            services.AddTransient(typeof(IDal<Office>),typeof(OfficeDal));
+            services.AddTransient(typeof(IDal<Organization>),typeof(OrganizationDal));
+            services.AddTransient(typeof(IDal<OrganizationType>),typeof(OrganizationTypeDal));
             /*
-            services.AddTransient(typeof(IOfficeDal),typeof(OfficeDal));
-            services.AddTransient(typeof(IOrganizationDal),typeof(OrganizationDal));
-            services.AddTransient(typeof(IOrganizationTypeDal),typeof(OrganizationTypeDal));
             services.AddTransient(typeof(IPaymentDal),typeof(PaymentDal));
             services.AddTransient(typeof(IPaymentSourceDal),typeof(PaymentSourceDal));
             services.AddTransient(typeof(IPaymentTypeDal),typeof(PaymentTypeDal));
