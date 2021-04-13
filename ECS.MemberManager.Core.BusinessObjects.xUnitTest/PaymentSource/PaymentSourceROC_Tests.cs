@@ -3,7 +3,7 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class PaymentSourceROC_Tests
+    public class PaymentSourceROC_Tests : CslaBaseTest
     {
         [Fact]
         public async void PaymentSourceROC_TestGetChild()

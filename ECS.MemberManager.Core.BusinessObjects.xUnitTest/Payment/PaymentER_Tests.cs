@@ -10,32 +10,8 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class PaymentER_Tests
+    public class PaymentER_Tests : CslaBaseTest
     {
-        private IConfigurationRoot _config = null;
-        private bool IsDatabaseBuilt = false;
-
-        public PaymentER_Tests()
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            _config = builder.Build();
-            var testLibrary = _config.GetValue<string>("TestLibrary");
-
-            if (testLibrary == "Mock")
-                MockDb.ResetMockDb();
-            else
-            {
-                if (!IsDatabaseBuilt)
-                {
-                    var adoDb = new ADODb();
-                    adoDb.BuildMemberManagerADODb();
-                    IsDatabaseBuilt = true;
-                }
-            }
-        }
-
         [Fact]
         public async Task TestPaymentER_Get()
         {
@@ -99,7 +75,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestEMailER_LastUpdatedByRequired()
+        public async Task TestPaymentER_LastUpdatedByRequired()
         {
             var paymentType = await BuildValidPaymentER();
             var isObjectValidInit = paymentType.IsValid;
@@ -112,7 +88,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestEMailER_LastUpdatedByMaxLengthLessThan255()
+        public async Task TestPaymentER_LastUpdatedByMaxLengthLessThan255()
         {
             var paymentType = await BuildValidPaymentER();
             var isObjectValidInit = paymentType.IsValid;
@@ -143,11 +119,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             paymentER.PaymentDate = DateTime.Now;
             paymentER.PaymentExpirationDate = DateTime.Now;
             paymentER.PaymentSource = await PaymentSourceEC.GetPaymentSourceEC(new PaymentSource() {Id = 1});
-            paymentER.PaymentSource.Description = "Source 1";
-            paymentER.PaymentSource.Notes = "source notes";
             paymentER.PaymentType = await PaymentTypeEC.GetPaymentTypeEC(new PaymentType() {Id = 1});
-            paymentER.PaymentType.Description = "type description";
-            paymentER.PaymentType.Notes = "notes for type";
 
             return paymentER;
         }

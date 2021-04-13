@@ -49,8 +49,6 @@ namespace ECS.MemberManager.Core.DataAccess.EF
                 await context.SaveChangesAsync();
             }
 
-            ;
-
             return contactToInsert;
         }
 
