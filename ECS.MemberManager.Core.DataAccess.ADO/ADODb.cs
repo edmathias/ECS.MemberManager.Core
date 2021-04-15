@@ -83,6 +83,23 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             InsertTermInOffice();
 
             InsertEventMembers();
+            
+            InsertPersonalNotes();
+        }
+
+        private static void InsertPersonalNotes()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("SET IDENTITY_INSERT dbo.PersonalNotes ON;");
+            sb.AppendLine(
+                "INSERT INTO [dbo].[PersonalNotes]([Id], [PersonId], [Description], [StartDate], [DateEnd], [LastUpdatedBy], [LastUpdatedDate], [Note])");
+            sb.AppendLine("SELECT 1, 1, N'description 1', '20200615 00:00:00.000', '20210715 00:00:00.000', N'edm', '20210101 00:00:00.000', N'Notes for personal notes 1' UNION ALL");
+            sb.AppendLine("SELECT 2, 2, N'description 2', '20200905 00:00:00.000', '20210831 00:00:00.000', N'edm', '20210121 00:00:00.000', N'Notes for personal notes2' UNION ALL");
+            sb.AppendLine("SELECT 99, 1, N'description to delete', '20200615 00:00:00.000', '20210715 00:00:00.000', N'edm', '20210101 00:00:00.000', N'delete this'");
+            sb.AppendLine("SET IDENTITY_INSERT dbo.PersonalNotes OFF;");
+            sb.AppendLine("DBCC CHECKIDENT ('PersonalNotes', RESEED, 2)");
+
+            _db.Execute(sb.ToString());
         }
 
         private static void InsertEventMembers()

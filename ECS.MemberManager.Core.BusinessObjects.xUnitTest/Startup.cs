@@ -32,8 +32,9 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             services.AddTransient(typeof(IDal<OrganizationType>),typeof(OrganizationTypeDal));
             services.AddTransient(typeof(IDal<Payment>),typeof(PaymentDal));
             services.AddTransient(typeof(IDal<PaymentSource>),typeof(PaymentSourceDal));
+            services.AddTransient(typeof(IDal<PaymentType>),typeof(PaymentTypeDal));
+            services.AddTransient(typeof(IDal<PersonalNote>),typeof(PersonalNoteDal));
             /*
-            services.AddTransient(typeof(IPaymentTypeDal),typeof(PaymentTypeDal));
             services.AddTransient(typeof(IPhoneDal),typeof(PhoneDal));
             services.AddTransient(typeof(IPrivacyLevelDal),typeof(PrivacyLevelDal));
             services.AddTransient(typeof(ITaskForEventDal),typeof(TaskForEventDal));
