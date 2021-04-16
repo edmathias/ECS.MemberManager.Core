@@ -9,60 +9,60 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECS.MemberManager.Core.DataAccess.EF
 {
-    public class PaymentSourceDal : IDal<PaymentSource> 
+    public class PhoneDal : IDal<Phone> 
     {
-        public async Task<List<PaymentSource>> Fetch()
+        public async Task<List<Phone>> Fetch()
         {
-            List<PaymentSource> list;
+            List<Phone> list;
 
             using (var context = new MembershipManagerDataContext())
             {
-                list = await context.PaymentSources.ToListAsync();
+                list = await context.Phones.ToListAsync();
             }
 
             return list;
         }
 
-        public async Task<PaymentSource> Fetch(int id)
+        public async Task<Phone> Fetch(int id)
         {
-            PaymentSource paymentSource = null;
+            Phone phone = null;
 
             using (var context = new MembershipManagerDataContext())
             {
-                paymentSource = await context.PaymentSources.Where(a => a.Id == id).FirstAsync();
+                phone = await context.Phones.Where(a => a.Id == id).FirstAsync();
             }
 
-            return paymentSource;
+            return phone;
         }
 
-        public async Task<PaymentSource> Insert(PaymentSource paymentSourceToInsert)
+        public async Task<Phone> Insert(Phone phoneToInsert)
         {
             using (var context = new MembershipManagerDataContext())
             {
-                await context.PaymentSources.AddAsync(paymentSourceToInsert);
+                await context.Phones.AddAsync(phoneToInsert);
                 await context.SaveChangesAsync();
             }
 
-            return paymentSourceToInsert;
+            return phoneToInsert;
         }
 
-        public async Task<PaymentSource> Update(PaymentSource paymentSourceToUpdate)
+        public async Task<Phone> Update(Phone phoneToUpdate)
         {
             using (var context = new MembershipManagerDataContext())
             {
-                context.Update(paymentSourceToUpdate);
+                context.Update(phoneToUpdate);
             
                 await context.SaveChangesAsync();
             }
 
-            return paymentSourceToUpdate;
+            return phoneToUpdate;
         }
 
         public async Task Delete(int id)
         {
             using (var context = new MembershipManagerDataContext())
             {
-                context.Remove(await context.PaymentSources.SingleAsync(a => a.Id == id));
+                context.Remove(await context.Phones.SingleAsync(a => a.Id == id));
                 await context.SaveChangesAsync();
             }
         }

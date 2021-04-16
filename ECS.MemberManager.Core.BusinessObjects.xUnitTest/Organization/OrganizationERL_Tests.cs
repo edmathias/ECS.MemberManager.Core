@@ -83,6 +83,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             organizationToBuild.Name = "organization name";
             organizationToBuild.OrganizationType =
                 await OrganizationTypeEC.GetOrganizationTypeEC(new OrganizationType() {Id = 1});
+            organizationToBuild.CategoryOfOrganization =
+                await CategoryOfOrganizationEC.GetCategoryOfOrganizationEC(new CategoryOfOrganization() {Id = 1});
             organizationToBuild.Notes = "notes for org";
             organizationToBuild.LastUpdatedBy = "edm";
             organizationToBuild.LastUpdatedDate = DateTime.Now;

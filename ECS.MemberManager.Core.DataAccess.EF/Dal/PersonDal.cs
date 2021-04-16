@@ -18,6 +18,8 @@ namespace ECS.MemberManager.Core.DataAccess.EF
             using (var context = new MembershipManagerDataContext())
             {
                 list = await context.Persons
+                    .Include(p => p.Title)
+                    .Include(p => p.EMail)
                     .ToListAsync();
             }
 
@@ -31,6 +33,8 @@ namespace ECS.MemberManager.Core.DataAccess.EF
             using (var context = new MembershipManagerDataContext())
             {
                 person = await context.Persons.Where(a => a.Id == id)
+                    .Include(p => p.Title)
+                    .Include(p => p.EMail)
                     .FirstAsync();
             }
 
@@ -41,6 +45,9 @@ namespace ECS.MemberManager.Core.DataAccess.EF
         {
             using (var context = new MembershipManagerDataContext())
             {
+                context.Entry(personToInsert.Title).State = EntityState.Unchanged;
+                context.Entry(personToInsert.EMail).State = EntityState.Unchanged;
+                
                 await context.Persons.AddAsync(personToInsert);
 
                 await context.SaveChangesAsync();

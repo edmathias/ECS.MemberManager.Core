@@ -2,15 +2,15 @@
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class PhoneROR_Tests
+    public class PersonalNoteROR_Tests
     {
         [Fact]
-        public async void PhoneROR_TestGetById()
+        public async void PersonalNoteROR_TestGetById()
         {
-            var phone = await PhoneROR.GetPhoneROR(1);
+            var phone = await PersonalNoteROR.GetPersonalNoteROR(1);
 
             Assert.NotNull(phone);
-            Assert.IsType<PhoneROR>(phone);
+            Assert.IsType<PersonalNoteROR>(phone);
             Assert.Equal(1, phone.Id);
         }
     }

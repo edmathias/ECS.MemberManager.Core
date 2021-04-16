@@ -6,40 +6,16 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class PhoneRORL_Tests
+    public class PhoneRORL_Tests : CslaBaseTest
     {
-        private IConfigurationRoot _config = null;
-        private bool IsDatabaseBuilt = false;
-
-        public PhoneRORL_Tests()
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            _config = builder.Build();
-            var testLibrary = _config.GetValue<string>("TestLibrary");
-
-            if (testLibrary == "Mock")
-                MockDb.ResetMockDb();
-            else
-            {
-                if (!IsDatabaseBuilt)
-                {
-                    var adoDb = new ADODb();
-                    adoDb.BuildMemberManagerADODb();
-                    IsDatabaseBuilt = true;
-                }
-            }
-        }
-
         [Fact]
         private async void PhoneRORL_TestGetPhoneRORL()
         {
-            var phoneTypeInfoList = await PhoneRORL.GetPhoneRORL();
+            var personalNoteTypeInfoList = await PhoneRORL.GetPhoneRORL();
 
-            Assert.NotNull(phoneTypeInfoList);
-            Assert.True(phoneTypeInfoList.IsReadOnly);
-            Assert.Equal(3, phoneTypeInfoList.Count);
+            Assert.NotNull(personalNoteTypeInfoList);
+            Assert.True(personalNoteTypeInfoList.IsReadOnly);
+            Assert.Equal(3, personalNoteTypeInfoList.Count);
         }
     }
 }

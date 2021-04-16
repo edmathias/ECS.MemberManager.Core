@@ -5,44 +5,32 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class PhoneROC_Tests
+    public class PersonalNoteROC_Tests
     {
         [Fact]
-        public async void PhoneROC_TestGetChild()
+        public async void PersonalNoteROC_TestGetChild()
         {
             const int ID_VALUE = 999;
 
-            var phoneToLoad = BuildPhone();
+            var phoneToLoad = BuildPersonalNote();
             phoneToLoad.Id = ID_VALUE;
 
-            var phone = await PhoneROC.GetPhoneROC(phoneToLoad);
+            var phone = await PersonalNoteROC.GetPersonalNoteROC(phoneToLoad);
 
             Assert.NotNull(phone);
-            Assert.IsType<PhoneROC>(phone);
+            Assert.IsType<PersonalNoteROC>(phone);
             Assert.Equal(phoneToLoad.Id, phone.Id);
-            Assert.Equal(phoneToLoad.PhoneType, phone.PhoneType);
-            Assert.Equal(phoneToLoad.AreaCode, phone.AreaCode);
-            Assert.Equal(phoneToLoad.Number, phone.Number);
-            Assert.Equal(phoneToLoad.Extension, phone.Extension);
-            Assert.Equal(phoneToLoad.DisplayOrder, phone.DisplayOrder);
             Assert.Equal(phoneToLoad.LastUpdatedBy, phone.LastUpdatedBy);
             Assert.Equal(new SmartDate(phoneToLoad.LastUpdatedDate), phone.LastUpdatedDate);
-            Assert.Equal(phoneToLoad.Notes, phone.Notes);
             Assert.Equal(phoneToLoad.RowVersion, phone.RowVersion);
         }
 
-        private Phone BuildPhone()
+        private PersonalNote BuildPersonalNote()
         {
-            var phone = new Phone();
+            var phone = new PersonalNote();
             phone.Id = 1;
-            phone.PhoneType = "mobile";
-            phone.AreaCode = "303";
-            phone.Number = "555-2368";
-            phone.Extension = "123";
-            phone.DisplayOrder = 1;
             phone.LastUpdatedBy = "Hank";
             phone.LastUpdatedDate = DateTime.Now;
-            phone.Notes = "notes for doctype";
 
             return phone;
         }
