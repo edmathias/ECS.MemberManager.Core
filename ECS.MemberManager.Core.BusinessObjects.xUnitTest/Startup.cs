@@ -36,8 +36,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             services.AddTransient(typeof(IDal<PersonalNote>),typeof(PersonalNoteDal));
             services.AddTransient(typeof(IDal<Phone>),typeof(PhoneDal));
             services.AddTransient(typeof(IDal<PrivacyLevel>),typeof(PrivacyLevelDal));
+            services.AddTransient(typeof(IDal<TaskForEvent>),typeof(TaskForEventDal));
             /*
-            services.AddTransient(typeof(ITaskForEventDal),typeof(TaskForEventDal));
             services.AddTransient(typeof(ITermInOfficeDal),typeof(TermInOfficeDal));
             services.AddTransient(typeof(ITitleDal),typeof(TitleDal));
  */
