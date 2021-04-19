@@ -24,8 +24,6 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 
         public async Task<Address> Fetch(int id)
         {
-            List<Address> list = null;
-
             Address address = null;
 
             using (var context = new MembershipManagerDataContext())

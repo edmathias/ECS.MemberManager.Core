@@ -34,7 +34,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         public static IList<TaskForEvent> TaskForEvents { get; private set; }
         public static IList<TermInOffice> TermInOffices { get; private set; }
         public static IList<Title> Titles { get; private set; }
-
+        
         static MockDb()
         {
             ResetMockDb();
@@ -750,7 +750,42 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
         private static IList<PersonalNote> GetPersonalNote()
         {
-            return new List<PersonalNote>();
+            return new List<PersonalNote>
+            {
+                new PersonalNote()
+                {
+                    Id = 1,
+                    Person = new Person() { Id = 1},
+                    Description = "description",
+                    StartDate = DateTime.Now,
+                    DateEnd = DateTime.Now,
+                    LastUpdatedBy = "edm",
+                    LastUpdatedDate = DateTime.Now,
+                    Note = "personal note"
+                },
+                new PersonalNote()
+                {
+                    Id = 2,
+                    Person = new Person() { Id = 2},
+                    Description = "description 2",
+                    StartDate = DateTime.Now,
+                    DateEnd = DateTime.Now,
+                    LastUpdatedBy = "joe",
+                    LastUpdatedDate = DateTime.Now,
+                    Note = "personal note"
+                },
+                new PersonalNote()
+                {
+                    Id = 99,
+                    Person = new Person() { Id = 2},
+                    Description = "description 99",
+                    StartDate = DateTime.Now,
+                    DateEnd = DateTime.Now,
+                    LastUpdatedBy = "joe",
+                    LastUpdatedDate = DateTime.Now,
+                    Note = "delete this"
+                }                
+            };
         }
 
         private static IList<Phone> GetPhones()

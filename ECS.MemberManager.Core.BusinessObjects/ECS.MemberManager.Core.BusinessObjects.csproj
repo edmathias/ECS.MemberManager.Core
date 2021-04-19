@@ -2315,6 +2315,78 @@
         <DesignTime>True</DesignTime>
         <DependentUpon>ImageRORL.tt</DependentUpon>
       </Compile>
+      <None Update="PersonalNote\PersonalNoteEC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PersonalNoteEC.cs</LastGenOutput>
+      </None>
+      <Compile Update="PersonalNote\PersonalNoteEC.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>PersonalNoteEC.tt</DependentUpon>
+      </Compile>
+      <None Update="PersonalNote\PersonalNoteECL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PersonalNoteECL.cs</LastGenOutput>
+      </None>
+      <Compile Update="PersonalNote\PersonalNoteECL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>PersonalNoteECL.tt</DependentUpon>
+      </Compile>
+      <None Update="PersonalNote\PersonalNoteER.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PersonalNoteER.cs</LastGenOutput>
+      </None>
+      <Compile Update="PersonalNote\PersonalNoteER.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>PersonalNoteER.tt</DependentUpon>
+      </Compile>
+      <None Update="PersonalNote\PersonalNoteERL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PersonalNoteERL.cs</LastGenOutput>
+      </None>
+      <None Update="PersonalNote\PersonalNoteROC.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PersonalNoteROC.cs</LastGenOutput>
+      </None>
+      <Compile Update="PersonalNote\PersonalNoteERL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>PersonalNoteERL.tt</DependentUpon>
+      </Compile>
+      <Compile Update="PersonalNote\PersonalNoteROC.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>PersonalNoteROC.tt</DependentUpon>
+      </Compile>
+      <None Update="PersonalNote\PersonalNoteROCL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PersonalNoteROCL.cs</LastGenOutput>
+      </None>
+      <Compile Update="PersonalNote\PersonalNoteROCL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>PersonalNoteROCL.tt</DependentUpon>
+      </Compile>
+      <None Update="PersonalNote\PersonalNoteROR.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PersonalNoteROR.cs</LastGenOutput>
+      </None>
+      <Compile Update="PersonalNote\PersonalNoteROR.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>PersonalNoteROR.tt</DependentUpon>
+      </Compile>
+      <None Update="PersonalNote\PersonalNoteRORL.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>PersonalNoteRORL.cs</LastGenOutput>
+      </None>
+      <Compile Update="PersonalNote\PersonalNoteRORL.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>PersonalNoteRORL.tt</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

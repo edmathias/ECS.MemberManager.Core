@@ -9,17 +9,17 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 {
     public class AddressDal : IDal<Address>
     {
-        public async Task<Address> Fetch(int id)
+        public Task<Address> Fetch(int id)
         {
-            return MockDb.Addresses.FirstOrDefault(a => a.Id == id);
+            return Task.FromResult(MockDb.Addresses.FirstOrDefault(a => a.Id == id));
         }
 
-        public async Task<List<Address>> Fetch()
+        public Task<List<Address>> Fetch()
         {
-            return MockDb.Addresses.ToList();
+            return Task.FromResult(MockDb.Addresses.ToList());
         }
 
-        public async Task<Address> Insert(Address address)
+        public Task<Address> Insert(Address address)
         {
             var lastAddress = MockDb.Addresses.ToList().OrderByDescending(a => a.Id).First();
             address.Id = lastAddress.Id + 1;
@@ -27,10 +27,10 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
             MockDb.Addresses.Add(address);
 
-            return address;
+            return Task.FromResult(address);
         }
 
-        public async Task<Address> Update(Address address)
+        public Task<Address> Update(Address address)
         {
             var savedAddress =
                 MockDb.Addresses.FirstOrDefault(em => em.Id == address.Id &&
@@ -40,15 +40,17 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 throw new Csla.DataPortalException(null);
 
             savedAddress.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
-            return savedAddress;
+            return Task.FromResult(savedAddress);
         }
 
-        public async Task Delete(int id)
+        public Task Delete(int id)
         {
             var addressToDelete = MockDb.Addresses.FirstOrDefault(a => a.Id == id);
             var listIndex = MockDb.Addresses.IndexOf(addressToDelete);
             if (listIndex > -1)
                 MockDb.Addresses.RemoveAt(listIndex);
+
+            return Task.CompletedTask;
         }
 
         public void Dispose()

@@ -13,27 +13,27 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
         }
 
-        public async Task<EventDocument> Fetch(int id)
+        public Task<EventDocument> Fetch(int id)
         {
-            return MockDb.EventDocuments.FirstOrDefault(ms => ms.Id == id);
+            return Task.FromResult(MockDb.EventDocuments.FirstOrDefault(ms => ms.Id == id));
         }
 
-        public async Task<List<EventDocument>> Fetch()
+        public Task<List<EventDocument>> Fetch()
         {
-            return MockDb.EventDocuments.ToList();
+            return Task.FromResult(MockDb.EventDocuments.ToList());
         }
 
-        public async Task<EventDocument> Insert(EventDocument eventToInsert)
+        public Task<EventDocument> Insert(EventDocument eventToInsert)
         {
             var lastEventDocument = MockDb.EventDocuments.ToList().OrderByDescending(e => e.Id).First();
             eventToInsert.Id = 1 + lastEventDocument.Id;
             eventToInsert.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
 
             MockDb.EventDocuments.Add(eventToInsert);
-            return eventToInsert;
+            return Task.FromResult(eventToInsert);
         }
 
-        public async Task<EventDocument> Update(EventDocument eventDocument)
+        public Task<EventDocument> Update(EventDocument eventDocument)
         {
             var eventDocumentToUpdate =
                 MockDb.EventDocuments.FirstOrDefault(em => em.Id == eventDocument.Id &&
@@ -45,15 +45,17 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             // update fields to satisfy unit tests.
             eventDocumentToUpdate.DocumentName = eventDocument.DocumentName;
             eventDocumentToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
-            return eventDocumentToUpdate;
+            return Task.FromResult(eventDocumentToUpdate);
         }
 
-        public async Task Delete(int id)
+        public Task Delete(int id)
         {
             var eventToDelete = MockDb.EventDocuments.FirstOrDefault(e => e.Id == id);
             var listIndex = MockDb.EventDocuments.IndexOf(eventToDelete);
             if (listIndex > -1)
                 MockDb.EventDocuments.RemoveAt(listIndex);
+
+            return Task.CompletedTask;
         }
     }
 }

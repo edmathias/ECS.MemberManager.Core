@@ -30,8 +30,6 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 
         public async Task<MemberInfo> Fetch(int id)
         {
-            List<MemberInfo> list = null;
-
             MemberInfo person = null;
 
             using (var context = new MembershipManagerDataContext())

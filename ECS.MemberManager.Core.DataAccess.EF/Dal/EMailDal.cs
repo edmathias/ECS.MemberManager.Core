@@ -26,8 +26,6 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 
         public async Task<EMail> Fetch(int id)
         {
-            List<EMail> list = null;
-
             EMail contact = null;
 
             using (var context = new MembershipManagerDataContext())
@@ -50,8 +48,6 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 
                 await context.SaveChangesAsync();
             }
-
-            ;
 
             return contactToInsert;
         }

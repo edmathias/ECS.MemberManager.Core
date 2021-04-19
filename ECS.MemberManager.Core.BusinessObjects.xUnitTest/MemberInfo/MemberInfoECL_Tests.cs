@@ -36,7 +36,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
 
-        private async Task<MemberInfo> BuildMemberInfo()
+        private Task<MemberInfo> BuildMemberInfo()
         {
             var memberInfo = new MemberInfo();
             memberInfo.Notes = "member info notes";
@@ -49,7 +49,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             memberInfo.LastUpdatedBy = "edm";
             memberInfo.LastUpdatedDate = DateTime.Now;
 
-            return memberInfo;
+            return Task.FromResult(memberInfo);
         }
     }
 }

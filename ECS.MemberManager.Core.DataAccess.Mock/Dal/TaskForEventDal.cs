@@ -9,17 +9,17 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 {
     public class TaskForEventDal : IDal<TaskForEvent>
     {
-        public async Task<TaskForEvent> Fetch(int id)
+        public Task<TaskForEvent> Fetch(int id)
         {
-            return MockDb.TaskForEvents.FirstOrDefault(dt => dt.Id == id);
+            return Task.FromResult(MockDb.TaskForEvents.FirstOrDefault(dt => dt.Id == id));
         }
 
-        public async Task<List<TaskForEvent>> Fetch()
+        public Task<List<TaskForEvent>> Fetch()
         {
-            return MockDb.TaskForEvents.ToList();
+            return Task.FromResult(MockDb.TaskForEvents.ToList());
         }
 
-        public async Task<TaskForEvent> Insert(TaskForEvent taskForEvent)
+        public Task<TaskForEvent> Insert(TaskForEvent taskForEvent)
         {
             var lastTaskForEvent = MockDb.TaskForEvents.ToList().OrderByDescending(dt => dt.Id).First();
             taskForEvent.Id = 1 + lastTaskForEvent.Id;
@@ -28,10 +28,10 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             MockDb.TaskForEvents.Add(taskForEvent);
 
             taskForEvent.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
-            return taskForEvent;
+            return Task.FromResult(taskForEvent);
         }
 
-        public async Task<TaskForEvent> Update(TaskForEvent taskForEvent)
+        public Task<TaskForEvent> Update(TaskForEvent taskForEvent)
         {
             var taskForEventToUpdate =
                 MockDb.TaskForEvents.FirstOrDefault(em => em.Id == taskForEvent.Id &&
@@ -41,15 +41,17 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 throw new Csla.DataPortalException(null);
 
             taskForEventToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
-            return taskForEventToUpdate;
+            return Task.FromResult(taskForEventToUpdate);
         }
 
-        public async Task Delete(int id)
+        public Task Delete(int id)
         {
             var taskForEventsToDelete = MockDb.TaskForEvents.FirstOrDefault(dt => dt.Id == id);
             var listIndex = MockDb.TaskForEvents.IndexOf(taskForEventsToDelete);
             if (listIndex > -1)
                 MockDb.TaskForEvents.RemoveAt(listIndex);
+            
+            return Task.CompletedTask;
         }
 
         public void Dispose()

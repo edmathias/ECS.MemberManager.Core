@@ -24,8 +24,6 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 
         public async Task<DocumentType> Fetch(int id)
         {
-            List<DocumentType> list = null;
-
             DocumentType documentType = null;
 
             using (var context = new MembershipManagerDataContext())

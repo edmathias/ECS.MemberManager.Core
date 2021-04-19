@@ -9,17 +9,17 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 {
     public class PaymentTypeDal : IDal<PaymentType>
     {
-        public async Task<PaymentType> Fetch(int id)
+        public Task<PaymentType> Fetch(int id)
         {
-            return MockDb.PaymentTypes.FirstOrDefault(ms => ms.Id == id);
+            return Task.FromResult(MockDb.PaymentTypes.FirstOrDefault(ms => ms.Id == id));
         }
 
-        public async Task<List<PaymentType>> Fetch()
+        public Task<List<PaymentType>> Fetch()
         {
-            return MockDb.PaymentTypes.ToList();
+            return Task.FromResult(MockDb.PaymentTypes.ToList());
         }
 
-        public async Task<PaymentType> Insert(PaymentType paymentType)
+        public Task<PaymentType> Insert(PaymentType paymentType)
         {
             var lastPaymentType = MockDb.PaymentTypes.ToList().OrderByDescending(ms => ms.Id).First();
             paymentType.Id = 1 + lastPaymentType.Id;
@@ -27,10 +27,10 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
             MockDb.PaymentTypes.Add(paymentType);
 
-            return paymentType;
+            return Task.FromResult(paymentType);
         }
 
-        public async Task<PaymentType> Update(PaymentType paymentType)
+        public Task<PaymentType> Update(PaymentType paymentType)
         {
             var paymentTypeToUpdate =
                 MockDb.PaymentTypes.FirstOrDefault(em => em.Id == paymentType.Id &&
@@ -40,15 +40,17 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 throw new Csla.DataPortalException(null);
 
             paymentTypeToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
-            return paymentTypeToUpdate;
+            return Task.FromResult(paymentTypeToUpdate);
         }
 
-        public async Task Delete(int id)
+        public Task Delete(int id)
         {
             var paymentTypeToDelete = MockDb.PaymentTypes.FirstOrDefault(ms => ms.Id == id);
             var listIndex = MockDb.PaymentTypes.IndexOf(paymentTypeToDelete);
             if (listIndex > -1)
                 MockDb.PaymentTypes.RemoveAt(listIndex);
+            
+            return Task.CompletedTask;
         }
 
         public void Dispose()

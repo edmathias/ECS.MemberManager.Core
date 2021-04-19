@@ -2,7 +2,7 @@
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class PrivacyLevelROR_Tests
+    public class PrivacyLevelROR_Tests : CslaBaseTest
     {
         [Fact]
         public async void PrivacyLevelROR_TestGetById()

@@ -10,32 +10,8 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class PaymentERL_Tests
+    public class PaymentERL_Tests : CslaBaseTest
     {
-        private IConfigurationRoot _config = null;
-        private bool IsDatabaseBuilt = false;
-
-        public PaymentERL_Tests()
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            _config = builder.Build();
-            var testLibrary = _config.GetValue<string>("TestLibrary");
-
-            if (testLibrary == "Mock")
-                MockDb.ResetMockDb();
-            else
-            {
-                if (!IsDatabaseBuilt)
-                {
-                    var adoDb = new ADODb();
-                    adoDb.BuildMemberManagerADODb();
-                    IsDatabaseBuilt = true;
-                }
-            }
-        }
-
         [Fact]
         private async void PaymentERL_TestNewPaymentList()
         {
@@ -112,11 +88,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             payment.PaymentDate = DateTime.Now;
             payment.PaymentExpirationDate = DateTime.Now;
             payment.PaymentSource = await PaymentSourceEC.GetPaymentSourceEC(new PaymentSource() {Id = 1});
-            payment.PaymentSource.Description = "Source 1";
-            payment.PaymentSource.Notes = "source notes";
             payment.PaymentType = await PaymentTypeEC.GetPaymentTypeEC(new PaymentType() {Id = 1});
-            payment.PaymentType.Description = "type description";
-            payment.PaymentType.Notes = "notes for type";
         }
     }
 }

@@ -9,17 +9,17 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 {
     public class OrganizationDal : IDal<Organization>
     {
-        public async Task<Organization> Fetch(int id)
+        public Task<Organization> Fetch(int id)
         {
-            return MockDb.Organizations.FirstOrDefault(ms => ms.Id == id);
+            return Task.FromResult(MockDb.Organizations.FirstOrDefault(ms => ms.Id == id));
         }
 
-        public async Task<List<Organization>> Fetch()
+        public Task<List<Organization>> Fetch()
         {
-            return MockDb.Organizations.ToList();
+            return Task.FromResult(MockDb.Organizations.ToList());
         }
 
-        public async Task<Organization> Insert(Organization organizationToInsert)
+        public Task<Organization> Insert(Organization organizationToInsert)
         {
             var lastOrganization = MockDb.Organizations.ToList().OrderByDescending(ms => ms.Id).First();
             organizationToInsert.Id = 1 + lastOrganization.Id;
@@ -27,10 +27,10 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
             MockDb.Organizations.Add(organizationToInsert);
 
-            return organizationToInsert;
+            return Task.FromResult(organizationToInsert);
         }
 
-        public async Task<Organization> Update(Organization organization)
+        public Task<Organization> Update(Organization organization)
         {
             var organizationToUpdate =
                 MockDb.Organizations.FirstOrDefault(em => em.Id == organization.Id &&
@@ -40,15 +40,17 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 throw new Csla.DataPortalException(null);
 
             organizationToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
-            return organizationToUpdate;
+            return Task.FromResult(organizationToUpdate);
         }
 
-        public async Task Delete(int id)
+        public Task Delete(int id)
         {
             var eMailToDelete = MockDb.Organizations.FirstOrDefault(ms => ms.Id == id);
             var listIndex = MockDb.Organizations.IndexOf(eMailToDelete);
             if (listIndex > -1)
                 MockDb.Organizations.RemoveAt(listIndex);
+            
+            return Task.CompletedTask;
         }
 
         public void Dispose()

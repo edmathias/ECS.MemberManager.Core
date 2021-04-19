@@ -9,17 +9,17 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 {
     public class DocumentTypeDal : IDal<DocumentType> 
     {
-        public async Task<DocumentType> Fetch(int id)
+        public Task<DocumentType> Fetch(int id)
         {
-            return MockDb.DocumentTypes.FirstOrDefault(dt => dt.Id == id);
+            return Task.FromResult(MockDb.DocumentTypes.FirstOrDefault(dt => dt.Id == id));
         }
 
-        public async Task<List<DocumentType>> Fetch()
+        public Task<List<DocumentType>> Fetch()
         {
-            return MockDb.DocumentTypes.ToList();
+            return Task.FromResult(MockDb.DocumentTypes.ToList());
         }
 
-        public async Task<DocumentType> Insert(DocumentType documentType)
+        public Task<DocumentType> Insert(DocumentType documentType)
         {
             var lastDocumentType = MockDb.DocumentTypes.ToList().OrderByDescending(dt => dt.Id).First();
             documentType.Id = 1 + lastDocumentType.Id;
@@ -27,10 +27,10 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
             MockDb.DocumentTypes.Add(documentType);
 
-            return documentType;
+            return Task.FromResult(documentType);
         }
 
-        public async Task<DocumentType> Update(DocumentType documentType)
+        public Task<DocumentType> Update(DocumentType documentType)
         {
             var documentTypeToUpdate =
                 MockDb.DocumentTypes.FirstOrDefault(em => em.Id == documentType.Id &&
@@ -40,15 +40,17 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 throw new Csla.DataPortalException(null);
 
             documentTypeToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
-            return documentTypeToUpdate;
+            return Task.FromResult(documentTypeToUpdate);
         }
 
-        public async Task Delete(int id)
+        public Task Delete(int id)
         {
             var documentTypesToDelete = MockDb.DocumentTypes.FirstOrDefault(dt => dt.Id == id);
             var listIndex = MockDb.DocumentTypes.IndexOf(documentTypesToDelete);
             if (listIndex > -1)
                 MockDb.DocumentTypes.RemoveAt(listIndex);
+
+            return Task.CompletedTask;
         }
 
         public void Dispose()

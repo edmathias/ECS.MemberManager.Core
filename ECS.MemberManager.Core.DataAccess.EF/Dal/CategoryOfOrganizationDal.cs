@@ -24,8 +24,6 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 
         public async Task<CategoryOfOrganization> Fetch(int id)
         {
-            List<CategoryOfOrganization> list = null;
-
             CategoryOfOrganization category = null;
 
             using (var context = new MembershipManagerDataContext())

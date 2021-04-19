@@ -3,7 +3,7 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class PrivacyLevelROC_Tests
+    public class PrivacyLevelROC_Tests : CslaBaseTest
     {
         [Fact]
         public async void PrivacyLevelROC_TestGetChild()

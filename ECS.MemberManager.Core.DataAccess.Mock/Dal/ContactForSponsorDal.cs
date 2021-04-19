@@ -13,17 +13,17 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
         }
 
-        public async Task<ContactForSponsor> Fetch(int id)
+        public Task<ContactForSponsor> Fetch(int id)
         {
-            return MockDb.ContactForSponsors.FirstOrDefault(co => co.Id == id);
+            return Task.FromResult(MockDb.ContactForSponsors.FirstOrDefault(co => co.Id == id));
         }
 
-        public async Task<List<ContactForSponsor>> Fetch()
+        public Task<List<ContactForSponsor>> Fetch()
         {
-            return MockDb.ContactForSponsors.ToList();
+            return Task.FromResult(MockDb.ContactForSponsors.ToList());
         }
 
-        public async Task<ContactForSponsor> Insert(ContactForSponsor contactOfPerson)
+        public Task<ContactForSponsor> Insert(ContactForSponsor contactOfPerson)
         {
             var lastContact = MockDb.ContactForSponsors.ToList().OrderByDescending(co => co.Id).First();
             contactOfPerson.Id = lastContact.Id + 1;
@@ -31,10 +31,10 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
             MockDb.ContactForSponsors.Add(contactOfPerson);
 
-            return contactOfPerson;
+            return Task.FromResult(contactOfPerson);
         }
 
-        public async Task<ContactForSponsor> Update(ContactForSponsor contactOfPerson)
+        public Task<ContactForSponsor> Update(ContactForSponsor contactOfPerson)
         {
             var contactToUpdate =
                 MockDb.ContactForSponsors.FirstOrDefault(em => em.Id == contactOfPerson.Id &&
@@ -44,15 +44,17 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 throw new Csla.DataPortalException(null);
 
             contactToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
-            return contactToUpdate;
+            return Task.FromResult(contactToUpdate);
         }
 
-        public async Task Delete(int id)
+        public Task Delete(int id)
         {
             var contactToDelete = MockDb.ContactForSponsors.FirstOrDefault(co => co.Id == id);
             var listIndex = MockDb.ContactForSponsors.IndexOf(contactToDelete);
             if (listIndex > -1)
                 MockDb.ContactForSponsors.RemoveAt(listIndex);
+            
+            return Task.CompletedTask;
         }
     }
 }

@@ -9,17 +9,17 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 {
     public class OrganizationTypeDal : IDal<OrganizationType>
     {
-        public async Task<OrganizationType> Fetch(int id)
+        public Task<OrganizationType> Fetch(int id)
         {
-            return MockDb.OrganizationTypes.FirstOrDefault(ms => ms.Id == id);
+            return Task.FromResult(MockDb.OrganizationTypes.FirstOrDefault(ms => ms.Id == id));
         }
 
-        public async Task<List<OrganizationType>> Fetch()
+        public Task<List<OrganizationType>> Fetch()
         {
-            return MockDb.OrganizationTypes.ToList();
+            return Task.FromResult(MockDb.OrganizationTypes.ToList());
         }
 
-        public async Task<OrganizationType> Insert(OrganizationType organizationType)
+        public Task<OrganizationType> Insert(OrganizationType organizationType)
         {
             var lastOrganizationType = MockDb.OrganizationTypes.ToList().OrderByDescending(ms => ms.Id).First();
             organizationType.Id = 1 + lastOrganizationType.Id;
@@ -27,10 +27,10 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
             MockDb.OrganizationTypes.Add(organizationType);
 
-            return organizationType;
+            return Task.FromResult(organizationType);
         }
 
-        public async Task<OrganizationType> Update(OrganizationType organizationType)
+        public Task<OrganizationType> Update(OrganizationType organizationType)
         {
             var organizationTypeToUpdate =
                 MockDb.OrganizationTypes.FirstOrDefault(em => em.Id == organizationType.Id &&
@@ -40,15 +40,17 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 throw new Csla.DataPortalException(null);
 
             organizationTypeToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
-            return organizationTypeToUpdate;
+            return Task.FromResult(organizationTypeToUpdate);
         }
 
-        public async Task Delete(int id)
+        public Task Delete(int id)
         {
             var organizationTypeToDelete = MockDb.OrganizationTypes.FirstOrDefault(ms => ms.Id == id);
             var listIndex = MockDb.OrganizationTypes.IndexOf(organizationTypeToDelete);
             if (listIndex > -1)
                 MockDb.OrganizationTypes.RemoveAt(listIndex);
+            
+            return Task.CompletedTask;
         }
 
         public void Dispose()

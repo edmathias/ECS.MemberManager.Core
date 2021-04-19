@@ -49,18 +49,18 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             return contactForSponsor;
         }
 
-        private async Task<Sponsor> BuildSponsor()
+        private Task<Sponsor> BuildSponsor()
         {
             var childData = MockDb.Sponsors;
 
-            return childData.First();
+            return Task.FromResult(childData.First());
         }
 
-        private async Task<Person> BuildPerson()
+        private Task<Person> BuildPerson()
         {
             var childData = MockDb.Persons;
 
-            return childData.First();
+            return Task.FromResult(childData.First());
         }
     }
 }

@@ -114,8 +114,17 @@ namespace ECS.MemberManager.Core.BusinessObjects
                 Notes = Notes,
                 RowVersion = RowVersion,
             };
+            
+            PaymentSource insertedObj = null;
 
-            var insertedObj = await dal.Update(data);
+            try
+            {
+                insertedObj = await dal.Update(data);
+            }
+            catch (Exception exc)
+            {
+                System.Console.WriteLine(exc.Message);
+            }
             RowVersion = insertedObj.RowVersion;
         }
 

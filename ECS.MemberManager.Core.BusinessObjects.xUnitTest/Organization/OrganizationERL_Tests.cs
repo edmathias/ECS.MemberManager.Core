@@ -10,32 +10,8 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class OrganizationERL_Tests
+    public class OrganizationERL_Tests : CslaBaseTest
     {
-        private IConfigurationRoot _config = null;
-        private bool IsDatabaseBuilt = false;
-
-        public OrganizationERL_Tests()
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            _config = builder.Build();
-            var testLibrary = _config.GetValue<string>("TestLibrary");
-
-            if (testLibrary == "Mock")
-                MockDb.ResetMockDb();
-            else
-            {
-                if (!IsDatabaseBuilt)
-                {
-                    var adoDb = new ADODb();
-                    adoDb.BuildMemberManagerADODb();
-                    IsDatabaseBuilt = true;
-                }
-            }
-        }
-
         [Fact]
         private async void OrganizationERL_TestNewOrganizationList()
         {
@@ -107,6 +83,8 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             organizationToBuild.Name = "organization name";
             organizationToBuild.OrganizationType =
                 await OrganizationTypeEC.GetOrganizationTypeEC(new OrganizationType() {Id = 1});
+            organizationToBuild.CategoryOfOrganization =
+                await CategoryOfOrganizationEC.GetCategoryOfOrganizationEC(new CategoryOfOrganization() {Id = 1});
             organizationToBuild.Notes = "notes for org";
             organizationToBuild.LastUpdatedBy = "edm";
             organizationToBuild.LastUpdatedDate = DateTime.Now;

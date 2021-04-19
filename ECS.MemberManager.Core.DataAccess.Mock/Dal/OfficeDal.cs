@@ -9,17 +9,17 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 {
     public class OfficeDal : IDal<Office>
     {
-        public async Task<Office> Fetch(int id)
+        public Task<Office> Fetch(int id)
         {
-            return MockDb.Offices.FirstOrDefault(o => o.Id == id);
+            return Task.FromResult(MockDb.Offices.FirstOrDefault(o => o.Id == id));
         }
 
-        public async Task<List<Office>> Fetch()
+        public Task<List<Office>> Fetch()
         {
-            return MockDb.Offices.ToList();
+            return Task.FromResult(MockDb.Offices.ToList());
         }
 
-        public async Task<Office> Insert(Office office)
+        public Task<Office> Insert(Office office)
         {
             var lastOffice = MockDb.Offices.ToList().OrderByDescending(o => o.Id).First();
             office.Id = 1 + lastOffice.Id;
@@ -27,10 +27,10 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
             MockDb.Offices.Add(office);
 
-            return office;
+            return Task.FromResult(office);
         }
 
-        public async Task<Office> Update(Office office)
+        public Task<Office> Update(Office office)
         {
             var officeToUpdate =
                 MockDb.Offices.FirstOrDefault(em => em.Id == office.Id &&
@@ -40,16 +40,18 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 throw new Csla.DataPortalException(null);
 
             officeToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
-            return officeToUpdate;
+            return Task.FromResult(officeToUpdate);
         }
 
-        public async Task Delete(int id)
+        public Task Delete(int id)
         {
             var officeToRemove = MockDb.Offices.FirstOrDefault(o => o.Id == id);
             if (officeToRemove == null)
                 throw new Exception("Office record not found - Delete");
 
             MockDb.Offices.Remove(officeToRemove);
+            
+            return Task.CompletedTask;
         }
 
         public void Dispose()

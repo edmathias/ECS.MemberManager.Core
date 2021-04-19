@@ -2,16 +2,16 @@
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class PhoneROR_Tests
+    public class PhoneROR_Tests : CslaBaseTest
     {
         [Fact]
         public async void PhoneROR_TestGetById()
         {
-            var phone = await PhoneROR.GetPhoneROR(1);
+            var personalNote = await PhoneROR.GetPhoneROR(1);
 
-            Assert.NotNull(phone);
-            Assert.IsType<PhoneROR>(phone);
-            Assert.Equal(1, phone.Id);
+            Assert.NotNull(personalNote);
+            Assert.IsType<PhoneROR>(personalNote);
+            Assert.Equal(1, personalNote.Id);
         }
     }
 }

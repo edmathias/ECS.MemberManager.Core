@@ -43,18 +43,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.False(memberInfo.IsValid);
         }
 
-        // test exception if attempt to save in invalid state
-
-        [Fact]
-        public async Task MemberInfoEC_TestInvalidSave()
-        {
-            var memberInfo = await MemberInfoEC.NewMemberInfoEC();
-            memberInfo.MemberNumber = String.Empty;
-
-            Assert.False(memberInfo.IsValid);
-            Assert.ThrowsAsync<Csla.Rules.ValidationException>(() => memberInfo.SaveAsync());
-        }
-
         // test invalid state 
         [Fact]
         public async Task MemberInfoEC_MemberNumberRequired()

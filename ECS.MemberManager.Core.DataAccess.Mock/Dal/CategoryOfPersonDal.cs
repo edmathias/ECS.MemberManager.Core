@@ -13,27 +13,27 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         {
         }
 
-        public async Task<CategoryOfPerson> Fetch(int id)
+        public Task<CategoryOfPerson> Fetch(int id)
         {
-            return MockDb.CategoryOfPersons.FirstOrDefault(co => co.Id == id);
+            return Task.FromResult(MockDb.CategoryOfPersons.FirstOrDefault(co => co.Id == id));
         }
 
-        public async Task<List<CategoryOfPerson>> Fetch()
+        public Task<List<CategoryOfPerson>> Fetch()
         {
-            return MockDb.CategoryOfPersons.ToList();
+            return Task.FromResult(MockDb.CategoryOfPersons.ToList());
         }
 
-        public async Task<CategoryOfPerson> Insert(CategoryOfPerson categoryOfPerson)
+        public Task<CategoryOfPerson> Insert(CategoryOfPerson categoryOfPerson)
         {
             var lastCategory = MockDb.CategoryOfPersons.ToList().OrderByDescending(co => co.Id).First();
             categoryOfPerson.Id = lastCategory.Id + 1;
             categoryOfPerson.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
             MockDb.CategoryOfPersons.Add(categoryOfPerson);
 
-            return categoryOfPerson;
+            return Task.FromResult(categoryOfPerson);
         }
 
-        public async Task<CategoryOfPerson> Update(CategoryOfPerson categoryOfPerson)
+        public Task<CategoryOfPerson> Update(CategoryOfPerson categoryOfPerson)
         {
             var savedCategoryOfPerson =
                 MockDb.CategoryOfPersons.FirstOrDefault(em => em.Id == categoryOfPerson.Id &&
@@ -43,15 +43,17 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 throw new Csla.DataPortalException(null);
 
             savedCategoryOfPerson.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
-            return savedCategoryOfPerson;
+            return Task.FromResult(savedCategoryOfPerson);
         }
 
-        public async Task Delete(int id)
+        public Task Delete(int id)
         {
             var categoryToDelete = MockDb.CategoryOfPersons.FirstOrDefault(co => co.Id == id);
             var listIndex = MockDb.CategoryOfPersons.IndexOf(categoryToDelete);
             if (listIndex > -1)
                 MockDb.CategoryOfPersons.RemoveAt(listIndex);
+            
+            return Task.CompletedTask;
         }
     }
 }

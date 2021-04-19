@@ -26,7 +26,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             Assert.Equal(1, memberInfo.Id);
         }
 
-        private async Task<MemberInfo> BuildMemberInfo()
+        private Task<MemberInfo> BuildMemberInfo()
         {
             var memberInfo = new MemberInfo();
             memberInfo.Id = 1;
@@ -40,7 +40,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             memberInfo.LastUpdatedBy = "edm";
             memberInfo.LastUpdatedDate = DateTime.Now;
 
-            return memberInfo;
+            return Task.FromResult(memberInfo);
         }
     }
 }

@@ -9,17 +9,17 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 {
     public class PersonDal : IDal<Person>
     {
-        public async Task<Person> Fetch(int id)
+        public Task<Person> Fetch(int id)
         {
-            return MockDb.Persons.FirstOrDefault(p => p.Id == id);
+            return Task.FromResult(MockDb.Persons.FirstOrDefault(p => p.Id == id));
         }
 
-        public async Task<List<Person>> Fetch()
+        public Task<List<Person>> Fetch()
         {
-            return MockDb.Persons.ToList();
+            return Task.FromResult(MockDb.Persons.ToList());
         }
 
-        public async Task<Person> Insert(Person person)
+        public Task<Person> Insert(Person person)
         {
             var lastPerson = MockDb.Persons.ToList().OrderByDescending(p => p.Id).First();
             person.Id = 1 + lastPerson.Id;
@@ -27,10 +27,10 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
 
             MockDb.Persons.Add(person);
 
-            return person;
+            return Task.FromResult(person);
         }
 
-        public async Task<Person> Update(Person person)
+        public Task<Person> Update(Person person)
         {
             var personToUpdate =
                 MockDb.Persons.FirstOrDefault(em => em.Id == person.Id &&
@@ -40,15 +40,17 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
                 throw new Csla.DataPortalException(null);
 
             personToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
-            return personToUpdate;
+            return Task.FromResult(personToUpdate);
         }
 
-        public async Task Delete(int id)
+        public Task Delete(int id)
         {
             var personToDelete = MockDb.Persons.FirstOrDefault(p => p.Id == id);
             var listIndex = MockDb.Persons.IndexOf(personToDelete);
             if (listIndex > -1)
                 MockDb.Persons.RemoveAt(listIndex);
+            
+            return Task.CompletedTask;
         }
 
         public void Dispose()
