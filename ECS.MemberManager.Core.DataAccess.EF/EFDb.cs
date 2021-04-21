@@ -23,7 +23,7 @@ namespace ECS.MemberManager.Core.DataAccess.EF
             _db = new SqlConnection(cnxnString);
         }
 
-        public void BuildMemberManagerEFDb()
+        public void BuildMemberManager()
         {
             _db.Execute(sbDbTearDown());
 

@@ -12,8 +12,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         [Fact]
         public async void PhoneROC_TestGetChild()
         {
-            const int ID_VALUE = 99;
-
             var personalNoteToLoad = MockDb.Phones.FirstOrDefault(pn => pn.Id == 1);
 
             var personalNote = await PhoneROC.GetPhoneROC(personalNoteToLoad);

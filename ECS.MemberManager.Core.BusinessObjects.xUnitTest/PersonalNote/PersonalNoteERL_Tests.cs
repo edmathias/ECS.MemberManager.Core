@@ -77,7 +77,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var countBeforeAdd = categoryList.Count;
 
             var personalNoteToAdd = categoryList.AddNew();
-            BuildPersonalNote(personalNoteToAdd);
+            await BuildPersonalNote(personalNoteToAdd);
 
             var updatedCategoryList = await categoryList.SaveAsync();
 

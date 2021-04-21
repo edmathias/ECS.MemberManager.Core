@@ -27,7 +27,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 if (!IsDatabaseBuilt)
                 {
                     var adoDb = new ADODb();
-                    adoDb.BuildMemberManagerADODb();
+                    adoDb.BuildMemberManager();
                 }
             }
             else if (testLibrary == "EF")
@@ -35,7 +35,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
                 if (!IsDatabaseBuilt)
                 {
                     var efDb = new EFDb();
-                    efDb.BuildMemberManagerEFDb();
+                    efDb.BuildMemberManager();
                 }
             }
 
