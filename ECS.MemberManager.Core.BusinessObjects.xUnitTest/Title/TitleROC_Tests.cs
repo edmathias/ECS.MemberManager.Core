@@ -3,7 +3,7 @@ using Xunit;
 
 namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
 {
-    public class TitleROC_Tests
+    public class TitleROC_Tests : CslaBaseTest
     {
         [Fact]
         public async void TitleROC_TestGetChild()
