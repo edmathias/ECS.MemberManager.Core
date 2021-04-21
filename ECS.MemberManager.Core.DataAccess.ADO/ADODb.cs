@@ -5,9 +5,9 @@ using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 
-namespace ECS.MemberManager.Core.DataAccess.ADO
+namespace ECS.MemberManager.Core.DataAccess.EF
 {
-    public class ADODb
+    public class ADODb 
     {
         private IConfigurationRoot _config;
         private static SqlConnection _db = null;
@@ -23,7 +23,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             _db = new SqlConnection(cnxnString);
         }
 
-        public void BuildMemberManagerADODb()
+        public void BuildMemberManager()
         {
             _db.Execute(sbDbTearDown());
 
@@ -83,7 +83,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             InsertTermInOffice();
 
             InsertEventMembers();
-            
+
             InsertPersonalNotes();
         }
 
@@ -307,7 +307,8 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                 "SELECT 1, N'Membership Type A', 1, N'edm', '20201231 00:00:00.000', N'notes for A' UNION ALL");
             sb.AppendLine(
                 "SELECT 2, N'Membership Type B', 2, N'edm', '20210101 00:00:00.000', N'Notes for B' UNION ALL");
-            sb.AppendLine("SELECT 99, N'Membership to delete', 2, N'edm', '20210114 00:00:00.000', N'delete this'");
+            sb.AppendLine(
+                "SELECT 99, N'Membership to delete', 2, N'edm', '20210114 00:00:00.000', N'delete this'");
             sb.AppendLine("SET IDENTITY_INSERT [dbo].[MembershipTypes] OFF;");
             sb.AppendLine("DBCC CHECKIDENT ('MembershipTypes', RESEED, 2)");
 
@@ -337,13 +338,13 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             var sb = new StringBuilder();
             sb.AppendLine("SET IDENTITY_INSERT [dbo].[Organizations] ON;");
             sb.AppendLine(
-                "INSERT INTO [dbo].[Organizations]([Id], [Name], [OrganizationTypeId], [DateOfFirstContact], [LastUpdatedBy], [LastUpdatedDate], [Notes])");
+                "INSERT INTO [dbo].[Organizations]([Id], [Name], [OrganizationTypeId], [CategoryOfOrganizationId], [DateOfFirstContact], [LastUpdatedBy], [LastUpdatedDate], [Notes])");
             sb.AppendLine(
-                "SELECT 1, N'Organization 1', 1, '20200601 00:00:00.000', N'edm', '20210113 00:00:00.000', N'notes org 1' UNION ALL");
+                "SELECT 1, N'Organization 1', 1, 1, '20200601 00:00:00.000', N'edm', '20210113 00:00:00.000', N'notes org 1' UNION ALL");
             sb.AppendLine(
-                "SELECT 2, N'Organization 2', 2, '20200719 00:00:00.000', N'joe', '20210114 00:00:00.000', N'notes org 2' UNION ALL");
+                "SELECT 2, N'Organization 2', 2, 2, '20200719 00:00:00.000', N'joe', '20210114 00:00:00.000', N'notes org 2' UNION ALL");
             sb.AppendLine(
-                "SELECT 99, N'Organization to delete', 2, '20200719 00:00:00.000', N'joe', '20210114 00:00:00.000', N'notes to delete'");
+                "SELECT 99, N'Organization to delete', 2,1, '20200719 00:00:00.000', N'joe', '20210114 00:00:00.000', N'notes to delete'");
             sb.AppendLine("SET IDENTITY_INSERT [dbo].[Organizations] OFF;");
             sb.AppendLine("DBCC CHECKIDENT ('Organizations', RESEED, 2)");
 
