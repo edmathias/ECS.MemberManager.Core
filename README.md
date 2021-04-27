@@ -3,6 +3,12 @@ The parent solution for the Edge City Software Member Manager for the .NET core 
 
 This source code is covered by the MIT open source license in License.txt
 
+Steal My Code - Chapter 2 
+
+ECS.MemberManager.Core.DataAccess.EF - Data Access Layer objects using Entity Framework (code-first) model.
+
+Many refactorings and code improvements/bug fixes.
+
 Steal My Code - Chapter 1
 
 The business objects and xUnit tests of the business objects have been completed. They are in the projects as follows:
