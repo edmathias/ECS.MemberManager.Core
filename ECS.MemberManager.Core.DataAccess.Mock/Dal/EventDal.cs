@@ -37,8 +37,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         public Task<Event> Update(Event eventUpdate)
         {
             var eventToUpdate =
-                MockDb.Events.FirstOrDefault(em => em.Id == eventUpdate.Id &&
-                                                   em.RowVersion.SequenceEqual(eventUpdate.RowVersion));
+                MockDb.Events.FirstOrDefault(em => em.Id == eventUpdate.Id);
 
             if (eventToUpdate == null)
                 throw new Csla.DataPortalException(null);

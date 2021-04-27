@@ -33,8 +33,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         public Task<DocumentType> Update(DocumentType documentType)
         {
             var documentTypeToUpdate =
-                MockDb.DocumentTypes.FirstOrDefault(em => em.Id == documentType.Id &&
-                                                          em.RowVersion.SequenceEqual(documentType.RowVersion));
+                MockDb.DocumentTypes.FirstOrDefault(em => em.Id == documentType.Id);
 
             if (documentTypeToUpdate == null)
                 throw new Csla.DataPortalException(null);

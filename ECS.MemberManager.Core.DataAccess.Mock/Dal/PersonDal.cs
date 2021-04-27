@@ -33,8 +33,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         public Task<Person> Update(Person person)
         {
             var personToUpdate =
-                MockDb.Persons.FirstOrDefault(em => em.Id == person.Id &&
-                                                    em.RowVersion.SequenceEqual(person.RowVersion));
+                MockDb.Persons.FirstOrDefault(em => em.Id == person.Id);
 
             if (personToUpdate == null)
                 throw new Csla.DataPortalException(null);

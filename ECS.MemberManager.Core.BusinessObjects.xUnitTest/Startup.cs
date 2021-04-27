@@ -1,5 +1,6 @@
 ﻿using Csla.Configuration;
-using ECS.MemberManager.Core.DataAccess.EF;
+//using ECS.MemberManager.Core.DataAccess.EF;
+using ECS.MemberManager.Core.DataAccess.Mock;
 using ECS.MemberManager.Core.DataAccess.Dal;
 using ECS.MemberManager.Core.EF.Domain;
 using Microsoft.Extensions.DependencyInjection;

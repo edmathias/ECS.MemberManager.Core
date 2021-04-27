@@ -37,8 +37,7 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
         public Task<Sponsor> Update(Sponsor sponsor)
         {
             var sponsorToUpdate =
-                MockDb.Sponsors.FirstOrDefault(em => em.Id == sponsor.Id &&
-                                                     em.RowVersion.SequenceEqual(sponsor.RowVersion));
+                MockDb.Sponsors.FirstOrDefault(em => em.Id == sponsor.Id); 
 
             if (sponsorToUpdate == null)
                 throw new Csla.DataPortalException(null);

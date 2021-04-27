@@ -74,36 +74,6 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task PersonER_TestSaveOutOfOrder()
-        {
-            var person1 = await PersonER.GetPersonER(1);
-            var person2 = await PersonER.GetPersonER(1);
-            person1.Notes = "set up timestamp issue"; // turn on IsDirty
-            person2.Notes = "set up timestamp issue";
-
-            var person2_2 = await person2.SaveAsync();
-
-            Assert.NotEqual(person2_2.RowVersion, person1.RowVersion);
-            Assert.Equal("set up timestamp issue", person2_2.Notes);
-            await Assert.ThrowsAsync<DataPortalException>(() => person1.SaveAsync());
-        }
-
-        [Fact]
-        public async Task PersonER_TestSubsequentSaves()
-        {
-            var person = await PersonER.GetPersonER(1);
-            person.Notes = "set up timestamp issue"; // turn on IsDirty
-
-            var person2 = await person.SaveAsync();
-            var rowVersion1 = person2.RowVersion;
-            person2.Notes = "another timestamp trigger";
-
-            var person3 = await person2.SaveAsync();
-
-            Assert.NotEqual(person2.RowVersion, person3.RowVersion);
-        }
-
-        [Fact]
         public async Task TestPersonER_InvalidGet()
         {
             await Assert.ThrowsAsync<DataPortalException>(() => PersonER.GetPersonER(999));
