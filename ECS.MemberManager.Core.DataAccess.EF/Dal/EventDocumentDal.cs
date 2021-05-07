@@ -10,73 +10,62 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 {
     public class EventDocumentDal : IDal<EventDocument>
     {
+        private MembershipManagerDataContext _context;
+
+        public EventDocumentDal()
+        {
+            _context = new MembershipManagerDataContext();
+        }
+
+        public EventDocumentDal(MembershipManagerDataContext context)
+        {
+            _context = context;
+        }
+
         public async Task<List<EventDocument>> Fetch()
         {
-            List<EventDocument> list;
-
-            using (var context = new MembershipManagerDataContext())
-            {
-                list = await context.EventDocuments
-                    .Include(e => e.Event)
-                    .Include(e => e.DocumentType)
-                    .ToListAsync();
-            }
-
-            return list;
+            return await _context.EventDocuments
+                .Include(e => e.Event)
+                .Include(e => e.DocumentType)
+                .ToListAsync();
         }
 
         public async Task<EventDocument> Fetch(int id)
         {
-            EventDocument eventDocument = null;
-
-            using (var context = new MembershipManagerDataContext())
-            {
-                eventDocument = await context.EventDocuments.Where(a => a.Id == id)
-                    .Include(e => e.Event)
-                    .Include(e => e.DocumentType)
-                    .FirstAsync();
-            }
-
-            return eventDocument;
+            return await _context.EventDocuments.Where(a => a.Id == id)
+                .Include(e => e.Event)
+                .Include(e => e.DocumentType)
+                .FirstAsync();
         }
 
         public async Task<EventDocument> Insert(EventDocument eventDocumentToInsert)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                context.Entry(eventDocumentToInsert.Event).State = EntityState.Unchanged;
-                context.Entry(eventDocumentToInsert.DocumentType).State = EntityState.Unchanged;
+            _context.Entry(eventDocumentToInsert.Event).State = EntityState.Unchanged;
+            _context.Entry(eventDocumentToInsert.DocumentType).State = EntityState.Unchanged;
 
-                await context.EventDocuments.AddAsync(eventDocumentToInsert);
+            await _context.EventDocuments.AddAsync(eventDocumentToInsert);
 
-                await context.SaveChangesAsync();
-            }
+            await _context.SaveChangesAsync();
 
             return eventDocumentToInsert;
         }
 
         public async Task<EventDocument> Update(EventDocument eventDocumentToUpdate)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                context.Entry(eventDocumentToUpdate.Event).State = EntityState.Unchanged;
-                context.Entry(eventDocumentToUpdate.DocumentType).State = EntityState.Unchanged;
+            _context.Entry(eventDocumentToUpdate.Event).State = EntityState.Unchanged;
+            _context.Entry(eventDocumentToUpdate.DocumentType).State = EntityState.Unchanged;
 
-                context.Update(eventDocumentToUpdate);
+            _context.Update(eventDocumentToUpdate);
 
-                await context.SaveChangesAsync();
-            }
+            await _context.SaveChangesAsync();
 
             return eventDocumentToUpdate;
         }
 
         public async Task Delete(int id)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                context.Remove(await context.EventDocuments.SingleAsync(a => a.Id == id));
-                await context.SaveChangesAsync();
-            }
+            _context.Remove(await _context.EventDocuments.SingleAsync(a => a.Id == id));
+            await _context.SaveChangesAsync();
         }
 
         public void Dispose()

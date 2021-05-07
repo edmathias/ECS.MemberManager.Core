@@ -10,70 +10,56 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 {
     public class PersonalNoteDal : IDal<PersonalNote>
     {
+        private MembershipManagerDataContext _context;
+
+        public PersonalNoteDal()
+        {
+            _context = new MembershipManagerDataContext();
+        }
+
+        public PersonalNoteDal(MembershipManagerDataContext context)
+        {
+            _context = context;
+        }
+
         public async Task<List<PersonalNote>> Fetch()
         {
-            List<PersonalNote> list;
-
-            using (var context = new MembershipManagerDataContext())
-            {
-                list = await context.PersonalNotes
-                    .Include(e => e.Person)
-                    .ToListAsync();
-            }
-
-            return list;
+            return await _context.PersonalNotes
+                .Include(e => e.Person)
+                .ToListAsync();
         }
 
         public async Task<PersonalNote> Fetch(int id)
         {
-            PersonalNote payment = null;
-
-            using (var context = new MembershipManagerDataContext())
-            {
-                payment = await context.PersonalNotes.Where(a => a.Id == id)
-                    .Include(e => e.Person)
-                    .FirstAsync();
-            }
-
-            return payment;
+            return await _context.PersonalNotes.Where(a => a.Id == id)
+                .Include(e => e.Person)
+                .FirstAsync();
         }
 
         public async Task<PersonalNote> Insert(PersonalNote paymentToInsert)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                context.Entry(paymentToInsert.Person).State = EntityState.Unchanged;
-
-                await context.PersonalNotes.AddAsync(paymentToInsert);
-
-                await context.SaveChangesAsync();
-            }
+            _context.Entry(paymentToInsert.Person).State = EntityState.Unchanged;
+            await _context.PersonalNotes.AddAsync(paymentToInsert);
+            await _context.SaveChangesAsync();
 
             return paymentToInsert;
         }
 
         public async Task<PersonalNote> Update(PersonalNote paymentToUpdate)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                context.Entry(paymentToUpdate.Person).State = EntityState.Unchanged;
+            _context.Entry(paymentToUpdate.Person).State = EntityState.Unchanged;
+            _context.Update(paymentToUpdate);
 
-                context.Update(paymentToUpdate);
-
-                await context.SaveChangesAsync();
-            }
+            await _context.SaveChangesAsync();
 
             return paymentToUpdate;
         }
 
         public async Task Delete(int id)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                context.Remove(await context.PersonalNotes.SingleAsync(a => a.Id == id));
-                
-                await context.SaveChangesAsync();
-            }
+            _context.Remove(await _context.PersonalNotes.SingleAsync(a => a.Id == id));
+
+            await _context.SaveChangesAsync();
         }
 
         public void Dispose()

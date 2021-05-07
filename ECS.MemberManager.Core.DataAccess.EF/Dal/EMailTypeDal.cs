@@ -10,65 +10,52 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 {
     public class EMailTypeDal : IDal<EMailType>
     {
+        private MembershipManagerDataContext _context;
+
+        public EMailTypeDal()
+        {
+            _context = new MembershipManagerDataContext();
+        }
+
+        public EMailTypeDal(MembershipManagerDataContext context)
+        {
+            _context = context;
+        }
+
         public async Task<List<EMailType>> Fetch()
         {
-            List<EMailType> list;
-
-            using (var context = new MembershipManagerDataContext())
-            {
-                list = await context.EMailTypes
-                    .ToListAsync();
-            }
-
-            return list;
+            return await _context.EMailTypes
+                .ToListAsync();
         }
 
         public async Task<EMailType> Fetch(int id)
         {
-            EMailType emailType = null;
-
-            using (var context = new MembershipManagerDataContext())
-            {
-                emailType = await context.EMailTypes.Where(a => a.Id == id)
-                    .FirstAsync();
-            }
-
-            return emailType;
+            return await _context.EMailTypes.Where(a => a.Id == id)
+                .FirstAsync();
         }
 
         public async Task<EMailType> Insert(EMailType emailTypeToInsert)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                await context.EMailTypes.AddAsync(emailTypeToInsert);
+            await _context.EMailTypes.AddAsync(emailTypeToInsert);
 
-                await context.SaveChangesAsync();
-            }
-
-            ;
+            await _context.SaveChangesAsync();
 
             return emailTypeToInsert;
         }
 
         public async Task<EMailType> Update(EMailType emailTypeToUpdate)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                context.Update(emailTypeToUpdate);
+            _context.Update(emailTypeToUpdate);
 
-                await context.SaveChangesAsync();
-            }
+            await _context.SaveChangesAsync();
 
             return emailTypeToUpdate;
         }
 
         public async Task Delete(int id)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                context.Remove(await context.EMailTypes.SingleAsync(a => a.Id == id));
-                await context.SaveChangesAsync();
-            }
+            _context.Remove(await _context.EMailTypes.SingleAsync(a => a.Id == id));
+            await _context.SaveChangesAsync();
         }
 
         public void Dispose()

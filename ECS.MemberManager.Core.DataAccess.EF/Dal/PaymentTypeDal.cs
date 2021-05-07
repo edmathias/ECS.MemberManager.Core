@@ -9,70 +9,50 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECS.MemberManager.Core.DataAccess.EF
 {
-    public class PaymentTypeDal : IDal<PaymentType> 
+    public class PaymentTypeDal : IDal<PaymentType>
     {
+        private MembershipManagerDataContext _context;
+
+        public PaymentTypeDal()
+        {
+            _context = new MembershipManagerDataContext();
+        }
+
+        public PaymentTypeDal(MembershipManagerDataContext context)
+        {
+            _context = context;
+        }
+
         public async Task<List<PaymentType>> Fetch()
         {
-            List<PaymentType> list;
-
-            using (var context = new MembershipManagerDataContext())
-            {
-                list = await context.PaymentTypes.ToListAsync();
-            }
-
-            return list;
+            return await _context.PaymentTypes.ToListAsync();
         }
 
         public async Task<PaymentType> Fetch(int id)
         {
-            PaymentType paymentType = null;
-
-            using (var context = new MembershipManagerDataContext())
-            {
-                paymentType = await context.PaymentTypes.Where(a => a.Id == id).FirstAsync();
-            }
-
-            return paymentType;
+            return await _context.PaymentTypes.Where(a => a.Id == id).FirstAsync();
         }
 
         public async Task<PaymentType> Insert(PaymentType paymentTypeToInsert)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                await context.PaymentTypes.AddAsync(paymentTypeToInsert);
-                await context.SaveChangesAsync();
-            }
+            await _context.PaymentTypes.AddAsync(paymentTypeToInsert);
+            await _context.SaveChangesAsync();
 
             return paymentTypeToInsert;
         }
 
         public async Task<PaymentType> Update(PaymentType paymentTypeToUpdate)
         {
-            int result = 0;
-            
-            using (var context = new MembershipManagerDataContext())
-            {
-                context.Update(paymentTypeToUpdate);
-                try
-                {
-                    result = await context.SaveChangesAsync();
-                }
-                catch (Exception exc)
-                {
-                    System.Console.WriteLine(exc.Message);
-                }
-            }
+            _context.Update(paymentTypeToUpdate);
+            await _context.SaveChangesAsync();
 
             return paymentTypeToUpdate;
         }
 
         public async Task Delete(int id)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                context.Remove(await context.PaymentTypes.SingleAsync(a => a.Id == id));
-                await context.SaveChangesAsync();
-            }
+            _context.Remove(await _context.PaymentTypes.SingleAsync(a => a.Id == id));
+            await _context.SaveChangesAsync();
         }
 
         public void Dispose()

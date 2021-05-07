@@ -10,61 +10,48 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 {
     public class CategoryOfOrganizationDal : IDal<CategoryOfOrganization>
     {
+        private MembershipManagerDataContext _context;
+
+        public CategoryOfOrganizationDal()
+        {
+            _context = new MembershipManagerDataContext();
+        }
+
+        public CategoryOfOrganizationDal(MembershipManagerDataContext context)
+        {
+            _context = context;
+        }
+
         public async Task<List<CategoryOfOrganization>> Fetch()
         {
-            List<CategoryOfOrganization> list;
-
-            using (var context = new MembershipManagerDataContext())
-            {
-                list = await context.CategoryOfOrganizations.ToListAsync();
-            }
-
-            return list;
+            return await _context.CategoryOfOrganizations.ToListAsync();
         }
 
         public async Task<CategoryOfOrganization> Fetch(int id)
         {
-            CategoryOfOrganization category = null;
-
-            using (var context = new MembershipManagerDataContext())
-            {
-                category = await context.CategoryOfOrganizations.Where(a => a.Id == id).FirstAsync();
-            }
-
-            return category;
+            return await _context.CategoryOfOrganizations.Where(a => a.Id == id).FirstAsync();
         }
 
         public async Task<CategoryOfOrganization> Insert(CategoryOfOrganization categoryToInsert)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                await context.CategoryOfOrganizations.AddAsync(categoryToInsert);
-                await context.SaveChangesAsync();
-            }
-
-            ;
+            await _context.CategoryOfOrganizations.AddAsync(categoryToInsert);
+            await _context.SaveChangesAsync();
 
             return categoryToInsert;
         }
 
         public async Task<CategoryOfOrganization> Update(CategoryOfOrganization categoryToUpdate)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                context.Update(categoryToUpdate);
-                await context.SaveChangesAsync();
-            }
+            _context.Update(categoryToUpdate);
+            await _context.SaveChangesAsync();
 
             return categoryToUpdate;
         }
 
         public async Task Delete(int id)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                context.Remove(await context.CategoryOfOrganizations.SingleAsync(a => a.Id == id));
-                await context.SaveChangesAsync();
-            }
+            _context.Remove(await _context.CategoryOfOrganizations.SingleAsync(a => a.Id == id));
+            await _context.SaveChangesAsync();
         }
 
         public void Dispose()

@@ -11,83 +11,72 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 {
     public class MemberInfoDal : IDal<MemberInfo>
     {
+        private MembershipManagerDataContext _context;
+
+        public MemberInfoDal()
+        {
+            _context = new MembershipManagerDataContext();
+        }
+
+        public MemberInfoDal(MembershipManagerDataContext context)
+        {
+            _context = context;
+        }
+
         public async Task<List<MemberInfo>> Fetch()
         {
-            List<MemberInfo> list;
-
-            using (var context = new MembershipManagerDataContext())
-            {
-                list = await context.MemberInfo
-                    .Include( mi => mi.Person)
-                    .Include( mi => mi.PrivacyLevel)
-                    .Include( mi => mi.MemberStatus)
-                    .Include( mi => mi.MembershipType)
-                    .ToListAsync();
-            }
-
-            return list;
+            return await _context.MemberInfo
+                .Include(mi => mi.Person)
+                .Include(mi => mi.PrivacyLevel)
+                .Include(mi => mi.MemberStatus)
+                .Include(mi => mi.MembershipType)
+                .ToListAsync();
         }
 
         public async Task<MemberInfo> Fetch(int id)
         {
-            MemberInfo person = null;
-
-            using (var context = new MembershipManagerDataContext())
-            {
-                person = await context.MemberInfo.Where(a => a.Id == id)
-                    .Include( mi => mi.Person)
-                    .Include( mi => mi.PrivacyLevel)
-                    .Include( mi => mi.MemberStatus)
-                    .Include( mi => mi.MembershipType)
-                    .FirstAsync();
-            }
-
-            return person;
+            return await _context.MemberInfo.Where(a => a.Id == id)
+                .Include(mi => mi.Person)
+                .Include(mi => mi.PrivacyLevel)
+                .Include(mi => mi.MemberStatus)
+                .Include(mi => mi.MembershipType)
+                .FirstAsync();
         }
 
         public async Task<MemberInfo> Insert(MemberInfo personToInsert)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                context.Entry(personToInsert.Person).State = EntityState.Unchanged;
-                context.Entry(personToInsert.PrivacyLevel).State = EntityState.Unchanged;
-                context.Entry(personToInsert.MemberStatus).State = EntityState.Unchanged;
-                context.Entry(personToInsert.MembershipType).State = EntityState.Unchanged;
-                await context.MemberInfo.AddAsync(personToInsert);
+            _context.Entry(personToInsert.Person).State = EntityState.Unchanged;
+            _context.Entry(personToInsert.PrivacyLevel).State = EntityState.Unchanged;
+            _context.Entry(personToInsert.MemberStatus).State = EntityState.Unchanged;
+            _context.Entry(personToInsert.MembershipType).State = EntityState.Unchanged;
+            await _context.MemberInfo.AddAsync(personToInsert);
 
-                await context.SaveChangesAsync();
-            }
+            await _context.SaveChangesAsync();
 
             return personToInsert;
         }
 
         public async Task<MemberInfo> Update(MemberInfo personToUpdate)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                context.Entry(personToUpdate.Person).State = EntityState.Unchanged;
-                context.Entry(personToUpdate.PrivacyLevel).State = EntityState.Unchanged;
-                context.Entry(personToUpdate.MemberStatus).State = EntityState.Unchanged;
-                context.Entry(personToUpdate.MembershipType).State = EntityState.Unchanged;
-                
-                context.Update(personToUpdate);
+            _context.Entry(personToUpdate.Person).State = EntityState.Unchanged;
+            _context.Entry(personToUpdate.PrivacyLevel).State = EntityState.Unchanged;
+            _context.Entry(personToUpdate.MemberStatus).State = EntityState.Unchanged;
+            _context.Entry(personToUpdate.MembershipType).State = EntityState.Unchanged;
 
-                var result = await context.SaveChangesAsync();
+            _context.Update(personToUpdate);
 
-                if (result != 1)
-                    throw new ApplicationException("MemberInfo domain object was not updated");
-            }
+            var result = await _context.SaveChangesAsync();
+
+            if (result != 1)
+                throw new ApplicationException("MemberInfo domain object was not updated");
 
             return personToUpdate;
         }
 
         public async Task Delete(int id)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                context.Remove(await context.MemberInfo.SingleAsync(a => a.Id == id));
-                await context.SaveChangesAsync();
-            }
+            _context.Remove(await _context.MemberInfo.SingleAsync(a => a.Id == id));
+            await _context.SaveChangesAsync();
         }
 
         public void Dispose()

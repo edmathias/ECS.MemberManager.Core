@@ -10,73 +10,62 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 {
     public class EventMemberDal : IDal<EventMember>
     {
+        private MembershipManagerDataContext _context;
+
+        public EventMemberDal()
+        {
+            _context = new MembershipManagerDataContext();
+        }
+
+        public EventMemberDal(MembershipManagerDataContext context)
+        {
+            _context = context;
+        }
+
         public async Task<List<EventMember>> Fetch()
         {
-            List<EventMember> list;
-
-            using (var context = new MembershipManagerDataContext())
-            {
-                list = await context.EventMembers
-                    .Include(e => e.Event)
-                    .Include(e => e.MemberInfo)
-                    .ToListAsync();
-            }
-
-            return list;
+            return await _context.EventMembers
+                .Include(e => e.Event)
+                .Include(e => e.MemberInfo)
+                .ToListAsync();
         }
 
         public async Task<EventMember> Fetch(int id)
         {
-            EventMember eventMember = null;
-
-            using (var context = new MembershipManagerDataContext())
-            {
-                eventMember = await context.EventMembers.Where(a => a.Id == id)
-                    .Include(e => e.Event)
-                    .Include(e => e.MemberInfo)
-                    .FirstAsync();
-            }
-
-            return eventMember;
+            return await _context.EventMembers.Where(a => a.Id == id)
+                .Include(e => e.Event)
+                .Include(e => e.MemberInfo)
+                .FirstAsync();
         }
 
         public async Task<EventMember> Insert(EventMember eventMemberToInsert)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                context.Entry(eventMemberToInsert.Event).State = EntityState.Unchanged;
-                context.Entry(eventMemberToInsert.MemberInfo).State = EntityState.Unchanged;
+            _context.Entry(eventMemberToInsert.Event).State = EntityState.Unchanged;
+            _context.Entry(eventMemberToInsert.MemberInfo).State = EntityState.Unchanged;
 
-                await context.EventMembers.AddAsync(eventMemberToInsert);
+            await _context.EventMembers.AddAsync(eventMemberToInsert);
 
-                await context.SaveChangesAsync();
-            }
+            await _context.SaveChangesAsync();
 
             return eventMemberToInsert;
         }
 
         public async Task<EventMember> Update(EventMember eventMemberToUpdate)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                context.Entry(eventMemberToUpdate.Event).State = EntityState.Unchanged;
-                context.Entry(eventMemberToUpdate.MemberInfo).State = EntityState.Unchanged;
+            _context.Entry(eventMemberToUpdate.Event).State = EntityState.Unchanged;
+            _context.Entry(eventMemberToUpdate.MemberInfo).State = EntityState.Unchanged;
 
-                context.Update(eventMemberToUpdate);
+            _context.Update(eventMemberToUpdate);
 
-                await context.SaveChangesAsync();
-            }
+            await _context.SaveChangesAsync();
 
             return eventMemberToUpdate;
         }
 
         public async Task Delete(int id)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                context.Remove(await context.EventMembers.SingleAsync(a => a.Id == id));
-                await context.SaveChangesAsync();
-            }
+            _context.Remove(await _context.EventMembers.SingleAsync(a => a.Id == id));
+            await _context.SaveChangesAsync();
         }
 
         public void Dispose()

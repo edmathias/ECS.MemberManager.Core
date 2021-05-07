@@ -10,69 +10,58 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 {
     public class EMailDal : IDal<EMail>
     {
+        private MembershipManagerDataContext _context;
+
+        public EMailDal()
+        {
+            _context = new MembershipManagerDataContext();
+        }
+
+        public EMailDal(MembershipManagerDataContext context)
+        {
+            _context = context;
+        }
+
         public async Task<List<EMail>> Fetch()
         {
-            List<EMail> list;
-
-            using (var context = new MembershipManagerDataContext())
-            {
-                list = await context.EMails
-                    .Include(e => e.EMailType)
-                    .ToListAsync();
-            }
-
-            return list;
+            return await _context.EMails
+                .Include(e => e.EMailType)
+                .ToListAsync();
         }
 
         public async Task<EMail> Fetch(int id)
         {
-            EMail contact = null;
-
-            using (var context = new MembershipManagerDataContext())
-            {
-                contact = await context.EMails.Where(a => a.Id == id)
-                    .Include(e => e.EMailType)
-                    .FirstAsync();
-            }
-
-            return contact;
+            return await _context.EMails.Where(a => a.Id == id)
+                .Include(e => e.EMailType)
+                .FirstAsync();
         }
 
         public async Task<EMail> Insert(EMail contactToInsert)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                context.Entry(contactToInsert.EMailType).State = EntityState.Unchanged;
+            _context.Entry(contactToInsert.EMailType).State = EntityState.Unchanged;
 
-                await context.EMails.AddAsync(contactToInsert);
+            await _context.EMails.AddAsync(contactToInsert);
 
-                await context.SaveChangesAsync();
-            }
+            await _context.SaveChangesAsync();
 
             return contactToInsert;
         }
 
         public async Task<EMail> Update(EMail contactToUpdate)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                context.Entry(contactToUpdate.EMailType).State = EntityState.Unchanged;
+            _context.Entry(contactToUpdate.EMailType).State = EntityState.Unchanged;
 
-                context.Update(contactToUpdate);
+            _context.Update(contactToUpdate);
 
-                await context.SaveChangesAsync();
-            }
+            await _context.SaveChangesAsync();
 
             return contactToUpdate;
         }
 
         public async Task Delete(int id)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                context.Remove(await context.EMails.SingleAsync(a => a.Id == id));
-                await context.SaveChangesAsync();
-            }
+            _context.Remove(await _context.EMails.SingleAsync(a => a.Id == id));
+            await _context.SaveChangesAsync();
         }
 
         public void Dispose()

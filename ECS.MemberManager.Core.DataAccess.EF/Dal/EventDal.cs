@@ -10,65 +10,52 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 {
     public class EventDal : IDal<Event>
     {
+        private MembershipManagerDataContext _context;
+
+        public EventDal()
+        {
+            _context = new MembershipManagerDataContext();
+        }
+
+        public EventDal(MembershipManagerDataContext context)
+        {
+            _context = context;
+        }
+
         public async Task<List<Event>> Fetch()
         {
-            List<Event> list;
-
-            using (var context = new MembershipManagerDataContext())
-            {
-                list = await context.Events
-                    .ToListAsync();
-            }
-
-            return list;
+            return await _context.Events
+                .ToListAsync();
         }
 
         public async Task<Event> Fetch(int id)
         {
-            Event eventObj = null;
-
-            using (var context = new MembershipManagerDataContext())
-            {
-                eventObj = await context.Events.Where(a => a.Id == id)
-                    .FirstAsync();
-            }
-
-            return eventObj;
+            return await _context.Events.Where(a => a.Id == id)
+                .FirstAsync();
         }
 
         public async Task<Event> Insert(Event eventObjToInsert)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                await context.Events.AddAsync(eventObjToInsert);
+            await _context.Events.AddAsync(eventObjToInsert);
 
-                await context.SaveChangesAsync();
-            }
-
-            ;
+            await _context.SaveChangesAsync();
 
             return eventObjToInsert;
         }
 
         public async Task<Event> Update(Event eventObjToUpdate)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                context.Update(eventObjToUpdate);
+            _context.Update(eventObjToUpdate);
 
-                await context.SaveChangesAsync();
-            }
+            await _context.SaveChangesAsync();
 
             return eventObjToUpdate;
         }
 
         public async Task Delete(int id)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                context.Remove(await context.Events.SingleAsync(a => a.Id == id));
-                await context.SaveChangesAsync();
-            }
+            _context.Remove(await _context.Events.SingleAsync(a => a.Id == id));
+            await _context.SaveChangesAsync();
         }
 
         public void Dispose()
