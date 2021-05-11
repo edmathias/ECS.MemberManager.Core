@@ -32,11 +32,11 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             }
             else if (testLibrary == "EF")
             {
-                if (!IsDatabaseBuilt)
-                {
+                 if (!IsDatabaseBuilt)
+                 {
                     var efDb = new EFDb();
                     efDb.BuildMemberManager();
-                }
+                 }
             }
 
             IsDatabaseBuilt = true;

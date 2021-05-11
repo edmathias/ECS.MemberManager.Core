@@ -55,7 +55,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
             var fetchResult = await ContactForSponsorER.GetContactForSponsorER(CONTACT_ID);
 
             Assert.NotNull(fetchResult);
-            Assert.Equal(1, fetchResult.Person.Id);
+            Assert.Equal(2, fetchResult.Person.Id);
         }
 
         [Fact]

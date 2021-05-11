@@ -13,15 +13,9 @@ namespace ECS.MemberManager.Core.DataAccess.EF
     {
         private MembershipManagerDataContext _context;
 
-        public ContactForSponsorDal()
-        {
-            _context = new MembershipManagerDataContext();
-        }
+        public ContactForSponsorDal() => _context = new MembershipManagerDataContext();
 
-        public ContactForSponsorDal(MembershipManagerDataContext context)
-        {
-            _context = context;
-        }
+        public ContactForSponsorDal(MembershipManagerDataContext context) => _context = context;
 
         public async Task<List<ContactForSponsor>> Fetch()
         {

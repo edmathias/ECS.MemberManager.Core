@@ -12,15 +12,9 @@ namespace ECS.MemberManager.Core.DataAccess.EF
     {
         private MembershipManagerDataContext _context;
 
-        public EMailDal()
-        {
-            _context = new MembershipManagerDataContext();
-        }
+        public EMailDal() => _context = new MembershipManagerDataContext();
 
-        public EMailDal(MembershipManagerDataContext context)
-        {
-            _context = context;
-        }
+        public EMailDal(MembershipManagerDataContext context) => _context = context;
 
         public async Task<List<EMail>> Fetch()
         {

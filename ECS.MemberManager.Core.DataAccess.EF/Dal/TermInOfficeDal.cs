@@ -13,15 +13,9 @@ namespace ECS.MemberManager.Core.DataAccess.EF
     {
         private MembershipManagerDataContext _context;
 
-        public TermInOfficeDal()
-        {
-            _context = new MembershipManagerDataContext();
-        }
+        public TermInOfficeDal() => _context = new MembershipManagerDataContext();
 
-        public TermInOfficeDal(MembershipManagerDataContext context)
-        {
-            _context = context;
-        }
+        public TermInOfficeDal(MembershipManagerDataContext context) => _context = context;
 
         public async Task<List<TermInOffice>> Fetch()
         {

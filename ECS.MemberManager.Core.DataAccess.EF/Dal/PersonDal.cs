@@ -13,15 +13,9 @@ namespace ECS.MemberManager.Core.DataAccess.EF
     {
         private MembershipManagerDataContext _context;
 
-        public PersonDal()
-        {
-            _context = new MembershipManagerDataContext();
-        }
+        public PersonDal() => _context = new MembershipManagerDataContext();
 
-        public PersonDal(MembershipManagerDataContext context)
-        {
-            _context = context;
-        }
+        public PersonDal(MembershipManagerDataContext context) => _context = context;
 
         public async Task<List<Person>> Fetch()
         {

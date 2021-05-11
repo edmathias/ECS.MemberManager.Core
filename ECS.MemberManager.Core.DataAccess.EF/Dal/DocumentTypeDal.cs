@@ -12,15 +12,9 @@ namespace ECS.MemberManager.Core.DataAccess.EF
     {
         private MembershipManagerDataContext _context;
 
-        public DocumentTypeDal()
-        {
-            _context = new MembershipManagerDataContext();
-        }
+        public DocumentTypeDal() => _context = new MembershipManagerDataContext();
 
-        public DocumentTypeDal(MembershipManagerDataContext context)
-        {
-            _context = context;
-        }
+        public DocumentTypeDal(MembershipManagerDataContext context) => _context = context;
 
         public async Task<List<DocumentType>> Fetch()
         {

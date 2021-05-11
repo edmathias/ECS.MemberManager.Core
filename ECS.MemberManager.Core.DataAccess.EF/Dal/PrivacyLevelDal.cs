@@ -13,15 +13,9 @@ namespace ECS.MemberManager.Core.DataAccess.EF
     {
         private MembershipManagerDataContext _context;
 
-        public PrivacyLevelDal()
-        {
-            _context = new MembershipManagerDataContext();
-        }
+        public PrivacyLevelDal() => _context = new MembershipManagerDataContext();
 
-        public PrivacyLevelDal(MembershipManagerDataContext context)
-        {
-            _context = context;
-        }
+        public PrivacyLevelDal(MembershipManagerDataContext context) => _context = context;
 
         public async Task<List<PrivacyLevel>> Fetch()
         {

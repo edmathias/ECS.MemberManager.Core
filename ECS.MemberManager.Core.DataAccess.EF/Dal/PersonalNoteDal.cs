@@ -12,15 +12,9 @@ namespace ECS.MemberManager.Core.DataAccess.EF
     {
         private MembershipManagerDataContext _context;
 
-        public PersonalNoteDal()
-        {
-            _context = new MembershipManagerDataContext();
-        }
+        public PersonalNoteDal() => _context = new MembershipManagerDataContext();
 
-        public PersonalNoteDal(MembershipManagerDataContext context)
-        {
-            _context = context;
-        }
+        public PersonalNoteDal(MembershipManagerDataContext context) => _context = context;
 
         public async Task<List<PersonalNote>> Fetch()
         {

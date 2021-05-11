@@ -13,15 +13,9 @@ namespace ECS.MemberManager.Core.DataAccess.EF
     {
         private MembershipManagerDataContext _context;
 
-        public OrganizationTypeDal()
-        {
-            _context = new MembershipManagerDataContext();
-        }
+        public OrganizationTypeDal() => _context = new MembershipManagerDataContext();
 
-        public OrganizationTypeDal(MembershipManagerDataContext context)
-        {
-            _context = context;
-        }
+        public OrganizationTypeDal(MembershipManagerDataContext context) => _context = context;
 
         public async Task<List<OrganizationType>> Fetch()
         {
