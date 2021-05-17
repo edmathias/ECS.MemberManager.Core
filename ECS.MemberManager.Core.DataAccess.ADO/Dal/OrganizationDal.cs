@@ -41,12 +41,14 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
         public async Task<List<Organization>> Fetch()
         {
             var sql = "select * from Organizations org " +
-                      "inner join OrganizationTypes ot on org.OrganizationTypeId = ot.Id ";
+                      "inner join OrganizationTypes ot on org.OrganizationTypeId = ot.Id " +
+                      "left join CategoryOfOrganizations co on org.CategoryOfOrganizationId = co.Id";
 
-            var organizations = await _db.QueryAsync<Organization, OrganizationType, Organization>(sql,
-                (organization, organizationType) =>
+            var organizations = await _db.QueryAsync<Organization, OrganizationType, CategoryOfOrganization, Organization>(sql,
+                (organization, organizationType, category) =>
                 {
                     organization.OrganizationType = organizationType;
+                    organization.CategoryOfOrganization = category;
 
                     return organization;
                 }
@@ -58,12 +60,14 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
         public async Task<Organization> Fetch(int id)
         {
             var sql = "select * from Organizations org " +
-                      "inner join OrganizationTypes ot on org.OrganizationTypeId = ot.Id " +
+                      "left join OrganizationTypes ot on org.OrganizationTypeId = ot.Id " +
+                      "left join CategoryOfOrganizations co on org.CategoryOfOrganizationId = co.Id " +
                       $"WHERE org.Id = {id}";
-            var organizations = await _db.QueryAsync<Organization, OrganizationType, Organization>(sql,
-                (organization, organizationType) =>
+            var organizations = await _db.QueryAsync<Organization, OrganizationType, CategoryOfOrganization, Organization>(sql,
+                (organization, organizationType, category) =>
                 {
                     organization.OrganizationType = organizationType;
+                    organization.CategoryOfOrganization = category;
 
                     return organization;
                 }
@@ -76,12 +80,13 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
         public async Task<Organization> Insert(Organization organizationToInsert)
         {
             var sql =
-                "INSERT INTO dbo.Organizations (Name, OrganizationTypeId, DateOfFirstContact, LastUpdatedBy, LastUpdatedDate, Notes) " +
-                "SELECT @Name, @OrganizationTypeId, @DateOfFirstContact, @LastUpdatedBy, @LastUpdatedDate, @Notes " +
+                "INSERT INTO dbo.Organizations (Name, OrganizationTypeId, CategoryOfOrganizationId, DateOfFirstContact, LastUpdatedBy, LastUpdatedDate, Notes) " +
+                "SELECT @Name, @OrganizationTypeId, @CategoryOfOrganizationId, @DateOfFirstContact, @LastUpdatedBy, @LastUpdatedDate, @Notes " +
                 "SELECT SCOPE_IDENTITY()";
             organizationToInsert.Id = await _db.ExecuteScalarAsync<int>(sql, new
             {
                 Name = organizationToInsert.Name,
+                CategoryOfOrganizationId = organizationToInsert.CategoryOfOrganization.Id,
                 OrganizationTypeId = organizationToInsert.OrganizationType.Id,
                 DateOfFirstContact = organizationToInsert.DateOfFirstContact,
                 LastUpdatedBy = organizationToInsert.LastUpdatedBy,
@@ -101,6 +106,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             var sql = "UPDATE dbo.Organizations " +
                       "SET Name = @Name, " +
                       "OrganizationTypeId = @OrganizationTypeId, " +
+                      "CategoryOfOrganizationId = @CategoryOfOrganizationId, " +
                       "DateOfFirstContact = @DateOfFirstContact, " +
                       "LastUpdatedBy = @LastUpdatedBy, " +
                       "LastUpdatedDate = @LastUpdatedDate, " +
@@ -113,6 +119,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
                 Id = organizationToUpdate.Id,
                 Name = organizationToUpdate.Name,
                 OrganizationTypeId = organizationToUpdate.OrganizationType.Id,
+                CategoryOfOrganizationId = organizationToUpdate.CategoryOfOrganization.Id,
                 DateOfFirstContact = organizationToUpdate.DateOfFirstContact,
                 LastUpdatedBy = organizationToUpdate.LastUpdatedBy,
                 LastUpdatedDate = organizationToUpdate.LastUpdatedDate,
