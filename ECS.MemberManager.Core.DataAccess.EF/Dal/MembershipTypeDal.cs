@@ -10,65 +10,46 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 {
     public class MembershipTypeDal : IDal<MembershipType>
     {
+        private MembershipManagerDataContext _context;
+
+        public MembershipTypeDal() => _context = new MembershipManagerDataContext();
+
+        public MembershipTypeDal(MembershipManagerDataContext context) => _context = context;
+
         public async Task<List<MembershipType>> Fetch()
         {
-            List<MembershipType> list;
-
-            using (var context = new MembershipManagerDataContext())
-            {
-                list = await context.MembershipTypes
-                    .ToListAsync();
-            }
-
-            return list;
+            return await _context.MembershipTypes
+                .ToListAsync();
         }
 
         public async Task<MembershipType> Fetch(int id)
         {
-            MembershipType membershipType = null;
-
-            using (var context = new MembershipManagerDataContext())
-            {
-                membershipType = await context.MembershipTypes.Where(a => a.Id == id)
-                    .FirstAsync();
-            }
-
-            return membershipType;
+            return await _context.MembershipTypes.Where(a => a.Id == id)
+                .FirstAsync();
         }
 
         public async Task<MembershipType> Insert(MembershipType membershipTypeToInsert)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                await context.MembershipTypes.AddAsync(membershipTypeToInsert);
+            await _context.MembershipTypes.AddAsync(membershipTypeToInsert);
 
-                await context.SaveChangesAsync();
-            }
-
-            ;
+            await _context.SaveChangesAsync();
 
             return membershipTypeToInsert;
         }
 
         public async Task<MembershipType> Update(MembershipType membershipTypeToUpdate)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                context.Update(membershipTypeToUpdate);
+            _context.Update(membershipTypeToUpdate);
 
-                await context.SaveChangesAsync();
-            }
+            await _context.SaveChangesAsync();
 
             return membershipTypeToUpdate;
         }
 
         public async Task Delete(int id)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                context.Remove(await context.MembershipTypes.SingleAsync(a => a.Id == id));
-                await context.SaveChangesAsync();
-            }
+            _context.Remove(await _context.MembershipTypes.SingleAsync(a => a.Id == id));
+            await _context.SaveChangesAsync();
         }
 
         public void Dispose()

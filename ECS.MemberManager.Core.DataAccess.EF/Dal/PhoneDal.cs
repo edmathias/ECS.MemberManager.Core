@@ -9,15 +9,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECS.MemberManager.Core.DataAccess.EF
 {
-    public class PhoneDal : IDal<Phone> 
+    public class PhoneDal : IDal<Phone>
     {
+        private MembershipManagerDataContext _context;
+
+        public PhoneDal() => _context = new MembershipManagerDataContext();
+        public PhoneDal(MembershipManagerDataContext context) => _context = context;
+        
         public async Task<List<Phone>> Fetch()
         {
             List<Phone> list;
 
-            using (var context = new MembershipManagerDataContext())
+            using (var _context = new MembershipManagerDataContext())
             {
-                list = await context.Phones.ToListAsync();
+                list = await _context.Phones.ToListAsync();
             }
 
             return list;
@@ -27,9 +32,9 @@ namespace ECS.MemberManager.Core.DataAccess.EF
         {
             Phone phone = null;
 
-            using (var context = new MembershipManagerDataContext())
+            using (var _context = new MembershipManagerDataContext())
             {
-                phone = await context.Phones.Where(a => a.Id == id).FirstAsync();
+                phone = await _context.Phones.Where(a => a.Id == id).FirstAsync();
             }
 
             return phone;
@@ -37,10 +42,10 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 
         public async Task<Phone> Insert(Phone phoneToInsert)
         {
-            using (var context = new MembershipManagerDataContext())
+            using (var _context = new MembershipManagerDataContext())
             {
-                await context.Phones.AddAsync(phoneToInsert);
-                await context.SaveChangesAsync();
+                await _context.Phones.AddAsync(phoneToInsert);
+                await _context.SaveChangesAsync();
             }
 
             return phoneToInsert;
@@ -48,11 +53,11 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 
         public async Task<Phone> Update(Phone phoneToUpdate)
         {
-            using (var context = new MembershipManagerDataContext())
+            using (var _context = new MembershipManagerDataContext())
             {
-                context.Update(phoneToUpdate);
+                _context.Update(phoneToUpdate);
             
-                await context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
             }
 
             return phoneToUpdate;
@@ -60,10 +65,10 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 
         public async Task Delete(int id)
         {
-            using (var context = new MembershipManagerDataContext())
+            using (var _context = new MembershipManagerDataContext())
             {
-                context.Remove(await context.Phones.SingleAsync(a => a.Id == id));
-                await context.SaveChangesAsync();
+                _context.Remove(await _context.Phones.SingleAsync(a => a.Id == id));
+                await _context.SaveChangesAsync();
             }
         }
 

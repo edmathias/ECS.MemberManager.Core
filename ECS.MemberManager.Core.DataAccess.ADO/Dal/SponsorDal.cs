@@ -85,7 +85,7 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
 
             sql.AppendLine("UPDATE Sponsors");
             sql.AppendLine("SET [PersonId] = @PersonId,");
-            sql.AppendLine("[OrganizationId] = @OrganizationId, );");
+            sql.AppendLine("[OrganizationId] = @OrganizationId, ");
             sql.AppendLine("[Status] = @Status,");
             sql.AppendLine("[DateOfFirstContact] = @DateOfFirstContact,");
             sql.AppendLine("[ReferredBy] = @ReferredBy,");

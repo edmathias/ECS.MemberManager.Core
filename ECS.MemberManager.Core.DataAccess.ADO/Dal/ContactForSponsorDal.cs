@@ -58,12 +58,21 @@ namespace ECS.MemberManager.Core.DataAccess.ADO
             sql.AppendLine("select * from ContactForSponsors cs");
             sql.AppendLine("left join Sponsors s on cs.SponsorId = s.Id");
             sql.AppendLine("left join Persons p on cs.PersonId = p.Id");
+            sql.AppendLine("inner join EMails e on p.EMailId = e.Id");
+            sql.AppendLine("inner join Titles t on p.EMailId = t.Id");
+            sql.AppendLine("left join Persons P2 on S.PersonId = P2.Id");
+            sql.AppendLine("left join Organizations O on S.OrganizationId = O.Id");
             sql.AppendLine($"where cs.Id = {id}");
-            var result = await _db.QueryAsync<ContactForSponsor, Sponsor, Person, ContactForSponsor>(sql.ToString(),
-                (contact, sponsor, person) =>
+            var result = await _db.QueryAsync<ContactForSponsor, Sponsor, Person, EMail, Title, Person, Organization, ContactForSponsor>(sql.ToString(),
+                (contact, sponsor, person, email, title, person2, organization ) =>
                 {
                     contact.Sponsor = sponsor;
                     contact.Person = person;
+                    contact.Person.EMail = email;
+                    contact.Person.Title = title;
+                    contact.Sponsor.Person = person2;
+                    contact.Sponsor.Organization = organization;
+                        
                     return contact;
                 }
             );

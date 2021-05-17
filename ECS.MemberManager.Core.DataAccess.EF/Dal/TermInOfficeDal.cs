@@ -11,76 +11,59 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 {
     public class TermInOfficeDal : IDal<TermInOffice>
     {
+        private MembershipManagerDataContext _context;
+
+        public TermInOfficeDal() => _context = new MembershipManagerDataContext();
+
+        public TermInOfficeDal(MembershipManagerDataContext context) => _context = context;
+
         public async Task<List<TermInOffice>> Fetch()
         {
-            List<TermInOffice> list;
-
-            using (var context = new MembershipManagerDataContext())
-            {
-                list = await context.TermInOffices
-                    .Include(p => p.Person)
-                    .Include(p => p.Office)
-                    .ToListAsync();
-            }
-
-            return list;
+            return await _context.TermInOffices
+                .Include(p => p.Person)
+                .Include(p => p.Office)
+                .ToListAsync();
         }
 
         public async Task<TermInOffice> Fetch(int id)
         {
-            TermInOffice term = null;
-
-            using (var context = new MembershipManagerDataContext())
-            {
-                term = await context.TermInOffices.Where(a => a.Id == id)
-                    .Include(p => p.Person)
-                    .Include(p => p.Office)
-                    .FirstAsync();
-            }
-
-            return term;
+            return await _context.TermInOffices.Where(a => a.Id == id)
+                .Include(p => p.Person)
+                .Include(p => p.Office)
+                .FirstAsync();
         }
 
         public async Task<TermInOffice> Insert(TermInOffice termToInsert)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                context.Entry(termToInsert.Person).State = EntityState.Unchanged;
-                context.Entry(termToInsert.Office).State = EntityState.Unchanged;
-                
-                await context.TermInOffices.AddAsync(termToInsert);
+            _context.Entry(termToInsert.Person).State = EntityState.Unchanged;
+            _context.Entry(termToInsert.Office).State = EntityState.Unchanged;
 
-                await context.SaveChangesAsync();
-            }
+            await _context.TermInOffices.AddAsync(termToInsert);
+
+            await _context.SaveChangesAsync();
 
             return termToInsert;
         }
 
         public async Task<TermInOffice> Update(TermInOffice termToUpdate)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                context.Entry(termToUpdate.Person).State = EntityState.Unchanged;
-                context.Entry(termToUpdate.Office).State = EntityState.Unchanged;
-                
-                context.Update(termToUpdate);
+            _context.Entry(termToUpdate.Person).State = EntityState.Unchanged;
+            _context.Entry(termToUpdate.Office).State = EntityState.Unchanged;
 
-                var result = await context.SaveChangesAsync();
+            _context.Update(termToUpdate);
 
-                if (result != 1)
-                    throw new ApplicationException("TermInOffice domain object was not updated");
-            }
+            var result = await _context.SaveChangesAsync();
+
+            if (result != 1)
+                throw new ApplicationException("TermInOffice domain object was not updated");
 
             return termToUpdate;
         }
 
         public async Task Delete(int id)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                context.Remove(await context.TermInOffices.SingleAsync(a => a.Id == id));
-                await context.SaveChangesAsync();
-            }
+            _context.Remove(await _context.TermInOffices.SingleAsync(a => a.Id == id));
+            await _context.SaveChangesAsync();
         }
 
         public void Dispose()

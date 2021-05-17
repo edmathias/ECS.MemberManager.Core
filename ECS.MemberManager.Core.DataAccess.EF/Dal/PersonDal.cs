@@ -11,76 +11,58 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 {
     public class PersonDal : IDal<Person>
     {
+        private MembershipManagerDataContext _context;
+
+        public PersonDal() => _context = new MembershipManagerDataContext();
+
+        public PersonDal(MembershipManagerDataContext context) => _context = context;
+
         public async Task<List<Person>> Fetch()
         {
-            List<Person> list;
-
-            using (var context = new MembershipManagerDataContext())
-            {
-                list = await context.Persons
-                    .Include(p => p.Title)
-                    .Include(p => p.EMail)
-                    .ToListAsync();
-            }
-
-            return list;
+            return await _context.Persons
+                .Include(p => p.Title)
+                .Include(p => p.EMail)
+                .ToListAsync();
         }
 
         public async Task<Person> Fetch(int id)
         {
-            Person person = null;
-
-            using (var context = new MembershipManagerDataContext())
-            {
-                person = await context.Persons.Where(a => a.Id == id)
-                    .Include(p => p.Title)
-                    .Include(p => p.EMail)
-                    .FirstAsync();
-            }
-
-            return person;
+            return await _context.Persons.Where(a => a.Id == id)
+                .Include(p => p.Title)
+                .Include(p => p.EMail)
+                .FirstAsync();
         }
 
         public async Task<Person> Insert(Person personToInsert)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                context.Entry(personToInsert.Title).State = EntityState.Unchanged;
-                context.Entry(personToInsert.EMail).State = EntityState.Unchanged;
-                
-                await context.Persons.AddAsync(personToInsert);
+            _context.Entry(personToInsert.Title).State = EntityState.Unchanged;
+            _context.Entry(personToInsert.EMail).State = EntityState.Unchanged;
+            await _context.Persons.AddAsync(personToInsert);
 
-                await context.SaveChangesAsync();
-            }
+            await _context.SaveChangesAsync();
 
             return personToInsert;
         }
 
         public async Task<Person> Update(Person personToUpdate)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                context.Entry(personToUpdate.Title).State = EntityState.Unchanged;
-                context.Entry(personToUpdate.EMail).State = EntityState.Unchanged;
-                
-                context.Update(personToUpdate);
+            _context.Entry(personToUpdate.Title).State = EntityState.Unchanged;
+            _context.Entry(personToUpdate.EMail).State = EntityState.Unchanged;
 
-                var result = await context.SaveChangesAsync();
+            _context.Update(personToUpdate);
 
-                if (result != 1)
-                    throw new ApplicationException("Person domain object was not updated");
-            }
+            var result = await _context.SaveChangesAsync();
+
+            if (result != 1)
+                throw new ApplicationException("Person domain object was not updated");
 
             return personToUpdate;
         }
 
         public async Task Delete(int id)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                context.Remove(await context.Persons.SingleAsync(a => a.Id == id));
-                await context.SaveChangesAsync();
-            }
+            _context.Remove(await _context.Persons.SingleAsync(a => a.Id == id));
+            await _context.SaveChangesAsync();
         }
 
         public void Dispose()

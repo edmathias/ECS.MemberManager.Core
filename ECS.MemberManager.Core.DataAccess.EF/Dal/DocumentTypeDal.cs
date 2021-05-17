@@ -8,63 +8,44 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECS.MemberManager.Core.DataAccess.EF
 {
-    public class DocumentTypeDal : IDal<DocumentType> 
+    public class DocumentTypeDal : IDal<DocumentType>
     {
+        private MembershipManagerDataContext _context;
+
+        public DocumentTypeDal() => _context = new MembershipManagerDataContext();
+
+        public DocumentTypeDal(MembershipManagerDataContext context) => _context = context;
+
         public async Task<List<DocumentType>> Fetch()
         {
-            List<DocumentType> list;
-
-            using (var context = new MembershipManagerDataContext())
-            {
-                list = await context.DocumentTypes.ToListAsync();
-            }
-
-            return list;
+            return await _context.DocumentTypes.ToListAsync();
         }
 
         public async Task<DocumentType> Fetch(int id)
         {
-            DocumentType documentType = null;
-
-            using (var context = new MembershipManagerDataContext())
-            {
-                documentType = await context.DocumentTypes.Where(a => a.Id == id).FirstAsync();
-            }
-
-            return documentType;
+            return await _context.DocumentTypes.Where(a => a.Id == id).FirstAsync();
         }
 
         public async Task<DocumentType> Insert(DocumentType documentTypeToInsert)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                await context.DocumentTypes.AddAsync(documentTypeToInsert);
-                await context.SaveChangesAsync();
-            }
-
-            ;
+            await _context.DocumentTypes.AddAsync(documentTypeToInsert);
+            await _context.SaveChangesAsync();
 
             return documentTypeToInsert;
         }
 
         public async Task<DocumentType> Update(DocumentType documentTypeToUpdate)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                context.Update(documentTypeToUpdate);
-                await context.SaveChangesAsync();
-            }
+            _context.Update(documentTypeToUpdate);
+            await _context.SaveChangesAsync();
 
             return documentTypeToUpdate;
         }
 
         public async Task Delete(int id)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                context.Remove(await context.DocumentTypes.SingleAsync(a => a.Id == id));
-                await context.SaveChangesAsync();
-            }
+            _context.Remove(await _context.DocumentTypes.SingleAsync(a => a.Id == id));
+            await _context.SaveChangesAsync();
         }
 
         public void Dispose()

@@ -8,63 +8,44 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECS.MemberManager.Core.DataAccess.EF
 {
-    public class AddressDal : IDal<Address> 
+    public class AddressDal : IDal<Address>
     {
+        private MembershipManagerDataContext _context;
+
+        public AddressDal() => _context = new MembershipManagerDataContext();
+
+        public AddressDal(MembershipManagerDataContext context) => _context = context;
+
         public async Task<List<Address>> Fetch()
         {
-            List<Address> list;
-
-            using (var context = new MembershipManagerDataContext())
-            {
-                list = await context.Addresses.ToListAsync();
-            }
-
-            return list;
+            return await _context.Addresses.ToListAsync();
         }
 
         public async Task<Address> Fetch(int id)
         {
-            Address address = null;
-
-            using (var context = new MembershipManagerDataContext())
-            {
-                address = await context.Addresses.Where(a => a.Id == id).FirstAsync();
-            }
-
-            return address;
+            return await _context.Addresses.Where(a => a.Id == id).FirstAsync();
         }
 
         public async Task<Address> Insert(Address addressToInsert)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                await context.Addresses.AddAsync(addressToInsert);
-                await context.SaveChangesAsync();
-            }
-
-            ;
+            await _context.Addresses.AddAsync(addressToInsert);
+            await _context.SaveChangesAsync();
 
             return addressToInsert;
         }
 
         public async Task<Address> Update(Address addressToUpdate)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                context.Update(addressToUpdate);
-                await context.SaveChangesAsync();
-            }
+            _context.Update(addressToUpdate);
+            await _context.SaveChangesAsync();
 
             return addressToUpdate;
         }
 
         public async Task Delete(int id)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                context.Remove(await context.Addresses.SingleAsync(a => a.Id == id));
-                await context.SaveChangesAsync();
-            }
+            _context.Remove(await _context.Addresses.SingleAsync(a => a.Id == id));
+            await _context.SaveChangesAsync();
         }
 
         public void Dispose()

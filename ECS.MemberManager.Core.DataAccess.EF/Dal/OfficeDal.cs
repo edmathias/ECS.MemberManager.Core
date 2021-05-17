@@ -10,63 +10,46 @@ namespace ECS.MemberManager.Core.DataAccess.EF
 {
     public class OfficeDal : IDal<Office>
     {
+        private MembershipManagerDataContext _context;
+
+        public OfficeDal() => _context = new MembershipManagerDataContext();
+
+        public OfficeDal(MembershipManagerDataContext context) => _context = context;
+        
         public async Task<List<Office>> Fetch()
         {
-            List<Office> list;
-
-            using (var context = new MembershipManagerDataContext())
-            {
-                list = await context.Offices
-                    .ToListAsync();
-            }
-
-            return list;
+            return await _context.Offices
+                .ToListAsync();
         }
 
         public async Task<Office> Fetch(int id)
         {
-            Office officeObj = null;
-
-            using (var context = new MembershipManagerDataContext())
-            {
-                officeObj = await context.Offices.Where(a => a.Id == id)
-                    .FirstAsync();
-            }
-
-            return officeObj;
+            return await _context.Offices.Where(a => a.Id == id)
+                .FirstAsync();
         }
 
         public async Task<Office> Insert(Office officeObjToInsert)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                await context.Offices.AddAsync(officeObjToInsert);
+            await _context.Offices.AddAsync(officeObjToInsert);
 
-                await context.SaveChangesAsync();
-            }
+            await _context.SaveChangesAsync();
 
             return officeObjToInsert;
         }
 
         public async Task<Office> Update(Office officeObjToUpdate)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                context.Update(officeObjToUpdate);
+            _context.Update(officeObjToUpdate);
 
-                await context.SaveChangesAsync();
-            }
+            await _context.SaveChangesAsync();
 
             return officeObjToUpdate;
         }
 
         public async Task Delete(int id)
         {
-            using (var context = new MembershipManagerDataContext())
-            {
-                context.Remove(await context.Offices.SingleAsync(a => a.Id == id));
-                await context.SaveChangesAsync();
-            }
+            _context.Remove(await _context.Offices.SingleAsync(a => a.Id == id));
+            await _context.SaveChangesAsync();
         }
 
         public void Dispose()

@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECS.MemberManager.Core.Data
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECS.MemberManager.Core.DataAccess.EF", "ECS.MemberManager.Core.DataAccess.EF\ECS.MemberManager.Core.DataAccess.EF.csproj", "{29E4BC83-D6B5-43FE-87D0-5C2D303E65F1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECS.MemberManager.Windows.UI.Desktop.WPF", "ECS.MemberManager.Windows.UI.Desktop.WPF\ECS.MemberManager.Windows.UI.Desktop.WPF.csproj", "{F5B4F9F0-9467-485A-9E88-ADF3D1789370}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{29E4BC83-D6B5-43FE-87D0-5C2D303E65F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29E4BC83-D6B5-43FE-87D0-5C2D303E65F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29E4BC83-D6B5-43FE-87D0-5C2D303E65F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5B4F9F0-9467-485A-9E88-ADF3D1789370}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5B4F9F0-9467-485A-9E88-ADF3D1789370}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5B4F9F0-9467-485A-9E88-ADF3D1789370}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5B4F9F0-9467-485A-9E88-ADF3D1789370}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

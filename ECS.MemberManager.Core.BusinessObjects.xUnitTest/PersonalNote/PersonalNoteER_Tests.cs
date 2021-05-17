@@ -46,7 +46,7 @@ namespace ECS.MemberManager.Core.BusinessObjects.xUnitTest
         }
 
         [Fact]
-        public async Task TestPersonalNoteER_DescriptionLessThan50Chars()
+        public async Task TestPersonalNoteER_DescriptionGreaterThan50Chars()
         {
             var personalNote = await PersonalNoteER.GetPersonalNoteER(1);
             var isObjectValidInit = personalNote.IsValid;
