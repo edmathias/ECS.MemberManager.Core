@@ -43,6 +43,14 @@ namespace ECS.MemberManager.Core.DataAccess.Mock
             if (contactToUpdate == null)
                 throw new Csla.DataPortalException(null);
 
+            contactToUpdate.Notes = contactOfPerson.Notes;
+            contactToUpdate.Person = contactOfPerson.Person;
+            contactToUpdate.Purpose = contactOfPerson.Purpose;
+            contactToUpdate.Sponsor = contactOfPerson.Sponsor;
+            contactToUpdate.DateWhenContacted = contactOfPerson.DateWhenContacted;
+            contactToUpdate.LastUpdatedBy = contactOfPerson.LastUpdatedBy;
+            contactToUpdate.LastUpdatedDate = contactOfPerson.LastUpdatedDate;
+
             contactToUpdate.RowVersion = BitConverter.GetBytes(DateTime.Now.Ticks);
             return Task.FromResult(contactToUpdate);
         }
