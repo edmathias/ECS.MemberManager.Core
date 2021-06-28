@@ -9,10 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECS.MemberManager.Core.EF.D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECS.MemberManager.Core.BusinessObjects", "ECS.MemberManager.Core.BusinessObjects\ECS.MemberManager.Core.BusinessObjects.csproj", "{BC4318C5-2750-408C-B2B0-DBF37A6B2CA8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECS.MemberManager.Core.UI.Web.Razor", "ECS.MemberManager.Core.UI.Web.Razor\ECS.MemberManager.Core.UI.Web.Razor.csproj", "{6E32F548-4781-4E5F-8585-FD69FCF6B7BE}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECS.MemberManager.Core.UI.Web.MVC", "ECS.MemberManager.Core.UI.Web.MVC\ECS.MemberManager.Core.UI.Web.MVC.csproj", "{9AC04A79-AAA0-4DA1-B377-5DBAA03BBD13}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECS.MemberManager.Core.UI.Console", "ECS.MemberManager.Core.UI.Console\ECS.MemberManager.Core.UI.Console.csproj", "{64023567-8804-42C1-92E4-C3A4F0855817}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECS.MemberManager.Core.DataAccess", "ECS.MemberManager.Core.DataAccess\ECS.MemberManager.Core.DataAccess.csproj", "{CE31E6AF-6A9E-4172-884A-8C18D51C70A0}"
@@ -24,10 +20,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECS.MemberManager.Core.DataAccess.ADO", "ECS.MemberManager.Core.DataAccess.ADO\ECS.MemberManager.Core.DataAccess.ADO.csproj", "{AA49716A-046B-4ECC-88EE-802D39CB4ED7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECS.MemberManager.Core.DataAccess.EF", "ECS.MemberManager.Core.DataAccess.EF\ECS.MemberManager.Core.DataAccess.EF.csproj", "{29E4BC83-D6B5-43FE-87D0-5C2D303E65F1}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECS.MemberManager.Windows.UI.Desktop.WPF", "ECS.MemberManager.Windows.UI.Desktop.WPF\ECS.MemberManager.Windows.UI.Desktop.WPF.csproj", "{F5B4F9F0-9467-485A-9E88-ADF3D1789370}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECS.MemberManager.Core.WebAPI", "ECS.MemberManager.Core.WebAPI\ECS.MemberManager.Core.WebAPI.csproj", "{A904E147-0BE9-4877-A3C0-6A47A0A53FA0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,14 +39,6 @@ Global
 		{BC4318C5-2750-408C-B2B0-DBF37A6B2CA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC4318C5-2750-408C-B2B0-DBF37A6B2CA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC4318C5-2750-408C-B2B0-DBF37A6B2CA8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6E32F548-4781-4E5F-8585-FD69FCF6B7BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6E32F548-4781-4E5F-8585-FD69FCF6B7BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6E32F548-4781-4E5F-8585-FD69FCF6B7BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6E32F548-4781-4E5F-8585-FD69FCF6B7BE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9AC04A79-AAA0-4DA1-B377-5DBAA03BBD13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9AC04A79-AAA0-4DA1-B377-5DBAA03BBD13}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9AC04A79-AAA0-4DA1-B377-5DBAA03BBD13}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9AC04A79-AAA0-4DA1-B377-5DBAA03BBD13}.Release|Any CPU.Build.0 = Release|Any CPU
 		{64023567-8804-42C1-92E4-C3A4F0855817}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{64023567-8804-42C1-92E4-C3A4F0855817}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64023567-8804-42C1-92E4-C3A4F0855817}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -79,14 +63,6 @@ Global
 		{29E4BC83-D6B5-43FE-87D0-5C2D303E65F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29E4BC83-D6B5-43FE-87D0-5C2D303E65F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29E4BC83-D6B5-43FE-87D0-5C2D303E65F1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F5B4F9F0-9467-485A-9E88-ADF3D1789370}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F5B4F9F0-9467-485A-9E88-ADF3D1789370}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F5B4F9F0-9467-485A-9E88-ADF3D1789370}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F5B4F9F0-9467-485A-9E88-ADF3D1789370}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A904E147-0BE9-4877-A3C0-6A47A0A53FA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A904E147-0BE9-4877-A3C0-6A47A0A53FA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A904E147-0BE9-4877-A3C0-6A47A0A53FA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A904E147-0BE9-4877-A3C0-6A47A0A53FA0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
